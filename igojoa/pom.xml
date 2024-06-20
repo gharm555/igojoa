@@ -3,7 +3,7 @@
     xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.itwill</groupId>
+        <groupId>com.itwill</groupId>
     <artifactId>igojoa</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
@@ -16,7 +16,7 @@
         <log4j-version>2.23.1</log4j-version>
         <slf4j-api-version>2.0.13</slf4j-api-version>
         <junit-version>5.10.2</junit-version>
-        <ojdbc11-version>23.4.0.24.05</ojdbc11-version>
+        <mysql-version>8.0.33</mysql-version>
         <hikaricp-version>5.1.0</hikaricp-version>
         <spring-version>6.1.8</spring-version>
         <jackson-version>2.17.1</jackson-version>
@@ -83,13 +83,14 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Oracle JDBC 라이브러리 -->
+        <!-- MySQL JDBC 라이브러리 -->
         <!-- Oracle JDBC Driver compatible with JDK11, JDK12, JDK13, JDK14 and
         JDK15 -->
         <dependency>
-            <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ojdbc11</artifactId>
-            <version>${ojdbc11-version}</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+            <version>${mysql-version}</version>
         </dependency>
 
         <!-- 데이터베이스 커넥션 풀 사용하기 위한 의존성 -->
