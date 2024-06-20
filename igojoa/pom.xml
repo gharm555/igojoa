@@ -11,12 +11,12 @@
     <description>igojoa Project</description>
 
     <!-- XML 파일에서 사용할 속성(변수) 선언 -->
-    <properties>    
+    <properties>
         <jstl-version>3.0.0</jstl-version>
         <jslt-impl-version>3.0.1</jslt-impl-version>
         <log4j-version>2.23.1</log4j-version>
         <slf4j-api-version>2.0.13</slf4j-api-version>
-        <junit-version>5.10.2</junit-version>
+        <junit-version>5.10.2</junit-version>       
         <mysql-version>8.0.33</mysql-version>
         <hikaricp-version>5.1.0</hikaricp-version>
         <spring-version>6.1.8</spring-version>
@@ -85,13 +85,11 @@
         </dependency>
 
         <!-- MySQL JDBC 라이브러리 -->
-        <!-- MySQL JDBC Driver compatible with JDK11, JDK12, JDK13, JDK14 and
-        JDK15 -->
+        <!-- MySQL JDBC Driver -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-version}</version>
-            <scope>runtime</scope>
         </dependency>
 
         <!-- 데이터베이스 커넥션 풀 사용하기 위한 의존성 -->
