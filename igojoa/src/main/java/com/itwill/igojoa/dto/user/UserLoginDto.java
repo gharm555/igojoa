@@ -1,4 +1,4 @@
-package com.itwill.igojoa.dto;
+package com.itwill.igojoa.dto.user;
 
 import com.itwill.igojoa.entity.User;
 

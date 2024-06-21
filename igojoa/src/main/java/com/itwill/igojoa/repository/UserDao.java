@@ -5,8 +5,9 @@ import com.itwill.igojoa.entity.User;
 public interface UserDao {
     int create(User user);
 
-    User selectById(String userId);
+    User selectByUserId(String userId);
 
     User selectByIdAndPassword(User user);
 
+    void updateUserProfile(User user);
 }

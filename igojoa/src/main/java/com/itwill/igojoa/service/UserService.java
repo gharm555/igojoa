@@ -18,8 +18,8 @@ public class UserService {
         return userDao.create(user);
     }
 
-    public User selectById(String userId) {
-        return userDao.selectById(userId);
+    public User selectByUserId(String userId) {
+        return userDao.selectByUserId(userId);
     }
 
     public User selectByIdAndPassword(User user) {
