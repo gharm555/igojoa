@@ -6,10 +6,15 @@
     <insert id="create" parameterType="User">
         INSERT INTO USERS (USERID, PASSWORD, EMAIL, PHONENUMBER, NICKNAME) VALUES (#{userId}, SHA2(#{password}, 256), #{email}, #{phoneNumber}, #{nickName})
     </insert>
-    <select id="selectById" resultType="User" parameterType="String">
+    <select id="selectByUserId" resultType="User" parameterType="String">
         SELECT * FROM USERS WHERE USERID = #{userId}
     </select>
     <select id="selectByIdAndPassword" resultType="User" parameterType="User">
         SELECT * FROM USERS WHERE USERID = #{userId} AND PASSWORD = SHA2(#{password}, 256)
     </select>
+    <update id="updateUserProfile">
+        UPDATE USERS
+        SET USER_PROFILE_NAME = #{fileName}, USER_PROFILE_URL = #{fileUrl}
+        WHERE USERID = #{userId}
+    </update>
 </mapper>

@@ -27,8 +27,8 @@ public class UserServiceTest {
     }
 
     // @Test
-    public void selectById() {
-        User user = userService.selectById("test2");
+    public void selectByUserId() {
+        User user = userService.selectByUserId("test2");
         log.info("user: {}", user);
     }
 }
