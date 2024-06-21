@@ -1,4 +1,4 @@
-package com.itwill.igojoa.dto;
+package com.itwill.igojoa.dto.place;
 
 import java.time.LocalDateTime;
 
