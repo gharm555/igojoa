@@ -5,11 +5,14 @@
 
 <!-- MyBatis3 프레임워크 설정 -->
 <configuration>
-    <settings>
-        <setting name="mapUnderscoreToCamelCase" value="true"/>
-    </settings>
-    <typeAliases>
-        <typeAlias alias="User" type="com.itwill.igojoa.entity.User"/>
-    </typeAliases>
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+	<typeAliases>
+		<typeAlias alias="User" type="com.itwill.igojoa.entity.User" />
+		<typeAlias alias="User" type="com.itwill.igojoa.entity.Place" />
+		<typeAlias alias="User" type="com.itwill.igojoa.entity.PScores" />
+		<typeAlias alias="User" type="com.itwill.igojoa.entity.Reviews" />
+	</typeAliases>
 
 </configuration>
