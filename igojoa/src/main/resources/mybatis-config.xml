@@ -10,9 +10,9 @@
 	</settings>
 	<typeAliases>
 		<typeAlias alias="User" type="com.itwill.igojoa.entity.User" />
-		<typeAlias alias="User" type="com.itwill.igojoa.entity.Place" />
-		<typeAlias alias="User" type="com.itwill.igojoa.entity.PScores" />
-		<typeAlias alias="User" type="com.itwill.igojoa.entity.Reviews" />
+		<typeAlias alias="Place" type="com.itwill.igojoa.entity.Place" />
+		<typeAlias alias="PScores" type="com.itwill.igojoa.entity.PScores" />
+		<typeAlias alias="Reviews" type="com.itwill.igojoa.entity.Reviews" />
 	</typeAliases>
 
 </configuration>

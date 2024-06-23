@@ -3,8 +3,8 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwill.igojoa.repository.placeDao">
-	<select id="select" resultType="PlaceListDto">
+	<!-- <select id="select" resultType="PlaceListDto">
 		SELECT * FROM
 		USERS WHERE
-	</select>
+	</select> -->
 </mapper>
