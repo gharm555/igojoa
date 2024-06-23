@@ -3,8 +3,29 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwill.igojoa.repository.placeDao">
-	<!-- <select id="select" resultType="PlaceListDto">
-		SELECT * FROM
-		USERS WHERE
-	</select> -->
+	<select id="select" resultType="PlaceListDto">
+		SELECT p.P_NAME,
+		p.P_LOCATION,COUNT(ps.P_COUNT_VISITS), ps2.P_FAVORITES, r.TOTAL_LIKES,
+		rl.U_NICKNAME, rl.REVIEW, rl.CREATED_AT
+		FROM PLACE p
+		left outer JOIN P_SCORES ps
+		on ps.P_NAME = p.P_NAME
+		left join P_SCORES ps2
+		on ps2.P_NAME = p.P_NAME
+		and ps2.USERID = 'ㅂㅂ'
+		LEFT JOIN (
+		SELECT R_AUTHOR, P_NAME, MAX(TOTAL_LIKES) AS TOTAL_LIKES
+		FROM (
+		SELECT R_AUTHOR, P_NAME, COUNT(LIKED_BY) AS TOTAL_LIKES
+		FROM R_LIKES
+		GROUP BY R_AUTHOR, P_NAME
+		) AS subquery
+		GROUP BY P_NAME
+		) r
+		on r.P_NAME = p.P_NAME
+		LEFT JOIN REVIEWS rl
+		on rl.P_NAME = r.P_NAME
+		GROUP BY p.P_NAME
+		ORDER BY p.P_NAME DESC
+	</select>
 </mapper>
