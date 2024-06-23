@@ -7,14 +7,7 @@
 <title>아이고조아</title>
 </head>
 <body>
-<<<<<<< HEAD
   <h1>아이고조아입니다</h1>
   <h1>테스트입니다</h1>
-  <h1>테스트입니다</h1>
-=======
-<h1>아이고조아입니다</h1>
-<h1>테스트입니다</h1>
-<h1>테스트입니다</h1>
->>>>>>> branch 'ojh' of https://github.com/gharm555/igojoa.git
 </body>
 </html>
