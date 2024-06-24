@@ -16,6 +16,7 @@
 		<typeAlias alias="PVerified" type="com.itwill.igojoa.entity.PVerified"/>
 		<typeAlias alias="Point" type="com.itwill.igojoa.entity.Point"/>
 		<typeAlias alias="PointsLogs" type="com.itwill.igojoa.entity.PointsLogs"/>
+		<typeAlias alias="UserLoginDto" type="com.itwill.igojoa.dto.user.UserLoginDto"/>
 		<typeAlias alias="PlaceListDto" type="com.itwill.igojoa.dto.place.PlaceListDto"/>
 	</typeAliases>
 

@@ -3,6 +3,7 @@ package com.itwill.igojoa.service;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,15 +13,20 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.itwill.igojoa.entity.User;
 import com.itwill.igojoa.repository.UserDao;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class S3Service {
-    private final AmazonS3 amazonS3;
-    private final UserDao userDao;
+    private AmazonS3 amazonS3;
+
+    @Autowired
+    public void setAmazonS3(AmazonS3 amazonS3) {
+        this.amazonS3 = amazonS3;
+    }
+
+    @Autowired
+    private UserDao userDao;
 
     private String bucketName = "igojoa";
 
