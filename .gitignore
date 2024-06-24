@@ -9,3 +9,4 @@ igojoa/bin/.project
 .settings/org.eclipse.wst.common.project.facet.core.xml
 /.metadata/
 /target/
+application-aws.properties

@@ -25,10 +25,13 @@
     <mybatis:scan base-package="com.itwill.igojoa.repository" />
     <context:component-scan base-package="com.itwill.igojoa.service" />
 
+    <bean id="awsProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="location" value="classpath:application-aws.properties" />
+    </bean>
     <!-- AWS 자격 증명 설정 -->
     <bean id="awsCredentials" class="com.amazonaws.auth.BasicAWSCredentials">
-        <constructor-arg value="?"/>
-        <constructor-arg value="?"/>
+        <constructor-arg value="${awsProperties.accessKeyId}"/>
+        <constructor-arg value="${awsProperties.secretAccessKey}"/>
     </bean>
     
     <!-- AWS S3 클라이언트 빌더 설정 (필요한 경우) -->
