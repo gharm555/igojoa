@@ -1,14 +1,9 @@
 package com.itwill.igojoa.web;
 
+import org.apache.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwill.igojoa.dto.user.UserLoginDto;
@@ -18,10 +13,12 @@ import com.itwill.igojoa.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -34,35 +31,27 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestParam(name = "userId") String userId,
-            @RequestParam(name = "password") String password,
-            @RequestParam(name = "email") String email,
-            @RequestParam(name = "phoneNumber") String phoneNumber,
-            @RequestParam(name = "nickName") String nickName,
-            @RequestPart(value = "file", required = false) MultipartFile file) {
-        System.out.println("userId: " + userId);
-        System.out.println("password: " + password);
-        System.out.println("email: " + email);
-        System.out.println("phoneNumber: " + phoneNumber);
-        System.out.println("nickName: " + nickName);
-        System.out.println("file: " + file);
-        User user = User.builder()
-                .userId(userId)
-                .password(password)
-                .email(email)
-                .phoneNumber(phoneNumber)
-                .nickName(nickName)
-                .build();
+    public ResponseEntity<String> register(@RequestParam("userId") String userId,
+            @RequestParam("password") String password,
+            @RequestParam("email") String email,
+            @RequestParam("phoneNumber") String phoneNumber,
+            @RequestParam("nickName") String nickName,
+            @RequestParam(value = "file", required = false) MultipartFile file) {
         try {
+            String fileUrl = null;
             if (file != null && !file.isEmpty()) {
-                String fileUrl = s3Service.uploadFileAndSaveUrl(file, user.getUserId());
-                user.setUserProfileUrl(fileUrl);
-                user.setUserProfileName(file.getOriginalFilename());
+                log.info("파일 업로드 시작: {}", file.getOriginalFilename());
+                fileUrl = s3Service.uploadFileAndSaveUrl(file, userId);
+                log.info("파일 업로드 완료. URL: {}", fileUrl);
             }
+
+            User user = new User(userId, password, email, phoneNumber, nickName, null, fileUrl);
             userService.create(user);
+
             return ResponseEntity.ok("회원가입 성공");
         } catch (Exception e) {
-            return ResponseEntity.status(400).body(e.getMessage());
+            log.error("회원가입 중 오류 발생", e);
+            return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).body("회원가입 실패: " + e.getMessage());
         }
     }
 

@@ -38,7 +38,7 @@
         </div>
         <div class="form signupform">
           <c:url var="registerUrl" value="/user/register" />
-          <form action="${registerUrl}" method="post" >
+          <form action="${registerUrl}" method="post" enctype="multipart/form-data">
             <h3>회원가입</h3>
             <div class="image-upload d-flex justify-content-center">
               <label for="profile-input">
@@ -51,7 +51,7 @@
                 <div class="upload-icon">
                   <ion-icon name="camera-outline"></ion-icon>
                 </div>
-                <input class="d-none" id="profile-input" type="file" accept="image/*" onchange="previewImage(event)" />
+                <input class="d-none" name="file" id="profile-input" type="file" accept="image/*" onchange="previewImage(event)" />
               </label>
             </div>
             <input type="text" id="userId" name="userId" placeholder="아이디" />
