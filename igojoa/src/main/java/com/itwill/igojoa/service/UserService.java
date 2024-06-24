@@ -12,18 +12,18 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserDao userDao;
+	private final UserDao userDao;
 
-    public int create(User user) {
-        return userDao.create(user);
-    }
+	public int create(User user) {
+		return userDao.create(user);
+	}
 
-    public User selectById(String userId) {
-        return userDao.selectById(userId);
-    }
+	public User selectByUserId(String userId) {
+		return userDao.selectByUserId(userId);
+	}
 
-    public User selectByIdAndPassword(User user) {
-        return userDao.selectByIdAndPassword(user);
-    }
+	public User selectByIdAndPassword(User user) {
+		return userDao.selectByIdAndPassword(user);
+	}
 
 }
