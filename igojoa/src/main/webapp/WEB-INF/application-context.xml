@@ -7,6 +7,7 @@
         http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
         http://mybatis.org/schema/mybatis-spring https://mybatis.org/schema/mybatis-spring.xsd">
 
+<<<<<<< HEAD
 	<!-- bean definitions here -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName"
@@ -68,3 +69,28 @@
 		<constructor-arg ref="awsCredentials" />
 	</bean>
 </beans>
+=======
+    <!-- bean definitions here -->
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="jdbcUrl" value="jdbc:mysql://igojoa.c3gagc46czkf.ap-northeast-2.rds.amazonaws.com:3306/igojoa" />
+        <property name="username" value="igojoa" />
+        <property name="password" value="igojoa" />
+    </bean>
+    <bean id="ds" class="com.zaxxer.hikari.HikariDataSource">
+        <constructor-arg ref="hikariConfig" />
+    </bean>
+    <bean id="session" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="ds" />
+        <property name="mapperLocations" value="classpath:mappers/**/*.xml" />
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+    </bean> 
+    <mybatis:scan base-package="com.itwill.igojoa.repository" />
+    <context:component-scan base-package="com.itwill.igojoa.service" />
+    <context:component-scan base-package="com.itwill.igojoa.config" />
+    <bean class="org.springframework.context.annotation.AnnotationConfigApplicationContext">
+        <constructor-arg value="com.itwill.igojoa.config.AwsS3Config"/>
+    </bean>
+    
+</beans>
+>>>>>>> e855dac342348c850307f0c9666f8b7779d0f7a7
