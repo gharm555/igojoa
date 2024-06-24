@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,21 +29,41 @@ public class UserController {
 
     @GetMapping("/register")
     public String registerForm() {
-        return "user/register";
+        return "user/loginRegistration";
     }
 
     @ResponseBody
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user,
+    public ResponseEntity<?> register(@RequestParam(name = "userId") String userId,
+            @RequestParam(name = "password") String password,
+            @RequestParam(name = "email") String email,
+            @RequestParam(name = "phoneNumber") String phoneNumber,
+            @RequestParam(name = "nickName") String nickName,
             @RequestPart(value = "file", required = false) MultipartFile file) {
+        System.out.println("userId: " + userId);
+        System.out.println("password: " + password);
+        System.out.println("email: " + email);
+        System.out.println("phoneNumber: " + phoneNumber);
+        System.out.println("nickName: " + nickName);
+        System.out.println("file: " + file);
+        User user = User.builder()
+                .userId(userId)
+                .password(password)
+                .email(email)
+                .phoneNumber(phoneNumber)
+                .nickName(nickName)
+                .build();
         try {
+            if (file != null && !file.isEmpty()) {
+                String fileUrl = s3Service.uploadFileAndSaveUrl(file, user.getUserId());
+                user.setUserProfileUrl(fileUrl);
+                user.setUserProfileName(file.getOriginalFilename());
+            }
             userService.create(user);
-            s3Service.uploadFile(file, user.getUserId());
             return ResponseEntity.ok("회원가입 성공");
         } catch (Exception e) {
-            return ResponseEntity.status(400).body("회원가입 실패");
+            return ResponseEntity.status(400).body(e.getMessage());
         }
-
     }
 
     @GetMapping("/login")
@@ -58,11 +79,14 @@ public class UserController {
         }
         try {
             User user = userService.selectByIdAndPassword(userLoginDto.toEntity());
-            session.setAttribute("user", user);
-            return ResponseEntity.ok(user);
+            if (user != null) {
+                session.setAttribute("user", user);
+                return ResponseEntity.ok(user);
+            } else {
+                return ResponseEntity.status(400).body("로그인 실패: 사용자 정보가 일치하지 않습니다.");
+            }
         } catch (Exception e) {
             return ResponseEntity.status(400).body(e.getMessage());
-
         }
     }
 }
