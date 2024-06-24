@@ -15,7 +15,9 @@
 		<typeAlias alias="Reviews" type="com.itwill.igojoa.entity.Reviews" />
 		<typeAlias alias="PVerified" type="com.itwill.igojoa.entity.PVerified"/>
 		<typeAlias alias="Point" type="com.itwill.igojoa.entity.Point"/>
-		<typeAlias alias="PointsLog" type="com.itwill.igojoa.entity.PointsLog"/>
+		<typeAlias alias="PointsLogs" type="com.itwill.igojoa.entity.PointsLogs"/>
+		<typeAlias alias="UserLoginDto" type="com.itwill.igojoa.dto.user.UserLoginDto"/>
+		<typeAlias alias="PlaceListDto" type="com.itwill.igojoa.dto.place.PlaceListDto"/>
 	</typeAliases>
 
 </configuration>
