@@ -31,19 +31,19 @@
           <c:url var="loginUrl" value="/user/login" />
           <form action="${loginUrl}" method="post">
             <h3>로그인</h3>
-            <input type="text" placeholder="아이디를 입력해 주세요" />
-            <input type="password" placeholder="비밀번호를 입력해 주세요" />
+            <input type="text" name="userId" placeholder="아이디를 입력해 주세요" />
+            <input type="password" name="password" placeholder="비밀번호를 입력해 주세요" />
             <input type="submit" value="로그인" />
           </form>
         </div>
         <div class="form signupform">
           <c:url var="registerUrl" value="/user/register" />
-          <form action="${registerUrl}" method="post" enctype="multipart/form-data">
+          <form action="${registerUrl}" id="registerForm" method="post" enctype="multipart/form-data">
             <h3>회원가입</h3>
             <div class="image-upload d-flex justify-content-center">
               <label for="profile-input">
                 <img
-                  src="default.jpg"
+                  src="${defaultImageUrl}"
                   class="rounded-circle mx-auto d-block"
                   type="button"
                   id="register-profileimg"
@@ -59,7 +59,7 @@
             <input type="text" id="nickName" name="nickName" placeholder="닉네임" />
             <input type="email" id="email" name="email" placeholder="이메일" />
             <input type="text" id="phoneNumber" name="phoneNumber" placeholder="전화번호" />
-            <input type="submit"  value="회원가입" />
+            <input type="submit" id="registerBtn" value="회원가입" />
           </form>
         </div>
       </div>

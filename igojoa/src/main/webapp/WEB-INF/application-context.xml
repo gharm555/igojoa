@@ -22,11 +22,14 @@
         <property name="mapperLocations" value="classpath:mappers/**/*.xml" />
         <property name="configLocation" value="classpath:mybatis-config.xml" />
     </bean>
-    <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
+    <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+    </bean>
     <mybatis:scan base-package="com.itwill.igojoa.repository" />
     <context:component-scan base-package="com.itwill.igojoa.service" />
     <context:component-scan base-package="com.itwill.igojoa.config" />
     <bean class="org.springframework.context.annotation.AnnotationConfigApplicationContext">
         <constructor-arg value="com.itwill.igojoa.config.AwsS3Config"/>
     </bean>
+    <context:property-placeholder
+	location="classpath:/application-aws.properties"/>
 </beans>
