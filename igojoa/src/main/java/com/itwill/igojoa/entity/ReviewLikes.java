@@ -1,7 +1,5 @@
 package com.itwill.igojoa.entity;
 
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Reviews {
+public class ReviewLikes {
+	private String reviewAuthor;
 	private String placeName;
-	private String userId;
-	private String review;
-	private LocalDateTime createdAt;
-	private LocalDateTime modifiedAt;
+	private String likedBy;
 }

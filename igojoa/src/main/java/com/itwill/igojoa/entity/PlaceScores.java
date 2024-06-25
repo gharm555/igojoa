@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Point {
-    private String UserId;
-    private String CurrentPoints;
-    private String CumulativePoint;
+public class PlaceScores {
+	private String placeName;
+	private String userId;
+	private Integer favorites;
+	private Integer iScore;
 }
