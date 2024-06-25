@@ -14,8 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/application-context.xml" })
 public class UserServiceTest {
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private UserService userService;
 
     // @Test
     public void create() {
