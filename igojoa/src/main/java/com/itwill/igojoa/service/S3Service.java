@@ -1,68 +1,59 @@
 package com.itwill.igojoa.service;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.itwill.igojoa.entity.User;
-import com.itwill.igojoa.repository.UserDao;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class S3Service {
-    private AmazonS3 amazonS3;
-
-    @Autowired
-    public void setAmazonS3(AmazonS3 amazonS3) {
-        this.amazonS3 = amazonS3;
-    }
-
-    @Autowired
-    private UserDao userDao;
-
     private String bucketName = "igojoa";
+    private final AmazonS3 amazonS3;
 
-    public String uploadFile(MultipartFile multipartFile, String userId) throws IOException {
-        String fileName = multipartFile.getOriginalFilename();
-        String fileUrl = uploadToS3(multipartFile, fileName);
-        updateUserProfileUrl(userId, fileUrl);
-        return fileUrl;
+    private String changedImageName(String userId, String originName) { // 이미지 이름 중복 방지를 위해 랜덤으로 생성
+        return userId + "_" + originName;
     }
 
-    private String uploadToS3(MultipartFile multipartFile, String fileName) throws IOException {
-        java.io.File file = convertMultiPartToFile(multipartFile);
-        try {
-            amazonS3.putObject(new PutObjectRequest(bucketName, fileName, file)
-                    .withCannedAcl(CannedAccessControlList.PublicRead));
-            return amazonS3.getUrl(bucketName, fileName).toString();
-        } finally {
-            file.delete();
+    private String uploadImageToS3(MultipartFile image, String userId) {
+        String originName = image.getOriginalFilename();
+        String extension = originName.substring(originName.lastIndexOf("."));
+        String changedName = changedImageName(userId, originName);
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType("image/" + extension);
+        try (InputStream inputStream = image.getInputStream()) {
+            PutObjectResult putObjectResult = amazonS3.putObject(new PutObjectRequest(
+                    bucketName, changedName, inputStream, objectMetadata));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+        return amazonS3.getUrl(bucketName, changedName).toString(); // 데이터베이스에 저장할 이미지가 저장된 주소를 반환
     }
 
-    private java.io.File convertMultiPartToFile(MultipartFile file) throws IOException {
-        java.io.File convFile = new java.io.File(file.getOriginalFilename());
-        try (FileOutputStream fos = new FileOutputStream(convFile)) {
-            fos.write(file.getBytes());
-        }
-        return convFile;
+    public User uploadImage(MultipartFile image, User user) {
+        String changedName = changedImageName(user.getUserId(), image.getOriginalFilename());
+        String storedImagePath = uploadImageToS3(image, user.getUserId());
+
+        User newUser = User.builder() // 이미지에 대한 정보를 담아서 반환
+                .userId(user.getUserId()).password(user.getPassword()).email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber()).nickName(user.getNickName())
+                .userProfileUrl(storedImagePath).userProfileName(changedName)
+                .build();
+        return newUser;
     }
 
-    private void updateUserProfileUrl(String userId, String fileUrl) {
-        User user = userDao.selectByUserId(userId);
-        user.setUserProfileUrl(fileUrl);
-        saveFileUrl(user);
-    }
-
-    private void saveFileUrl(User user) {
-        userDao.updateUserProfile(user);
+    public String getUserProfileDefaultImageUrl() {
+        return amazonS3.getUrl(bucketName, "default.jpg").toString();
     }
 }

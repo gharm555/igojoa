@@ -37,6 +37,6 @@
     객체를 생성하고 관리하기 위한 설정.
     디스패쳐 서블릿이 bean(객체)들을 생성하고 관리함.
     -->
-    <context:component-scan base-package="com.itwill.igojoa.web" />
+    <context:component-scan base-package="com.itwill.igojoa.web" /> 
     
 </beans>
