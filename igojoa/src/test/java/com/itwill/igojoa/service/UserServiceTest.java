@@ -17,21 +17,6 @@ public class UserServiceTest {
 	@Autowired
 	private UserService userService;
 
-<<<<<<< HEAD
-//    @Test
-	public void create() {
-		User user = User.builder().userId("asasd123adsd").password("test").email("zxcx").phoneNumber("as")
-				.nickName("sssss").build();
-		int result = userService.create(user);
-		log.info("result: {}", result);
-	}
-
-	@Test
-	public void selectByUserId() {
-		User user = userService.selectByUserId("asd");
-		log.info("user: {}", user);
-	}
-=======
     // @Test
     public void create() {
         User user = User.builder().userId("asdhjzxcnbaus").password("test").email("zxcx").phoneNumber("as")
@@ -46,5 +31,4 @@ public class UserServiceTest {
         User user = userService.selectByUserId("asd");
         log.info("user: {}", user);
     }
->>>>>>> 7e6c2dc6b202324f01be89d666ae5674f9278996
 }
