@@ -3,6 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwill.igojoa.repository.PlaceDao">
+<<<<<<< HEAD
 	<select id="selectPlaceList" resultType="PlaceListDto">
 		SELECT
 		p.placeName ,
@@ -32,6 +33,19 @@
 		LEFT JOIN placeScores ps
 		ON ps.placeName = p.placeName AND
 		ps.USERID = '오진호'
+=======
+	<select id="select" resultType="PlaceListDto">
+	
+		SELECT p.P_NAME,
+		p.P_LOCATION,COUNT(ps.P_COUNT_VISITS), ps2.P_FAVORITES, r.TOTAL_LIKES,
+		rl.U_NICKNAME, rl.REVIEW, rl.CREATED_AT
+		FROM PLACE p
+		left outer JOIN P_SCORES ps
+		on ps.P_NAME = p.P_NAME
+		left join P_SCORES ps2
+		on ps2.P_NAME = p.P_NAME
+		and ps2.USERID = 'ㅂㅂ'
+>>>>>>> 7e6c2dc6b202324f01be89d666ae5674f9278996
 		LEFT JOIN (
 		SELECT verifiedPlace ,
 		COUNT(verifiedPlace) as totalVisit

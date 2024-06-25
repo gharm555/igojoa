@@ -10,6 +10,7 @@
 	</settings>
 	<typeAliases>
 		<typeAlias alias="User" type="com.itwill.igojoa.entity.User" />
+<<<<<<< HEAD
 		<typeAlias alias="Badges"
 			type="com.itwill.igojoa.entity.Badges" />
 		<typeAlias alias="Place"
@@ -32,6 +33,16 @@
 			type="com.itwill.igojoa.dto.user.UserLoginDto" />
 		<typeAlias alias="PlaceListDto"
 			type="com.itwill.igojoa.dto.place.PlaceListDto" />
+=======
+		<typeAlias alias="Place" type="com.itwill.igojoa.entity.Place" />
+		<typeAlias alias="PScores" type="com.itwill.igojoa.entity.PScores" />
+		<typeAlias alias="Reviews" type="com.itwill.igojoa.entity.Reviews" />
+		<typeAlias alias="PVerified" type="com.itwill.igojoa.entity.PVerified"/>
+		<typeAlias alias="Point" type="com.itwill.igojoa.entity.Point"/>
+		<typeAlias alias="PointsLogs" type="com.itwill.igojoa.entity.PointsLogs"/>
+		<typeAlias alias="UserLoginDto" type="com.itwill.igojoa.dto.user.UserLoginDto"/>
+		<typeAlias alias="PlaceListDto" type="com.itwill.igojoa.dto.place.PlaceListDto"/>
+>>>>>>> 7e6c2dc6b202324f01be89d666ae5674f9278996
 	</typeAliases>
 
 </configuration>
