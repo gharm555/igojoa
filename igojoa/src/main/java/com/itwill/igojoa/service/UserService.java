@@ -15,7 +15,8 @@ public class UserService {
 	private final UserDao userDao;
 
 	public int create(User user) {
-		return userDao.create(user);
+		int result = userDao.create(user);
+		return result;
 	}
 
 	public User selectByUserId(String userId) {
