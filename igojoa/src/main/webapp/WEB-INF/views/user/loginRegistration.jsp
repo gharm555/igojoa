@@ -28,16 +28,16 @@
       </div>
       <div class="formBx">
         <div class="form signinform">
-          <c:url var="loginUrl" value="/user/login" />
+          <c:url var="loginUrl" value="/Users/login" />
           <form action="${loginUrl}" method="post">
             <h3>로그인</h3>
-            <input type="text" name="userId" placeholder="아이디를 입력해 주세요" />
+            <input type="text" name="UsersId" placeholder="아이디를 입력해 주세요" />
             <input type="password" name="password" placeholder="비밀번호를 입력해 주세요" />
             <input type="submit" value="로그인" />
           </form>
         </div>
         <div class="form signupform">
-          <c:url var="registerUrl" value="/user/register" />
+          <c:url var="registerUrl" value="/Users/register" />
           <form action="${registerUrl}" id="registerForm" method="post" enctype="multipart/form-data">
             <h3>회원가입</h3>
             <div class="image-upload d-flex justify-content-center">
@@ -54,7 +54,7 @@
                 <input class="d-none" name="file" id="profile-input" type="file" accept="image/*" onchange="previewImage(event)" />
               </label>
             </div>
-            <input type="text" id="userId" name="userId" placeholder="아이디" />
+            <input type="text" id="UsersId" name="UsersId" placeholder="아이디" />
             <input type="password" id="password" name="password" placeholder="비밀번호" />
             <input type="text" id="nickName" name="nickName" placeholder="닉네임" />
             <input type="email" id="email" name="email" placeholder="이메일" />

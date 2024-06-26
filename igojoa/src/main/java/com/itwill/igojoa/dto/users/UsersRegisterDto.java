@@ -1,4 +1,8 @@
-package com.itwill.igojoa.entity;
+package com.itwill.igojoa.dto.Userss;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.itwill.igojoa.entity.Userss;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,12 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
-    private String userId;
+public class UserssRegisterDto {
+    private String UsersId;
     private String password;
     private String email;
     private String phoneNumber;
     private String nickName;
-    private String userProfileName;
-    private String userProfileUrl;
+    private MultipartFile file;
+
 }

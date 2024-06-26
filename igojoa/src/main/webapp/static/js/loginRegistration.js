@@ -22,7 +22,7 @@ function previewImage(event) {
   reader.readAsDataURL(input.files[0]);
 }
 
-const $userId = document.querySelector("#userId");
+const $UsersId = document.querySelector("#UsersId");
 const $password = document.querySelector("#password");
 const $email = document.querySelector("#email");
 const $phoneNumber = document.querySelector("#phoneNumber");
@@ -38,25 +38,25 @@ $registerForm.addEventListener("submit", function (event) {
 
 function register() {
   const formData = new FormData($registerForm);
-  const userData = {
-    userId: $userId.value,
+  const UsersData = {
+    UsersId: $UsersId.value,
     password: $password.value,
     email: $email.value,
     phoneNumber: $phoneNumber.value,
     nickName: $nickName.value,
   };
   if (
-    !userData.userId ||
-    !userData.password ||
-    !userData.email ||
-    !userData.phoneNumber ||
-    !userData.nickName
+    !UsersData.UsersId ||
+    !UsersData.password ||
+    !UsersData.email ||
+    !UsersData.phoneNumber ||
+    !UsersData.nickName
   ) {
     //TODO: alert 창 모달로 바꾸기
     alert("모든 항목을 입력해주세요.");
     return;
   }
-  formData.append("user", JSON.stringify(userData));
+  formData.append("Users", JSON.stringify(UsersData));
   formData.append("file", $fileInput.files[0]);
 
   axios
@@ -69,7 +69,7 @@ function register() {
       console.log(res);
       //TODO: alert 창 모달로 바꾸기
       alert("회원가입 성공");
-      $userId.value = "";
+      $UsersId.value = "";
       $password.value = "";
       $email.value = "";
       $phoneNumber.value = "";
@@ -80,7 +80,7 @@ function register() {
       console.log(err);
       //TODO: alert 창 모달로 바꾸기
       alert("회원가입 실패");
-      $userId.value = "";
+      $UsersId.value = "";
       $password.value = "";
       $email.value = "";
       $phoneNumber.value = "";

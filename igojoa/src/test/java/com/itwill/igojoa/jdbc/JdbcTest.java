@@ -24,10 +24,10 @@ public class JdbcTest {
         log.info("등록성공");
 
         final String url = "jdbc:mysql://igojoa.c3gagc46czkf.ap-northeast-2.rds.amazonaws.com:3306/igojoa";
-        final String user = "igojoa";
+        final String Users = "igojoa";
         final String password = "igojoa";
 
-        Connection conn = DriverManager.getConnection(url, user, password);
+        Connection conn = DriverManager.getConnection(url, Users, password);
         Assertions.assertNotNull(conn);
         log.info("연결성공");
 

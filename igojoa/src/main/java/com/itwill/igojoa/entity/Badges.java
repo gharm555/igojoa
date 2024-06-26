@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Badges {
 	private String placeName;
-	private String userId;
+	private String UsersId;
 	private Integer parkingAvailable;
 	private Integer view;
 	private Integer nightView;

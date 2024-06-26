@@ -9,7 +9,7 @@
 		<setting name="mapUnderscoreToCamelCase" value="true" />
 	</settings>
 	<typeAliases>
-		<typeAlias alias="User" type="com.itwill.igojoa.entity.User" />
+		<typeAlias alias="Userss" type="com.itwill.igojoa.entity.Userss" />
 		<typeAlias alias="Badges"
 			type="com.itwill.igojoa.entity.Badges" />
 		<typeAlias alias="Place"
@@ -28,8 +28,8 @@
 			type="com.itwill.igojoa.entity.ReviewLikes" />
 		<typeAlias alias="Reviews"
 			type="com.itwill.igojoa.entity.Reviews" />
-		<typeAlias alias="UserLoginDto"
-			type="com.itwill.igojoa.dto.user.UserLoginDto" />
+		<typeAlias alias="UsersLoginDto"
+			type="com.itwill.igojoa.dto.Userss.UserssLoginDto" />
 		<typeAlias alias="PlaceListDto"
 			type="com.itwill.igojoa.dto.place.PlaceListDto" />
 	</typeAliases>

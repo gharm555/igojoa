@@ -2,19 +2,25 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itwill.igojoa.repository.UserDao">
-    <insert id="create" parameterType="User">
-        INSERT INTO users (userId, password, email, phonenumber, nickname, userProfileName, userProfileUrl) VALUES (#{userId}, SHA2(#{password}, 256), #{email}, #{phoneNumber}, #{nickName}, #{userProfileName}, #{userProfileUrl})
+<mapper namespace="com.itwill.igojoa.repository.UsersDao">
+	<!-- 대현이 짠 쿼리 start -->
+    <insert id="create" parameterType="Userss">
+        INSERT INTO Userss (UsersId, password, email, phoneNumber, nickName, UsersProfileName, UsersProfileUrl) VALUES (#{UsersId}, SHA2(#{password}, 256), #{email}, #{phoneNumber}, #{nickName}, #{UsersProfileName}, #{UsersProfileUrl})
     </insert>
-    <select id="selectByUserId" resultType="User" parameterType="String">
-        SELECT * FROM users WHERE USERID = #{userId}
+    <select id="selectByUsersId" resultType="Userss" parameterType="String">
+        SELECT * FROM Userss WHERE UsersID = #{UsersId}
     </select>
-    <select id="selectByIdAndPassword" resultType="User" parameterType="User">
-        SELECT * FROM users WHERE USERID = #{userId} AND PASSWORD = SHA2(#{password}, 256)
+    <select id="selectByIdAndPassword" resultType="Userss" parameterType="Userss">
+        SELECT * FROM Userss WHERE UsersID = #{UsersId} AND PASSWORD = SHA2(#{password}, 256)
     </select>
-    <update id="updateUserProfile">
-        UPDATE users
-        SET USER_PROFILE_NAME = #{fileName}, USER_PROFILE_URL = #{fileUrl}
-        WHERE USERID = #{userId}
+    <update id="updateUsersProfile">
+        UPDATE Userss
+        SET Users_PROFILE_NAME = #{fileName}, Users_PROFILE_URL = #{fileUrl}
+        WHERE UsersID = #{UsersId}
     </update>
+	<!-- 대현이 짠 쿼리 finish -->
+	
+	<!-- 상원이 짠 쿼리 start -->
+	
+	<!-- 상원이 짠 쿼리 finish -->
 </mapper>

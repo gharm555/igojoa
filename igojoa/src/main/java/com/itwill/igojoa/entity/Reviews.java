@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Reviews {
 	private String placeName;
-	private String userId;
+	private String UsersId;
 	private String review;
 	private LocalDateTime createdAt;
 	private LocalDateTime modifiedAt;

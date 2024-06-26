@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class PlaceVerified {
-	private String placeVerifiedUser;
+	private String placeVerifiedUsers;
 	private String verifiedPlace;
 	private Double verifiedLatitude;
 	private Double verifiedLongitude;
