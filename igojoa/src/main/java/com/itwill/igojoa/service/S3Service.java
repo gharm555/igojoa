@@ -55,4 +55,5 @@ public class S3Service {
     public String getUserProfileDefaultImageUrl() {
         return amazonS3.getUrl(bucketName, "default.jpg").toString();
     }
+    
 }
