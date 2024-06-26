@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.itwill.igojoa.dto.user.UserLoginDto;
-import com.itwill.igojoa.dto.user.UserRegisterDto;
-import com.itwill.igojoa.entity.User;
+import com.itwill.igojoa.dto.users.UsersLoginDto;
+import com.itwill.igojoa.dto.users.UsersRegisterDto;
+import com.itwill.igojoa.entity.Users;
 import com.itwill.igojoa.service.S3Service;
-import com.itwill.igojoa.service.UserService;
+import com.itwill.igojoa.service.UsersService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +26,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 @Slf4j
-public class UserController {
+public class UsersController {
 
-    private final UserService userService;
+    private final UsersService userService;
     private final S3Service s3Service;
 
-    @GetMapping("/register")
+    @GetMapping("/loginRegister")
     public String registerForm(Model model) {
         String defaultImageUrl = s3Service.getUserProfileDefaultImageUrl();
         model.addAttribute("defaultImageUrl", defaultImageUrl);
@@ -39,10 +39,10 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@ModelAttribute UserRegisterDto userRegisterDto) throws IOException {
+    public ResponseEntity<String> register(@ModelAttribute UsersRegisterDto userRegisterDto) throws IOException {
 
         try {
-            User user = User.builder()
+            Users user = Users.builder()
                     .userId(userRegisterDto.getUserId())
                     .password(userRegisterDto.getPassword())
                     .email(userRegisterDto.getEmail())
@@ -62,19 +62,14 @@ public class UserController {
         }
     }
 
-    @GetMapping("/login")
-    public String loginForm() {
-        return "user/loginRegistration";
-    }
-
     @PostMapping("/login")
-    public String login(@ModelAttribute UserLoginDto userLoginDto, HttpSession session) {
+    public String login(@ModelAttribute UsersLoginDto userLoginDto, HttpSession session) {
         if (userLoginDto.getUserId() == null || userLoginDto.getPassword() == null) {
             log.info("아이디와 비밀번호를 입력해주세요");
             return "redirect:/user/login";
         }
         try {
-            User user = userService.selectByIdAndPassword(userLoginDto.toEntity());
+            Users user = userService.selectByIdAndPassword(userLoginDto.toEntity());
             if (user != null) {
                 session.setAttribute("userId", user.getUserId());
                 return "redirect:/";
@@ -84,5 +79,13 @@ public class UserController {
         } catch (Exception e) {
             return "redirect:/user/login";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        if (session != null) {
+            session.removeAttribute("userId");
+        }
+        return "redirect:/";
     }
 }
