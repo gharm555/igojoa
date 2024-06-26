@@ -15,6 +15,7 @@ public class UserService {
 	private final UserDao userDao;
 
 	public int create(User user) {
+		log.debug("회원가입 성공");
 		int result = userDao.create(user);
 		return result;
 	}
