@@ -11,11 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PVerified {
-
-    private String pVerifiedUser;
-    private String pVerifiedPlace;
-    private String pVLatitude;
-    private String pVLongitude;
-    private LocalDateTime VTime;
+public class PlaceVerified {
+	private String placeVerifiedUser;
+	private String verifiedPlace;
+	private Double verifiedLatitude;
+	private Double verifiedLongitude;
+	private LocalDateTime verifiedTime;
 }

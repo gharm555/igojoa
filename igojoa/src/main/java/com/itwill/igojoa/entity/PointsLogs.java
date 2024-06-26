@@ -12,9 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class PointsLogs {
-    private String userId;
-    private String getLose;
-    private String increaseDecrease;
-    private LocalDateTime pointsGetLoseTime;
-    private String logIndex;
+	private String userId;
+	private String userActivity;
+	private LocalDateTime pointsGetLoseTime;
+	private Integer increaseDecrease;
 }

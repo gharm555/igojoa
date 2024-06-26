@@ -15,7 +15,7 @@
         -->
 	</Appenders>
     <Loggers>
-        <logger name="com.zaxxer.hikari" level="info" additivity="false">
+        <logger name="com.zaxxer.hikari" level="debug" additivity="false">
             <AppenderRef ref="console" />
         </logger>
          <Root level="debug" additivity="false">

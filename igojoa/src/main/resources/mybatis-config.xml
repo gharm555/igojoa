@@ -10,14 +10,28 @@
 	</settings>
 	<typeAliases>
 		<typeAlias alias="User" type="com.itwill.igojoa.entity.User" />
-		<typeAlias alias="Place" type="com.itwill.igojoa.entity.Place" />
-		<typeAlias alias="PScores" type="com.itwill.igojoa.entity.PScores" />
-		<typeAlias alias="Reviews" type="com.itwill.igojoa.entity.Reviews" />
-		<typeAlias alias="PVerified" type="com.itwill.igojoa.entity.PVerified"/>
-		<typeAlias alias="Point" type="com.itwill.igojoa.entity.Point"/>
-		<typeAlias alias="PointsLogs" type="com.itwill.igojoa.entity.PointsLogs"/>
-		<typeAlias alias="UserLoginDto" type="com.itwill.igojoa.dto.user.UserLoginDto"/>
-		<typeAlias alias="PlaceListDto" type="com.itwill.igojoa.dto.place.PlaceListDto"/>
+		<typeAlias alias="Badges"
+			type="com.itwill.igojoa.entity.Badges" />
+		<typeAlias alias="Place"
+			type="com.itwill.igojoa.entity.Place" />
+		<typeAlias alias="PlaceImages"
+			type="com.itwill.igojoa.entity.PlaceImages" />
+		<typeAlias alias="PlaceScores"
+			type="com.itwill.igojoa.entity.PlaceScores" />
+		<typeAlias alias="PlaceVerified"
+			type="com.itwill.igojoa.entity.PlaceVerified" />
+		<typeAlias alias="Points"
+			type="com.itwill.igojoa.entity.Points" />
+		<typeAlias alias="PointsLogs"
+			type="com.itwill.igojoa.entity.PointsLogs" />
+		<typeAlias alias="ReviewLikes"
+			type="com.itwill.igojoa.entity.ReviewLikes" />
+		<typeAlias alias="Reviews"
+			type="com.itwill.igojoa.entity.Reviews" />
+		<typeAlias alias="UserLoginDto"
+			type="com.itwill.igojoa.dto.user.UserLoginDto" />
+		<typeAlias alias="PlaceListDto"
+			type="com.itwill.igojoa.dto.place.PlaceListDto" />
 	</typeAliases>
 
 </configuration>

@@ -5,5 +5,5 @@ import java.util.List;
 import com.itwill.igojoa.dto.place.PlaceListDto;
 
 public interface PlaceDao {
-	List<PlaceListDto> select();
+	List<PlaceListDto> selectPlaceList();
 }

@@ -14,21 +14,21 @@ import lombok.extern.slf4j.Slf4j;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/application-context.xml" })
 public class UserServiceTest {
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private UserService userService;
 
-    @Test
+    // @Test
     public void create() {
-        User user = User.builder().userId("asasd123adsd").password("test").email("zxcx").phoneNumber("as")
+        User user = User.builder().userId("asdhjzxcnbaus").password("test").email("zxcx").phoneNumber("as")
                 .nickName("sssss")
                 .build();
         int result = userService.create(user);
         log.info("result: {}", result);
     }
 
-    // @Test
+    @Test
     public void selectByUserId() {
-        User user = userService.selectByUserId("test2");
+        User user = userService.selectByUserId("asd");
         log.info("user: {}", user);
     }
 }

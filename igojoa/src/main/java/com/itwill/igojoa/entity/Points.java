@@ -9,10 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PScores {
-	private String pName;
-	private String userID;
-	private String pFavorites;
-	private String pIScore;
-	private String pCountVisits;
+public class Points {
+	private String userId;
+	private Integer currentsPoints;
+	private Integer cumulativePoint;
 }

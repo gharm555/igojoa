@@ -2,31 +2,118 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itwill.igojoa.repository.placeDao">
-	<select id="select" resultType="PlaceListDto">
-	
-		SELECT p.P_NAME,
-		p.P_LOCATION,COUNT(ps.P_COUNT_VISITS), ps2.P_FAVORITES, r.TOTAL_LIKES,
-		rl.U_NICKNAME, rl.REVIEW, rl.CREATED_AT
-		FROM PLACE p
-		left outer JOIN P_SCORES ps
-		on ps.P_NAME = p.P_NAME
-		left join P_SCORES ps2
-		on ps2.P_NAME = p.P_NAME
-		and ps2.USERID = 'ㅂㅂ'
+<mapper namespace="com.itwill.igojoa.repository.PlaceDao">
+	<select id="selectPlaceList" resultType="PlaceListDto">
+		SELECT
+		p.placeName ,
+		p.simpleAddress ,
+		ps.favorites ,
+		ps2.totalVisit ,
+		br.userId as
+		bestReviewer,
+		br.review ,
+		br.modifiedAt as reviewModifiedAt,
+		br.bestLike
+		as reviewLikes,
+		ROUND(AVG(ps3.iScore),1) as iScoreAvg ,
+		b.sumParkingAvailable ,
+		b.sumView ,
+		b.sumNightView ,
+		b.sumFreeEntry ,
+		b.sumEasyTransport ,
+		rc.cntReview ,
+		pimg.firstImgName ,
+		pimg.firstUrl ,
+		pimg.secondImgName ,
+		pimg.secondUrl ,
+		pimg.thirdImgName ,
+		pimg.thirdUrl
+		FROM places p
+		LEFT JOIN placeScores ps
+		ON ps.placeName = p.placeName AND
+		ps.USERID = '오진호'
 		LEFT JOIN (
-		SELECT R_AUTHOR, P_NAME, MAX(TOTAL_LIKES) AS TOTAL_LIKES
+		SELECT verifiedPlace ,
+		COUNT(verifiedPlace) as totalVisit
+		FROM placeVerified pv
+		GROUP BY
+		verifiedPlace
+		) ps2
+		ON ps2.verifiedPlace = p.placeName
+		LEFT JOIN (
+		SELECT
+		r.placeName ,r.userId ,r.review ,r.modifiedAt ,rl.bestLike
+		FROM reviews
+		r
+		INNER JOIN (
+		SELECT
+		rl.placeName,
+		rl.reviewAuthor,
+		rl.cntLike as bestLike
 		FROM (
-		SELECT R_AUTHOR, P_NAME, COUNT(LIKED_BY) AS TOTAL_LIKES
-		FROM R_LIKES
-		GROUP BY R_AUTHOR, P_NAME
-		) AS subquery
-		GROUP BY P_NAME
-		) r
-		on r.P_NAME = p.P_NAME
-		LEFT JOIN REVIEWS rl
-		on rl.P_NAME = r.P_NAME
-		GROUP BY p.P_NAME
-		ORDER BY p.P_NAME DESC
+		SELECT
+		rl.placeName,
+		rl.reviewAuthor,
+		COUNT(rl.likedBy) as cntLike
+		FROM reviewLikes rl
+		GROUP BY rl.placeName, rl.reviewAuthor
+		) rl
+		INNER
+		JOIN (
+		SELECT
+		placeName,
+		MAX(cntLike) as maxLike
+		FROM (
+		SELECT
+		placeName,
+		reviewAuthor,
+		COUNT(likedBy) as cntLike
+		FROM reviewLikes
+		GROUP BY
+		placeName, reviewAuthor
+		) sub
+		GROUP BY placeName
+		) as maxResults
+		ON
+		rl.placeName = maxResults.placeName AND rl.cntLike =
+		maxResults.maxLike
+		) rl
+		ON r.placeName = rl.placeName AND r.userId =
+		rl.reviewAuthor
+		) br
+		ON br.placeName = p.placeName
+		LEFT JOIN placeScores
+		ps3
+		ON ps3.placeName = p.placeName
+		LEFT JOIN (
+		SELECT
+		b.placeName,
+		SUM(b.parkingAvailable) as sumParkingAvailable,
+		SUM(b.`view`) as
+		sumView,
+		SUM(b.nightView) as sumNightView,
+		SUM(b.freeEntry) as
+		sumFreeEntry,
+		SUM(b.easyTransport) as sumEasyTransport
+		FROM badges b
+		group by b.placeName
+		) b
+		ON b.placeName = p.placeName
+		LEFT JOIN (
+		SELECT
+		r.placeName , COUNT(r.placeName) as cntReview
+		FROM reviews r
+		group by
+		r.placeName
+		) rc
+		ON rc.placeName = p.placeName
+		LEFT JOIN placeImages pimg
+		ON pimg.placeName = p.placeName
+		WHERE p.simpleAddress LIKE '%시%' AND
+		p.placeName LIKE '%%'
+		GROUP BY p.placeName
+		ORDER BY iScoreAvg ASC,
+		ps.favorites DESC
+		Limit 6
 	</select>
 </mapper>
