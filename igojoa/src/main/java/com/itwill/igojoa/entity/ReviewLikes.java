@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ReviewLikes {
-	private String reviewAuthor;
+	private String userId;
 	private String placeName;
-	private String likedBy;
+	private String likeUserId;
 }

@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class PlaceVerified {
-	private String placeVerifiedUser;
-	private String verifiedPlace;
-	private Double verifiedLatitude;
-	private Double verifiedLongitude;
+	private String userId;
+	private String placeName;
 	private LocalDateTime verifiedTime;
+	private Double placeLatitude;
+	private Double placeLongitude;
 }

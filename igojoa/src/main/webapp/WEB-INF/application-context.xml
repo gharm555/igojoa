@@ -9,28 +9,15 @@
     <!-- bean definitions here -->
     <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-        <property name="jdbcUrl" value="jdbc:mysql://igojoa.c3gagc46czkf.ap-northeast-2.rds.amazonaws.com:3306/igojoa" />
-        <property name="username" value="igojoa" />
-        <property name="password" value="igojoa" />
+        <property name="jdbcUrl" value="jdbc:mysql://${db.host}:3306/${db.schema}" />
+        <property name="username" value="${db.username}" />
+        <property name="password" value="${db.password}" />
     </bean>
+ 
     <bean id="ds" class="com.zaxxer.hikari.HikariDataSource">
         <constructor-arg ref="hikariConfig" />
     </bean>
-    <!-- bean definitions here -->
-    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-        <property name="jdbcUrl" value="jdbc:mysql://igojoa.c3gagc46czkf.ap-northeast-2.rds.amazonaws.com:3306/igojoa" />
-        <property name="username" value="igojoa" />
-        <property name="password" value="igojoa" />
-    </bean>
-    <bean id="ds" class="com.zaxxer.hikari.HikariDataSource">
-        <constructor-arg ref="hikariConfig" />
-    </bean>
-    <bean id="session" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="ds" />
-        <property name="mapperLocations" value="classpath:mappers/**/*.xml" />
-        <property name="configLocation" value="classpath:mybatis-config.xml" />
-    </bean> 
+   
     <bean id="session" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="ds" />
         <property name="mapperLocations" value="classpath:mappers/**/*.xml" />

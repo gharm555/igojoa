@@ -3,13 +3,13 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwill.igojoa.repository.UserDao">
-    <insert id="create" parameterType="User">
+    <insert id="create" parameterType="Users">
         INSERT INTO users (userId, password, email, phonenumber, nickname, userProfileName, userProfileUrl) VALUES (#{userId}, SHA2(#{password}, 256), #{email}, #{phoneNumber}, #{nickName}, #{userProfileName}, #{userProfileUrl})
     </insert>
-    <select id="selectByUserId" resultType="User" parameterType="String">
+    <select id="selectByUserId" resultType="Users" parameterType="String">
         SELECT * FROM users WHERE USERID = #{userId}
     </select>
-    <select id="selectByIdAndPassword" resultType="User" parameterType="User">
+    <select id="selectByIdAndPassword" resultType="Users" parameterType="Users">
         SELECT * FROM users WHERE USERID = #{userId} AND PASSWORD = SHA2(#{password}, 256)
     </select>
     <update id="updateUserProfile">
