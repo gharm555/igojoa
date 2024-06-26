@@ -2,8 +2,8 @@ package com.itwill.igojoa.service;
 
 import org.springframework.stereotype.Service;
 
-import com.itwill.igojoa.entity.Userss;
-import com.itwill.igojoa.repository.UserssDao;
+import com.itwill.igojoa.entity.Users;
+import com.itwill.igojoa.repository.UsersDao;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,20 +11,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserssService {
-	private final UserssDao UsersDao;
+public class UsersService {
+	private final UsersDao userDao;
 
-	public int create(Userss Users) {
-		int result = UsersDao.create(Users);
+	public int create(Users user) {
+		int result = userDao.create(user);
 		return result;
 	}
 
-	public Userss selectByUsersId(String UsersId) {
-		return UsersDao.selectByUsersId(UsersId);
+	public Users selectByUserId(String userId) {
+		return userDao.selectByUserId(userId);
 	}
 
-	public Userss selectByIdAndPassword(Userss Users) {
-		return UsersDao.selectByIdAndPassword(Users);
+	public Users selectByIdAndPassword(Users user) {
+		return userDao.selectByIdAndPassword(user);
 	}
 
 }

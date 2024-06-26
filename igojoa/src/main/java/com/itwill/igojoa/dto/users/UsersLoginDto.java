@@ -1,4 +1,4 @@
-package com.itwill.igojoa.dto.Users;
+package com.itwill.igojoa.dto.users;
 
 import com.itwill.igojoa.entity.Users;
 
@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class UsersLoginDto {
-    private String UsersId;
+    private String userId;
     private String password;
 
     public Users toEntity() {
         return Users.builder()
-                .UsersId(UsersId)
+                .userId(userId)
                 .password(password)
                 .build();
     }

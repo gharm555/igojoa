@@ -17,4 +17,10 @@ public class Reviews {
 	private String review;
 	private LocalDateTime createdAt;
 	private LocalDateTime modifiedAt;
+	private String parkingAvailable;
+	private String view;
+	private String nightView;
+	private String wifi;
+	private String freeEntry;
+	private String easyTransport;
 }

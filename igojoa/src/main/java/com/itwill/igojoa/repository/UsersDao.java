@@ -1,13 +1,13 @@
 package com.itwill.igojoa.repository;
 
-import com.itwill.igojoa.entity.Userss;
+import com.itwill.igojoa.entity.Users;
 
-public interface UserssDao {
-    int create(Userss Users);
+public interface UsersDao {
+    int create(Users user);
 
-    Userss selectByUsersId(String UsersId);
+    Users selectByUserId(String userId);
 
-    Userss selectByIdAndPassword(Userss Users);
+    Users selectByIdAndPassword(Users user);
 
-    void updateUsersProfile(Userss Users);
+    void updateUserProfile(Users user);
 }

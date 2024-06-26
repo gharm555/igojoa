@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.itwill.igojoa.entity.Userss;
+import com.itwill.igojoa.entity.Users;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,21 +14,21 @@ import lombok.extern.slf4j.Slf4j;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/application-context.xml" })
 public class UsersServiceTest {
-	@Autowired
-	private UserssService UsersService;
+    @Autowired
+    private UsersService usersService;
 
     // @Test
     public void create() {
-        Userss Users = Userss.builder().UsersId("asdhjzxcnbaus").password("test").email("zxcx").phoneNumber("as")
+        Users user = Users.builder().userId("asdhjzxcnbaus").password("test").email("zxcx").phoneNumber("as")
                 .nickName("sssss")
                 .build();
-        int result = UsersService.create(Users);
+        int result = usersService.create(user);
         log.info("result: {}", result);
     }
 
     @Test
-    public void selectByUsersId() {
-        Userss Users = UsersService.selectByUsersId("asd");
-        log.info("Users: {}", Users);
+    public void selectByUserId() {
+        Users user = usersService.selectByUserId("asd");
+        log.info("user: {}", user);
     }
 }
