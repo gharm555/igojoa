@@ -21,4 +21,17 @@
     <update id="updatePassword" parameterType="String">
         UPDATE users SET PASSWORD = SHA2(#{password}, 256) WHERE USERID = #{userId}
     </update>
+    <select id="checkUserId" resultType="boolean" parameterType="String">
+        SELECT EXISTS(SELECT 1 FROM users WHERE USERID = #{userId})
+    </select>
+    <select id="checkNickName" resultType="boolean" parameterType="String">
+        SELECT EXISTS(SELECT 1 FROM users WHERE NICKNAME = #{nickName})
+    </select>
+    <select id="checkEmail" resultType="boolean" parameterType="String">
+        SELECT EXISTS(SELECT 1 FROM users WHERE EMAIL = #{email})
+    </select>
+    <select id="checkPhoneNumber" resultType="boolean" parameterType="String">
+        SELECT EXISTS(SELECT 1 FROM users WHERE PHONENUMBER = #{phoneNumber})
+    </select>
+
 </mapper>

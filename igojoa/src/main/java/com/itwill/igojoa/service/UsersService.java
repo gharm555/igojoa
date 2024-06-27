@@ -38,4 +38,21 @@ public class UsersService {
 	public int updatePassword(String userId, String password) {
 		return userDao.updatePassword(userId, password);
 	}
+
+	public boolean checkUserId(String userId) {
+		return userDao.checkUserId(userId);
+	}
+
+	public boolean checkNickName(String nickName) {
+		return userDao.checkNickName(nickName);
+	}
+
+	public boolean checkEmail(String email) {
+		return userDao.checkEmail(email);
+	}
+
+	public boolean checkPhoneNumber(String phoneNumber) {
+		return userDao.checkPhoneNumber(phoneNumber);
+	}
+
 }

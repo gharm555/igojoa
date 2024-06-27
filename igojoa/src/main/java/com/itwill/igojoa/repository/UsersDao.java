@@ -14,4 +14,12 @@ public interface UsersDao {
     boolean verifyUser(String userId, String email, String nickName);
 
     int updatePassword(String userId, String password);
+
+    boolean checkUserId(String userId);
+
+    boolean checkNickName(String nickName);
+
+    boolean checkEmail(String email);
+
+    boolean checkPhoneNumber(String phoneNumber);
 }

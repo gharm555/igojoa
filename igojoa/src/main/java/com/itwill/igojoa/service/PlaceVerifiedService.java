@@ -17,18 +17,22 @@ public class PlaceVerifiedService {
     private final PlaceVerifiedDao placeVerifiedDao;
     private final PlaceDao placeDao;
 
-    public String verifyUserLocation(double userLatitude, double userLongitude, String userId) {
+    public boolean verifyUserLocation(double userLatitude, double userLongitude, String userId) {
         List<PlaceSpaceDto> places = placeDao.selectPlaceSpaceList();
         for (PlaceSpaceDto place : places) {
             double placeLatitude = place.getPlaceLatitude();
             double placeLongitude = place.getPlaceLongitude();
+            System.out.println(
+                    "Checking place: " + place.getPlaceName() + " at " + placeLatitude + ", " + placeLongitude);
             if (isWithin300Meters(userLatitude, userLongitude, placeLatitude, placeLongitude)) {
                 String placeName = place.getPlaceName();
+                System.out.println("User is within 300 meters of place: " + placeName);
                 insertUserLocation(userLatitude, userLongitude, placeName, userId);
-                return placeName;
+                return true;
             }
         }
-        return null;
+        System.out.println("User is not within 300 meters of any place");
+        return false;
     }
 
     private void insertUserLocation(double latitude, double longitude, String placeName, String userId) {
@@ -49,6 +53,7 @@ public class PlaceVerifiedService {
                         * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = R * c * 1000; // 거리 (m)
+        System.out.println("Calculated distance: " + distance + " meters");
         return distance <= 300;
     }
 }

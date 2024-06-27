@@ -41,7 +41,7 @@
                 <img src="${userProfileUrl}" alt="프로필 사진" />
                 <div class="dropdown-menu">
                   <a class="dropdown-item" >마이페이지</a>
-                  <a class="dropdown-item">위치인증</a>
+                  <a class="dropdown-item" id="locationVerifyBtn">위치인증</a>
                   <span class="dropdown-item">포인트정보: 999</span>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" id="logoutBtn">로그아웃</a>
@@ -327,6 +327,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <c:url var="loginRegistrationJs" value="/js/loginRegistration.js" />
     <script src="${loginRegistrationJs}"></script>
+    <script>const LoginUserId = "${userId}";</script>
   </body>
 </html>
 
