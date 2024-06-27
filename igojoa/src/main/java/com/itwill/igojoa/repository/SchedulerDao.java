@@ -1,0 +1,7 @@
+package com.itwill.igojoa.repository;
+
+public interface SchedulerDao {
+	void updatePlaceStats();
+	
+	void updateBestReviews();
+}
