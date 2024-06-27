@@ -111,7 +111,7 @@ main {
   border: var(--bs-border-width) solid var(--bs-border-color);
   letter-spacing: 0.1em;
 }
-.formBx .form form input[type="submit"] {
+.formBx .form form input[type='submit'] {
   background-color: var(--primary-color);
   border: none;
   color: #fff;
@@ -120,7 +120,7 @@ main {
   font-weight: 500;
   border-radius: 5px;
 }
-.formBx .signupform form input[type="submit"] {
+.formBx .signupform form input[type='submit'] {
   background-color: var(--primary-color);
 }
 .find {
@@ -172,11 +172,26 @@ main {
   color: rgba(0, 0, 0, 0.9); /* Semi-transparent icon */
 }
 
-.image-upload input[type="file"] {
+.image-upload input[type='file'] {
   display: none;
 }
 
 .invalid-feedback {
   color: red;
-  font-size: 0.875em;
+  font-size: 0.75em;
+  margin-top: 0;
+}
+
+/* 애니메이션 정의 */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+/* 에러 메시지에 애니메이션 추가 */
+.shake {
+  animation: shake 0.5s;
 }

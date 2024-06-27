@@ -20,7 +20,7 @@ uri="jakarta.tags.core"%>
     <link rel="stylesheet" href="${loginRegistrationCss}" />
   </head>
   <body>
-    <header>
+    <!-- <header>
       <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
           <div class="container-sideNav">
@@ -59,7 +59,7 @@ uri="jakarta.tags.core"%>
           <li class="nav-item"><a class="nav-link" href="#" id="goFAQ">자주묻는질문</a></li>
         </ul>
       </div>
-    </header>
+    </header> -->
     <main>
       <div class="container">
         <div class="box signin">
@@ -90,6 +90,7 @@ uri="jakarta.tags.core"%>
                 name="password"
                 placeholder="비밀번호를 입력해 주세요"
               />
+              <div id="login-check-message" class="invalid-feedback" style="display: none"></div>
               <input type="submit" class="form-control" id="loginBtn" value="로그인" />
               <div class="find">
                 <a class="text-decoration-underline" data-bs-toggle="modal" data-bs-target="#findUserIdModal"
@@ -134,9 +135,9 @@ uri="jakarta.tags.core"%>
                 placeholder="아이디"
                 id="userId"
                 name="userId"
-                oninput="validateInput('userId', this.value)"
+                onchange="validateInput('userId', this.value)"
               />
-              <div id="id-check-message" class="invalid-feedback" style="display: none">중복된 아이디입니다.</div>
+              <div id="id-check-message" class="invalid-feedback" style="display: none"></div>
 
               <input
                 type="password"
@@ -147,7 +148,6 @@ uri="jakarta.tags.core"%>
                 oninput="validateInput('password', this.value)"
               />
               <div id="password-check-message" class="invalid-feedback" style="display: none">
-                비밀번호가 유효하지 않습니다.
               </div>
 
               <input
@@ -158,7 +158,6 @@ uri="jakarta.tags.core"%>
                 oninput="validateInput('password-confirm', this.value)"
               />
               <div id="password-confirm-check-message" class="invalid-feedback" style="display: none">
-                비밀번호가 일치하지 않습니다.
               </div>
 
               <input
@@ -167,9 +166,9 @@ uri="jakarta.tags.core"%>
                 placeholder="닉네임"
                 id="nickName"
                 name="nickName"
-                oninput="validateInput('nickName', this.value)"
+                onchange="validateInput('nickName', this.value)"
               />
-              <div id="nickname-check-message" class="invalid-feedback" style="display: none">중복된 닉네임입니다.</div>
+              <div id="nickname-check-message" class="invalid-feedback" style="display: none"></div>
 
               <input
                 type="email"
@@ -177,10 +176,9 @@ uri="jakarta.tags.core"%>
                 placeholder="이메일"
                 id="email"
                 name="email"
-                oninput="validateInput('email', this.value)"
+                onchange="validateInput('email', this.value)"
               />
               <div id="email-check-message" class="invalid-feedback" style="display: none">
-                유효하지 않은 이메일입니다.
               </div>
 
               <div class="d-flex align-items-baseline">
@@ -192,7 +190,7 @@ uri="jakarta.tags.core"%>
                   name="phone1"
                   maxlength="3"
                   style="width: 80px; margin-right: 5px"
-                  oninput="validateInput('phone', this.value)"
+                  onchange="validateInput('phone', this.value)"
                 />
                 <span>-</span>
                 <input
@@ -203,7 +201,7 @@ uri="jakarta.tags.core"%>
                   name="phone2"
                   maxlength="4"
                   style="width: 100px; margin-left: 5px; margin-right: 5px"
-                  oninput="validateInput('phone', this.value)"
+                  onchange="validateInput('phone', this.value)"
                 />
                 <span>-</span>
                 <input
@@ -214,11 +212,10 @@ uri="jakarta.tags.core"%>
                   name="phone3"
                   maxlength="4"
                   style="width: 100px; margin-left: 5px"
-                  oninput="validateInput('phone', this.value)"
+                  onchange="validateInput('phone', this.value)"
                 />
               </div>
               <div id="phone-check-message" class="invalid-feedback" style="display: none">
-                유효하지 않은 전화번호입니다.
               </div>
               <input type="submit" id="registerBtn" name="registerBtn" value="회원가입" />
             </form>
@@ -315,9 +312,9 @@ uri="jakarta.tags.core"%>
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    <c:url var="navbarJs" value="/js/navbar.js" />
-    <script src="${navbarJs}"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- <c:url var="navbarJs" value="/js/navbar.js" />
+    <script src="${navbarJs}"></script> -->
     <c:url var="loginRegistrationJs" value="/js/loginRegistration.js" />
     <script src="${loginRegistrationJs}"></script>
     <script>

@@ -22,6 +22,10 @@ function previewImage(event) {
   reader.readAsDataURL(input.files[0]);
 }
 
+// 로그인 
+const $loginBtn = document.querySelector('#loginBtn');
+
+
 // 회원가입
 const $userId = document.querySelector('#userId');
 const $password = document.querySelector('#password');
@@ -34,10 +38,15 @@ const $fileInput = document.querySelector('#profile-input');
 const $registerBtn = document.querySelector('#registerBtn');
 const $registerForm = document.querySelector('#registerForm');
 
+
+$loginForm.add
+
+
 $registerForm.addEventListener('submit', function (event) {
   event.preventDefault();
   register();
 });
+
 
 function register() {
   const formData = new FormData($registerForm);
@@ -94,28 +103,37 @@ function register() {
 function validateInput(type, value) {
   let $messageElement = null;
   let errorMessage = '';
+  let uri = '';
+
+  if (value === '') {
+    errorMessage = '';
+  }
 
   switch (type) {
     // 아이디 입력값
     case 'userId':
-      $messageElement = document.querySelector('#id-check-message');
       const userId = value;
-      const uri = `./checkUserId?userId=${userId}`;
+      $messageElement = document.querySelector('#id-check-message');
+      uri = `./checkUserId?userId=${userId}`;
       axios
         .get(uri)
         .then((response) => {
-          if (response.data === 'false') {
+          console.log(response.data);
+          if (!response.data) {
             errorMessage = '이미 존재하는 아이디 입니다';
           }
+          displayValidationMessage($messageElement, errorMessage);
         })
         .catch((error) => console.log(error));
+
       break;
     case 'password':
       $messageElement = document.querySelector('#password-check-message');
       const passwordPattern = /^(?=.*[0-9]).{8,}$/;
       if (!passwordPattern.test(value)) {
-        errorMessage = '비밀번호가 유효하지 않습니다.';
+        errorMessage = '유효하지 않은 비밀번호 입니다. 8자 이상으로 입력해주세요.';
       }
+      displayValidationMessage($messageElement, errorMessage);
       break;
     case 'password-confirm':
       $messageElement = document.querySelector('#password-confirm-check-message');
@@ -123,22 +141,40 @@ function validateInput(type, value) {
       if (value !== password) {
         errorMessage = '비밀번호가 일치하지 않습니다.';
       }
+      displayValidationMessage($messageElement, errorMessage);
       break;
     case 'nickName':
+      const nickName = value;
       $messageElement = document.querySelector('#nickname-check-message');
-      const duplicateNicknames = ['nickname1', 'nickname2', 'nickname3'];
-      if (duplicateNicknames.includes(value)) {
-        errorMessage = '중복된 닉네임입니다.';
-      }
+      uri = `./checkNickName?nickName=${nickName}`;
+      axios
+        .get(uri)
+        .then((response) => {
+          if (!response.data) {
+            errorMessage = '이미 존재하는 닉네임 입니다';
+          }
+          displayValidationMessage($messageElement, errorMessage);
+        })
+        .catch((error) => console.log(error));
       break;
     case 'email':
       $messageElement = document.querySelector('#email-check-message');
-      const duplicateEmails = ['yohan1235@naver.com', 'rnjsdygks12@gmail.com'];
+      const email = value;
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(value)) {
+      uri = `./checkEmail?email=${email}`;
+      if (!emailPattern.test(email)) {
         errorMessage = '유효하지 않은 이메일입니다.';
-      } else if (duplicateEmails.includes(value)) {
-        errorMessage = '중복된 이메일입니다.';
+        displayValidationMessage($messageElement, errorMessage);
+      } else {
+        axios
+          .get(uri)
+          .then((response) => {
+            if (!response.data) {
+              errorMessage = '이미 존재하는 이메일 입니다';
+            }
+            displayValidationMessage($messageElement, errorMessage);
+          })
+          .catch((error) => console.log(error));
       }
       break;
     case 'phone':
@@ -147,19 +183,35 @@ function validateInput(type, value) {
       const phone1 = document.querySelector('#phone1').value;
       const phone2 = document.querySelector('#phone2').value;
       const phone3 = document.querySelector('#phone3').value;
+      uri = `./checkPhoneNumber?phone1=${phone1}&phone2=${phone2}&phone3=${phone3}`;
       if (!phonePattern.test(phone1) || !phonePattern.test(phone2) || !phonePattern.test(phone3)) {
         errorMessage = '유효하지 않은 전화번호입니다.';
+        displayValidationMessage($messageElement, errorMessage);
+      } else {
+        axios
+          .get(uri)
+          .then((response) => {
+            if (!response.data) {
+              errorMessage = '이미 존재하는 전화번호 입니다';
+            }
+            displayValidationMessage($messageElement, errorMessage);
+          })
+          .catch((error) => console.log(error));
       }
       break;
   }
-
+  // 메시지 초기화 부분 추가
   if (value === '') {
-    $messageElement.style.display = 'none';
-  } else if (errorMessage === '') {
-    $messageElement.style.display = 'none';
+    displayValidationMessage($messageElement, '');
+  }
+}
+
+function displayValidationMessage(element, message) {
+  if (message === '') {
+    element.style.display = 'none';
   } else {
-    $messageElement.textContent = errorMessage;
-    $messageElement.style.display = 'block';
+    element.textContent = message;
+    element.style.display = 'block';
   }
 }
 
@@ -306,8 +358,9 @@ function verifyUserForPasswordReset() {
 function showPasswordResetForm(userId) {
   $findPasswordModalContent.innerHTML = `
     <input type="password" name="newPassword" id="newPassword" class="form-control" placeholder="새 비밀번호를 입력해 주세요" />
+    <label id="resetPasswordInvalidMessage" class="invalid-feedback" style="display: none"></label>
     <input type="password" name="confirmNewPassword" id="confirmNewPassword" class="form-control mt-2" placeholder="새 비밀번호를 다시 입력해 주세요" />
-    <label id="resetPasswordMessage" class="invalid-feedback" style="display: none"></label>
+    <label id="resetPasswordConfirmMessage" class="invalid-feedback" style="display: none"></label>
   `;
   $findPasswordModalFooter.innerHTML = `
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -321,12 +374,32 @@ function showPasswordResetForm(userId) {
 function resetPassword(userId) {
   const $newPassword = document.querySelector('#newPassword');
   const $confirmNewPassword = document.querySelector('#confirmNewPassword');
-  const $resetPasswordMessage = document.querySelector('#resetPasswordMessage');
+  const $resetPasswordInvalidMessage = document.querySelector('#resetPasswordInvalidMessage');
+  const $resetPasswordConfirmMessage = document.querySelector('#resetPasswordConfirmMessage');
+  const passwordPattern = /^(?=.*[0-9]).{8,}$/;
 
+  let valid = true;
+
+  // 유효성 검사 초기화
+  $resetPasswordInvalidMessage.style.display = 'none';
+  $resetPasswordConfirmMessage.style.display = 'none';
+
+  // 비밀번호 유효성 검사
+  if (!passwordPattern.test($newPassword.value)) {
+    $resetPasswordInvalidMessage.textContent = '유효하지 않은 비밀번호 입니다. 8자 이상으로 입력해주세요.';
+    $resetPasswordInvalidMessage.style.display = 'block';
+    valid = false;
+  }
+
+  // 비밀번호 확인 일치 여부 검사
   if ($newPassword.value !== $confirmNewPassword.value) {
-    $resetPasswordMessage.textContent = '비밀번호가 일치하지 않습니다.';
-    $resetPasswordMessage.style.display = 'block';
-    return;
+    $resetPasswordConfirmMessage.textContent = '비밀번호가 일치하지 않습니다.';
+    $resetPasswordConfirmMessage.style.display = 'block';
+    valid = false;
+  }
+
+  if (!valid) {
+    return; // 유효성 검사를 통과하지 못하면 서버에 요청을 보내지 않음
   }
 
   axios
@@ -347,11 +420,11 @@ function resetPassword(userId) {
     .catch((err) => {
       console.log(err);
       if (err.response && err.response.data) {
-        $resetPasswordMessage.textContent = err.response.data;
+        $resetPasswordInvalidMessage.textContent = err.response.data;
       } else {
-        $resetPasswordMessage.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
+        $resetPasswordInvalidMessage.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
       }
-      $resetPasswordMessage.style.display = 'block';
+      $resetPasswordInvalidMessage.style.display = 'block';
     });
 }
 

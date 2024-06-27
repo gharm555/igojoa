@@ -116,8 +116,8 @@ public class UsersController {
     }
 
     @PostMapping("/updatePassword")
-    public ResponseEntity<Integer> updatePassword(@RequestParam String userId,
-            @RequestParam String password) {
+    public ResponseEntity<Integer> updatePassword(@RequestParam(name= "userId") String userId,
+            @RequestParam(name="password") String password) {
         int result = userService.updatePassword(userId, password);
         if (result == 1) {
             return ResponseEntity.ok(result);
@@ -149,6 +149,7 @@ public class UsersController {
             @RequestParam(name = "phone2") String phone2,
             @RequestParam(name = "phone3") String phone3) {
         String phoneNumber = phone1 + phone2 + phone3;
+        
         boolean isExist = userService.checkPhoneNumber(phoneNumber);
         return ResponseEntity.ok(!isExist ? true : false);
     }
