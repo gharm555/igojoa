@@ -113,9 +113,11 @@ public class UsersController {
 //		return null;
 //	}
 
-	@GetMapping("/userProfile/{userId}")
+	@PostMapping("/userProfile")
 	@ResponseBody
-	public ResponseEntity<UsersInfoDto> getUserInfo(HttpSession session, @PathVariable String userId) {
+	public ResponseEntity<UsersInfoDto> getUserInfo(HttpSession session) {
+		String userId = (String) session.getAttribute("userId");
+		
 		try {
 			Users user = userService.getUserInfo(userId);
 			Points points = pointsService.getPointsByUserId(userId);
@@ -129,5 +131,9 @@ public class UsersController {
 		}
 	}
 	// <--- 2024-06-26
+	
+	// 2024-06-27 --->
+
+	// <--- 2024-06-27
 	// 상원 finish
 }
