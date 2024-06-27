@@ -22,9 +22,8 @@ function previewImage(event) {
   reader.readAsDataURL(input.files[0]);
 }
 
-// 로그인 
+// 로그인
 const $loginBtn = document.querySelector('#loginBtn');
-
 
 // 회원가입
 const $userId = document.querySelector('#userId');
@@ -38,15 +37,10 @@ const $fileInput = document.querySelector('#profile-input');
 const $registerBtn = document.querySelector('#registerBtn');
 const $registerForm = document.querySelector('#registerForm');
 
-
-$loginForm.add
-
-
 $registerForm.addEventListener('submit', function (event) {
   event.preventDefault();
   register();
 });
-
 
 function register() {
   const formData = new FormData($registerForm);
