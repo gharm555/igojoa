@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -103,7 +103,7 @@ public class UsersController {
         if (userId != null && !userId.isEmpty()) {
             return ResponseEntity.ok(userId);
         } else {
-            return ResponseEntity.status(400).body("입력하신 정보를 확인해 주세요.");
+            return ResponseEntity.ok("입력하신 정보를 확인해 주세요.");
         }
     }
 
@@ -112,11 +112,7 @@ public class UsersController {
             @RequestParam(name = "email") String email,
             @RequestParam(name = "nickName") String nickName) {
         boolean isVerified = userService.verifyUser(userId, email, nickName);
-        if (isVerified) {
-            return ResponseEntity.ok(true);
-        } else {
-            return ResponseEntity.ok(false);
-        }
+        return ResponseEntity.ok(isVerified ? true : false);
     }
 
     @PostMapping("/updatePassword")
@@ -128,6 +124,33 @@ public class UsersController {
         } else {
             return ResponseEntity.ok(0);
         }
+    }
+
+    @GetMapping("/checkUserId")
+    public ResponseEntity<Boolean> checkUserId(@RequestParam(name = "userId") String userId) {
+        boolean isExist = userService.checkUserId(userId);
+        return ResponseEntity.ok(!isExist ? true : false);
+    }
+
+    @GetMapping("/checkNickName")
+    public ResponseEntity<Boolean> checkNickName(@RequestParam(name = "nickName") String nickName) {
+        boolean isExist = userService.checkNickName(nickName);
+        return ResponseEntity.ok(!isExist ? true : false);
+    }
+
+    @GetMapping("/checkEmail")
+    public ResponseEntity<Boolean> checkEmail(@RequestParam(name = "email") String email) {
+        boolean isExist = userService.checkEmail(email);
+        return ResponseEntity.ok(!isExist ? true : false);
+    }
+
+    @GetMapping("/checkPhoneNumber")
+    public ResponseEntity<Boolean> checkPhoneNumber(@RequestParam(name = "phone1") String phone1,
+            @RequestParam(name = "phone2") String phone2,
+            @RequestParam(name = "phone3") String phone3) {
+        String phoneNumber = phone1 + phone2 + phone3;
+        boolean isExist = userService.checkPhoneNumber(phoneNumber);
+        return ResponseEntity.ok(!isExist ? true : false);
     }
 
 }

@@ -127,12 +127,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+// 위치인증
 const $logoutBtn = document.querySelector("#logoutBtn");
 $logoutBtn.addEventListener("click", function (e) {
   e.preventDefault();
   axios
     .get("./logout")
     .then((res) => {
+      ``;
       if (res.status === 200) {
         console.log("로그아웃 성공");
       }
@@ -141,3 +143,72 @@ $logoutBtn.addEventListener("click", function (e) {
       console.error(err);
     });
 });
+
+const $locationVerifyBtn = document.querySelector("#locationVerifyBtn");
+$locationVerifyBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+  getLocation();
+});
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      // Success function
+      sendPosition,
+      // Error function
+      showError,
+      // Options. See MDN for details.
+      {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+      }
+    );
+  } else {
+    alert("지역 정보를 제공하지 않는 브라우저입니다.");
+  }
+}
+
+function sendPosition(position) {
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
+  console.log(LoginUserId);
+  axios
+    .post("../place/verifyLocation", null, {
+      params: {
+        latitude: latitude,
+        longitude: longitude,
+        userId: LoginUserId,
+      },
+    })
+    .then((res) => {
+      if (res.status === 200) {
+        console.log("위치인증 성공");
+        alert("위치인증에 성공했습니다.");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.response) {
+        alert(`위치인증 실패: ${err.response.data}`);
+      } else {
+        alert("위치인증에 실패했습니다. 다시 시도해주세요.");
+      }
+    });
+}
+function showError(error) {
+  switch (error.code) {
+    case error.PERMISSION_DENIED:
+      alert("유저가 위치 정보 제공 거부");
+      break;
+    case error.POSITION_UNAVAILABLE:
+      alert("위치 정보가 사용 불가능합니다.");
+      break;
+    case error.TIMEOUT:
+      alert("위치 정보 요청 시간 초과");
+      break;
+    case error.UNKNOWN_ERROR:
+      alert("알 수 없는 오류가 발생했습니다.");
+      break;
+  }
+}
