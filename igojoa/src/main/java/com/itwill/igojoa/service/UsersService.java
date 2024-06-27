@@ -18,7 +18,7 @@ public class UsersService {
 		int result = userDao.create(user);
 		return result;
 	}
-
+								
 	public Users selectByUserId(String userId) {
 		return userDao.selectByUserId(userId);
 	}
