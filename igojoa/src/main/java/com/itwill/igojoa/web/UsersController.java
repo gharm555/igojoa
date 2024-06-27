@@ -1,7 +1,10 @@
 package com.itwill.igojoa.web;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -55,22 +58,53 @@ public class UsersController {
 //		return null;
 //	}
 
+//	@PostMapping("/userProfile")
+//	@ResponseBody
+//	public ResponseEntity<UsersInfoDto> getUserInfo(HttpSession session) {
+//		String userId = (String) session.getAttribute("userId");
+//		
+//		try {
+//			Users user = userService.getUserInfo(userId);
+//			Points points = pointsService.getPointsByUserId(userId);
+//			UsersInfoDto result = UsersInfoDto.fromEntity(user, points);
+//			session.setAttribute("userProfileUrl", user.getUserProfileUrl());
+//			session.setAttribute("nickName", user.getNickName());
+////			return ResponseEntity.ok(result);
+//			HttpHeaders headers = new HttpHeaders();
+//            headers.add("Location", "/user/userProfile");
+//            return new ResponseEntity<>(result, headers, HttpStatus.OK);
+//		} catch (Exception e) {
+//			log.error("Error occurred while fetching user info", e);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//		}
+//	}
+	
 	@PostMapping("/userProfile")
 	@ResponseBody
-	public ResponseEntity<UsersInfoDto> getUserInfo(HttpSession session) {
-		String userId = (String) session.getAttribute("userId");
-		
-		try {
-			Users user = userService.getUserInfo(userId);
-			Points points = pointsService.getPointsByUserId(userId);
-			UsersInfoDto result = UsersInfoDto.fromEntity(user, points);
-			session.setAttribute("userProfileUrl", user.getUserProfileUrl());
-			session.setAttribute("nickName", user.getNickName());
-			return ResponseEntity.ok(result);
-		} catch (Exception e) {
-			log.error("Error occurred while fetching user info", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-		}
+	public ResponseEntity<Map<String, Object>> getUserInfo(HttpSession session) {
+	    String userId = (String) session.getAttribute("userId");
+
+	    try {
+	        Users user = userService.getUserInfo(userId);
+	        Points points = pointsService.getPointsByUserId(userId);
+	        UsersInfoDto result = UsersInfoDto.fromEntity(user, points);
+	        session.setAttribute("userProfileUrl", user.getUserProfileUrl());
+	        session.setAttribute("nickName", user.getNickName());
+
+	        Map<String, Object> response = new HashMap<>();
+	        response.put("userInfo", result);
+	        response.put("redirectUrl", "../user/userProfile");
+
+	        return ResponseEntity.ok(response);
+	    } catch (Exception e) {
+	        log.error("Error occurred while fetching user info", e);
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
+	}
+	
+	@GetMapping("/userProfile")
+	public String goUserProfile() {
+		return "user/userProfile";
 	}
 
     @GetMapping("/loginRegister")
