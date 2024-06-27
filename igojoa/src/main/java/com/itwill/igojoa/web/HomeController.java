@@ -13,7 +13,7 @@ public class HomeController {
     @GetMapping("/")
     public String home(HttpSession session) {
         log.debug("home");
-        String userId = (String) session.getAttribute("userId");
+        String userId = (String)  session.getAttribute("userId");
         if (userId == null) {
             System.out.println("세션에 저장된 아이디가 없습니다.");
         }
