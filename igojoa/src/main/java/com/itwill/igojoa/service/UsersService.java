@@ -27,4 +27,15 @@ public class UsersService {
 		return userDao.selectByIdAndPassword(user);
 	}
 
+	public String findUserId(String email, String nickName) {
+		return userDao.findUserId(email, nickName);
+	}
+
+	public boolean verifyUser(String userId, String email, String nickName) {
+		return userDao.verifyUser(userId, email, nickName);
+	}
+
+	public int updatePassword(String userId, String password) {
+		return userDao.updatePassword(userId, password);
+	}
 }

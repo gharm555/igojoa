@@ -9,5 +9,9 @@ public interface UsersDao {
 
     Users selectByIdAndPassword(Users user);
 
-    void updateUserProfile(Users user);
+    String findUserId(String email, String nickName);
+
+    boolean verifyUser(String userId, String email, String nickName);
+
+    int updatePassword(String userId, String password);
 }

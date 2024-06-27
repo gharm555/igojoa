@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itwill.igojoa.repository.UserDao">
+<mapper namespace="com.itwill.igojoa.repository.UsersDao">
     <insert id="create" parameterType="Users">
         INSERT INTO users (userId, password, email, phonenumber, nickname, userProfileName, userProfileUrl) VALUES (#{userId}, SHA2(#{password}, 256), #{email}, #{phoneNumber}, #{nickName}, #{userProfileName}, #{userProfileUrl})
     </insert>
@@ -12,9 +12,13 @@
     <select id="selectByIdAndPassword" resultType="Users" parameterType="Users">
         SELECT * FROM users WHERE USERID = #{userId} AND PASSWORD = SHA2(#{password}, 256)
     </select>
-    <update id="updateUserProfile">
-        UPDATE users
-        SET USER_PROFILE_NAME = #{fileName}, USER_PROFILE_URL = #{fileUrl}
-        WHERE USERID = #{userId}
+    <select id="findUserId" resultType="String" parameterType="String">
+        SELECT userId FROM users WHERE EMAIL = #{email} AND NICKNAME = #{nickName}
+    </select>
+    <select id="verifyUser" resultType="boolean" parameterType="String">
+        SELECT EXISTS(SELECT 1 FROM users WHERE USERID = #{userId} AND EMAIL = #{email} AND NICKNAME = #{nickName})
+    </select>
+    <update id="updatePassword" parameterType="String">
+        UPDATE users SET PASSWORD = SHA2(#{password}, 256) WHERE USERID = #{userId}
     </update>
 </mapper>
