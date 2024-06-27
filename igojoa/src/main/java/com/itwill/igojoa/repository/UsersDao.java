@@ -22,4 +22,5 @@ public interface UsersDao {
     boolean checkEmail(String email);
 
     boolean checkPhoneNumber(String phoneNumber);
+
 }

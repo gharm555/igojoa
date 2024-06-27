@@ -3,6 +3,7 @@ package com.itwill.igojoa.service;
 import org.springframework.stereotype.Service;
 
 import com.itwill.igojoa.entity.Users;
+import com.itwill.igojoa.repository.PointsDao;
 import com.itwill.igojoa.repository.UsersDao;
 
 import lombok.RequiredArgsConstructor;
@@ -13,9 +14,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class UsersService {
 	private final UsersDao userDao;
+	private final PointsDao pointsDao;
 
 	public int create(Users user) {
 		int result = userDao.create(user);
+		pointsDao.addUser(user.getUserId());
 		return result;
 	}
 

@@ -4,10 +4,10 @@ import java.io.IOException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.itwill.igojoa.dto.users.UsersLoginDto;
 import com.itwill.igojoa.dto.users.UsersRegisterDto;
 import com.itwill.igojoa.entity.Users;
+import com.itwill.igojoa.service.PointsService;
 import com.itwill.igojoa.service.S3Service;
 import com.itwill.igojoa.service.UsersService;
 
@@ -31,6 +32,7 @@ public class UsersController {
 
     private final UsersService userService;
     private final S3Service s3Service;
+    private final PointsService pointsService;
 
     @GetMapping("/loginRegister")
     public String registerForm(Model model, HttpSession session) {
@@ -42,6 +44,7 @@ public class UsersController {
         return "user/loginRegistration";
     }
 
+    @Transactional
     @PostMapping("/register")
     public ResponseEntity<String> register(@ModelAttribute UsersRegisterDto userRegisterDto) throws IOException {
         String phoneNumber = userRegisterDto.getPhone1() + userRegisterDto.getPhone2() + userRegisterDto.getPhone3();
@@ -76,6 +79,14 @@ public class UsersController {
             if (user != null) {
                 session.setAttribute("userId", user.getUserId());
                 session.setAttribute("userProfileUrl", user.getUserProfileUrl());
+
+                boolean pointsAdded = pointsService.addLoginPoints(user.getUserId());
+                if (pointsAdded) {
+                    log.info("로그인 포인트가 추가되었습니다.");
+                } else {
+                    log.info("오늘 이미 로그인 포인트를 받았습니다.");
+                }
+
                 return "redirect:/";
             } else {
                 return "redirect:/user/loginRegister";
