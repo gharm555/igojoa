@@ -281,23 +281,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if ($goUserProfileBtn) {
         $goUserProfileBtn.addEventListener("click", function (e) {
             e.preventDefault(); // 기본 동작 방지
-            getUserProfile();
+            window.location.href = "./userProfile";
         });
     }
 });
-
-function getUserProfile() {
-    console.log("요청보내기전");
-    axios
-        .post("./userProfile", {})
-        .then((response) => {
-            console.log("User Info:", response.data);
-            const { redirectUrl } = response.data;
-            if (redirectUrl) {
-                window.location.href = redirectUrl;
-            }
-        })
-        .catch((error) => {
-            console.error("Error fetching user info:", error);
-        });
-}
