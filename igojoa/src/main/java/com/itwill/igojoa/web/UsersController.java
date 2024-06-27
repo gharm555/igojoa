@@ -112,11 +112,7 @@ public class UsersController {
             @RequestParam(name = "email") String email,
             @RequestParam(name = "nickName") String nickName) {
         boolean isVerified = userService.verifyUser(userId, email, nickName);
-        if (isVerified) {
-            return ResponseEntity.ok(true);
-        } else {
-            return ResponseEntity.ok(false);
-        }
+        return ResponseEntity.ok(isVerified ? true : false);
     }
 
     @PostMapping("/updatePassword")
@@ -133,31 +129,19 @@ public class UsersController {
     @GetMapping("/checkUserId")
     public ResponseEntity<Boolean> checkUserId(@RequestParam(name = "userId") String userId) {
         boolean isExist = userService.checkUserId(userId);
-        if (isExist) {
-            return ResponseEntity.ok(true);
-        } else {
-            return ResponseEntity.ok(false);
-        }
+        return ResponseEntity.ok(!isExist ? true : false);
     }
 
     @GetMapping("/checkNickName")
     public ResponseEntity<Boolean> checkNickName(@RequestParam(name = "nickName") String nickName) {
         boolean isExist = userService.checkNickName(nickName);
-        if (isExist) {
-            return ResponseEntity.ok(true);
-        } else {
-            return ResponseEntity.ok(false);
-        }
+        return ResponseEntity.ok(!isExist ? true : false);
     }
 
     @GetMapping("/checkEmail")
     public ResponseEntity<Boolean> checkEmail(@RequestParam(name = "email") String email) {
         boolean isExist = userService.checkEmail(email);
-        if (isExist) {
-            return ResponseEntity.ok(true);
-        } else {
-            return ResponseEntity.ok(false);
-        }
+        return ResponseEntity.ok(!isExist ? true : false);
     }
 
     @GetMapping("/checkPhoneNumber")
@@ -166,11 +150,7 @@ public class UsersController {
             @RequestParam(name = "phone3") String phone3) {
         String phoneNumber = phone1 + phone2 + phone3;
         boolean isExist = userService.checkPhoneNumber(phoneNumber);
-        if (isExist) {
-            return ResponseEntity.ok(true);
-        } else {
-            return ResponseEntity.ok(false);
-        }
+        return ResponseEntity.ok(!isExist ? true : false);
     }
 
 }
