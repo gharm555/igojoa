@@ -41,4 +41,32 @@ public class UsersService {
 	}
 	// 상원 finish
 
+	public String findUserId(String email, String nickName) {
+		return userDao.findUserId(email, nickName);
+	}
+
+	public boolean verifyUser(String userId, String email, String nickName) {
+		return userDao.verifyUser(userId, email, nickName);
+	}
+
+	public int updatePassword(String userId, String password) {
+		return userDao.updatePassword(userId, password);
+	}
+
+	public boolean checkUserId(String userId) {
+		return userDao.checkUserId(userId);
+	}
+
+	public boolean checkNickName(String nickName) {
+		return userDao.checkNickName(nickName);
+	}
+
+	public boolean checkEmail(String email) {
+		return userDao.checkEmail(email);
+	}
+
+	public boolean checkPhoneNumber(String phoneNumber) {
+		return userDao.checkPhoneNumber(phoneNumber);
+	}
+
 }

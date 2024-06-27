@@ -41,15 +41,27 @@ public class S3Service {
     }
 
     public Users uploadImage(MultipartFile image, Users user) {
-        String changedName = changedImageName(user.getUserId(), image.getOriginalFilename());
-        String storedImagePath = uploadImageToS3(image, user.getUserId());
+        if (image == null || image.isEmpty()) {
+            String defaultImageUrl = getUserProfileDefaultImageUrl();
+            Users newUser = Users.builder()
+                    .userId(user.getUserId()).password(user.getPassword()).email(user.getEmail())
+                    .phoneNumber(user.getPhoneNumber()).nickName(user.getNickName())
+                    .userProfileUrl(defaultImageUrl).userProfileName("default.jpg")
+                    .build();
 
-        Users newUser = Users.builder() // 이미지에 대한 정보를 담아서 반환
-                .userId(user.getUserId()).password(user.getPassword()).email(user.getEmail())
-                .phoneNumber(user.getPhoneNumber()).nickName(user.getNickName())
-                .userProfileUrl(storedImagePath).userProfileName(changedName)
-                .build();
-        return newUser;
+            return newUser;
+        } else {
+            String changedName = changedImageName(user.getUserId(), image.getOriginalFilename());
+            String storedImagePath = uploadImageToS3(image, user.getUserId());
+
+            Users newUser = Users.builder() // 이미지에 대한 정보를 담아서 반환
+                    .userId(user.getUserId()).password(user.getPassword()).email(user.getEmail())
+                    .phoneNumber(user.getPhoneNumber()).nickName(user.getNickName())
+                    .userProfileUrl(storedImagePath).userProfileName(changedName)
+                    .build();
+
+            return newUser;
+        }
     }
 
     public String getUserProfileDefaultImageUrl() {

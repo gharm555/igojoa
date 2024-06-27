@@ -11,7 +11,8 @@
 	<typeAliases>
 		<typeAlias alias="Users"
 			type="com.itwill.igojoa.entity.Users" />
-		<typeAlias alias="Faq" type="com.itwill.igojoa.entity.Faq" />
+		<typeAlias alias="Faq"
+			type="com.itwill.igojoa.entity.Faq" />
 		<typeAlias alias="Place"
 			type="com.itwill.igojoa.entity.Place" />
 		<typeAlias alias="PlaceImages"
@@ -36,6 +37,8 @@
 			type="com.itwill.igojoa.dto.place.PlaceListDto" />
 		<typeAlias alias="PlaceSpaceDto"
 			type="com.itwill.igojoa.dto.place.PlaceSpaceDto" />
+		<typeAlias alias="UsersRegisterDto"
+			type="com.itwill.igojoa.dto.users.UsersRegisterDto" />
 	</typeAliases>
 
 </configuration>
