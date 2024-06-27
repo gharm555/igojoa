@@ -50,4 +50,5 @@
 		location="classpath:/application-aws.properties" />
 	<context:component-scan
 		base-package="com.itwill.igojoa.scheduler" />
+
 </beans>

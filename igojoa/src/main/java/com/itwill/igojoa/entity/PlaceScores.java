@@ -13,5 +13,4 @@ public class PlaceScores {
 	private String placeName;
 	private String userId;
 	private Integer favorites;
-	private Integer iScore;
 }

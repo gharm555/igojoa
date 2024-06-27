@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class HomeController {
+<<<<<<< HEAD
 	@GetMapping("/")
 	public String home(HttpSession httpSession) {
 		log.debug("home??");
@@ -22,4 +23,16 @@ public class HomeController {
 
 		return "home";
 	}
+=======
+    @GetMapping("/")
+    public String home(HttpSession session) {
+        log.debug("home");
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
+            System.out.println("세션에 저장된 아이디가 없습니다.");
+        }
+        System.out.println("세션에 저장된 아이디: " + userId);
+        return "home";
+    }
+>>>>>>> 9b875e85cd97a4a96ca0c2c198ca4a12ab3f7f3a
 }
