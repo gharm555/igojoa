@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- MyBatis3 프레임워크 설정 -->
+<configuration>
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+	<typeAliases>
+		<typeAlias alias="Users"
+			type="com.itwill.igojoa.entity.Users" />
+		<typeAlias alias="Faq"
+			type="com.itwill.igojoa.entity.Faq" />
+		<typeAlias alias="Place"
+			type="com.itwill.igojoa.entity.Place" />
+		<typeAlias alias="PlaceImages"
+			type="com.itwill.igojoa.entity.PlaceImages" />
+		<typeAlias alias="PlaceScores"
+			type="com.itwill.igojoa.entity.PlaceScores" />
+		<typeAlias alias="PlaceVerified"
+			type="com.itwill.igojoa.entity.PlaceVerified" />
+		<typeAlias alias="Points"
+			type="com.itwill.igojoa.entity.Points" />
+		<typeAlias alias="PointsLogs"
+			type="com.itwill.igojoa.entity.PointsLogs" />
+		<typeAlias alias="ReviewLikes"
+			type="com.itwill.igojoa.entity.ReviewLikes" />
+		<typeAlias alias="Reviews"
+			type="com.itwill.igojoa.entity.Reviews" />
+		<typeAlias alias="UsersLoginDto"
+			type="com.itwill.igojoa.dto.users.UsersLoginDto" />
+		<typeAlias alias="PlaceListDto"
+			type="com.itwill.igojoa.dto.place.PlaceListDto" />
+		<typeAlias alias="PlaceSpaceDto"
+			type="com.itwill.igojoa.dto.place.PlaceSpaceDto" />
+		<typeAlias alias="UsersRegisterDto"
+			type="com.itwill.igojoa.dto.users.UsersRegisterDto" />
+	</typeAliases>
+
+</configuration>

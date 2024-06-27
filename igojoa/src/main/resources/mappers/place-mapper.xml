@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwill.igojoa.repository.PlaceDao">
+	<select id="selectPlaceList" resultType="PlaceListDto">
+		SELECT
+		p.placeName ,
+		p.simpleAddress ,
+		ps.favorites ,
+		ps2.totalVisit ,
+		br.userId as
+		bestReviewer,
+		br.review ,
+		br.modifiedAt as reviewModifiedAt,
+		br.bestLike
+		as reviewLikes,
+		ROUND(AVG(ps3.iScore),1) as iScoreAvg ,
+		b.sumParkingAvailable ,
+		b.sumView ,
+		b.sumNightView ,
+		b.sumFreeEntry ,
+		b.sumEasyTransport ,
+		rc.cntReview ,
+		pimg.firstImgName ,
+		pimg.firstUrl ,
+		pimg.secondImgName ,
+		pimg.secondUrl ,
+		pimg.thirdImgName ,
+		pimg.thirdUrl
+		FROM places p
+		LEFT JOIN placeScores ps
+		ON ps.placeName = p.placeName AND
+		ps.USERID = '오진호'
+		LEFT JOIN (
+		SELECT verifiedPlace ,
+		COUNT(verifiedPlace) as totalVisit
+		FROM placeVerified pv
+		GROUP BY
+		verifiedPlace
+		) ps2
+		ON ps2.verifiedPlace = p.placeName
+		LEFT JOIN (
+		SELECT
+		r.placeName ,r.userId ,r.review ,r.modifiedAt ,rl.bestLike
+		FROM reviews
+		r
+		INNER JOIN (
+		SELECT
+		rl.placeName,
+		rl.reviewAuthor,
+		rl.cntLike as bestLike
+		FROM (
+		SELECT
+		rl.placeName,
+		rl.reviewAuthor,
+		COUNT(rl.likedBy) as cntLike
+		FROM reviewLikes rl
+		GROUP BY rl.placeName, rl.reviewAuthor
+		) rl
+		INNER
+		JOIN (
+		SELECT
+		placeName,
+		MAX(cntLike) as maxLike
+		FROM (
+		SELECT
+		placeName,
+		reviewAuthor,
+		COUNT(likedBy) as cntLike
+		FROM reviewLikes
+		GROUP BY
+		placeName, reviewAuthor
+		) sub
+		GROUP BY placeName
+		) as maxResults
+		ON
+		rl.placeName = maxResults.placeName AND rl.cntLike =
+		maxResults.maxLike
+		) rl
+		ON r.placeName = rl.placeName AND r.userId =
+		rl.reviewAuthor
+		) br
+		ON br.placeName = p.placeName
+		LEFT JOIN placeScores
+		ps3
+		ON ps3.placeName = p.placeName
+		LEFT JOIN (
+		SELECT
+		b.placeName,
+		SUM(b.parkingAvailable) as sumParkingAvailable,
+		SUM(b.`view`) as
+		sumView,
+		SUM(b.nightView) as sumNightView,
+		SUM(b.freeEntry) as
+		sumFreeEntry,
+		SUM(b.easyTransport) as sumEasyTransport
+		FROM badges b
+		group by b.placeName
+		) b
+		ON b.placeName = p.placeName
+		LEFT JOIN (
+		SELECT
+		r.placeName , COUNT(r.placeName) as cntReview
+		FROM reviews r
+		group by
+		r.placeName
+		) rc
+		ON rc.placeName = p.placeName
+		LEFT JOIN placeImages pimg
+		ON pimg.placeName = p.placeName
+		WHERE p.simpleAddress LIKE '%시%' AND
+		p.placeName LIKE '%%'
+		GROUP BY p.placeName
+		ORDER BY iScoreAvg ASC,
+		ps.favorites DESC
+		Limit 6
+	</select>
+	<select id="selectPlaceSpaceList" resultType="PlaceSpaceDto">
+		SELECT
+			placeName,
+			placeLatitude,
+			placeLongitude
+		FROM places
+	</select>
+</mapper>
