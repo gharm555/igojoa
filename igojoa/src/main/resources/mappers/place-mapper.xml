@@ -3,5 +3,91 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwill.igojoa.repository.PlaceDao">
-
+	<select id="selectPlaceList" parameterType="PlaceSearchDto"
+		resultType="PlaceListDto">
+		<bind name="userId" value="userId" />
+		<bind name="addressCategory" value="addressCategory" />
+		<bind name="searchKeyword" value="searchKeyword" />
+		<bind name="sortKey" value="sortKey" />
+		<bind name="sortValue" value="sortValue" />
+		<bind name="startRowValue" value="startRowValue" />
+		<bind name="rowCnt" value="rowCnt" />
+		SELECT
+		p.placeName ,
+		CONCAT(p.largeAddress , ' ', p.midiumAddress) AS
+		address,
+		COUNT(pf.userId) as userFavorite,
+		ps.parkingAvailable ,
+		ps.`view` ,
+		ps.nightView ,
+		ps.freeEntry ,
+		ps.easyTransport ,
+		ps.iScore ,
+		ps.review AS reviewCnt,
+		ps.placeVerified,
+		br.userId ,
+		br.review ,
+		br.modifiedAt ,
+		br.likeCount ,
+		pi2.firstUrl ,
+		pi2.secondUrl ,
+		pi2.thirdUrl
+		FROM
+		places p
+		LEFT JOIN
+		placesFavorite pf
+		ON
+		pf.placeName =
+		p.placeName
+		AND pf.userId = '${userId}'
+		LEFT JOIN placesStats ps
+		ON
+		ps.placeName = p.placeName
+		LEFT JOIN
+		bestReviews br
+		ON
+		br.placeName =
+		p.placeName
+		LEFT JOIN placeImages pi2
+		ON
+		pi2.placeName = p.placeName
+		WHERE
+		<if test='addressCategory != ""'>
+			p.largeAddress = '${addressCategory}' and
+		</if>
+		p.placeName LIKE '%${searchKeyword}%'
+		GROUP BY
+		p.placeName
+		<if test='sortKey.equals("iScore") and sortValue == 1'>
+			ORDER BY ps.iScore ASC, userFavorite DESC ,
+			ps.placeVerified DESC
+		</if>
+		<if test='sortKey.equals("iScore") and sortValue == 0'>
+			ORDER BY ps.iScore DESC, userFavorite DESC ,
+			ps.placeVerified DESC
+		</if>
+		<if test='sortKey.equals("placeVerified") and sortValue == 1'>
+			ORDER BY ps.placeVerified DESC, userFavorite DESC,
+			ps.iScore ASC
+		</if>
+		<if test='sortKey.equals("placeVerified") and sortValue == 0'>
+			ORDER BY ps.placeVerified ASC, userFavorite DESC,
+			ps.iScore DESC
+		</if>
+		<if test='sortKey.equals("userFavorite") and sortValue == 1'>
+			ORDER BY userFavorite DESC, ps.iScore DESC , ps.placeVerified DESC
+		</if>
+		<if test='sortKey.equals("userFavorite") and sortValue == 0'>
+			ORDER BY userFavorite ASC, ps.iScore DESC , ps.placeVerified DESC
+		</if>
+		<if test='sortKey.equals("reviewCnt") and sortValue == 1'>
+			ORDER BY reviewCnt DESC, userFavorite ASC, ps.iScore DESC
+		</if>
+		<if test='sortKey.equals("reviewCnt") and sortValue == 0'>
+			ORDER BY reviewCnt ASC, userFavorite ASC, ps.iScore DESC
+		</if>
+		LIMIT
+		${startRowValue} ,
+		${rowCnt}
+	</select>
 </mapper>

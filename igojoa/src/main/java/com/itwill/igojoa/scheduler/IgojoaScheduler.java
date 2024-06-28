@@ -16,7 +16,7 @@ public class IgojoaScheduler {
 	@Autowired
 	private SchedulerService schedulerService;
 
-	@Scheduled(fixedRate = 5000) // 5초마다 실행
+//	@Scheduled(fixedRate = 5000) // 5초마다 실행 테스트용
 	@Transactional
 //	@Scheduled(cron = "0 0 */2 * * ?") // 2시간마다 매 정각에 실행
 	public void runUpdatePlaceStatsJob() {
@@ -24,13 +24,13 @@ public class IgojoaScheduler {
 		schedulerService.updatePlaceStats();
 		log.debug("스케쥴러 정상 종료");
 	}
-	
-	
-//	@Transactional
-//	@Scheduled(fixedRate = 5000)
-//	public void runUpdateBestReviewsJob() {
-//		log.debug("스케쥴러 가동");
-//		schedulerService.updateBestReviews();
-//		log.debug("스케쥴러 정상 종료");
-//	}
+
+//	@Scheduled(fixedRate = 5000) // 5초마다 실행 테스트용
+	@Transactional
+//	@Scheduled(cron = "0 10,30,50 * * * ?") // 매 시간의 10분, 30분, 50분에 실행
+	public void runUpdateBestReviewsJob() {
+		log.debug("스케쥴러 가동");
+		schedulerService.updateBestReviews();
+		log.debug("스케쥴러 정상 종료");
+	}
 }

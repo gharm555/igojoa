@@ -3,6 +3,13 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwill.igojoa.repository.UsersDao">
+    <!-- 세션값 유효성 검증 -->
+    <select id="sessionTorF" resultType="Integer" parameterType="String">
+        <bind name="userId" value="userId" />
+        SELECT COUNT(*) 
+        FROM users u 
+        WHERE u.userId = #{userId}
+    </select>
     <insert id="create" parameterType="Users">
         INSERT INTO users (userId, password, email, phonenumber, nickname, userProfileName, userProfileUrl) VALUES (#{userId}, SHA2(#{password}, 256), #{email}, #{phoneNumber}, #{nickName}, #{userProfileName}, #{userProfileUrl})
     </insert>
