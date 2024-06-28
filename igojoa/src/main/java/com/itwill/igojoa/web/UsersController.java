@@ -6,10 +6,11 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.itwill.igojoa.dto.users.UsersLoginDto;
 import com.itwill.igojoa.dto.users.UsersRegisterDto;
 import com.itwill.igojoa.entity.Users;
+import com.itwill.igojoa.service.PointsService;
 import com.itwill.igojoa.service.S3Service;
 import com.itwill.igojoa.service.UsersService;
 
@@ -33,17 +35,24 @@ public class UsersController {
 
     private final UsersService userService;
     private final S3Service s3Service;
+    private final PointsService pointsService;
 
     @GetMapping("/loginRegister")
     public String registerForm(Model model, HttpSession session) {
+        Object userIdObj = session.getAttribute("userId");
+//        if (userIdObj != null) {
+//            int sessionCheck = userService.sessionTorF(userIdObj.toString());
+//            if (sessionCheck == 1) {
+//                return "redirect:/";
+//            }
+//        }
         String defaultImageUrl = s3Service.getUserProfileDefaultImageUrl();
         model.addAttribute("defaultImageUrl", defaultImageUrl);
-        // if (session.getAttribute("userId") != null) {
-        // return "redirect:/";
-        // }
+
         return "user/loginRegistration";
     }
 
+    @Transactional
     @PostMapping("/register")
     public ResponseEntity<String> register(@ModelAttribute UsersRegisterDto userRegisterDto) throws IOException {
         String phoneNumber = userRegisterDto.getPhone1() + userRegisterDto.getPhone2() + userRegisterDto.getPhone3();
@@ -70,7 +79,7 @@ public class UsersController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@ModelAttribute UsersLoginDto userLoginDto, HttpSession session,
             @RequestParam(name = "target", defaultValue = "") String target) {
-        if (userLoginDto.getUserId() == null  || userLoginDto.getPassword() == null ||  userLoginDto.getUserId().isEmpty()
+        if (userLoginDto.getUserId() == null || userLoginDto.getPassword() == null || userLoginDto.getUserId().isEmpty()
                 || userLoginDto.getPassword().isEmpty()) {
             log.info("아이디와 비밀번호를 입력해주세요");
             return ResponseEntity.ok("redirect:/user/loginRegister?result=fail&target=" + target);
@@ -80,19 +89,12 @@ public class UsersController {
             if (user != null) {
                 session.setAttribute("userId", user.getUserId());
                 session.setAttribute("userProfileUrl", user.getUserProfileUrl());
-
-               boolean pointsAdded = pointsService.addLoginPoints(user.getUserId());
-               if (pointsAdded) {
-                   log.info("로그인 포인트가 추가되었습니다.");
-               } else {
-                   log.info("오늘 이미 로그인 포인트를 받았습니다.");
-               }
+                boolean pointsAdded = pointsService.addLoginPoints(user.getUserId());
                 Map<String, Object> response = new HashMap<>();
                 response.put("success", true);
                 response.put("message", "로그인 성공");
                 response.put("target", target);
-                response.put("pointsMessage", "로그인 포인트가 추가되었습니다.");
-
+                response.put("pointsMessage", pointsAdded ? "로그인 포인트가 추가되었습니다." : "오늘 이미 로그인 포인트를 받았습니다.");
                 return ResponseEntity.ok(response);
             } else {
                 return ResponseEntity.ok(Map.of("success", false, "message", "아이디 또는 비밀번호가 일치하지 않습니다."));
@@ -109,6 +111,8 @@ public class UsersController {
             session.removeAttribute("userId");
             session.removeAttribute("userProfileUrl");
         }
+        // 메인페이지로 이동
+        // return ResponseEntity.ok("redirect:/");
         return ResponseEntity.ok("로그아웃 성공");
     }
 
@@ -166,9 +170,17 @@ public class UsersController {
             @RequestParam(name = "phone2") String phone2,
             @RequestParam(name = "phone3") String phone3) {
         String phoneNumber = phone1 + phone2 + phone3;
-        
         boolean isExist = userService.checkPhoneNumber(phoneNumber);
         return ResponseEntity.ok(!isExist ? true : false);
     }
 
+    @DeleteMapping("/deleteUser")
+    public ResponseEntity<String> deleteUser(@RequestParam(name = "userId") String userId, HttpServletRequest request) {
+        userService.deleteUser(userId);
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return ResponseEntity.ok("회원탈퇴 성공");
+    }
 }

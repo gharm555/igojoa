@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// 위치인증
+// 로그아웃
 const $logoutBtn = document.querySelector("#logoutBtn");
 $logoutBtn.addEventListener("click", function (e) {
   e.preventDefault();
@@ -143,7 +143,7 @@ $logoutBtn.addEventListener("click", function (e) {
       console.error(err);
     });
 });
-
+// 위치인증
 const $locationVerifyBtn = document.querySelector("#locationVerifyBtn");
 $locationVerifyBtn.addEventListener("click", function (e) {
   e.preventDefault();
