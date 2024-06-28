@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class Points {
-	private String userId;
+	private String UsersId;
 	private Integer currentsPoints;
 	private Integer cumulativePoint;
 }

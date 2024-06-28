@@ -90,4 +90,11 @@
 		${startRowValue} ,
 		${rowCnt}
 	</select>
+	<select id="selectPlaceSpaceList" resultType="PlaceSpaceDto">
+		SELECT
+			placeName,
+			placeLatitude,
+			placeLongitude
+		FROM places
+	</select>
 </mapper>

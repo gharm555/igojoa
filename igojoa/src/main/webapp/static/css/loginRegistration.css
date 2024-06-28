@@ -51,9 +51,9 @@ main {
   position: absolute;
   left: 50px;
   width: 350px;
-  height: 600px;
+  height: 700px;
   background: #fff;
-  z-index: 1000;
+  z-index: 998;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
   border-radius: var(--border-radius);
   /*transition: 0.5s;*/
@@ -111,7 +111,7 @@ main {
   border: var(--bs-border-width) solid var(--bs-border-color);
   letter-spacing: 0.1em;
 }
-.formBx .form form input[type="submit"] {
+.formBx .form form input[type='submit'] {
   background-color: var(--primary-color);
   border: none;
   color: #fff;
@@ -120,7 +120,7 @@ main {
   font-weight: 500;
   border-radius: 5px;
 }
-.formBx .signupform form input[type="submit"] {
+.formBx .signupform form input[type='submit'] {
   background-color: var(--primary-color);
 }
 .find {
@@ -172,11 +172,13 @@ main {
   color: rgba(0, 0, 0, 0.9); /* Semi-transparent icon */
 }
 
-.image-upload input[type="file"] {
+.image-upload input[type='file'] {
   display: none;
 }
 
-.invalid-feedback {
+.invalid-feedback,
+#register-check-message {
   color: red;
-  font-size: 0.875em;
+  font-size: 0.75em;
+  margin-top: 0;
 }

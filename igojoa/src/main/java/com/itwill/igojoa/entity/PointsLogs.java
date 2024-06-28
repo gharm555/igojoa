@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class PointsLogs {
-	private String userId;
-	private String userActivity;
+	private String UsersId;
+	private String UsersActivity;
 	private LocalDateTime pointsGetLoseTime;
 	private Integer points;
 }
