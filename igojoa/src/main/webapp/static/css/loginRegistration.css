@@ -51,9 +51,9 @@ main {
   position: absolute;
   left: 50px;
   width: 350px;
-  height: 600px;
+  height: 700px;
   background: #fff;
-  z-index: 1000;
+  z-index: 998;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
   border-radius: var(--border-radius);
   /*transition: 0.5s;*/
@@ -176,22 +176,9 @@ main {
   display: none;
 }
 
-.invalid-feedback {
+.invalid-feedback,
+#register-check-message {
   color: red;
   font-size: 0.75em;
   margin-top: 0;
-}
-
-/* 애니메이션 정의 */
-@keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
-}
-
-/* 에러 메시지에 애니메이션 추가 */
-.shake {
-  animation: shake 0.5s;
 }

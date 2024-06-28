@@ -20,7 +20,7 @@ uri="jakarta.tags.core"%>
     <link rel="stylesheet" href="${loginRegistrationCss}" />
   </head>
   <body>
-    <!-- <header>
+    <header>
       <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
           <div class="container-sideNav">
@@ -59,7 +59,7 @@ uri="jakarta.tags.core"%>
           <li class="nav-item"><a class="nav-link" href="#" id="goFAQ">자주묻는질문</a></li>
         </ul>
       </div>
-    </header> -->
+    </header>
     <main>
       <div class="container">
         <div class="box signin">
@@ -73,7 +73,7 @@ uri="jakarta.tags.core"%>
         <div class="formBx">
           <div class="form signinform">
             <c:url var="loginUrl" value="/user/login" />
-            <form action="${loginUrl}" method="post">
+            <form action="${loginUrl}" id="loginForm" method="post">
               <h3>로그인</h3>
               <input
                 type="text"
@@ -90,6 +90,7 @@ uri="jakarta.tags.core"%>
                 name="password"
                 placeholder="비밀번호를 입력해 주세요"
               />
+              <!-- 로그인 체크 메시지 -->
               <div id="login-check-message" class="invalid-feedback" style="display: none"></div>
               <input type="submit" class="form-control" id="loginBtn" value="로그인" />
               <div class="find">
@@ -135,7 +136,7 @@ uri="jakarta.tags.core"%>
                 placeholder="아이디"
                 id="userId"
                 name="userId"
-                onchange="validateInput('userId', this.value)"
+                oninput="validateInput('userId', this.value)"
               />
               <div id="id-check-message" class="invalid-feedback" style="display: none"></div>
 
@@ -147,8 +148,7 @@ uri="jakarta.tags.core"%>
                 name="password"
                 oninput="validateInput('password', this.value)"
               />
-              <div id="password-check-message" class="invalid-feedback" style="display: none">
-              </div>
+              <div id="password-check-message" class="invalid-feedback" style="display: none"></div>
 
               <input
                 type="password"
@@ -157,8 +157,7 @@ uri="jakarta.tags.core"%>
                 id="password-confirm"
                 oninput="validateInput('password-confirm', this.value)"
               />
-              <div id="password-confirm-check-message" class="invalid-feedback" style="display: none">
-              </div>
+              <div id="password-confirm-check-message" class="invalid-feedback" style="display: none"></div>
 
               <input
                 type="text"
@@ -166,7 +165,7 @@ uri="jakarta.tags.core"%>
                 placeholder="닉네임"
                 id="nickName"
                 name="nickName"
-                onchange="validateInput('nickName', this.value)"
+                oninput="validateInput('nickName', this.value)"
               />
               <div id="nickname-check-message" class="invalid-feedback" style="display: none"></div>
 
@@ -176,10 +175,9 @@ uri="jakarta.tags.core"%>
                 placeholder="이메일"
                 id="email"
                 name="email"
-                onchange="validateInput('email', this.value)"
+                oninput="validateInput('email', this.value)"
               />
-              <div id="email-check-message" class="invalid-feedback" style="display: none">
-              </div>
+              <div id="email-check-message" class="invalid-feedback" style="display: none"></div>
 
               <div class="d-flex align-items-baseline">
                 <input
@@ -190,7 +188,7 @@ uri="jakarta.tags.core"%>
                   name="phone1"
                   maxlength="3"
                   style="width: 80px; margin-right: 5px"
-                  onchange="validateInput('phone', this.value)"
+                  oninput="validateInput('phone', this.value)"
                 />
                 <span>-</span>
                 <input
@@ -201,7 +199,7 @@ uri="jakarta.tags.core"%>
                   name="phone2"
                   maxlength="4"
                   style="width: 100px; margin-left: 5px; margin-right: 5px"
-                  onchange="validateInput('phone', this.value)"
+                  oninput="validateInput('phone', this.value)"
                 />
                 <span>-</span>
                 <input
@@ -212,11 +210,11 @@ uri="jakarta.tags.core"%>
                   name="phone3"
                   maxlength="4"
                   style="width: 100px; margin-left: 5px"
-                  onchange="validateInput('phone', this.value)"
+                  oninput="validateInput('phone', this.value)"
                 />
               </div>
-              <div id="phone-check-message" class="invalid-feedback" style="display: none">
-              </div>
+              <div id="phone-check-message" class="invalid-feedback" style="display: none"></div>
+              <div id="register-check-message" style="display: none"></div>
               <input type="submit" id="registerBtn" name="registerBtn" value="회원가입" />
             </form>
           </div>
@@ -303,6 +301,22 @@ uri="jakarta.tags.core"%>
       </div>
     </div>
 
+    <!-- 알림 모달 -->
+    <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="alertModalLabel">회원가입</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="alertModalBody"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Include Font Awesome for icons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -313,12 +327,13 @@ uri="jakarta.tags.core"%>
       crossorigin="anonymous"
     ></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <!-- <c:url var="navbarJs" value="/js/navbar.js" />
-    <script src="${navbarJs}"></script> -->
+    <c:url var="navbarJs" value="/js/navbar.js" />
+    <script src="${navbarJs}"></script>
     <c:url var="loginRegistrationJs" value="/js/loginRegistration.js" />
     <script src="${loginRegistrationJs}"></script>
     <script>
       const LoginUserId = '${userId}';
+      const defaultImageUrl = '${defaultImageUrl}';
     </script>
   </body>
 </html>

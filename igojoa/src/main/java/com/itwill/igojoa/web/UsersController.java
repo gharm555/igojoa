@@ -1,6 +1,8 @@
 package com.itwill.igojoa.web;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -66,22 +68,37 @@ public class UsersController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute UsersLoginDto userLoginDto, HttpSession session) {
-        if (userLoginDto.getUserId() == null || userLoginDto.getPassword() == null) {
+    public ResponseEntity<?> login(@ModelAttribute UsersLoginDto userLoginDto, HttpSession session,
+            @RequestParam(name = "target", defaultValue = "") String target) {
+        if (userLoginDto.getUserId() == null  || userLoginDto.getPassword() == null ||  userLoginDto.getUserId().isEmpty()
+                || userLoginDto.getPassword().isEmpty()) {
             log.info("아이디와 비밀번호를 입력해주세요");
-            return "redirect:/user/login";
+            return ResponseEntity.ok("redirect:/user/loginRegister?result=fail&target=" + target);
         }
         try {
             Users user = userService.selectByIdAndPassword(userLoginDto.toEntity());
             if (user != null) {
                 session.setAttribute("userId", user.getUserId());
                 session.setAttribute("userProfileUrl", user.getUserProfileUrl());
-                return "redirect:/";
+
+               boolean pointsAdded = pointsService.addLoginPoints(user.getUserId());
+               if (pointsAdded) {
+                   log.info("로그인 포인트가 추가되었습니다.");
+               } else {
+                   log.info("오늘 이미 로그인 포인트를 받았습니다.");
+               }
+                Map<String, Object> response = new HashMap<>();
+                response.put("success", true);
+                response.put("message", "로그인 성공");
+                response.put("target", target);
+                response.put("pointsMessage", "로그인 포인트가 추가되었습니다.");
+
+                return ResponseEntity.ok(response);
             } else {
-                return "redirect:/user/loginRegister";
+                return ResponseEntity.ok(Map.of("success", false, "message", "아이디 또는 비밀번호가 일치하지 않습니다."));
             }
         } catch (Exception e) {
-            return "redirect:/user/loginRegister";
+            return ResponseEntity.ok(Map.of("success", false, "message", "서버 오류: " + e.getMessage()));
         }
     }
 
@@ -100,7 +117,7 @@ public class UsersController {
             @RequestParam(name = "nickName") String nickName) {
         String userId = userService.findUserId(email, nickName);
 
-        if (userId != null && !userId.isEmpty()) {
+        if (userId != null) {
             return ResponseEntity.ok(userId);
         } else {
             return ResponseEntity.ok("입력하신 정보를 확인해 주세요.");
