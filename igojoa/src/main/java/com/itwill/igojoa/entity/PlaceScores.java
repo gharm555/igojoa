@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PlaceScores {
 	private String placeName;
-	private String userId;
+	private String UsersId;
 	private Integer favorites;
 }

@@ -3,35 +3,76 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwill.igojoa.repository.UsersDao">
-    <insert id="create" parameterType="Users">
-        INSERT INTO users (userId, password, email, phonenumber, nickname, userProfileName, userProfileUrl) VALUES (#{userId}, SHA2(#{password}, 256), #{email}, #{phoneNumber}, #{nickName}, #{userProfileName}, #{userProfileUrl})
-    </insert>
-    <select id="selectByUserId" resultType="Users" parameterType="String">
-        SELECT * FROM users WHERE USERID = #{userId}
-    </select>
-    <select id="selectByIdAndPassword" resultType="Users" parameterType="Users">
-        SELECT * FROM users WHERE USERID = #{userId} AND PASSWORD = SHA2(#{password}, 256)
-    </select>
-    <select id="findUserId" resultType="String" parameterType="String">
-        SELECT userId FROM users WHERE EMAIL = #{email} AND NICKNAME = #{nickName}
-    </select>
-    <select id="verifyUser" resultType="boolean" parameterType="String">
-        SELECT EXISTS(SELECT 1 FROM users WHERE USERID = #{userId} AND EMAIL = #{email} AND NICKNAME = #{nickName})
-    </select>
-    <update id="updatePassword" parameterType="String">
-        UPDATE users SET PASSWORD = SHA2(#{password}, 256) WHERE USERID = #{userId}
-    </update>
-    <select id="checkUserId" resultType="boolean" parameterType="String">
-        SELECT EXISTS(SELECT 1 FROM users WHERE USERID = #{userId})
-    </select>
-    <select id="checkNickName" resultType="boolean" parameterType="String">
-        SELECT EXISTS(SELECT 1 FROM users WHERE NICKNAME = #{nickName})
-    </select>
-    <select id="checkEmail" resultType="boolean" parameterType="String">
-        SELECT EXISTS(SELECT 1 FROM users WHERE EMAIL = #{email})
-    </select>
-    <select id="checkPhoneNumber" resultType="boolean" parameterType="String">
-        SELECT EXISTS(SELECT 1 FROM users WHERE PHONENUMBER = #{phoneNumber})
-    </select>
+	<!-- 세션 유무 확인 -->
+	<select id="sessionTorF" resultType="Integer"
+		parameterType="String">
+		<bind name="userId" value="userId" />
+		SELECT count(*) FROM users WHERE USERID = #{userId}
+	</select>
+	<!-- 회원가입 -->
+	<insert id="create" parameterType="Users">
+		INSERT INTO users (userId, password, email, phonenumber, nickname,
+		userProfileName, userProfileUrl) VALUES (#{userId}, SHA2(#{password},
+		256), #{email}, #{phoneNumber}, #{nickName}, #{userProfileName},
+		#{userProfileUrl})
+	</insert>
+	<!-- 사용자 ID로 사용자 조회 -->
+	<select id="selectByUserId" resultType="Users"
+		parameterType="String">
+		SELECT * FROM users WHERE USERID = #{userId}
+	</select>
+	<!-- 사용자 ID와 비밀번호로 사용자 조회(로그인) -->
+	<select id="selectByIdAndPassword" resultType="Users"
+		parameterType="Users">
+		SELECT * FROM users WHERE USERID = #{userId} AND PASSWORD =
+		SHA2(#{password}, 256)
+	</select>
+	<!-- 이메일과 닉네임으로 사용자 ID 조회 -->
+	<select id="findUserId" resultType="String"
+		parameterType="String">
+		SELECT userId FROM users WHERE EMAIL = #{email} AND NICKNAME = #{nickName}
+	</select>
+	<!-- 사용자 ID, 이메일, 닉네임으로 사용자 조회 -->
+	<select id="verifyUser" resultType="boolean"
+		parameterType="String">
+		SELECT EXISTS(SELECT 1 FROM users WHERE USERID = #{userId} AND EMAIL =
+		#{email} AND NICKNAME = #{nickName})
+	</select>
+	<!-- 사용자 ID로 비밀번호 업데이트 -->
+	<update id="updatePassword" parameterType="String">
+		UPDATE users SET PASSWORD = SHA2(#{password}, 256) WHERE USERID = #{userId}
+	</update>
+	<!-- 사용자 ID 존재 여부 확인 -->
+	<select id="checkUserId" resultType="boolean"
+		parameterType="String">
+		SELECT EXISTS(SELECT 1 FROM users WHERE USERID = #{userId})
+	</select>
+	<!-- 닉네임 존재 여부 확인 -->
+	<select id="checkNickName" resultType="boolean"
+		parameterType="String">
+		SELECT EXISTS(SELECT 1 FROM users WHERE NICKNAME = #{nickName})
+	</select>
+	<!-- 이메일 존재 여부 확인 -->
+	<select id="checkEmail" resultType="boolean"
+		parameterType="String">
+		SELECT EXISTS(SELECT 1 FROM users WHERE EMAIL = #{email})
+	</select>
+	<!-- 핸드폰 번호 존재 여부 확인 -->
+	<select id="checkPhoneNumber" resultType="boolean"
+		parameterType="String">
+		SELECT EXISTS(SELECT 1 FROM users WHERE PHONENUMBER = #{phoneNumber})
+	</select>
+	<!-- 사용자 ID로 사용자 삭제 -->
+	<delete id="deleteUser" parameterType="String">
+		DELETE FROM users WHERE USERID = #{userId}
+	</delete>
+	
+	<!-- 앙 깃모띠 -->
+	<select id="getUserInfo" resultType="Users"
+		parameterType="String">
+		SELECT *
+		FROM users
+		WHERE userId = #{userId}
+	</select>
 
 </mapper>

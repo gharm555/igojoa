@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwill.igojoa.repository.SchedulerDao">
+	<update id="updatePlaceStats">
+		UPDATE
+		placesStats ps
+		JOIN (
+		SELECT
+		p.placeName ,
+		r.parkingAvailableSum,
+		r.viewSum,
+		r.nightViewSum,
+		r.freeEntrySum,
+		r.easyTransportSum,
+		r.iScoreAvg,
+		r.reviewCnt,
+		pv.placeVerifiedCnt,
+		ps.placefavoriteCnt
+		FROM
+		places p
+		LEFT JOIN (
+		SELECT
+		pf.placeName,
+		COUNT(*)
+		AS placefavoriteCnt
+		FROM
+		placesFavorite pf
+		GROUP BY
+		pf.placeName) ps
+		ON
+		ps.placeName = p.placeName
+		LEFT JOIN (
+		SELECT
+		pv.placeName,
+		COUNT(*) AS
+		placeVerifiedCnt
+		FROM
+		placeVerified pv
+		GROUP BY
+		pv.placeName
+		) pv
+		ON
+		pv.placeName = p.placeName
+		LEFT JOIN (
+		SELECT
+		r.placeName,
+		SUM(r.parkingAvailable) as parkingAvailableSum,
+		SUM(r.`view`) as
+		viewSum,
+		SUM(r.nightView) as nightViewSum,
+		SUM(r.freeEntry) as
+		freeEntrySum,
+		SUM(r.easyTransport) as
+		easyTransportSum,
+		ROUND(AVG(r.iScore))as iScoreAvg,
+		COUNT(r.userId) as
+		reviewCnt
+		FROM
+		reviews r
+		GROUP BY
+		r.placeName
+		) r
+		ON
+		r.placeName =
+		p.placeName
+		) AS
+		reviewStats
+		ON
+		ps.placeName = reviewStats.placeName
+		SET
+		ps.parkingAvailable = reviewStats.parkingAvailableSum,
+		ps.`view` =
+		reviewStats.viewSum,
+		ps.nightView = reviewStats.nightViewSum,
+		ps.freeEntry = reviewStats.freeEntrySum,
+		ps.easyTransport =
+		reviewStats.easyTransportSum,
+		ps.iScore = reviewStats.iScoreAvg,
+		ps.review = reviewStats.reviewCnt,
+		ps.placeVerified =
+		reviewStats.placeVerifiedCnt,
+		ps.placeFavorite =
+		reviewStats.placefavoriteCnt
+	</update>
+
+	<update id="updateBestReviews">
+		UPDATE
+		bestReviews br
+		JOIN (
+		SELECT
+		rl.placeName,
+		rl.userId,
+		rl.likeCnt,
+		r.review ,
+		r.modifiedAt
+		FROM
+		(
+		SELECT
+		rl.placeName,
+		rl.userId ,
+		COUNT(rl.likeUserId) as likeCnt
+		FROM
+		reviewLikes rl
+		GROUP BY
+		rl.placeName,
+		rl.userId
+		) rl
+		INNER JOIN (
+		SELECT
+		rlMax.placeName,
+		MAX(rlMax.likeCnt) AS maxLike
+		FROM
+		(
+		SELECT
+		rl.placeName,
+		rl.userId,
+		COUNT(rl.likeUserId) AS likeCnt
+		FROM
+		reviewLikes rl
+		GROUP BY
+		rl.placeName,
+		rl.userId
+		) rlMax
+		GROUP BY
+		rlMax.placeName
+		) rlMaxJoin
+		ON
+		rl.placeName = rlMaxJoin.placeName
+		AND rl.likeCnt = rlMaxJoin.maxLike
+		INNER JOIN reviews r
+		ON
+		r.placeName = rl.placeName
+		AND r.userId =
+		rl.userId
+		GROUP BY
+		rl.placeName
+		) r
+		ON
+		r.placeName = br.placeName
+		SET
+		br.placeName = r.placeName,
+		br.userId = r.userId,
+		br.review = r.review,
+		br.modifiedAt = r.modifiedAt,
+		br.likeCount = r.likeCnt
+	</update>
+
+</mapper>
