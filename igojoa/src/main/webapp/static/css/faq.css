@@ -1,0 +1,39 @@
+/* Import Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
+
+/* FAQ 섹션 스타일 */
+.faq-body {
+  padding-left: 10%;
+  padding-right: 10%;
+  margin-bottom: 50px;
+  font-family: var(--main-font);
+  color: var(--main-text-color);
+  background-color: var(--main-bg-color);
+}
+
+.accordion {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 50px;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-button {
+  font-weight: bold;
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
+}
+
+.accordion-button:hover {
+  background-color: var(--link-hover-color);
+  color: white;
+}
+
+.accordion-body {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}
