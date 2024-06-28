@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwill.igojoa.dto.users.UsersInfoDto;
 import com.itwill.igojoa.entity.Users;
+import com.itwill.igojoa.repository.PointsDao;
 import com.itwill.igojoa.repository.UsersDao;
 
 import lombok.RequiredArgsConstructor;
@@ -14,12 +15,18 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class UsersService {
 	private final UsersDao userDao;
+	private final PointsDao pointsDao;
+
+	public int sessionTorF(String userId) {
+		return userDao.sessionTorF(userId);
+	}
 
 	public int create(Users user) {
 		int result = userDao.create(user);
+		pointsDao.addUser(user.getUserId());
 		return result;
 	}
-
+								
 	public Users selectByUserId(String userId) {
 		return userDao.selectByUserId(userId);
 	}
@@ -60,4 +67,7 @@ public class UsersService {
 		return userDao.checkPhoneNumber(phoneNumber);
 	}
 
+	public int deleteUser(String userId) {
+		return userDao.deleteUser(userId);
+	}
 }

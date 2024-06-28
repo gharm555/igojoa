@@ -3,7 +3,9 @@ package com.itwill.igojoa.repository;
 import com.itwill.igojoa.entity.Users;
 
 public interface UsersDao {
-	int create(Users user);
+    int sessionTorF(String userId);
+
+    int create(Users user);
 
 	Users selectByUserId(String userId);
 
@@ -23,5 +25,7 @@ public interface UsersDao {
 
 	boolean checkEmail(String email);
 
-	boolean checkPhoneNumber(String phoneNumber);
+    boolean checkPhoneNumber(String phoneNumber);
+
+    int deleteUser(String userId);
 }

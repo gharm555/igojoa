@@ -121,24 +121,15 @@ function closeBannerOnScroll() {
     }
 }
 
-// 메인화면일때만 광고판 존재하게
+// 메인화면일때 sideNav 위치 조정
 document.addEventListener("DOMContentLoaded", function () {
-    // 현재 URL을 체크하여 조건에 따라 클래스를 추가
-    if (window.location.pathname !== "/html/main.html") {
-        // 메인 페이지에서는 'main-page-style' 클래스를 추가
-        document
-            .querySelector(".banner-toggle-container")
-            .classList.add("d-none");
-        document.querySelector("#sideNav").style.top = "80px";
-    } else {
-        // 다른 페이지에서는 'other-page-style' 클래스를 추가
-        document
-            .querySelector(".banner-toggle-container")
-            .classList.remove("d-none");
-    }
+  // 현재 URL을 체크하여 조건에 따라 스타일변경
+  if (window.location.pathname !== "/html/main.html") {
+    document.querySelector("#sideNav").style.top = "80px";
+  }
 });
 
-// 위치인증
+// 로그아웃
 const $logoutBtn = document.querySelector("#logoutBtn");
 $logoutBtn.addEventListener("click", function (e) {
     e.preventDefault();
@@ -154,7 +145,7 @@ $logoutBtn.addEventListener("click", function (e) {
             console.error(err);
         });
 });
-
+// 위치인증
 const $locationVerifyBtn = document.querySelector("#locationVerifyBtn");
 $locationVerifyBtn.addEventListener("click", function (e) {
     e.preventDefault();
