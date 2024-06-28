@@ -43,7 +43,7 @@
     		  userId: "서상원"
       };
       axios
-        .put(uri, { params })
+        .put(uri, params)
         .then((response) => {
           console.log(response.data);
         })
