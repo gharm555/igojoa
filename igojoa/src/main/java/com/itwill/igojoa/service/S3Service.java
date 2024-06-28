@@ -21,14 +21,14 @@ public class S3Service {
     private String bucketName = "igojoa";
     private final AmazonS3 amazonS3;
 
-    private String changedImageName(String userId, String originName) { // 이미지 이름 중복 방지를 위해 랜덤으로 생성
-        return userId + "_" + originName;
+    private String changedImageName(String UsersId, String originName) { // 이미지 이름 중복 방지를 위해 랜덤으로 생성
+        return UsersId + "_" + originName;
     }
 
-    private String uploadImageToS3(MultipartFile image, String userId) {
+    private String uploadImageToS3(MultipartFile image, String UsersId) {
         String originName = image.getOriginalFilename();
         String extension = originName.substring(originName.lastIndexOf("."));
-        String changedName = changedImageName(userId, originName);
+        String changedName = changedImageName(UsersId, originName);
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType("image/" + extension);
         try (InputStream inputStream = image.getInputStream()) {
@@ -67,4 +67,5 @@ public class S3Service {
     public String getUserProfileDefaultImageUrl() {
         return amazonS3.getUrl(bucketName, "default.jpg").toString();
     }
+    
 }

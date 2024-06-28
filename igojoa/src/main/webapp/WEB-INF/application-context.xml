@@ -17,7 +17,6 @@
     <bean id="ds" class="com.zaxxer.hikari.HikariDataSource">
         <constructor-arg ref="hikariConfig" />
     </bean>
-   
     <bean id="session" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="ds" />
         <property name="mapperLocations" value="classpath:mappers/**/*.xml" />

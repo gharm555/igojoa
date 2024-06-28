@@ -31,6 +31,8 @@
 			type="com.itwill.igojoa.entity.Reviews" />
 		<typeAlias alias="UsersLoginDto"
 			type="com.itwill.igojoa.dto.users.UsersLoginDto" />
+		<typeAlias alias="UsersInfoDto"
+			type="com.itwill.igojoa.dto.users.UsersInfoDto" />
 		<typeAlias alias="PlaceListDto"
 			type="com.itwill.igojoa.dto.place.PlaceListDto" />
 		<typeAlias alias="PlaceSpaceDto"

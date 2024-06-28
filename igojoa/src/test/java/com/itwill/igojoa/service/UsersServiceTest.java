@@ -15,20 +15,20 @@ import lombok.extern.slf4j.Slf4j;
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/application-context.xml" })
 public class UsersServiceTest {
     @Autowired
-    private UsersService userService;
+    private UsersService usersService;
 
     // @Test
     public void create() {
         Users user = Users.builder().userId("asdhjzxcnbaus").password("test").email("zxcx").phoneNumber("as")
                 .nickName("sssss")
                 .build();
-        int result = userService.create(user);
+        int result = usersService.create(user);
         log.info("result: {}", result);
     }
 
     @Test
     public void selectByUserId() {
-        Users user = userService.selectByUserId("asd");
+        Users user = usersService.selectByUserId("asd");
         log.info("user: {}", user);
     }
 }

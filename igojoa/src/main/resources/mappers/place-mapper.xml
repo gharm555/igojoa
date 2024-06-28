@@ -9,7 +9,7 @@
 		p.simpleAddress ,
 		ps.favorites ,
 		ps2.totalVisit ,
-		br.userId as
+		br.UsersId as
 		bestReviewer,
 		br.review ,
 		br.modifiedAt as reviewModifiedAt,
@@ -31,7 +31,7 @@
 		FROM places p
 		LEFT JOIN placeScores ps
 		ON ps.placeName = p.placeName AND
-		ps.USERID = '오진호'
+		ps.UsersID = '오진호'
 		LEFT JOIN (
 		SELECT verifiedPlace ,
 		COUNT(verifiedPlace) as totalVisit
@@ -42,7 +42,7 @@
 		ON ps2.verifiedPlace = p.placeName
 		LEFT JOIN (
 		SELECT
-		r.placeName ,r.userId ,r.review ,r.modifiedAt ,rl.bestLike
+		r.placeName ,r.UsersId ,r.review ,r.modifiedAt ,rl.bestLike
 		FROM reviews
 		r
 		INNER JOIN (
@@ -78,7 +78,7 @@
 		rl.placeName = maxResults.placeName AND rl.cntLike =
 		maxResults.maxLike
 		) rl
-		ON r.placeName = rl.placeName AND r.userId =
+		ON r.placeName = rl.placeName AND r.UsersId =
 		rl.reviewAuthor
 		) br
 		ON br.placeName = p.placeName

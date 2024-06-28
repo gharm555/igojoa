@@ -149,7 +149,7 @@ function register() {
   }
 
   const formData = new FormData($registerForm);
-  const userData = {
+  const UsersData = {
     userId: $userId.value,
     password: $password.value,
     email: $email.value,

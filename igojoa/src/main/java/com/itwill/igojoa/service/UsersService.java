@@ -2,6 +2,7 @@ package com.itwill.igojoa.service;
 
 import org.springframework.stereotype.Service;
 
+import com.itwill.igojoa.dto.users.UsersInfoDto;
 import com.itwill.igojoa.entity.Users;
 import com.itwill.igojoa.repository.PointsDao;
 import com.itwill.igojoa.repository.UsersDao;
@@ -32,6 +33,10 @@ public class UsersService {
 
 	public Users selectByIdAndPassword(Users user) {
 		return userDao.selectByIdAndPassword(user);
+	}
+
+	public Users getUserInfo(String userId) {
+		return userDao.getUserInfo(userId);
 	}
 
 	public String findUserId(String email, String nickName) {

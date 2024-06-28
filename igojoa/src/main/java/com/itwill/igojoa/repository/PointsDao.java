@@ -1,8 +1,11 @@
 package com.itwill.igojoa.repository;
 
+import com.itwill.igojoa.entity.Points;
 import java.time.LocalDateTime;
 
 public interface PointsDao {
+	Points getPointsByUserId(String userId);
+
     // 회원가입시 points 테이블에 기본값으로 유저추가
     void addUser(String userId);
 
