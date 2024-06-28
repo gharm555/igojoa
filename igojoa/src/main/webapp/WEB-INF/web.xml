@@ -28,7 +28,15 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
+	<filter>
+		<display-name>AuthFilter</display-name>
+		<filter-name>AuthFilter</filter-name>
+		<filter-class>com.itwill.igojoa.filter.AuthFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AuthFilter</filter-name>
+		<url-pattern>/user/postDetail</url-pattern>
+	</filter-mapping>
 	<!-- Listener 설정 -->
 	<!-- 스프링 프레임워크의 컨텍스트 로더 리스너 설정: WAS에서 ContextLoaded 이벤트가 발생했을 때, 컨텍스트 파라미터들 
 		중에서 contextConfiguration 파라미터에 설정된 파일 application-context.xml 파일을 읽음. -->

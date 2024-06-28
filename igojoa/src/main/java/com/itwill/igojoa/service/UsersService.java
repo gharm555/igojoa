@@ -16,6 +16,10 @@ public class UsersService {
 	private final UsersDao userDao;
 	private final PointsDao pointsDao;
 
+	public int sessionTorF(String userId) {
+		return userDao.sessionTorF(userId);
+	}
+
 	public int create(Users user) {
 		int result = userDao.create(user);
 		pointsDao.addUser(user.getUserId());
@@ -58,4 +62,7 @@ public class UsersService {
 		return userDao.checkPhoneNumber(phoneNumber);
 	}
 
+	public int deleteUser(String userId) {
+		return userDao.deleteUser(userId);
+	}
 }
