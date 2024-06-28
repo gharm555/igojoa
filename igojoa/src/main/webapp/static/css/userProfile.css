@@ -252,11 +252,11 @@ h2 {
   margin-bottom: 10px;
 }
 
-.circular-icon {
+.circular-icon {    /*  뱃지 */
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: #4a90e2;
+  background-color: #330e1f;
   color: white;
   display: flex;
   justify-content: center;

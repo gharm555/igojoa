@@ -41,15 +41,15 @@ $registerForm.addEventListener("submit", function (event) {
 function register() {
   const formData = new FormData($registerForm);
   const UsersData = {
-    UsersId: $UsersId.value,
+    userId: $userId.value,
     password: $password.value,
     email: $email.value,
     phoneNumber: $phone1.value + $phone2.value + $phone3.value,
     nickName: $nickName.value,
   };
-  console.log(userData);
+  console.log(UsersData);
   if (
-    !UsersData.UsersId ||
+    !UsersData.userId ||
     !UsersData.password ||
     !UsersData.email ||
     !UsersData.phoneNumber ||
@@ -72,7 +72,7 @@ function register() {
       console.log(res);
       //TODO: alert 창 모달로 바꾸기
       alert("회원가입 성공");
-      $UsersId.value = "";
+      $userId.value = "";
       $password.value = "";
       $email.value = "";
       $nickName.value = "";
@@ -85,7 +85,7 @@ function register() {
       console.log(err);
       //TODO: alert 창 모달로 바꾸기
       alert("회원가입 실패");
-      $UsersId.value = "";
+      $userId.value = "";
       $password.value = "";
       $email.value = "";
       $nickName.value = "";

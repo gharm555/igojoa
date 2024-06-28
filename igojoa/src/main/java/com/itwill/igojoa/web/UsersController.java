@@ -50,6 +50,7 @@ public class UsersController {
 		// 개인마다 다른 정보는 session에 저장하는게 맞다 - advice
 		session.setAttribute("userProfileUrl", user.getUserProfileUrl());
 		session.setAttribute("nickName", user.getNickName());
+		session.setAttribute("currentsPoints", points.getCurrentsPoints());
 		
 		model.addAttribute("userInfo", result);
 

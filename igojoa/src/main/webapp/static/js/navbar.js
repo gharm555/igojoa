@@ -9,25 +9,25 @@ const $goPopular = document.querySelector("#goPopular");
 const $goGame = document.querySelector("#goGame");
 const $goFAQ = document.querySelector("#goFAQ");
 
-$goMain.addEventListener("click", function () {
+$goMain.addEventListener("click", function (event) {
     event.preventDefault();
     document
         .getElementById("main-section")
         .scrollIntoView({ behavior: "smooth" });
 });
-$goPopular.addEventListener("click", function () {
+$goPopular.addEventListener("click", function (event) {
     event.preventDefault();
     document
         .getElementById("image-gallery-section")
         .scrollIntoView({ behavior: "smooth" });
 });
-$goGame.addEventListener("click", function () {
+$goGame.addEventListener("click", function (event) {
     event.preventDefault();
     document
         .getElementById("lotto-section")
         .scrollIntoView({ behavior: "smooth" });
 });
-$goFAQ.addEventListener("click", function () {
+$goFAQ.addEventListener("click", function (event) {
     event.preventDefault();
     document
         .getElementById("faq-section")
@@ -224,57 +224,7 @@ function showError(error) {
     }
 }
 
-// TODO: 마이페이지로 이동하기 한 뒤 내 정보 그리기
-// const $goUserProfileBtn = document.querySelector("#goUserProfileBtn");
-// $goUserProfileBtn.addEventListener("click", function () {
-//     axios
-//         .post("/user/userProfile", {})
-//         .then((response) => {
-//             console.log("User Info:", response.data);
-//             const redirectUrl = response.headers["location"];
-//             if (redirectUrl) {
-//                 window.location.href = redirectUrl;
-//             }
-//         })
-//         .catch((error) => {
-//             console.error("Error fetching user info:", error);
-//         });
-// });
-
-// function loadUserProfile() {
-//     axios
-//         .post("/user/userProfile", {})
-//         .then((response) => {
-//             const userInfo = response.data;
-//             // Use userInfo to update the HTML
-//             $goUserProfileBtn.innerText = JSON.stringify(userInfo, null, 2);
-//         })
-//         .catch((error) => {
-//             console.error("Error loading user profile:", error);
-//         });
-// }
-
-// if (window.location.pathname === "/user/profilePage") {
-//     loadUserProfile();
-// }
-
-// const $goUserProfileBtn = document.querySelector("#goUserProfileBtn");
-
-// $goUserProfileBtn.addEventListener("click", function () {
-//     axios
-//         .post("/user/userProfile", {})
-//         .then((response) => {
-//             console.log("User Info:", response.data);
-//             const redirectUrl = response.headers["location"];
-//             if (redirectUrl) {
-//                 window.location.href = redirectUrl; // 서버에서 전달된 redirection을 처리
-//             }
-//         })
-//         .catch((error) => {
-//             console.error("Error fetching user info:", error);
-//         });
-// });
-
+// 마이페이지로 이동
 document.addEventListener("DOMContentLoaded", function () {
     const $goUserProfileBtn = document.querySelector("#goUserProfileBtn");
 
