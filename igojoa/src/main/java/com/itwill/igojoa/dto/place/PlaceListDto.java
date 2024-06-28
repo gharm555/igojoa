@@ -12,24 +12,31 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PlaceListDto {
 	private String placeName;
-	private String simpleAddress;
-	private Integer favorites;
-	private Integer totalVisit;
-	private String bestReviewer;
+	private String address;
+	private Integer userFavorite;
+	private Integer parkingAvailable;
+	private Integer view;
+	private Integer nightView;
+	private Integer freeEntry;
+	private Integer easyTransport;
+	private String iScore;
+	private Integer placeVerified;
+	private String userId;
 	private String review;
-	private LocalDateTime reviewModifiedAt;
-	private Integer reviewLikes;
-	private Float iScoreAvg;
-	private Integer sumParkingAvailable;
-	private Integer sumView;
-	private Integer sumNightView;
-	private Integer sumFreeEntry;
-	private Integer sumEasyTransport;
-	private Integer cntReview;
-	private String firstImgName;
+	private LocalDateTime modifiedAt;
+	private Integer likeCount;
 	private String firstUrl;
-	private String secondImgName;
 	private String secondUrl;
-	private String thirdImgName;
 	private String thirdUrl;
+
+	public static PlaceListDto sendHomeMainContent(PlaceListDto placeListDto) {
+		if (placeListDto.getIScore().equals("1")) {
+			placeListDto.setIScore("하");
+		} else if (placeListDto.getIScore().equals("2")) {
+			placeListDto.setIScore("중");
+		} else if (placeListDto.getIScore().equals("3")) {
+			placeListDto.setIScore("상");
+		} 
+		return placeListDto;
+	}
 }

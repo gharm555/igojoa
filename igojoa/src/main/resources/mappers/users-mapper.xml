@@ -74,4 +74,5 @@
 		FROM users
 		WHERE userId = #{userId}
 	</select>
+
 </mapper>

@@ -3,33 +3,52 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
-        http://mybatis.org/schema/mybatis-spring https://mybatis.org/schema/mybatis-spring.xsd">
-    <!-- bean definitions here -->
-    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-        <property name="jdbcUrl" value="jdbc:mysql://${db.host}:3306/${db.schema}" />
-        <property name="username" value="${db.username}" />
-        <property name="password" value="${db.password}" />
-    </bean>
- 
-    <bean id="ds" class="com.zaxxer.hikari.HikariDataSource">
-        <constructor-arg ref="hikariConfig" />
-    </bean>
-    <bean id="session" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="ds" />
-        <property name="mapperLocations" value="classpath:mappers/**/*.xml" />
-        <property name="configLocation" value="classpath:mybatis-config.xml" />
-    </bean>
-    <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
-    </bean>
-    <mybatis:scan base-package="com.itwill.igojoa.repository" />
-    <context:component-scan base-package="com.itwill.igojoa.service" />
-    <context:component-scan base-package="com.itwill.igojoa.config" />
-    <bean class="org.springframework.context.annotation.AnnotationConfigApplicationContext">
-        <constructor-arg value="com.itwill.igojoa.config.AwsS3Config"/>
-    </bean>
-    <context:property-placeholder
-	location="classpath:/application-aws.properties"/>
+           http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+           http://mybatis.org/schema/mybatis-spring https://mybatis.org/schema/mybatis-spring.xsd
+           http://www.springframework.org/schema/batch https://www.springframework.org/schema/batch/spring-batch.xsd
+           http://www.springframework.org/schema/task https://www.springframework.org/schema/task/spring-task.xsd">
+	<!-- bean definitions here -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName"
+			value="com.mysql.cj.jdbc.Driver" />
+		<property name="jdbcUrl"
+			value="jdbc:mysql://igojoa.c3gagc46czkf.ap-northeast-2.rds.amazonaws.com:3306/igojoa" />
+		<property name="username" value="igojoa" />
+		<property name="password" value="igojoa" />
+	</bean>
+	<bean id="ds" class="com.zaxxer.hikari.HikariDataSource">
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+	<bean id="session"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="ds" />
+		<property name="mapperLocations"
+			value="classpath:mappers/**/*.xml" />
+		<property name="configLocation"
+			value="classpath:mybatis-config.xml" />
+	</bean>
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+	</bean>
+	<bean
+		class="org.springframework.context.annotation.AnnotationConfigApplicationContext">
+		<constructor-arg
+			value="com.itwill.igojoa.config.AwsS3Config" />
+	</bean>
+
+	<task:annotation-driven />
+
+	<mybatis:scan base-package="com.itwill.igojoa.repository" />
+	<context:component-scan
+		base-package="com.itwill.igojoa.service" />
+	<context:component-scan
+		base-package="com.itwill.igojoa.config" />
+	<context:property-placeholder
+		location="classpath:/application-aws.properties" />
+	<context:component-scan
+		base-package="com.itwill.igojoa.scheduler" />
+
 </beans>

@@ -7,6 +7,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.itwill.igojoa.entity.Users;
+import com.itwill.igojoa.repository.UsersDao;
 
 import lombok.extern.slf4j.Slf4j;
 
