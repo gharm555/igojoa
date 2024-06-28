@@ -16,8 +16,8 @@
 			type="com.itwill.igojoa.entity.Place" />
 		<typeAlias alias="PlaceImages"
 			type="com.itwill.igojoa.entity.PlaceImages" />
-		<typeAlias alias="PlaceScores"
-			type="com.itwill.igojoa.entity.PlaceScores" />
+		<typeAlias alias="PlacesFavorite"
+			type="com.itwill.igojoa.entity.PlacesFavorite" />
 		<typeAlias alias="PlaceVerified"
 			type="com.itwill.igojoa.entity.PlaceVerified" />
 		<typeAlias alias="Points"
@@ -40,6 +40,7 @@
 			type="com.itwill.igojoa.dto.users.UsersRegisterDto" />
 		<typeAlias alias="PlaceSearchDto"
 			type="com.itwill.igojoa.dto.place.PlaceSearchDto" />
+
 	</typeAliases>
 
 </configuration>

@@ -31,6 +31,9 @@ public class HomeController {
 		}
 		System.out.println("세션에 저장된 아이디: " + userId);
 
+		if (session.getAttribute("searchKeyword") != null) {
+			session.removeAttribute("searchKeyword");
+		}
 		// 홈 디폴트 리스트 세팅
 		final String addressCategory = ""; // 지역 카테고리
 		final String searchKeyword = ""; // 검색어

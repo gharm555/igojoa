@@ -75,10 +75,12 @@
 			ps.iScore DESC
 		</if>
 		<if test='sortKey.equals("userFavorite") and sortValue == 1'>
-			ORDER BY userFavorite DESC, ps.iScore DESC , ps.placeVerified DESC
+			ORDER BY userFavorite DESC, ps.iScore DESC ,
+			ps.placeVerified DESC
 		</if>
 		<if test='sortKey.equals("userFavorite") and sortValue == 0'>
-			ORDER BY userFavorite ASC, ps.iScore DESC , ps.placeVerified DESC
+			ORDER BY userFavorite ASC, ps.iScore DESC ,
+			ps.placeVerified DESC
 		</if>
 		<if test='sortKey.equals("reviewCnt") and sortValue == 1'>
 			ORDER BY reviewCnt DESC, userFavorite ASC, ps.iScore DESC
@@ -92,9 +94,23 @@
 	</select>
 	<select id="selectPlaceSpaceList" resultType="PlaceSpaceDto">
 		SELECT
-			placeName,
-			placeLatitude,
-			placeLongitude
+		placeName,
+		placeLatitude,
+		placeLongitude
 		FROM places
 	</select>
+	<!-- <insert id="clickHeart">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		INSERT INTO
+		placesFavorite (placeName,userId)
+		values(${placeName},
+		${userId})
+	</insert>
+	<delete id="deleteHeart">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		DELETE FROM placesFavorite WHERE
+		placeName = ${placeName} AND userid = ${userId}
+	</delete> -->
 </mapper>
