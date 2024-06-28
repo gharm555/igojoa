@@ -89,14 +89,12 @@ public class UsersController {
             if (user != null) {
                 session.setAttribute("userId", user.getUserId());
                 session.setAttribute("userProfileUrl", user.getUserProfileUrl());
-
                 boolean pointsAdded = pointsService.addLoginPoints(user.getUserId());
                 Map<String, Object> response = new HashMap<>();
                 response.put("success", true);
                 response.put("message", "로그인 성공");
                 response.put("target", target);
                 response.put("pointsMessage", pointsAdded ? "로그인 포인트가 추가되었습니다." : "오늘 이미 로그인 포인트를 받았습니다.");
-
                 return ResponseEntity.ok(response);
             } else {
                 return ResponseEntity.ok(Map.of("success", false, "message", "아이디 또는 비밀번호가 일치하지 않습니다."));
@@ -139,8 +137,8 @@ public class UsersController {
     }
 
     @PostMapping("/updatePassword")
-    public ResponseEntity<Integer> updatePassword(@RequestParam String userId,
-            @RequestParam String password) {
+    public ResponseEntity<Integer> updatePassword(@RequestParam(name= "userId") String userId,
+            @RequestParam(name="password") String password) {
         int result = userService.updatePassword(userId, password);
         if (result == 1) {
             return ResponseEntity.ok(result);
