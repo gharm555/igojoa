@@ -21,8 +21,9 @@ public class PlaceService {
 
 	public List<PlaceListDto> selectPlaceList(PlaceSearchDto placeSearchDto) {
 		log.debug("selectPlaceList()");
-		
-		Optional<List<PlaceListDto>> optionalPlaceListDto = Optional.ofNullable(placeDao.selectPlaceList(placeSearchDto));
+
+		Optional<List<PlaceListDto>> optionalPlaceListDto = Optional
+				.ofNullable(placeDao.selectPlaceList(placeSearchDto));
 		List<PlaceListDto> placeListDtos;
 
 		if (!optionalPlaceListDto.isEmpty()) {

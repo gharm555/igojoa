@@ -146,5 +146,182 @@
 		br.modifiedAt = r.modifiedAt,
 		br.likeCount = r.likeCnt
 	</update>
-
+	
+	<update id="updateBestBadge">
+		UPDATE placesStats ps
+		JOIN (
+		SELECT
+		placeName,
+		CASE
+		WHEN
+		parkingAvailable >= view
+		AND parkingAvailable >= nightView
+		AND
+		parkingAvailable >= freeEntry
+		AND parkingAvailable >= easyTransport
+		THEN '주차가능'
+		WHEN view >= parkingAvailable
+		AND view >= nightView
+		AND view
+		>= freeEntry
+		AND view >= easyTransport THEN '경치좋음'
+		WHEN nightView >=
+		parkingAvailable
+		AND nightView >= view
+		AND nightView >= freeEntry
+		AND
+		nightView >= easyTransport THEN '야경좋음'
+		WHEN freeEntry >=
+		parkingAvailable
+		AND freeEntry >= view
+		AND freeEntry >= nightView
+		AND
+		freeEntry >= easyTransport THEN '무료입장'
+		WHEN easyTransport >=
+		parkingAvailable
+		AND easyTransport >= view
+		AND easyTransport >=
+		nightView
+		AND easyTransport >= freeEntry THEN '교통원활'
+		END AS
+		highest_column,
+		CASE
+		WHEN parkingAvailable >= view
+		AND parkingAvailable
+		>= nightView
+		AND parkingAvailable >= freeEntry
+		AND parkingAvailable >=
+		easyTransport THEN
+		CASE
+		WHEN view >= nightView
+		AND view >= freeEntry
+		AND
+		view >= easyTransport THEN '경치좋음'
+		WHEN nightView >= view
+		AND nightView
+		>= freeEntry
+		AND nightView >= easyTransport THEN '야경좋음'
+		WHEN freeEntry
+		>= view
+		AND freeEntry >= nightView
+		AND freeEntry >= easyTransport THEN
+		'무료입장'
+		WHEN easyTransport >= view
+		AND easyTransport >= nightView
+		AND
+		easyTransport >= freeEntry THEN '교통원활'
+		END
+		WHEN view >= parkingAvailable
+		AND view >= nightView
+		AND view >= freeEntry
+		AND view >= easyTransport
+		THEN
+		CASE
+		WHEN parkingAvailable >= nightView
+		AND parkingAvailable >=
+		freeEntry
+		AND parkingAvailable >= easyTransport THEN '주차가능'
+		WHEN
+		nightView >= parkingAvailable
+		AND nightView >= freeEntry
+		AND nightView
+		>= easyTransport THEN '야경좋음'
+		WHEN freeEntry >= parkingAvailable
+		AND
+		freeEntry >= nightView
+		AND freeEntry >= easyTransport THEN '무료입장'
+		WHEN
+		easyTransport >= parkingAvailable
+		AND easyTransport >= nightView
+		AND
+		easyTransport >= freeEntry THEN '교통원활'
+		END
+		WHEN nightView >=
+		parkingAvailable
+		AND nightView >= view
+		AND nightView >= freeEntry
+		AND
+		nightView >= easyTransport THEN
+		CASE
+		WHEN parkingAvailable >= view
+		AND
+		parkingAvailable >= freeEntry
+		AND parkingAvailable >= easyTransport
+		THEN '주차가능'
+		WHEN view >= parkingAvailable
+		AND view >= freeEntry
+		AND view
+		>= easyTransport THEN '경치좋음'
+		WHEN freeEntry >= parkingAvailable
+		AND
+		freeEntry >= view
+		AND freeEntry >= easyTransport THEN '무료입장'
+		WHEN
+		easyTransport >= parkingAvailable
+		AND easyTransport >= view
+		AND
+		easyTransport >= freeEntry THEN '교통원활'
+		END
+		WHEN freeEntry >=
+		parkingAvailable
+		AND freeEntry >= view
+		AND freeEntry >= nightView
+		AND
+		freeEntry >= easyTransport THEN
+		CASE
+		WHEN parkingAvailable >= view
+		AND
+		parkingAvailable >= nightView
+		AND parkingAvailable >= easyTransport
+		THEN '주차가능'
+		WHEN view >= parkingAvailable
+		AND view >= nightView THEN
+		'경치좋음'
+		AND view >= easyTransport
+		WHEN nightView >= parkingAvailable
+		AND
+		nightView >= view
+		AND nightView >= easyTransport THEN '야경좋음'
+		WHEN
+		easyTransport >= parkingAvailable
+		AND easyTransport >= view
+		AND
+		easyTransport >= nightView THEN '교통원활'
+		END
+		WHEN easyTransport >=
+		parkingAvailable
+		AND easyTransport >= view
+		AND easyTransport >=
+		nightView
+		AND easyTransport >= freeEntry THEN
+		CASE
+		WHEN parkingAvailable
+		>= view
+		AND parkingAvailable >= nightView
+		AND parkingAvailable >=
+		freeEntry THEN '교통원활'
+		WHEN view >= parkingAvailable
+		AND view >=
+		nightView
+		AND view >= freeEntry THEN '경치좋음'
+		WHEN nightView >=
+		parkingAvailable
+		AND nightView >= view
+		AND nightView >= freeEntry THEN
+		'야경좋음'
+		WHEN freeEntry >= parkingAvailable
+		AND freeEntry >= view
+		AND
+		freeEntry >= nightView THEN '무료입장'
+		END
+		END AS second_highest_column
+		FROM
+		placesStats
+		) AS subquery
+		ON ps.placeName = subquery.placeName
+		SET
+		ps.highestBadge = subquery.highest_column,
+		ps.secondHighestBadge =
+		subquery.second_highest_column;
+	</update>
 </mapper>

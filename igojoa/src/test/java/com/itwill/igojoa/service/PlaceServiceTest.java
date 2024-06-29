@@ -37,11 +37,20 @@ public class PlaceServiceTest {
 				.rowCnt(rowCnt).build();
 
 		List<PlaceListDto> res = placeService.selectPlaceList(placeSearchDto);
-
+		
 		System.out.println("\n\n\n\n\n");
 		for (PlaceListDto placeListDto : res) {
 			System.out.println(placeListDto);
 		}
+		System.out.println("\n\n\n\n\n");
+	}
+
+//	@Test
+	public void placeListDtoTest() {
+		PlaceListDto dto = PlaceListDto.builder().placeName("??").iScore(null).build();
+		PlaceListDto p = PlaceListDto.sendHomeMainContent(dto);
+		System.out.println("\n\n\n\n\n");
+		System.out.println(p);
 		System.out.println("\n\n\n\n\n");
 	}
 }

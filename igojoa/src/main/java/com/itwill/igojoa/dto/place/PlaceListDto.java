@@ -14,11 +14,8 @@ public class PlaceListDto {
 	private String placeName;
 	private String address;
 	private Integer userFavorite;
-	private Integer parkingAvailable;
-	private Integer view;
-	private Integer nightView;
-	private Integer freeEntry;
-	private Integer easyTransport;
+	private String highestBadge;
+	private String secondHighestBadge;
 	private String iScore;
 	private Integer placeVerified;
 	private String userId;
@@ -30,13 +27,17 @@ public class PlaceListDto {
 	private String thirdUrl;
 
 	public static PlaceListDto sendHomeMainContent(PlaceListDto placeListDto) {
+		if (placeListDto.getIScore() == null) {
+			placeListDto.setIScore("중");
+			return placeListDto;
+		}
 		if (placeListDto.getIScore().equals("1")) {
 			placeListDto.setIScore("하");
 		} else if (placeListDto.getIScore().equals("2")) {
 			placeListDto.setIScore("중");
 		} else if (placeListDto.getIScore().equals("3")) {
 			placeListDto.setIScore("상");
-		} 
+		}
 		return placeListDto;
 	}
 }

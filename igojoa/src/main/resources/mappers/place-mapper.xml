@@ -17,11 +17,8 @@
 		CONCAT(p.largeAddress , ' ', p.midiumAddress) AS
 		address,
 		COUNT(pf.userId) as userFavorite,
-		ps.parkingAvailable ,
-		ps.`view` ,
-		ps.nightView ,
-		ps.freeEntry ,
-		ps.easyTransport ,
+		ps.highestBadge ,
+		ps.secondHighestBadge ,
 		ps.iScore ,
 		ps.review AS reviewCnt,
 		ps.placeVerified,
@@ -39,11 +36,13 @@
 		ON
 		pf.placeName =
 		p.placeName
-		AND pf.userId = '${userId}'
+		AND pf.userId =
+		'${userId}'
 		LEFT JOIN placesStats ps
 		ON
 		ps.placeName = p.placeName
-		LEFT JOIN
+		LEFT
+		JOIN
 		bestReviews br
 		ON
 		br.placeName =
@@ -99,18 +98,10 @@
 		placeLongitude
 		FROM places
 	</select>
-	<!-- <insert id="clickHeart">
-		<bind name="placeName" value="placeName" />
-		<bind name="userId" value="userId" />
-		INSERT INTO
-		placesFavorite (placeName,userId)
-		values(${placeName},
-		${userId})
-	</insert>
-	<delete id="deleteHeart">
-		<bind name="placeName" value="placeName" />
-		<bind name="userId" value="userId" />
-		DELETE FROM placesFavorite WHERE
-		placeName = ${placeName} AND userid = ${userId}
-	</delete> -->
+	<!-- <insert id="clickHeart"> <bind name="placeName" value="placeName" /> 
+		<bind name="userId" value="userId" /> INSERT INTO placesFavorite (placeName,userId) 
+		values(${placeName}, ${userId}) </insert> <delete id="deleteHeart"> <bind 
+		name="placeName" value="placeName" /> <bind name="userId" value="userId" 
+		/> DELETE FROM placesFavorite WHERE placeName = ${placeName} AND userid = 
+		${userId} </delete> -->
 </mapper>
