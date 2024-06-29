@@ -10,7 +10,7 @@
     <h1 id="asd">아이고조아입니다</h1>
     <h1>테스트입니다</h1>
     <c:forEach items="${ placesInfo }" var="p">
-      <div style="display: flex">
+      <div id="qwe" style="display: flex">
         <div>장소이름: ${ p.placeName }</div>
         <div>주소: ${p.address}</div>
         <div>하트: ${p.userFavorite}</div>
