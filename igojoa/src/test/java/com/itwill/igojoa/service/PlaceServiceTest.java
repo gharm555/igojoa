@@ -20,7 +20,7 @@ public class PlaceServiceTest {
 	@Autowired
 	private PlaceService placeService;
 
-	@Test
+//	@Test
 	public void showPlaceListTest() {
 		log.debug("showPlaceListTest()");
 		// 메인페이지 리스트
@@ -45,7 +45,7 @@ public class PlaceServiceTest {
 		System.out.println("\n\n\n\n\n");
 	}
 
-//	@Test
+	@Test
 	public void placeListDtoTest() {
 		PlaceListDto dto = PlaceListDto.builder().placeName("??").iScore(null).build();
 		PlaceListDto p = PlaceListDto.sendHomeMainContent(dto);

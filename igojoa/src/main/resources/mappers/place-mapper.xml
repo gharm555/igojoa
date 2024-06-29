@@ -98,10 +98,16 @@
 		placeLongitude
 		FROM places
 	</select>
-	<!-- <insert id="clickHeart"> <bind name="placeName" value="placeName" /> 
-		<bind name="userId" value="userId" /> INSERT INTO placesFavorite (placeName,userId) 
-		values(${placeName}, ${userId}) </insert> <delete id="deleteHeart"> <bind 
-		name="placeName" value="placeName" /> <bind name="userId" value="userId" 
-		/> DELETE FROM placesFavorite WHERE placeName = ${placeName} AND userid = 
-		${userId} </delete> -->
+	<insert id="clickHeart">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		INSERT INTO placesFavorite (placeName,userId)
+		values(#{placeName}, #{userId})
+	</insert>
+	<delete id="deleteHeart">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		DELETE FROM placesFavorite WHERE placeName = #{placeName} AND userId =
+		#{userId}
+	</delete>
 </mapper>

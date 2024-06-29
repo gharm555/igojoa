@@ -47,7 +47,7 @@ public class HomeController {
 				.rowCnt(rowCnt).build();
 		List<PlaceListDto> res = placeService.selectPlaceList(placeSearchDto);
 
-		model.addAttribute("list", res);
+		model.addAttribute("placesInfo", res);
 		System.out.println(res);
 
 		return "home";
