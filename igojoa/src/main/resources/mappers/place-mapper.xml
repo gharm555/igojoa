@@ -91,6 +91,7 @@
 		${startRowValue} ,
 		${rowCnt}
 	</select>
+
 	<select id="selectPlaceSpaceList" resultType="PlaceSpaceDto">
 		SELECT
 		placeName,
@@ -98,16 +99,68 @@
 		placeLongitude
 		FROM places
 	</select>
+
 	<insert id="clickHeart">
 		<bind name="placeName" value="placeName" />
 		<bind name="userId" value="userId" />
 		INSERT INTO placesFavorite (placeName,userId)
-		values(#{placeName}, #{userId})
+		values('${placeName}',
+		'${userId}')
 	</insert>
+
 	<delete id="deleteHeart">
 		<bind name="placeName" value="placeName" />
 		<bind name="userId" value="userId" />
-		DELETE FROM placesFavorite WHERE placeName = #{placeName} AND userId =
-		#{userId}
+		DELETE FROM placesFavorite WHERE placeName = '${placeName}' AND userId
+		=
+		'${userId}'
 	</delete>
+
+	<select id="selectPlaceDetail" resultType="PlaceDetailDto">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		SELECT
+		p.placeName ,
+		CONCAT(p.largeAddress , ' ',
+		p.midiumAddress, ' ',
+		p.smallAddress) AS address,
+		p.placeDescription ,
+		p.placeLatitude ,
+		p.placeLongitude ,
+		p.operatingHours,
+		ps.parkingAvailable AS
+		totalParkingAvailable ,
+		ps.`view` AS totalView ,
+		ps.nightView AS
+		totalNightView ,
+		ps.freeEntry AS totalFreeEntry ,
+		ps.easyTransport AS
+		totalEasyTransport ,
+		ps.iScore AS avgIScore,
+		COALESCE(r.review, "") AS
+		review,
+		COALESCE(r.parkingAvailable, 0) AS
+		parkingAvailable,
+		COALESCE(r.`view`, 0) AS `view`,
+		COALESCE(r.nightView, 0) AS nightView,
+		COALESCE(r.freeEntry, 0) AS
+		freeEntry,
+		COALESCE(r.easyTransport, 0) AS
+		easyTransport,
+		COALESCE(r.iScore, 2) AS iScore
+		FROM
+		places p
+		LEFT JOIN
+		placesStats ps
+		ON
+		ps.placeName = p.placeName
+		LEFT JOIN reviews r
+		ON
+		r.placeName =
+		p.placeName
+		AND r.userId = '${userId}'
+		WHERE
+		p.placeName = '${placeName}'
+	</select>
+
 </mapper>

@@ -40,7 +40,8 @@
 			type="com.itwill.igojoa.dto.users.UsersRegisterDto" />
 		<typeAlias alias="PlaceSearchDto"
 			type="com.itwill.igojoa.dto.place.PlaceSearchDto" />
+		<typeAlias alias="PlaceDetailDto"
+			type="com.itwill.igojoa.dto.place.PlaceDetailDto" />
 
 	</typeAliases>
-
 </configuration>

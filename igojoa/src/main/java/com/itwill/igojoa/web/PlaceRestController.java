@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.itwill.igojoa.dto.place.PlaceListDto;
 import com.itwill.igojoa.dto.place.PlaceSearchDto;
+import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
 import com.itwill.igojoa.service.PlaceService;
 import com.itwill.igojoa.service.UsersService;
 
@@ -30,7 +31,7 @@ public class PlaceRestController {
 
 	@GetMapping("/search")
 	public ResponseEntity<List<PlaceListDto>> searchList(@ModelAttribute PlaceSearchDto placeSearchDto) {
-		log.debug("searchList()??????????????");
+		log.debug("searchList()");
 		System.out.println(placeSearchDto);
 		String searchKeyword = placeSearchDto.getSearchKeyword();
 		if (searchKeyword == null) {
@@ -56,8 +57,9 @@ public class PlaceRestController {
 //				return ResponseEntity.badRequest().body(0);
 //			}
 //		}
-		userId = "테스터";
-		int res = placeService.clickHeart(placeName, userId);
+		userId = "테스터"; // 테스트 코드
+		PlacesFavoriteDto placesFavoriteDto = PlacesFavoriteDto.builder().placeName(placeName).userId(userId).build();
+		int res = placeService.clickHeart(placesFavoriteDto);
 		if (res == 1) {
 
 			return ResponseEntity.ok(res);
@@ -67,9 +69,9 @@ public class PlaceRestController {
 		}
 	}
 
-	@DeleteMapping("/deleteHeart/{encodedPlaceName}")
-	public ResponseEntity<Integer> deleteHeart(@PathVariable String encodedPlaceName) {
-		log.debug("\n\n" + encodedPlaceName + "\n\n");
+	@DeleteMapping("/deleteHeart/{placeName}")
+	public ResponseEntity<Integer> deleteHeart(@PathVariable String placeName) {
+		log.debug("\n\n" + placeName + "\n\n");
 		String userId = (String) session.getAttribute("userId");
 //		if (userId != null) {
 //			int sessionCheck = usersService.sessionTorF(userId);
@@ -78,8 +80,10 @@ public class PlaceRestController {
 //				return ResponseEntity.badRequest().body(0);
 //			}
 //		}
-		userId = "테스터";
-		int res = placeService.deleteHeart(encodedPlaceName, userId);
+		userId = "테스터"; // 테스트 코드
+		PlacesFavoriteDto placesFavoriteDto = PlacesFavoriteDto.builder().placeName(placeName).userId(userId).build();
+		System.out.println(placesFavoriteDto);
+		int res = placeService.deleteHeart(placesFavoriteDto);
 		if (res == 1) {
 
 			return ResponseEntity.ok(res);

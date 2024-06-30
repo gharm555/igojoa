@@ -8,24 +8,27 @@
   </head>
   <body>
     <h1 id="asd">아이고조아입니다</h1>
-    <h1>테스트입니다</h1>
+    <h1 id="qwe">테스트입니다</h1>
     <c:forEach items="${ placesInfo }" var="p">
-      <div id="qwe" style="display: flex">
-        <div>장소이름: ${ p.placeName }</div>
-        <div>주소: ${p.address}</div>
-        <div>하트: ${p.userFavorite}</div>
-        <div>1등뱃지: ${p.highestBadge}</div>
-        <div>2등뱃지: ${p.secondHighestBadge}</div>
-        <div>아이난이도: ${ p.IScore }</div>
-        <div>방문횟수: ${p.placeVerified}</div>
-        <div>베스트 리뷰 작성자: ${p.userId}</div>
-        <div>베스트 리뷰 글: ${p.review}</div>
-        <div>베스트 리뷰 작성시간: ${p.modifiedAt}</div>
-        <div>베스트 리뷰 좋아요 갯수: ${p.likeCount}</div>
-        <div>장소이미지1: ${p.firstUrl}</div>
-        <div>장소이미지2: ${p.secondUrl}</div>
-        <div>장소이미지3: ${p.thirdUrl}</div>
-      </div>
+      <c:url var="placeDetailsPage" value="/place/details">
+        <c:param name="placeName" value="${ p.placeName }"></c:param>
+      </c:url>
+      <a class="placeItems" style="display: flex" href="${ placeDetailsPage }">
+        <span>장소이름: ${ p.placeName }</span>
+        <span>주소: ${p.address}</span>
+        <span>하트: ${p.userFavorite}</span>
+        <span>1등뱃지: ${p.highestBadge}</span>
+        <span>2등뱃지: ${p.secondHighestBadge}</span>
+        <span>아이난이도: ${ p.IScore }</span>
+        <span>방문횟수: ${p.placeVerified}</span>
+        <span>베스트 리뷰 작성자: ${p.userId}</span>
+        <span>베스트 리뷰 글: ${p.review}</span>
+        <span>베스트 리뷰 작성시간: ${p.modifiedAt}</span>
+        <span>베스트 리뷰 좋아요 갯수: ${p.likeCount}</span>
+        <span>장소이미지1: ${p.firstUrl}</span>
+        <span>장소이미지2: ${p.secondUrl}</span>
+        <span>장소이미지3: ${p.thirdUrl}</span>
+      </a>
     </c:forEach>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

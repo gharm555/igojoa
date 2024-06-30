@@ -1,16 +1,16 @@
 package com.itwill.igojoa.service;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.util.UriUtils;
 
 import com.itwill.igojoa.dto.place.PlaceListDto;
 import com.itwill.igojoa.dto.place.PlaceSearchDto;
+import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
+import com.itwill.igojoa.entity.PlacesFavorite;
 import com.itwill.igojoa.repository.PlaceDao;
 
 import lombok.RequiredArgsConstructor;
@@ -40,20 +40,36 @@ public class PlaceService {
 	}
 
 	@Transactional
-	public int clickHeart(String placeName, String userId) {
-		int res;
-		res = placeDao.clickHeart(placeName, userId);
+	public int clickHeart(PlacesFavoriteDto placesFavoriteDto) {
+		Optional<PlacesFavoriteDto> optionalPlacesFavorite = Optional.ofNullable(placesFavoriteDto);
+		int res = 0;
+		PlacesFavorite placesFavorite;
+		if (!optionalPlacesFavorite.isEmpty()) {
+			placesFavoriteDto = optionalPlacesFavorite.get();
+			placesFavorite = placesFavoriteDto.toEntity(placesFavoriteDto);
+		} else {
+
+			return res;
+		}
+		res = placeDao.clickHeart(placesFavorite);
 
 		return res;
 	}
 
 	@Transactional
-	public int deleteHeart(String encodedPlaceName, String userId) {
-		String placeName = UriUtils.decode(encodedPlaceName, StandardCharsets.UTF_8);
-		int res;
-		res = placeDao.deleteHeart(placeName, userId);
+	public int deleteHeart(PlacesFavoriteDto placesFavoriteDto) {
+		Optional<PlacesFavoriteDto> optionalPlacesFavorite = Optional.ofNullable(placesFavoriteDto);
+		int res = 0;
+		PlacesFavorite placesFavorite;
+		if (!optionalPlacesFavorite.isEmpty()) {
+			placesFavoriteDto = optionalPlacesFavorite.get();
+			placesFavorite = placesFavoriteDto.toEntity(placesFavoriteDto);
+		} else {
+
+			return res;
+		}
+		res = placeDao.deleteHeart(placesFavorite);
 
 		return res;
 	}
-
 }
