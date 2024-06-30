@@ -7,11 +7,10 @@
     <title>아이고조아</title>
   </head>
   <body>
-    <h1 id="asd">아이고조아입니다</h1>
-    <h1 id="qwe">테스트입니다</h1>
+    <h1 id="asd">하트</h1>
+    <h1 id="qwe">검색 & 정렬</h1>
     <c:forEach items="${ placesInfo }" var="p">
-      <c:url var="placeDetailsPage" value="/place/details">
-        <c:param name="placeName" value="${ p.placeName }"></c:param>
+      <c:url var="placeDetailsPage" value="/place/details/${ p.placeName }">
       </c:url>
       <a class="placeItems" style="display: flex" href="${ placeDetailsPage }">
         <span>장소이름: ${ p.placeName }</span>

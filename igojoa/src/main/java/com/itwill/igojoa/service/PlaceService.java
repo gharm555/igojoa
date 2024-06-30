@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itwill.igojoa.dto.place.PlaceDetailDto;
 import com.itwill.igojoa.dto.place.PlaceListDto;
 import com.itwill.igojoa.dto.place.PlaceSearchDto;
 import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
@@ -71,5 +72,25 @@ public class PlaceService {
 		res = placeDao.deleteHeart(placesFavorite);
 
 		return res;
+	}
+
+	@Transactional
+	public PlaceDetailDto selectPlaceDetail(PlacesFavoriteDto placesFavoriteDto) {
+		Optional<PlacesFavoriteDto> optionalPlacesFavorite = Optional.ofNullable(placesFavoriteDto);
+		PlaceDetailDto placeDetailDto;
+		if (!optionalPlacesFavorite.isEmpty()) {
+			placesFavoriteDto = optionalPlacesFavorite.get();
+			Optional<PlaceDetailDto> optionalPlaceDetailDto = Optional
+					.ofNullable(placeDao.selectPlaceDetail(placesFavoriteDto));
+			if (!optionalPlaceDetailDto.isEmpty()) {
+				placeDetailDto = optionalPlaceDetailDto.get();
+			} else {
+				placeDetailDto = new PlaceDetailDto();
+			}
+		} else {
+			placeDetailDto = new PlaceDetailDto();
+		}
+
+		return placeDetailDto;
 	}
 }
