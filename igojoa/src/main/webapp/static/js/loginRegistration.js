@@ -116,7 +116,7 @@ function login() {
     .then((response) => {
       if (response.data.success) {
         console.log(response.data.pointsMessage);
-        window.location.href = response.data.target || '../';
+        window.location.href = '/';
       } else {
         $loginCheckMessage.innerHTML = '아이디 또는 비밀번호를 잘못 입력했습니다.<br>입력하신 내용을 다시 확인해주세요.';
         $loginCheckMessage.style.display = 'block';
@@ -149,14 +149,14 @@ function register() {
   }
 
   const formData = new FormData($registerForm);
-  const UsersData = {
+  const userData = {
     userId: $userId.value,
     password: $password.value,
     email: $email.value,
     phoneNumber: $phone1.value + $phone2.value + $phone3.value,
     nickName: $nickName.value,
   };
-  console.log(userData);
+  
   if (!userData.userId || !userData.password || !userData.email || !userData.phoneNumber || !userData.nickName) {
     $registerCheckMessage.textContent = '입력정보를 확인해주세요';
     $registerCheckMessage.style.display = 'block';
