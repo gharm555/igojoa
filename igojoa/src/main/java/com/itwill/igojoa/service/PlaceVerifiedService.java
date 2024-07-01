@@ -18,8 +18,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class PlaceVerifiedService {
-    private final PlaceVerifiedDao placeVerifiedDao;
-    private final PlaceDao placeDao;
+	private final PlaceVerifiedDao placeVerifiedDao;
+	private final PlaceDao placeDao;
 
     public boolean verifyUserLocation(double userLatitude, double userLongitude, String userId) {
         List<PlaceSpaceDto> places = placeDao.selectPlaceSpaceList();
@@ -43,14 +43,14 @@ public class PlaceVerifiedService {
         return false;
     }
 
-    private void insertUserLocation(double latitude, double longitude, String placeName, String userId) {
-        PlaceVerified placeVerified = new PlaceVerified();
-        placeVerified.setPlaceLatitude(latitude);
-        placeVerified.setPlaceLongitude(longitude);
-        placeVerified.setPlaceName(placeName);
-        placeVerified.setUserId(userId);
-        placeVerifiedDao.insert(placeVerified);
-    }
+	private void insertUserLocation(double latitude, double longitude, String placeName, String userId) {
+		PlaceVerified placeVerified = new PlaceVerified();
+		placeVerified.setPlaceLatitude(latitude);
+		placeVerified.setPlaceLongitude(longitude);
+		placeVerified.setPlaceName(placeName);
+		placeVerified.setUserId(userId);
+		placeVerifiedDao.insert(placeVerified);
+	}
 
     private boolean isWithin300Meters(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371; // 지구 반지름 (km)

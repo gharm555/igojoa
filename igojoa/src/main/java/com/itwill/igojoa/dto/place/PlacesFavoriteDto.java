@@ -19,4 +19,5 @@ public class PlacesFavoriteDto {
 		return PlacesFavorite.builder().placeName(placesFavoriteDto.getPlaceName())
 				.userId(placesFavoriteDto.getUserId()).build();
 	}
+
 }

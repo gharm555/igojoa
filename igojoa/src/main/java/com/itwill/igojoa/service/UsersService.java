@@ -70,5 +70,4 @@ public class UsersService {
 	public int deleteUser(String userId) {
 		return userDao.deleteUser(userId);
 	}
-
 }

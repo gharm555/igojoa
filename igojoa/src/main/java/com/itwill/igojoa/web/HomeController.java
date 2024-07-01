@@ -33,12 +33,15 @@ public class HomeController {
 		if (userId == null) {
 			System.out.println("세션에 저장된 아이디가 없습니다.");
 		}
-		System.out.println("세션에 저장된 아이디: " + userId);
 		if (userId != null) {
 			model.addAttribute("userProfileUrl", usersService.getUserInfo(userId).getUserProfileUrl());
 			model.addAttribute("points", pointsService.selectPoints(userId));
 		}
-
+		System.out.println("세션에 저장된 아이디: " + userId);
+		if (session.getAttribute("searchKeyword") != null) {
+			session.removeAttribute("searchKeyword");
+		}
+		
 		// 홈 디폴트 리스트 세팅
 		final String addressCategory = ""; // 지역 카테고리
 		final String searchKeyword = ""; // 검색어

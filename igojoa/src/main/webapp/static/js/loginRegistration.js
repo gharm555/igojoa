@@ -120,7 +120,9 @@ function login() {
     .then((response) => {
       if (response.data.success) {
         console.log(response.data.pointsMessage);
+
         window.location.href = contextPath + '/';
+
       } else {
         $loginCheckMessage.innerHTML = '아이디 또는 비밀번호를 잘못 입력했습니다.<br>입력하신 내용을 다시 확인해주세요.';
         $loginCheckMessage.style.display = 'block';

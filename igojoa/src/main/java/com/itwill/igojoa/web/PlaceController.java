@@ -14,7 +14,6 @@ import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
 import com.itwill.igojoa.service.PlaceService;
 import com.itwill.igojoa.service.PlaceVerifiedService;
 import com.itwill.igojoa.service.PointsService;
-import com.itwill.igojoa.service.UsersService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +24,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/place")
 @RequiredArgsConstructor
 public class PlaceController {
-    private final PlaceVerifiedService placeVerifiedService;
-    private final PointsService pointsService;
-    private final HttpSession session;
-    private final PlaceService placeService;
-
+	private final HttpSession session;
+	private final PlaceVerifiedService placeVerifiedService;
+	private final PlaceService placeService;
+	private final PointsService pointsService;
+	
     @PostMapping("/verifyLocation")
     public ResponseEntity<String> verifyPlace(@RequestParam(name = "latitude") double latitude,
             @RequestParam(name = "longitude") double longitude,
