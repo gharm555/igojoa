@@ -312,7 +312,7 @@
     <script src="${navbarJs}"></script>
     <c:url var="mainJs" value="/js/main.js" />
     <script src="${mainJs}"></script>
-    <c:url var="imageGalleryJs" value="/js/ImageGallery.js" />
+    <c:url var="imageGalleryJs" value="/js/image_gallery.js" />
     <script src="${imageGalleryJs}"></script>
     <c:url var="lottoJs" value="/js/lotto.js" />
     <script src="${lottoJs}"></script>
