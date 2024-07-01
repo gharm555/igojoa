@@ -47,6 +47,14 @@ public class PointsService {
 		return false;
 	}
 
+	// 위치 인증 시 포인트 적립
+	public ResponseEntity<Integer> addPlaceVerifiedPoints(String userId) {
+		int points = 1000;
+		int updateCount = pointsDao.addLoginPoints(userId, points);
+		log.debug("addPlaceVerifiedPoints 실행 결과: " + updateCount);
+		return updateCount > 0 ? ResponseEntity.ok(updateCount) : ResponseEntity.ok(0);
+	}
+
 	// 포인트 로그 삽입
 	public ResponseEntity<Integer> insertPointLog(String userId, String action, int points) {
 		int updateCount = pointsDao.insertPointLog(userId, action, points);
@@ -61,5 +69,18 @@ public class PointsService {
 		} else {
 			return ResponseEntity.ok(0);
 		}
+	}
+
+	// 회원 탈퇴 시 포인트 삭제
+	public int deletePoints(String userId) {
+		return pointsDao.deletePoints(userId);
+	}
+
+	public int deletePointsLog(String userId) {
+		return pointsDao.deletePointsLog(userId);
+	}
+
+	public String selectPoints(String userId) {
+		return pointsDao.selectPoints(userId);
 	}
 }

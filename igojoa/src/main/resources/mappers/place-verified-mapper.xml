@@ -7,4 +7,10 @@
         INSERT INTO placeVerified (userId, placeName, placeLatitude, placeLongitude)
         VALUES (#{userId}, #{placeName}, #{placeLatitude}, #{placeLongitude})
     </insert>
+    <delete id="deletePlaceVerified" parameterType="String">
+        DELETE FROM placeVerified WHERE userId = #{userId}
+    </delete>
+    <select id="existsTodayVerification" parameterType="String" resultType="boolean">
+        SELECT EXISTS (SELECT 1 FROM placeVerified WHERE userId = #{userId} AND placeName = #{placeName} AND DATE(verifiedTime) = CURDATE())
+    </select>
 </mapper>

@@ -21,4 +21,12 @@ public interface PointsDao {
     // 뽑기 포인트 차감
     int subtractPoints(String userId, int points);
 
+    // 회원 탈퇴 시 포인트 삭제
+    int deletePoints(String userId);
+
+    // 회원 탈퇴 시 포인트 로그 삭제
+    int deletePointsLog(String userId);
+
+    // 포인트 조회
+    String selectPoints(String userId);
 }

@@ -20,7 +20,6 @@
     <%@ include file="header.jspf" %>
     <h1>아이고조아입니다</h1>
     <h1>테스트입니다</h1>
-    <div id="qwe">1${ list[2] }</div>
     <!-- Include Font Awesome for icons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

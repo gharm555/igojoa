@@ -22,7 +22,7 @@
             <div class="dropdown-menu">
               <a class="dropdown-item" id="goUserProfileBtn">마이페이지</a>
               <a class="dropdown-item" id="locationVerifyBtn">위치인증</a>
-              <span class="dropdown-item">포인트정보: ${userInfo.currentsPoints}</span>
+              <span class="dropdown-item">포인트정보: ${points}</span>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" id="logoutBtn">로그아웃</a>
             </div>

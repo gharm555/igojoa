@@ -26,12 +26,16 @@ public class PlaceVerifiedService {
                     "Checking place: " + place.getPlaceName() + " at " + placeLatitude + ", " + placeLongitude);
             if (isWithin300Meters(userLatitude, userLongitude, placeLatitude, placeLongitude)) {
                 String placeName = place.getPlaceName();
-                System.out.println("User is within 300 meters of place: " + placeName);
+                System.out.println(placeName + "장소가 300m 이내에 있습니다.");
+                if (isAlreadyVerifiedToday(userId, placeName)) {
+                    System.out.println("이미 위치 인증 한 장소입니다.");
+                    return false;
+                }
                 insertUserLocation(userLatitude, userLongitude, placeName, userId);
                 return true;
             }
         }
-        System.out.println("User is not within 300 meters of any place");
+        System.out.println("300m 이내에 장소가 없습니다.");
         return false;
     }
 
@@ -55,5 +59,15 @@ public class PlaceVerifiedService {
         double distance = R * c * 1000; // 거리 (m)
         System.out.println("Calculated distance: " + distance + " meters");
         return distance <= 300;
+    }
+
+    // 위치 인증 시 이미 위치 인증 한 장소인지 확인
+    private boolean isAlreadyVerifiedToday(String userId, String placeName) {
+        return placeVerifiedDao.existsTodayVerification(userId, placeName);
+    }
+
+    // 회원 탈퇴 시 위치 인증 삭제
+    public int deletePlaceVerified(String userId) {
+        return placeVerifiedDao.deletePlaceVerified(userId);
     }
 }

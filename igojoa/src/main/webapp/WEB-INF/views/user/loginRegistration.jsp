@@ -408,7 +408,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
     <c:url var="loginRegistrationJs" value="/js/loginRegistration.js" />
     <script src="${loginRegistrationJs}"></script>
     <script>
-      const loginUserId = '${userId}';
+      const LoginUserId = '${userId}';
       const defaultImageUrl = '${defaultImageUrl}';
     </script>
   </body>

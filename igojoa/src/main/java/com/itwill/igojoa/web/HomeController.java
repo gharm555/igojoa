@@ -11,6 +11,7 @@ import com.itwill.igojoa.dto.place.PlaceListDto;
 import com.itwill.igojoa.dto.place.PlaceSearchDto;
 import com.itwill.igojoa.service.PlaceService;
 import com.itwill.igojoa.service.PointsService;
+import com.itwill.igojoa.service.UsersService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class HomeController {
 
 	private final PlaceService placeService;
 	private final PointsService pointsService;
+	private final UsersService usersService;
 
 	@GetMapping("/")
 	public String home(Model model, HttpSession session) {
@@ -32,6 +34,10 @@ public class HomeController {
 			System.out.println("세션에 저장된 아이디가 없습니다.");
 		}
 		System.out.println("세션에 저장된 아이디: " + userId);
+		if (userId != null) {
+			model.addAttribute("userProfileUrl", usersService.getUserInfo(userId).getUserProfileUrl());
+			model.addAttribute("points", pointsService.selectPoints(userId));
+		}
 
 		// 홈 디폴트 리스트 세팅
 		final String addressCategory = ""; // 지역 카테고리
@@ -57,8 +63,8 @@ public class HomeController {
 		System.out.println("game");
 		System.out.println(userId);
 		System.out.println(rank);
-		pointsService.subtractPoints(userId, 100);
-		pointsService.insertPointLog(userId, "뽑기", 100);
+		pointsService.subtractPoints(userId, 150);
+		pointsService.insertPointLog(userId, "뽑기", 150);
 		pointsService.insertPointLog(userId, rank, 0);
 		switch (rank) {
 			case "1":
