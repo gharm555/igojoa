@@ -172,14 +172,14 @@
             <div class="lotto-container">
                 <h1 class="lotto-h1 fs-1">로또</h1>
                 <div class="user-numbers">
-                    <label for="number-selects">번호를 선택하세요 (1-36):</label>
-                    <div id="number-selects" class="number-selects">
-                        <select class="number-select"></select>
-                        <select class="number-select"></select>
-                        <select class="number-select"></select>
-                        <select class="number-select"></select>
-                        <select class="number-select"></select>
-                        <select class="number-select"></select>
+                    <label for="number-inputs">번호를 선택하세요 (1-36):</label>
+                    <div id="number-inputs" class="number-inputs">
+                        <input type="number" class="number-input" min="1" max="36"></input>
+                        <input type="number" class="number-input" min="1" max="36"></input>
+                        <input type="number" class="number-input" min="1" max="36"></input>
+                        <input type="number" class="number-input" min="1" max="36"></input>
+                        <input type="number" class="number-input" min="1" max="36"></input>
+                        <input type="number" class="number-input" min="1" max="36"></input>
                     </div>
                     <button id="resetNumbersButton">번호 초기화</button>
                 </div>
@@ -189,8 +189,8 @@
                     <span class="bonus-label">보너스:</span>
                     <div id="bonus" class="ball-container"></div>
                 </div>
-                <div id="points"></div>
-                <div id="rank" class="rank"></div>
+                <div id="points" name="points">남은 포인트 : ${points}</div>
+                <div id="rank" class="rank" name="rank"></div>
                 <button id="playButton">추첨하기</button>
             </div>
         </section>
@@ -309,15 +309,17 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <c:url var="imageGalleryJs" value="/js/image_gallery.js" />
+    <c:url var="navbarJs" value="/js/navbar.js" />
     <script src="${navbarJs}"></script>
     <c:url var="mainJs" value="/js/main.js" />
     <script src="${mainJs}"></script>
-    <c:url var="navbarJs" value="/js/navbar.js" />
+    <c:url var="imageGalleryJs" value="/js/image_gallery.js" />
     <script src="${imageGalleryJs}"></script>
     <c:url var="lottoJs" value="/js/lotto.js" />
     <script src="${lottoJs}"></script>
     <script>
         const LoginUserId = '${userId}';
+        const points = '${points}';
     </script>
 </body>
 
