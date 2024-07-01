@@ -11,9 +11,12 @@
 	</select>
 	<!-- 회원가입 -->
 	<insert id="create" parameterType="Users">
-		INSERT INTO users (userId, password, email, phonenumber, nickname,
-		userProfileName, userProfileUrl) VALUES (#{userId}, SHA2(#{password},
-		256), #{email}, #{phoneNumber}, #{nickName}, #{userProfileName},
+		INSERT INTO users (userId,
+		password, email, phonenumber, nickname,
+		userProfileName,
+		userProfileUrl) VALUES (#{userId}, SHA2(#{password},
+		256), #{email},
+		#{phoneNumber}, #{nickName}, #{userProfileName},
 		#{userProfileUrl})
 	</insert>
 	<!-- 사용자 ID로 사용자 조회 -->
@@ -24,55 +27,81 @@
 	<!-- 사용자 ID와 비밀번호로 사용자 조회(로그인) -->
 	<select id="selectByIdAndPassword" resultType="Users"
 		parameterType="Users">
-		SELECT * FROM users WHERE USERID = #{userId} AND PASSWORD =
+		SELECT * FROM users WHERE USERID = #{userId} AND
+		PASSWORD =
 		SHA2(#{password}, 256)
 	</select>
 	<!-- 이메일과 닉네임으로 사용자 ID 조회 -->
 	<select id="findUserId" resultType="String"
 		parameterType="String">
-		SELECT userId FROM users WHERE EMAIL = #{email} AND NICKNAME = #{nickName}
+		SELECT userId FROM users WHERE EMAIL = #{email} AND
+		NICKNAME = #{nickName}
 	</select>
 	<!-- 사용자 ID, 이메일, 닉네임으로 사용자 조회 -->
 	<select id="verifyUser" resultType="boolean"
 		parameterType="String">
-		SELECT EXISTS(SELECT 1 FROM users WHERE USERID = #{userId} AND EMAIL =
+		SELECT EXISTS(SELECT 1 FROM users WHERE USERID =
+		#{userId} AND EMAIL =
 		#{email} AND NICKNAME = #{nickName})
 	</select>
 	<!-- 사용자 ID로 비밀번호 업데이트 -->
 	<update id="updatePassword" parameterType="String">
-		UPDATE users SET PASSWORD = SHA2(#{password}, 256) WHERE USERID = #{userId}
+		UPDATE users SET
+		PASSWORD = SHA2(#{password}, 256) WHERE USERID = #{userId}
 	</update>
 	<!-- 사용자 ID 존재 여부 확인 -->
 	<select id="checkUserId" resultType="boolean"
 		parameterType="String">
-		SELECT EXISTS(SELECT 1 FROM users WHERE USERID = #{userId})
+		SELECT EXISTS(SELECT 1 FROM users WHERE USERID =
+		#{userId})
 	</select>
 	<!-- 닉네임 존재 여부 확인 -->
 	<select id="checkNickName" resultType="boolean"
 		parameterType="String">
-		SELECT EXISTS(SELECT 1 FROM users WHERE NICKNAME = #{nickName})
+		SELECT EXISTS(SELECT 1 FROM users WHERE NICKNAME =
+		#{nickName})
 	</select>
 	<!-- 이메일 존재 여부 확인 -->
 	<select id="checkEmail" resultType="boolean"
 		parameterType="String">
-		SELECT EXISTS(SELECT 1 FROM users WHERE EMAIL = #{email})
+		SELECT EXISTS(SELECT 1 FROM users WHERE EMAIL =
+		#{email})
 	</select>
 	<!-- 핸드폰 번호 존재 여부 확인 -->
 	<select id="checkPhoneNumber" resultType="boolean"
 		parameterType="String">
-		SELECT EXISTS(SELECT 1 FROM users WHERE PHONENUMBER = #{phoneNumber})
+		SELECT EXISTS(SELECT 1 FROM users WHERE PHONENUMBER =
+		#{phoneNumber})
 	</select>
 	<!-- 사용자 ID로 사용자 삭제 -->
 	<delete id="deleteUser" parameterType="String">
-		DELETE FROM users WHERE USERID = #{userId}
+		DELETE FROM users WHERE
+		USERID = #{userId}
 	</delete>
-	
-	<!-- 앙 깃모띠 -->
-	<select id="getUserInfo" resultType="Users"
+
+	<!-- Users 정보와 Points 정보 가져오기 -->
+	<select id="getUserInfo" resultType="UsersInfoDto"
 		parameterType="String">
-		SELECT *
+		SELECT users.userId, users.email, users.phoneNumber,
+		users.userProfileUrl, users.nickName, points.currentsPoints,
+		points.cumulativePoint
 		FROM users
-		WHERE userId = #{userId}
+		INNER JOIN points ON users.userId =
+		points.userId
+		WHERE users.userId =
+		#{userId}
 	</select>
+
+	<!-- Users 정보 업데이트 하기 -->
+	<update id="updateUsers" parameterType="Users">
+		UPDATE users
+		<set>
+			<if test="nickName != null and nickName != ''"> nickName = #{nickName},</if>
+			<if test="email != null and email != ''"> email = #{email},</if>
+			<if test="phoneNumber != null and phoneNumber != ''"> phoneNumber = #{phoneNumber},</if>
+			<if test="password != null and password != ''"> password = SHA2(CONCAT('', #{password}), 256)</if>
+		</set>
+		WHERE userId = #{userId}
+	</update>
 
 </mapper>
