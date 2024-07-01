@@ -27,4 +27,11 @@ public class SchedulerService {
 		schedulerDao.updateBestReviews();
 		log.debug("베스트 리뷰 데이터 집계 종료");
 	}
+	
+	@Transactional
+	public void updateBestBadge() {
+		log.debug("베스트 뱃지 데이터 집계 시작");
+		schedulerDao.updatePlaceStats();
+		log.debug("베스트 뱃지 데이터 집계 종료");
+	}
 }

@@ -1,11 +1,15 @@
 package com.itwill.igojoa.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.itwill.igojoa.dto.place.PlaceSpaceDto;
+import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
 import com.itwill.igojoa.entity.PlaceVerified;
+import com.itwill.igojoa.entity.PlacesFavorite;
 import com.itwill.igojoa.repository.PlaceDao;
 import com.itwill.igojoa.repository.PlaceVerifiedDao;
 

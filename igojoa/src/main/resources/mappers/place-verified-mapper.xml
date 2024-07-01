@@ -13,4 +13,15 @@
     <select id="existsTodayVerification" parameterType="String" resultType="boolean">
         SELECT EXISTS (SELECT 1 FROM placeVerified WHERE userId = #{userId} AND placeName = #{placeName} AND DATE(verifiedTime) = CURDATE())
     </select>
+	<select id="visitVerificationConfirmation" resultType="Integer">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		SELECT
+		COUNT(*) as cntPlaceVerified
+		FROM
+		placeVerified pv
+		WHERE
+		pv.placeName = '${ placeName }'
+		AND pv.userId = '${ userId }'
+	</select>
 </mapper>
