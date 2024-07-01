@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwill.igojoa.repository.ReviewDao">
+	<insert id="insertReview">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		<bind name="review" value="review" />
+		<bind name="parkingAvailable" value="parkingAvailable" />
+		<bind name="view" value="view" />
+		<bind name="nightView" value="nightView" />
+		<bind name="freeEntry" value="freeEntry" />
+		<bind name="userId" value="userId" />
+		<bind name="easyTransport" value="easyTransport" />
+		<bind name="iScore" value="iScore" />
+		INSERT
+		INTO
+		reviews (placeName,
+		userId,
+		review,
+		parkingAvailable,
+		`view`,
+		nightView,
+		freeEntry,
+		easyTransport,
+		iScore)
+		values('${ placeName }',
+		'${
+		userId }',
+		'${ review }',
+		${ parkingAvailable },
+		${ view },
+		${ nightView
+		},
+		${ freeEntry },
+		${ easyTransport },
+		${ iScore });
+	</insert>
+
+	<select id="selectPlaceReviews" resultType="ReviewListDto">
+		<bind name="placeName" value="placeName" />
+		SELECT * FROM reviews r
+		WHERE r.placeName = '${ placeName }'
+		ORDER BY modifiedAt
+		DESC
+	</select>
+</mapper>

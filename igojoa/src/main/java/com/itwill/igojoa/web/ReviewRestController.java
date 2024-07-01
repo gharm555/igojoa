@@ -1,5 +1,8 @@
 package com.itwill.igojoa.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
 import com.itwill.igojoa.dto.review.ReviewDto;
+import com.itwill.igojoa.dto.review.ReviewListDto;
 import com.itwill.igojoa.service.PlaceVerifiedService;
 import com.itwill.igojoa.service.ReviewService;
 
@@ -24,7 +28,8 @@ public class ReviewRestController {
 	private final ReviewService reviewService;
 
 	@PutMapping("/{placeName}/newReview")
-	public ResponseEntity<Integer> newReview(@PathVariable String placeName, @RequestBody ReviewDto reviewDto) {
+	public ResponseEntity<List<ReviewListDto>> newReview(@PathVariable String placeName,
+			@RequestBody ReviewDto reviewDto) {
 		// 방문인증 검증
 		log.debug("\n\n" + placeName + "\n\n");
 		String userId = (String) session.getAttribute("userId");
@@ -37,17 +42,18 @@ public class ReviewRestController {
 		// }
 		userId = "김진성"; // 테스트 코드
 		PlacesFavoriteDto placesFavoriteDto = PlacesFavoriteDto.builder().placeName(placeName).userId(userId).build();
-		int res = placeVerifiedService.visitVerificationConfirmation(placesFavoriteDto);
-		if (res == 0) {
+		int i = placeVerifiedService.visitVerificationConfirmation(placesFavoriteDto);
+		if (i == 0) {
+			List<ReviewListDto> res = new ArrayList<>();
 
 			return ResponseEntity.ok(res);
 		} else {
 			reviewDto.setPlaceName(placeName);
 			reviewDto.setUserId(userId);
 			log.debug("\n\n" + reviewDto.toString() + "\n\n");
-			int i = reviewService.insertReview(reviewDto);
+			List<ReviewListDto> res = reviewService.insertReview(reviewDto);
 
-			return ResponseEntity.ok(i);
+			return ResponseEntity.ok(res);
 		}
 	}
 
