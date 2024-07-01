@@ -3,23 +3,29 @@ package com.itwill.igojoa.repository;
 import com.itwill.igojoa.entity.Users;
 
 public interface UsersDao {
-    int create(Users user);
+	int sessionTorF(String userId);
 
-    Users selectByUserId(String userId);
+	int create(Users user);
 
-    Users selectByIdAndPassword(Users user);
+	Users selectByUserId(String userId);
 
-    String findUserId(String email, String nickName);
+	Users selectByIdAndPassword(Users user);
 
-    boolean verifyUser(String userId, String email, String nickName);
+	Users getUserInfo(String userId);
 
-    int updatePassword(String userId, String password);
+	String findUserId(String email, String nickName);
 
-    boolean checkUserId(String userId);
+	boolean verifyUser(String userId, String email, String nickName);
 
-    boolean checkNickName(String nickName);
+	int updatePassword(String userId, String password);
 
-    boolean checkEmail(String email);
+	boolean checkUserId(String userId);
 
-    boolean checkPhoneNumber(String phoneNumber);
+	boolean checkNickName(String nickName);
+
+	boolean checkEmail(String email);
+
+	boolean checkPhoneNumber(String phoneNumber);
+
+	int deleteUser(String userId);
 }

@@ -1,122 +1,49 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> <%@ taglib prefix="c"
+uri="jakarta.tags.core"%> <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%> <%@ taglib prefix="fn"
+uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="KR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <link rel="stylesheet" href="/static/css/cssReset.css" />
-    <link rel="stylesheet" href="/static/css/userProfile.css" />
-    <link rel="stylesheet" href="/static/css/navbar.css" />
+    <c:url var="cssResetCss" value="/css/cssReset.css" />
+    <link rel="stylesheet" href="${cssResetCss}" />
+    <c:url var="userProfileCss" value="/css/userProfile.css" />
+    <link rel="stylesheet" href="${userProfileCss}" />
+    <c:url var="navbarCss" value="/css/navbar.css" />
+    <link rel="stylesheet" href="${navbarCss}" />
+    <c:url var="datePickerCss" value="/css/datePicker.css" />
+    <link rel="stylesheet" href="${datePickerCss}" />
+
     <title>내정보</title>
   </head>
   <body>
-    <header>
-      <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
-          <button
-            class="navbar-toggler"
-            type="button"
-            onclick="toggleSideNav()"
-            aria-controls="sideNav"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <a class="navbar-brand mx-auto" id="goToTop" href="#"
-            ><h2 class="m-0">아이고좋아</h2></a
-          >
-          <div class="d-flex align-items-center">
-            <button
-              type="button"
-              class="btn btn-outline-primary me-2 d-none"
-              id="btnLogin"
-            >
-              로그인
-            </button>
-            <div class="userProfile" onclick="toggleProfileDropdown()">
-              <img src="/img/default.jpg" alt="프로필 사진" />
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">마이페이지</a>
-                <a class="dropdown-item" href="#">위치인증</a>
-                <span class="dropdown-item">포인트정보: 999</span>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">로그아웃</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      <div id="sideNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#" id="goMain">메인</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" id="goPopular">추천명소</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" id="goGame">미니게임</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" id="goFAQ">자주묻는질문</a>
-          </li>
-        </ul>
-      </div>
-    </header>
+    <%@ include file="../header.jspf" %>
     <main style="margin-top: 120px">
       <div class="container p-0">
         <div class="row g-0 h-100">
           <div class="col-md-3 sidebar">
             <div class="profile-summary">
-              <input
-                type="file"
-                id="profileImageInput"
-                style="display: none"
-                accept="image/*"
-              />
+              <input type="file" id="profileImageInput" style="display: none" accept="image/*" />
               <img
-                src="https://placehold.co/150x150"
+                src="${ userInfo.userProfileUrl }"
                 alt="프로필 이미지"
-                id="profileImage"
+                id="userPrifileUrl"
                 class="rounded-circle profile-img"
-                style="
-                  cursor: pointer;
-                  width: 150px;
-                  height: 150px;
-                  object-fit: cover;
-                "
+                style="cursor: pointer; width: 150px; height: 150px; object-fit: cover"
               />
               <div class="icon-text text-center">
                 <div id="icon1" class="circular-icon">1</div>
-                <span class="text">여기랑 내정보수정이랑 연결돼있음</span>
+                <span class="text" id="nickName">${ userInfo.nickName }</span>
               </div>
             </div>
-            <nav
-              class="nav flex-column nav-pills"
-              id="v-pills-tab"
-              role="tablist"
-            >
+            <nav class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
               <button
                 class="nav-link active"
                 id="v-pills-home-tab"
@@ -161,85 +88,74 @@
           </div>
           <div class="col-md-9 content p-5">
             <div class="tab-content" id="v-pills-tabContent">
-              <div
-                class="tab-pane fade show active"
-                id="v-pills-home"
-                role="tabpanel"
-                tabindex="0"
-              >
+              <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" tabindex="0">
                 <h2 class="mb-4">내 정보</h2>
+                <!-- 내 정보 part -->
                 <div class="card">
                   <div class="card-body">
                     <h5 class="card-title mb-0 mt-3">아이디</h5>
-                    <p class="card-text">qkrtnckd11</p>
+                    <p class="card-text" id="userId">${ userInfo.userId }</p>
                     <h5 class="card-title mb-0 mt-3">이메일</h5>
-                    <p class="card-text">
-                      soochang94@naver.com 이거랑 내정보수정 엮여있음
-                    </p>
+                    <p class="card-text" id="email">${ userInfo.email }</p>
                     <h5 class="card-title mb-0 mt-3">전화번호</h5>
-                    <p class="card-text">010-2974-6302 이거도 같음</p>
+                    <p class="card-text" id="phoneNumber">
+                      <c:set var="formattedPhone" value="${userInfo.phoneNumber}" />
+                      <c:if test="${not empty formattedPhone and formattedPhone.length() == 11}">
+                        <c:set var="part1" value="${fn:substring(formattedPhone, 0, 3)}" />
+                        <c:set var="part2" value="${fn:substring(formattedPhone, 3, 7)}" />
+                        <c:set var="part3" value="${fn:substring(formattedPhone, 7, 11)}" />
+                        <c:set var="formattedPhone" value="${part1}-${part2}-${part3}" />
+                      </c:if>
+                      ${formattedPhone}
+                    </p>
+
                     <h5 class="card-title mb-0 mt-3">포인트 현황</h5>
-                    <p class="card-text">누적 포인트: 15,000P</p>
-                    <p class="card-text">현재 포인트: 5000P</p>
+                    <p class="card-text" id="currentsPoints">
+                      현재 포인트:
+                      <fmt:formatNumber value="${userInfo.currentsPoints}" type="number" groupingUsed="true" />
+                      P
+                    </p>
+
+                    <p class="card-text" id="cumulativePoint">
+                      누적 포인트:
+                      <fmt:formatNumber value="${userInfo.cumulativePoint}" type="number" groupingUsed="true" />
+                      P
+                    </p>
                   </div>
                 </div>
               </div>
-              <div
-                class="tab-pane fade"
-                id="v-pills-profile"
-                role="tabpanel"
-                tabindex="0"
-              >
-                <div
-                  class="d-flex justify-content-between align-items-center mb-4"
-                >
+              <!-- 내 정보 수정 part -->
+              <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" tabindex="0">
+                <div class="d-flex justify-content-between align-items-center mb-4">
                   <h2 class="mb-0">내정보수정</h2>
-                  <button
-                    id="withdrawal"
-                    type="button"
-                    class="btn btn-outline-secondary btn-sm"
-                    style="padding: 3px"
-                  >
+                  <button id="withdrawal" type="button" class="btn btn-outline-secondary btn-sm" style="padding: 3px">
                     회원탈퇴
                   </button>
                 </div>
-
+                <!-- 추가된 코드 2024-06-28 finish -->
+                <!-- TODO: 내 정보수정, 기존정보 입력 > 수정된 데이터 갈아끼우기 -->
                 <form id="editProfileForm">
                   <div class="mb-3">
-                    <label for="nickName" class="form-label"
-                      >사용자 닉네임</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="nickName"
-                      value=""
-                    />
+                    <label for="nickName" class="form-label">사용자 닉네임</label>
+                    <input type="text" class="form-control" id="nickName" value="${ userInfo.nickName }" />
                     <small id="nickNameFeedback" class="form-text"></small>
                   </div>
                   <div class="mb-3">
                     <label for="email" class="form-label">이메일 주소</label>
-                    <input
-                      type="email"
-                      class="form-control"
-                      id="email"
-                      value=""
-                    />
+                    <input type="email" class="form-control" id="email" value="${ userInfo.email }" />
                     <small id="emailFeedback" class="form-text"></small>
                   </div>
 
                   <div class="mb-3">
                     <label for="phone1" class="form-label">전화번호</label>
-                    <div
-                      class="phone-input-container"
-                      style="display: flex; align-items: center; gap: 10px"
-                    >
+                    <div class="phone-input-container" style="display: flex; align-items: center; gap: 10px">
                       <input
                         type="text"
                         class="form-control phone-input"
                         id="phone1"
                         maxlength="3"
                         style="width: 60px; text-align: center"
+                        value="${part1}"
                       />
                       <span>-</span>
                       <input
@@ -248,6 +164,7 @@
                         id="phone2"
                         maxlength="4"
                         style="width: 80px; text-align: center"
+                        value="${part2}"
                       />
                       <span>-</span>
                       <input
@@ -256,91 +173,44 @@
                         id="phone3"
                         maxlength="4"
                         style="width: 80px; text-align: center"
+                        value="${part3}"
                       />
                     </div>
                     <small id="phoneFeedback" class="form-text"></small>
-                    <input
-                      type="hidden"
-                      id="fullPhoneNumber"
-                      name="fullPhoneNumber"
-                    />
+                    <input type="hidden" id="fullPhoneNumber" name="fullPhoneNumber" />
                   </div>
                   <div class="mb-3 d-none" id="passwordGroup1">
                     <label for="newPassword" class="form-label">비밀번호</label>
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="newPassword"
-                      value=""
-                    />
+                    <input type="password" class="form-control" id="newPassword" value="" />
                     <small id="passwordFeedback" class="form-text"></small>
-                    <div
-                      id="passwordStrength"
-                      class="progress mt-2 d-none"
-                      style="height: 5px"
-                    >
-                      <div
-                        id="progress-bar"
-                        class="progress-bar"
-                        role="progressbar"
-                        style="width: 0%"
-                        aria-valuenow="0"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
-                    </div>
                   </div>
                   <div class="mb-3 d-none" id="passwordGroup2">
-                    <label for="confirmPassword" class="form-label"
-                      >비밀번호 확인</label
-                    >
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="confirmPassword"
-                      value=""
-                    />
-                    <small
-                      id="confirmPasswordFeedback"
-                      class="form-text"
-                    ></small>
+                    <label for="confirmPassword" class="form-label">비밀번호 확인</label>
+                    <input type="password" class="form-control" id="confirmPassword" value="" />
+                    <small id="confirmPasswordFeedback" class="form-text"></small>
                   </div>
                   <div class="mb-3 mt-4">
                     <button
                       id="passwordShowBtn"
                       type="button"
                       class="btn btn-primary"
-                      style="
-                        background-color: white;
-                        color: black;
-                        font-size: 14px;
-                        padding: 5px 10px;
-                      "
+                      style="background-color: white; color: black; font-size: 14px; padding: 5px 10px"
                     >
                       비밀번호 변경
                     </button>
                   </div>
 
                   <div>
-                    <button type="submit" class="btn btn-primary">
-                      정보 수정
-                    </button>
+                    <button type="submit" class="btn btn-primary" id="updateBtn">정보 수정</button>
                   </div>
                 </form>
               </div>
-              <div
-                class="tab-pane fade"
-                id="v-pills-disabled"
-                role="tabpanel"
-                tabindex="0"
-              >
+
+              <!-- TODO: 내 활동내역 -->
+              <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel" tabindex="0">
                 <h2 class="mb-4">내활동내역</h2>
                 <div class="search-container">
-                  <select
-                    id="province-select"
-                    class="form-select"
-                    aria-label="도/광역시 선택"
-                  >
+                  <select id="province-select" class="form-select" aria-label="도/광역시 선택">
                     <option selected>도/광역시</option>
                     <option value="gyeonggi">경기도</option>
                     <option value="gangwon">강원도</option>
@@ -359,21 +229,55 @@
                     <option value="ulsan">울산시</option>
                     <option value="jeju">제주도</option>
                   </select>
-
                   <select id="search-category">
-                    <option value="likesPost">좋아요게시물</option>
-                    <option value="likesReviews">좋아요리뷰</option>
+                    <option value="likes">좋아요</option>
                     <option value="reviews">작성리뷰</option>
                     <option value="locations">위치인증장소</option>
                   </select>
                   <input type="text" placeholder="검색어를 입력하세요..." />
                   <button>검색</button>
                 </div>
-                <div
-                  class="d-flex justify-content-between align-items-center mt-3"
-                >
-                  <input type="text" id="date-range" placeholder="" />
-
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <div class="datepicker-container">
+                    <input
+                      type="text"
+                      class="datepicker-input"
+                      id="datepicker-start"
+                      placeholder="시작 날짜"
+                      readonly
+                    />
+                    <span>~</span>
+                    <input type="text" class="datepicker-input" id="datepicker-end" placeholder="종료 날짜" readonly />
+                  </div>
+                  <!-- <div class="dropdown">
+                    <button
+                      class="btn btn-secondary dropdown-toggle"
+                      type="button"
+                      id="sortDropdown"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      정렬
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          onclick="sortActivities('latest')"
+                          >최신순</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          onclick="sortActivities('oldest')"
+                          >오래된순</a
+                        >
+                      </li>
+                    </ul>
+                  </div> -->
                   <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                       <button
@@ -447,9 +351,7 @@
                           height="50"
                         />
                         <div>
-                          <p class="mb-0">
-                            부산시 전포동 열람실 게시물에 좋아요를 눌렀습니다.
-                          </p>
+                          <p class="mb-0">부산시 전포동 열람실 게시물에 좋아요를 눌렀습니다.</p>
                           <small class="text-muted">2024.06.19 10:15</small>
                         </div>
                       </li>
@@ -475,9 +377,7 @@
                           height="50"
                         />
                         <div>
-                          <p class="mb-0">
-                            서울 야경 명소 Top 10 리뷰에 좋아요를 눌렀습니다.
-                          </p>
+                          <p class="mb-0">서울 야경 명소 Top 10 리뷰에 좋아요를 눌렀습니다.</p>
                           <small class="text-muted">2024.06.25 18:30</small>
                         </div>
                       </li>
@@ -503,10 +403,243 @@
                           height="50"
                         />
                         <div>
-                          <p class="mb-0">
-                            서울시 관악구 야경 게시물에 리뷰를 등록.
-                          </p>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
                           <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                          <small class="text-muted">2024.06.20 14:30</small>
+                        </div>
+                      </li>
+
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">부산 해운대 맛집 게시물에 리뷰를 작성.</p>
+                          <small class="text-muted">2024.06.19 10:15</small>
                         </div>
                       </li>
 
@@ -531,9 +664,7 @@
                           height="50"
                         />
                         <div>
-                          <p class="mb-0">
-                            아이티윌 에서 위치인증을 하였습니다.
-                          </p>
+                          <p class="mb-0">아이티윌 에서 위치인증을 하였습니다.</p>
                           <small class="text-muted">2024.06.25 18:30</small>
                         </div>
                       </li>
@@ -542,12 +673,7 @@
                 </div>
               </div>
               <!-- ---------  포인트 내역 섹션 ------------>
-              <div
-                class="tab-pane fade"
-                id="v-pills-messages"
-                role="tabpanel"
-                tabindex="0"
-              >
+              <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" tabindex="0">
                 <h2 class="mb-4">포인트내역</h2>
                 <div class="row">
                   <div class="col-md-7">
@@ -558,17 +684,13 @@
                       <div>
                         <span class="me-3"
                           >얻은 포인트:
-                          <span id="earnedPoints" class="text-success"
-                            >0</span
-                          ></span
-                        >
+                          <span id="earnedPoints" class="text-success">0</span>
+                        </span>
                       </div>
                       <span
                         >소비 포인트:
-                        <span id="spentPoints" class="text-danger"
-                          >0</span
-                        ></span
-                      >
+                        <span id="spentPoints" class="text-danger">0</span>
+                      </span>
                     </div>
                     <div class="table-responsive">
                       <table class="table table-striped" id="pointHistoryTable">
@@ -594,36 +716,18 @@
     </main>
 
     <!-- 비밀번호 확인 모달 -->
-    <div
-      class="modal fade"
-      id="passwordModal"
-      tabindex="-1"
-      aria-labelledby="passwordModalLabel"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="passwordModalLabel">비밀번호 확인</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <form id="passwordForm">
               <div class="mb-3">
-                <label for="password" class="form-label"
-                  >비밀번호를 입력해주세요:</label
-                >
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  required
-                />
+                <label for="password" class="form-label">비밀번호를 입력해주세요:</label>
+                <input type="password" class="form-control" id="password" required />
               </div>
               <button type="submit" class="btn btn-primary">확인</button>
             </form>
@@ -642,39 +746,28 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="withdrawalModalLabel">
-              회원 탈퇴 확인
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <h5 class="modal-title" id="withdrawalModalLabel">회원 탈퇴 확인</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
-            정말로 회원 탈퇴를 진행하시겠습니까? 이 작업은 되돌릴 수 없습니다.
-          </div>
+          <div class="modal-body">정말로 회원 탈퇴를 진행하시겠습니까? 이 작업은 되돌릴 수 없습니다.</div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              취소
-            </button>
-            <button type="button" class="btn btn-danger" id="confirmWithdrawal">
-              탈퇴 확인
-            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            <button type="button" class="btn btn-danger" id="confirmWithdrawal">탈퇴 확인</button>
           </div>
         </div>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js"></script>
-    <script src="/static/js/userProfile.js"></script>
+    <!-- Axios 라이브러리는 js보다 먼저 load 되어야 함 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/js/navbar.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js"></script>
+
+    <c:url var="userProfileJs" value="/js/userProfile.js" />
+    <script src="${userProfileJs}"></script>
+
+    <c:url var="navbarJs" value="/js/navbar.js" />
+    <script src="${navbarJs}"></script>
   </body>
 </html>
