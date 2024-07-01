@@ -85,6 +85,15 @@ header {
 	cursor: pointer;
 }
 
+.dropdown-item:nth-child(3) {
+	pointer-events: none;
+}
+
+.dropdown-item:hover {
+	text-decoration: none;
+	background-color: var(--primary-color);
+}
+
 .nav-btn {
 	border-radius: var(--border-radius);
 	padding: 10px 20px;

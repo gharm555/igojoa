@@ -61,25 +61,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $$navItems.forEach(($item) => {
       $item.addEventListener('click', (e) => {
+        e.preventDefault(); // 기본 동작(링크 이동) 막기
         const isMainPage = window.location.pathname === contextPath + '/'; // 메인 페이지 확인
         const sectionId = $item.id.slice(2).toLowerCase(); // 섹션 ID
 
         if (isMainPage) {
-          e.preventDefault(); // 기본 동작(링크 이동) 막기
           scrollToSection(sectionId);
         } else {
+          // 다른 페이지에서 메인 페이지로 이동하면서 해당 섹션 ID를 해시로 전달
           window.location.href = `${contextPath}/#${sectionId}`;
         }
       });
     });
 
-    // 스크롤 이동 함수
+    // 스크롤 이동 함수 (메인 페이지 내에서 사용)
     function scrollToSection(sectionId) {
       const section = document.getElementById(sectionId);
       if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
+        section.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
+
+    // 페이지 로드 시 해시 체크 및 스크롤
+    window.addEventListener('load', () => {
+      if (window.location.hash) {
+        const sectionId = window.location.hash.substring(1);
+        const section = document.getElementById(sectionId);
+        if (section) {
+          // setTimeout을 사용하여 페이지 로드 완료 후 스크롤
+          setTimeout(() => {
+            section.scrollIntoView({ block: 'center', inline: 'center' });
+          }, 0);
+        }
+      }
+    });
 
     document.addEventListener('click', handleDocumentClick);
     window.addEventListener('scroll', closeBannerOnScroll, {
@@ -91,14 +106,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const $sideNav = document.querySelector('#sideNav');
     if ($sideNav) {
       $sideNav.classList.toggle('open');
-    }
-  }
-
-  function scrollToSection(event, sectionId) {
-    event.preventDefault();
-    const $section = document.querySelector('#sectionId');
-    if ($section) {
-      $section.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
