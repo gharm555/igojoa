@@ -26,7 +26,7 @@ public class UsersService {
 		pointsDao.addUser(user.getUserId());
 		return result;
 	}
-								
+
 	public Users selectByUserId(String userId) {
 		return userDao.selectByUserId(userId);
 	}
@@ -35,7 +35,7 @@ public class UsersService {
 		return userDao.selectByIdAndPassword(user);
 	}
 
-	public Users getUserInfo(String userId) {
+	public UsersInfoDto getUserInfo(String userId) {
 		return userDao.getUserInfo(userId);
 	}
 
@@ -69,5 +69,9 @@ public class UsersService {
 
 	public int deleteUser(String userId) {
 		return userDao.deleteUser(userId);
+	}
+	
+	public boolean updateUsers(Users user) {
+		return userDao.updateUsers(user);
 	}
 }

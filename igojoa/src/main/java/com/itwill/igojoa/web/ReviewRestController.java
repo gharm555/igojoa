@@ -28,13 +28,13 @@ public class ReviewRestController {
 		// 방문인증 검증
 		log.debug("\n\n" + placeName + "\n\n");
 		String userId = (String) session.getAttribute("userId");
-//		if (userId != null) {
-//			int sessionCheck = usersService.sessionTorF(userId);
-//			if (sessionCheck == 0) {
-//
-//				return ResponseEntity.badRequest().body(0);
-//			}
-//		}
+		// if (userId != null) {
+		// int sessionCheck = usersService.sessionTorF(userId);
+		// if (sessionCheck == 0) {
+		//
+		// return ResponseEntity.badRequest().body(0);
+		// }
+		// }
 		userId = "김진성"; // 테스트 코드
 		PlacesFavoriteDto placesFavoriteDto = PlacesFavoriteDto.builder().placeName(placeName).userId(userId).build();
 		int res = placeVerifiedService.visitVerificationConfirmation(placesFavoriteDto);
@@ -50,4 +50,5 @@ public class ReviewRestController {
 			return ResponseEntity.ok(i);
 		}
 	}
+
 }

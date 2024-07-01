@@ -1,226 +1,243 @@
-document.addEventListener('DOMContentLoaded', function () {
-  initializePage();
-  setupEventListeners();
+document.addEventListener("DOMContentLoaded", function () {
+    initializePage();
+    setupEventListeners();
 
-  function initializePage() {
-    window.scrollTo(0, 0);
-    const $bannerToggle = document.querySelector('.banner-toggle');
-    if ($bannerToggle) {
-      $bannerToggle.innerHTML = '<i class="fas fa-chevron-down"></i> ';
-    }
-    if (window.location.pathname !== '/html/main.html') {
-      const $sideNav = document.querySelector('#sideNav');
-      if ($sideNav) {
-        $sideNav.style.top = '80px';
-      }
-    }
-  }
-
-  function setupEventListeners() {
-    const $goToMain = document.querySelector('#goToMain');
-    if ($goToMain) {
-      $goToMain.addEventListener('click', goToMain);
-    }
-    
-    const $sideNavBtn = document.querySelector('#sideNavBtn');
-    if ($sideNavBtn) {
-      $sideNavBtn.addEventListener('click', toggleSideNav);
-    }
-
-    const $profileBtn = document.querySelector('#profileBtn');
-    if ($profileBtn) {
-      $profileBtn.addEventListener('click', toggleProfileDropdown);
-    }
-
-    const $loginBtn = document.querySelector('#loginBtn');
-    if($loginBtn) {
-      $loginBtn.addEventListener('click', goToLoginRegister)
-    }
-
-    const $logoutBtn = document.querySelector('#logoutBtn');
-    if ($logoutBtn) {
-      $logoutBtn.addEventListener('click', handleLogout);
-    }
-
-    const $locationVerifyBtn = document.querySelector('#locationVerifyBtn');
-    if ($locationVerifyBtn) {
-      $locationVerifyBtn.addEventListener('click', getLocation);
-    }
-
-    const $goUserProfileBtn = document.querySelector('#goUserProfileBtn');
-    if ($goUserProfileBtn) {
-      $goUserProfileBtn.addEventListener('click', goToUserProfile);
-    }
-
-    const $$navItems = document.querySelectorAll('#goMain, #goPopular, #goGame, #goFAQ');
-    $$navItems.forEach(($item) => {
-      $item.addEventListener('click', (e) => scrollToSection(e, `${$item.id.slice(2).toLowerCase()}-section`));
-    });
-
-    document.addEventListener('click', handleDocumentClick);
-    window.addEventListener('scroll', closeBannerOnScroll, { passive: true });
-  }
-
-  function toggleSideNav() {
-    const $sideNav = document.querySelector('#sideNav');
-    if ($sideNav) {
-      $sideNav.classList.toggle('open');
-    }
-  }
-
-  function scrollToSection(event, sectionId) {
-    event.preventDefault();
-    const $section = document.getElementById(sectionId);
-    if ($section) {
-      $section.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
-
-  function toggleProfileDropdown() {
-    const $dropdownMenu = document.querySelector('.dropdown-menu');
-    if ($dropdownMenu) {
-      $dropdownMenu.classList.toggle('show');
-    }
-  }
-
-  function toggleBanner() {
-    const $bannerContainer = document.querySelector('.banner-container');
-    const $bannerToggle = document.querySelector('.banner-toggle');
-    const $main = document.querySelector('main');
-
-    if ($bannerContainer && $bannerToggle && $main) {
-      const isOpen = $bannerContainer.classList.toggle('open');
-      $bannerToggle.innerHTML = isOpen ? '<i class="fas fa-chevron-up"></i> ' : '<i class="fas fa-chevron-down"></i> ';
-
-      setTimeout(() => {
-        const bannerHeight = isOpen ? $bannerContainer.scrollHeight : 0;
-        $main.style.marginTop = `${134 + bannerHeight}px`;
-      }, 300);
-    }
-  }
-
-  function handleDocumentClick(event) {
-    const $userProfile = document.querySelector('.userProfile');
-    const $dropdownMenu = document.querySelector('.dropdown-menu');
-
-    if ($userProfile && $dropdownMenu && !$userProfile.contains(event.target)) {
-      $dropdownMenu.classList.remove('show');
-      $userProfile.classList.remove('show');
-    }
-  }
-
-
-
-  function updateMainMargin() {
-    const $bannerContainer = document.querySelector('.banner-container');
-    const $main = document.querySelector('main');
-    if ($bannerContainer && $main) {
-      const bannerHeight = $bannerContainer.classList.contains('open') ? $bannerContainer.scrollHeight : 0;
-      $main.style.marginTop = `${134 + bannerHeight}px`;
-    }
-  }
-
-  function closeBannerOnScroll() {
-    const $bannerContainer = document.querySelector('.banner-container');
-    const $bannerToggle = document.querySelector('.banner-toggle');
-
-    if ($bannerContainer && $bannerToggle && $bannerContainer.classList.contains('open')) {
-      $bannerContainer.classList.remove('open');
-      $bannerToggle.innerHTML = '<i class="fas fa-chevron-down"></i> ';
-      setTimeout(updateMainMargin, 300);
-    }
-  }
-
-  function handleLogout(e) {
-    e.preventDefault();
-    axios
-      .get('./logout')
-      .then((res) => {
-        if (res.status === 200) {
-          console.log('로그아웃 성공');
-          location.href = '../'; // 또는 적절한 메인 페이지 URL
+    function initializePage() {
+        window.scrollTo(0, 0);
+        const $bannerToggle = document.querySelector(".banner-toggle");
+        if ($bannerToggle) {
+            $bannerToggle.innerHTML = '<i class="fas fa-chevron-down"></i> ';
         }
-      })
-      .catch((err) => console.error('로그아웃 실패:', err));
-  }
-
-  function getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        // Success function
-        sendPosition,
-        // Error function
-        showError,
-        // Options. See MDN for details.
-        {
-          enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 0,
+        if (window.location.pathname !== "/html/main.html") {
+            const $sideNav = document.querySelector("#sideNav");
+            if ($sideNav) {
+                $sideNav.style.top = "80px";
+            }
         }
-      );
-    } else {
-      alert('지역 정보를 제공하지 않는 브라우저입니다.');
     }
-  }
+    // 이벤트 리스너
+    function setupEventListeners() {
+        const $goToMain = document.querySelector("#logo");
 
-  function sendPosition(position) {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    console.log(LoginUserId);
-    axios
-      .post('../place/verifyLocation', null, {
-        params: {
-          latitude: latitude,
-          longitude: longitude,
-          userId: LoginUserId,
-        },
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          console.log('위치인증 성공');
-          alert('위치인증에 성공했습니다.');
+        if ($goToMain) {
+            $goToMain.addEventListener("click", goToMain);
         }
-      })
-      .catch((err) => {
-        console.error(err);
-        if (err.response) {
-          alert(`위치인증 실패: ${err.response.data}`);
+
+        const $sideNavBtn = document.querySelector("#sideNavBtn");
+
+        if ($sideNavBtn) {
+            $sideNavBtn.addEventListener("click", toggleSideNav);
+        }
+
+        const $profileBtn = document.querySelector("#profileBtn");
+        if ($profileBtn) {
+            $profileBtn.addEventListener("click", toggleProfileDropdown);
+        }
+
+        const $loginBtn = document.querySelector("#loginBtn");
+        if ($loginBtn) {
+            $loginBtn.addEventListener("click", goToLoginRegister);
+        }
+
+        const $logoutBtn = document.querySelector("#logoutBtn");
+        if ($logoutBtn) {
+            $logoutBtn.addEventListener("click", handleLogout);
+        }
+
+        const $locationVerifyBtn = document.querySelector("#locationVerifyBtn");
+        if ($locationVerifyBtn) {
+            $locationVerifyBtn.addEventListener("click", getLocation);
+        }
+
+        const $goUserProfileBtn = document.querySelector("#goUserProfileBtn");
+        if ($goUserProfileBtn) {
+            $goUserProfileBtn.addEventListener("click", goToUserProfile);
+        }
+
+        const $$navItems = document.querySelectorAll(
+            "#goMain, #goPopular, #goGame, #goFAQ"
+        );
+        $$navItems.forEach(($item) => {
+            $item.addEventListener("click", (e) =>
+                scrollToSection(e, `${$item.id.slice(2).toLowerCase()}-section`)
+            );
+        });
+
+        document.addEventListener("click", handleDocumentClick);
+        window.addEventListener("scroll", closeBannerOnScroll, {
+            passive: true,
+        });
+    }
+
+    function toggleSideNav() {
+        const $sideNav = document.querySelector("#sideNav");
+        if ($sideNav) {
+            $sideNav.classList.toggle("open");
+        }
+    }
+
+    function scrollToSection(event, sectionId) {
+        event.preventDefault();
+        const $section = document.getElementById(sectionId);
+        if ($section) {
+            $section.scrollIntoView({ behavior: "smooth" });
+        }
+    }
+
+    function toggleProfileDropdown() {
+        const $dropdownMenu = document.querySelector(".dropdown-menu");
+        if ($dropdownMenu) {
+            $dropdownMenu.classList.toggle("show");
+        }
+    }
+
+    function toggleBanner() {
+        const $bannerContainer = document.querySelector(".banner-container");
+        const $bannerToggle = document.querySelector(".banner-toggle");
+        const $main = document.querySelector("main");
+
+        if ($bannerContainer && $bannerToggle && $main) {
+            const isOpen = $bannerContainer.classList.toggle("open");
+            $bannerToggle.innerHTML = isOpen
+                ? '<i class="fas fa-chevron-up"></i> '
+                : '<i class="fas fa-chevron-down"></i> ';
+
+            setTimeout(() => {
+                const bannerHeight = isOpen ? $bannerContainer.scrollHeight : 0;
+                $main.style.marginTop = `${134 + bannerHeight}px`;
+            }, 300);
+        }
+    }
+
+    function handleDocumentClick(event) {
+        const $userProfile = document.querySelector(".userProfile");
+        const $dropdownMenu = document.querySelector(".dropdown-menu");
+
+        if (
+            $userProfile &&
+            $dropdownMenu &&
+            !$userProfile.contains(event.target)
+        ) {
+            $dropdownMenu.classList.remove("show");
+            $userProfile.classList.remove("show");
+        }
+    }
+
+    function updateMainMargin() {
+        const $bannerContainer = document.querySelector(".banner-container");
+        const $main = document.querySelector("main");
+        if ($bannerContainer && $main) {
+            const bannerHeight = $bannerContainer.classList.contains("open")
+                ? $bannerContainer.scrollHeight
+                : 0;
+            $main.style.marginTop = `${134 + bannerHeight}px`;
+        }
+    }
+
+    function closeBannerOnScroll() {
+        const $bannerContainer = document.querySelector(".banner-container");
+        const $bannerToggle = document.querySelector(".banner-toggle");
+
+        if (
+            $bannerContainer &&
+            $bannerToggle &&
+            $bannerContainer.classList.contains("open")
+        ) {
+            $bannerContainer.classList.remove("open");
+            $bannerToggle.innerHTML = '<i class="fas fa-chevron-down"></i> ';
+            setTimeout(updateMainMargin, 300);
+        }
+    }
+
+    function handleLogout(e) {
+        e.preventDefault();
+        axios
+            .get(contextPath + "/user/logout")
+            .then((res) => {
+                if (res.status === 200) {
+                    console.log("로그아웃 성공");
+                    location.href = contextPath + "/"; // 또는 적절한 메인 페이지 URL
+                }
+            })
+            .catch((err) => console.error("로그아웃 실패:", err));
+    }
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                // Success function
+                sendPosition,
+                // Error function
+                showError,
+                // Options. See MDN for details.
+                {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0,
+                }
+            );
         } else {
-          alert('위치인증에 실패했습니다. 다시 시도해주세요.');
+            alert("지역 정보를 제공하지 않는 브라우저입니다.");
         }
-      });
-  }
-
-  function showError(error) {
-    switch (error.code) {
-      case error.PERMISSION_DENIED:
-        alert('유저가 위치 정보 제공 거부');
-        break;
-      case error.POSITION_UNAVAILABLE:
-        alert('위치 정보가 사용 불가능합니다.');
-        break;
-      case error.TIMEOUT:
-        alert('위치 정보 요청 시간 초과');
-        break;
-      case error.UNKNOWN_ERROR:
-        alert('알 수 없는 오류가 발생했습니다.');
-        break;
     }
-  }
 
-  // 마이페이지로 이동
-  function goToUserProfile() {
-    window.location.href = 'user/userProfile';
-  }
+    function sendPosition(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
 
-  // 로그인 회원가입 페이지로 이동
-  function goToLoginRegister(){
-    window.location.href = 'user/loginRegister';
-  }
+        axios
+            .post(contextPath + "/place/verifyLocation", null, {
+                params: {
+                    latitude: latitude,
+                    longitude: longitude,
+                    userId: LoginUserId,
+                },
+            })
+            .then((res) => {
+                if (res.status === 200) {
+                    console.log("위치인증 성공");
+                    alert("위치인증에 성공했습니다.");
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                if (err.response) {
+                    alert(`위치인증 실패: ${err.response.data}`);
+                } else {
+                    alert("위치인증에 실패했습니다. 다시 시도해주세요.");
+                }
+            });
+    }
 
-  // 메인페이지로 이동
-  function goToMain(){
-    window.location.href = '/';
-  }
+    function showError(error) {
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                alert("유저가 위치 정보 제공 거부");
+                break;
+            case error.POSITION_UNAVAILABLE:
+                alert("위치 정보가 사용 불가능합니다.");
+                break;
+            case error.TIMEOUT:
+                alert("위치 정보 요청 시간 초과");
+                break;
+            case error.UNKNOWN_ERROR:
+                alert("알 수 없는 오류가 발생했습니다.");
+                break;
+        }
+    }
+
+    // 마이페이지로 이동
+    function goToUserProfile() {
+        window.location.href = contextPath + "/user/userProfile";
+    }
+
+    // 로그인 회원가입 페이지로 이동
+    function goToLoginRegister() {
+        window.location.href = contextPath + "/user/loginRegister";
+    }
+
+    // 메인페이지로 이동
+    function goToMain() {
+        window.location.href = contextPath + "/";
+    }
 });
-

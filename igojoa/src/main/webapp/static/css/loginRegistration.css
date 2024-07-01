@@ -119,6 +119,7 @@ main {
   cursor: pointer;
   font-weight: 500;
   border-radius: 5px;
+  margin-top: 10px;
 }
 .formBx .signupform form input[type='submit'] {
   background-color: var(--primary-color);

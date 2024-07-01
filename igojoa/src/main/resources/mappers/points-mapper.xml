@@ -3,6 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwill.igojoa.repository.PointsDao">
+	<!-- 삭제? 2024.07.01 -->
 	<select id="getPointsByUserId" resultType="Points"
 		parameterType="String">
 		SELECT *
@@ -29,5 +30,19 @@
 		WHERE userId = #{userId} AND userActivity = '로그인'
 		ORDER BY pointsGetLoseTime DESC
 		LIMIT 1
+	</select>
+	<update id="subtractPoints">
+		UPDATE points
+		SET currentsPoints = currentsPoints - #{points}
+		WHERE userId = #{userId}
+	</update>
+	<delete id="deletePoints" parameterType="String">
+		DELETE FROM points WHERE userId = #{userId}
+	</delete>
+	<delete id="deletePointsLog" parameterType="String">
+		DELETE FROM pointsLogs WHERE userId = #{userId}
+	</delete>
+	<select id="selectPoints" parameterType="String" resultType="string">
+		SELECT currentsPoints FROM points WHERE userId = #{userId}
 	</select>
 </mapper>
