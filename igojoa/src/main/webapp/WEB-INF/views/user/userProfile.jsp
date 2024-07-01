@@ -19,7 +19,7 @@ uri="jakarta.tags.core"%>
     <link rel="stylesheet" href="${userProfileCss}" />
     <c:url var="navbarCss" value="/css/navbar.css" />
     <link rel="stylesheet" href="${navbarCss}" />
-   
+
     <title>내정보</title>
   </head>
   <body>
@@ -209,11 +209,10 @@ uri="jakarta.tags.core"%>
               <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel" tabindex="0">
                 <h2 class="mb-4">내활동내역</h2>
                 <div class="search-container">
-                  <select
-                    id="province-select"
-                    class="form-select"
-                    aria-label="도/광역시 선택"
-                  >
+
+              
+                  <select id="province-select" class="form-select" aria-label="도/광역시 선택">
+
                     <option value="all" selected>전체</option>
                     <option value="gyeonggi">경기도</option>
                     <option value="gangwon">강원도</option>
@@ -232,7 +231,9 @@ uri="jakarta.tags.core"%>
                     <option value="ulsan">울산시</option>
                     <option value="jeju">제주도</option>
                   </select>
-                   <select id="search-category">
+
+                  <select id="search-category">
+
                     <option value="likesPost">좋아요게시물</option>
                     <option value="likesReviews">좋아요리뷰</option>
                     <option value="reviews">작성리뷰</option>
@@ -243,8 +244,7 @@ uri="jakarta.tags.core"%>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
                   <input type="text" id="date-range" placeholder="" />
-                 
-                
+
                   <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                       <button
@@ -726,8 +726,10 @@ uri="jakarta.tags.core"%>
     </div>
     <!-- Axios 라이브러리는 js보다 먼저 load 되어야 함 -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js"></script>
-   <c:url var="userProfileJs" value="/js/userProfile.js" />
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js"></script>
+    <c:url var="userProfileJs" value="/js/userProfile.js" />
+
     <script src="${userProfileJs}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <c:url var="navbarJs" value="/js/navbar.js" />
@@ -735,8 +737,9 @@ uri="jakarta.tags.core"%>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 
-    
+    <script>
+      const LoginUserId = '${userId}';
+    </script>
 
-    
   </body>
 </html>

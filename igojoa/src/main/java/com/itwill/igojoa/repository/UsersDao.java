@@ -28,4 +28,5 @@ public interface UsersDao {
 	boolean checkPhoneNumber(String phoneNumber);
 
 	int deleteUser(String userId);
+
 }
