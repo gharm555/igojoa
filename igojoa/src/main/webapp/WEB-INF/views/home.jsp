@@ -13,6 +13,7 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.3/font/bootstrap-icons.min.css">
     <c:url var="cssResetCss" value="/css/cssReset.css" />
     <link rel="stylesheet" href="${cssResetCss}" />
     <c:url var="navbarCss" value="/css/navbar.css" />
@@ -73,8 +74,7 @@
                 </div>
             </div>
 
-        </section>           <!-- Initial 9 places loaded from the server -->
-        <section>
+
         <div class="container-fluid main-container" id="container">
             <div class="row text-center">
                 <!-- Initial 9 places loaded from the server -->
@@ -308,11 +308,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <c:url var="imageGalleryJs" value="/js/ImageGallery.js" />
+
+    <c:url var="navJs" value="/js/navbar.js" />
     <script src="${navJs}"></script>
     <c:url var="mainJs" value="/js/main.js" />
     <script src="${mainJs}"></script>
-    <c:url var="navJs" value="/js/nav.js" />
+        <c:url var="imageGalleryJs" value="/js/image_gallery.js" />
     <script src="${imageGalleryJs}"></script>
     <c:url var="lottoJs" value="/js/lotto.js" />
     <script src="${lottoJs}"></script>
