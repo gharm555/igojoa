@@ -20,7 +20,8 @@ uri="jakarta.tags.core"%>
   <body>
     <%@ include file="../header.jspf" %>
     <main>
-    <c:set var="pd" value="${PlaceDetailDto}" />     
+    <c:set var="pd" value="${PlaceDetailDto}" />
+
       <div class="container">
         <div class="row justify-content-center mb-5">
           <div class="col-lg-6 mb-4">
