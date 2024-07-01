@@ -13,4 +13,6 @@ public interface PlaceVerifiedDao {
     int deletePlaceVerified(String userId);
 
     boolean existsTodayVerification(String userId, String placeName);
+
+    int visitVerificationConfirmation(PlacesFavoriteDto placesFavoriteDto);
 }
