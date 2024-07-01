@@ -29,7 +29,6 @@ public class HomeController {
 			System.out.println("세션에 저장된 아이디가 없습니다.");
 		}
 		System.out.println("세션에 저장된 아이디: " + userId);
-
 		if (session.getAttribute("searchKeyword") != null) {
 			session.removeAttribute("searchKeyword");
 		}

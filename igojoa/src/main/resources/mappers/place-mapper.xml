@@ -22,7 +22,7 @@
 		ps.iScore ,
 		ps.review AS reviewCnt,
 		ps.placeVerified,
-		br.userId ,
+		u.nickName ,
 		br.review ,
 		br.modifiedAt ,
 		br.likeCount ,
@@ -47,9 +47,14 @@
 		ON
 		br.placeName =
 		p.placeName
+		LEFT JOIN users u
+		ON
+		br.userId
+		= u.userId
 		LEFT JOIN placeImages pi2
 		ON
-		pi2.placeName = p.placeName
+		pi2.placeName =
+		p.placeName
 		WHERE
 		<if test='addressCategory != ""'>
 			p.largeAddress = '${addressCategory}' and
@@ -121,9 +126,13 @@
 		<bind name="userId" value="userId" />
 		SELECT
 		p.placeName ,
+		pi2.firstUrl,
+		pi2.secondUrl,
+		pi2.thirdUrl,
 		CONCAT(p.largeAddress , ' ',
 		p.midiumAddress, ' ',
-		p.smallAddress) AS address,
+		p.smallAddress) AS
+		address,
 		p.placeDescription ,
 		p.placeLatitude ,
 		p.placeLongitude ,
@@ -133,15 +142,19 @@
 		ps.`view` AS totalView ,
 		ps.nightView AS
 		totalNightView ,
-		ps.freeEntry AS totalFreeEntry ,
+		ps.freeEntry AS
+		totalFreeEntry ,
 		ps.easyTransport AS
 		totalEasyTransport ,
-		ps.iScore AS avgIScore,
+		ps.iScore AS
+		avgIScore,
 		COALESCE(r.review, "") AS
 		review,
-		COALESCE(r.parkingAvailable, 0) AS
+		COALESCE(r.parkingAvailable,
+		0) AS
 		parkingAvailable,
-		COALESCE(r.`view`, 0) AS `view`,
+		COALESCE(r.`view`,
+		0) AS `view`,
 		COALESCE(r.nightView, 0) AS nightView,
 		COALESCE(r.freeEntry, 0) AS
 		freeEntry,
@@ -154,13 +167,18 @@
 		placesStats ps
 		ON
 		ps.placeName = p.placeName
+		LEFT JOIN placeImages pi2
+		ON pi2.placeName =
+		p.placeName
 		LEFT JOIN reviews r
 		ON
 		r.placeName =
 		p.placeName
-		AND r.userId = '${userId}'
+		AND r.userId =
+		'${userId}'
 		WHERE
-		p.placeName = '${placeName}'
+		p.placeName =
+		'${placeName}'
 	</select>
 
 </mapper>

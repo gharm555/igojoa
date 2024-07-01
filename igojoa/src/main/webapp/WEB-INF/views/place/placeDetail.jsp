@@ -12,6 +12,9 @@
   <h1 id="asd">하트</h1>
   <h1>상세 테스트 페이지</h1>
   <h3>장소이름: ${ pd.placeName }</h3>
+  <h3>이미지1: ${ pd.firstUrl }</h3>
+  <h3>이미지2: ${ pd.secondUrl }</h3>
+  <h3>이미지3: ${ pd.thirdUrl }</h3>
   <h3>주소: ${ pd.address }</h3>
   <h3>설명: ${ pd.placeDescription }</h3>
   <h3>위도: ${ pd.placeLatitude }</h3>
@@ -31,11 +34,12 @@
   <h3>페이지 접속한 사용자가 선택한 교통: ${ pd.easyTransport }</h3>
   <h3>페이지 접속한 사용자가 선택한 아이난이도: ${ pd.IScore }</h3>
   <p>여까지가 placeDeatilInfo 로 전달받은 것</p>
+
+  <a id="reviewSubmit" style="display: flex">작성완료</a>
   <p>여기서부턴 이 장소에 대한 리뷰글</p>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-
     const $asd = document.querySelector("#asd");
     let heartClickable = 1;
     $asd.addEventListener("click", () => {
@@ -69,6 +73,24 @@
             console.error("Error data:", error);
           });
       }
+    });
+    // <c:url var="placeDetailsPage" value="/place/details/${ p.placeName }">
+    //   </c:url>
+    //   <a class="placeItems" style="display: flex" href="${ placeDetailsPage }">
+    const $reviewSubmit = document.querySelector("#reviewSubmit");
+    $reviewSubmit.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const uri = `../../${pd.placeName}/newReview`;
+      const params = "리리뷰뷰";
+      axios
+        .put(uri, params)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Error data:", error);
+        });
     });
   </script>
 </html>

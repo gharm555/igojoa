@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PlaceDetailDto {
 	private String placeName;
+	private String firstUrl;
+	private String secondUrl;
+	private String thirdUrl;
 	private String address;
 	private String placeDescription;
 	private Double placeLatitude;
