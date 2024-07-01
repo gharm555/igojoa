@@ -37,6 +37,7 @@ const $profileImg = document.querySelector('#register-profileimg');
 const $registerForm = document.querySelector('#registerForm');
 const $registerBtn = document.querySelector('#registerBtn');
 
+// 로그인&회원가입 폼 전환
 $signupBtn.onclick = function () {
   $body.classList.add('slide');
   clearText();
@@ -47,6 +48,7 @@ $signinBtn.onclick = function () {
   clearText();
 };
 
+// 로그인&회원가입 폼 입력값 및 메시지 초기화
 function clearText() {
   // Clear messages
   $loginCheckMessage.style.display = 'none';
@@ -54,7 +56,7 @@ function clearText() {
     message.style.display = 'none';
   });
   $registerCheckMessage.style.display = 'none';
-  // Clear register form inputs
+
   $userId.value = '';
   $password.value = '';
   $passwordConfirm.value = '';
@@ -65,11 +67,11 @@ function clearText() {
   $phone3.value = '';
   $profileImg.src = defaultImageUrl;
 
-  // Clear login form inputs
   $loginId.value = '';
   $loginPassword.value = '';
 }
 
+// 프로필 사진 등록
 function previewImage(event) {
   const input = event.target;
   const reader = new FileReader();
@@ -83,11 +85,13 @@ function previewImage(event) {
   reader.readAsDataURL(input.files[0]);
 }
 
+// 로그인버튼 이벤트 리스너
 $loginForm.addEventListener('submit', function (event) {
   event.preventDefault();
   login();
 });
 
+// 로그인 처리
 function login() {
   $loginCheckMessage.style.display = 'none';
 
@@ -116,7 +120,7 @@ function login() {
     .then((response) => {
       if (response.data.success) {
         console.log(response.data.pointsMessage);
-        window.location.href = '/';
+        window.location.href = contextPath + '/';
       } else {
         $loginCheckMessage.innerHTML = '아이디 또는 비밀번호를 잘못 입력했습니다.<br>입력하신 내용을 다시 확인해주세요.';
         $loginCheckMessage.style.display = 'block';
@@ -128,11 +132,13 @@ function login() {
     });
 }
 
+// 회원가입 버튼 이벤트 리스너
 $registerForm.addEventListener('submit', function (event) {
   event.preventDefault();
   register();
 });
 
+// 회원가입 처리
 function register() {
   let valid = true;
 
@@ -282,12 +288,12 @@ function validateInput(type, value) {
       }
       break;
   }
-  // 메시지 초기화 부분 추가
+  // 입력창 메시지 초기화 
   if (value === '') {
     displayValidationMessage($messageElement, '');
   }
 }
-
+// 입력창 메시지 초기화 기능
 function displayValidationMessage(element, message) {
   if (message === '') {
     element.style.display = 'none';
@@ -297,7 +303,14 @@ function displayValidationMessage(element, message) {
   }
 }
 
-// 아이디 찾기
+// 회원가입 메시지 초기화
+document.querySelectorAll('#registerForm input').forEach(input => {
+  input.addEventListener('input', () => {
+    $registerCheckMessage.style.display = 'none';
+  });
+});
+
+// 아이디 찾기 요소
 const $verifyUserIdBtn = document.querySelector('#verifyUserIdBtn');
 const $findUserIdModal = document.querySelector('#findUserIdModal');
 const $findUserIdModalLabel = document.querySelector('#findUserIdModalLabel');
@@ -308,6 +321,7 @@ const $findUserIdModalFooter = $findUserIdModal.querySelector('#findUserIdModalF
 // 모달이 열릴 때 폼을 표시
 $findUserIdModal.addEventListener('show.bs.modal', showFindUserIdForm);
 
+// 아이디 찾기 
 function findUserId() {
   const $findEmail = document.querySelector('#emailForFindUserId');
   const $findNickName = document.querySelector('#nickNameForFindUserId');
@@ -343,6 +357,7 @@ function findUserId() {
     });
 }
 
+// 아이디 찾기 모달 생성
 function showFindUserIdForm() {
   $findUserIdModalContent.innerHTML = `
     <input type="email" name="email" id="emailForFindUserId" class="form-control" placeholder="이메일을 입력해 주세요" />
@@ -356,7 +371,9 @@ function showFindUserIdForm() {
 
   const $emailForFindUserId = document.querySelector('#emailForFindUserId');
   const $nickNameForFindUserId = document.querySelector('#nickNameForFindUserId');
+  const $findUserIdMessage = document.querySelector('#findUserIdMessage');
 
+  // 입력창이 비어있을때 확인창 비활성화
   function validateFindUserIdForm() {
     if ($emailForFindUserId.value !== '' && $nickNameForFindUserId.value !== '') {
       document.getElementById('verifyUserIdBtn').disabled = false;
@@ -364,7 +381,8 @@ function showFindUserIdForm() {
       document.getElementById('verifyUserIdBtn').disabled = true;
     }
   }
-
+  
+  // 입력시 메시지 숨김
   $emailForFindUserId.addEventListener('input', () => {
     validateFindUserIdForm();
     $findUserIdMessage.style.display = 'none'; // Hide the message on input change
@@ -378,6 +396,7 @@ function showFindUserIdForm() {
   document.getElementById('verifyUserIdBtn').addEventListener('click', findUserId);
 }
 
+// 아이디 찾기 결과 모달
 function showFoundUserId(userId) {
   const $emailForFindUserId = document.querySelector('#emailForFindUserId');
   const $nickNameForFindUserId = document.querySelector('#nickNameForFindUserId');
@@ -433,6 +452,7 @@ function showFindPasswordForm() {
   const $findPasswordUserId = document.querySelector('#userIdForFindPassword');
   const $findPasswordEmail = document.querySelector('#emailForFindPassword');
   const $findPasswordNickName = document.querySelector('#nickNameForFindPassword');
+  const $findPasswordMessage = document.querySelector('#findPasswordMessage');
 
   function validateFindUserPasswordForm() {
     if ($findPasswordUserId.value !== '' && $findPasswordEmail.value !== '' && $findPasswordNickName.value !== '') {
@@ -569,6 +589,8 @@ $findPasswordModal.addEventListener('hidden.bs.modal', function () {
   $findPasswordMessage.style.display = 'none';
 });
 
+
+
 // Hide the register check message when the user starts typing
 document.querySelectorAll('#registerForm input').forEach(input => {
   input.addEventListener('input', () => {
@@ -583,16 +605,4 @@ document.querySelectorAll('#loginForm input').forEach(input => {
   });
 });
 
-// Hide the find user ID check message when the user starts typing
-document.querySelectorAll('#findUserIdModal input').forEach(input => {
-  input.addEventListener('input', () => {
-    $findUserIdMessage.style.display = 'none';
-  });
-});
 
-// Hide the find password check message when the user starts typing
-document.querySelectorAll('#findPasswordModal input').forEach(input => {
-  input.addEventListener('input', () => {
-    $findPasswordMessage.style.display = 'none';
-  });
-});

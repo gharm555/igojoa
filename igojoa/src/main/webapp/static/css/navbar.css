@@ -41,6 +41,7 @@ header {
 .navbar-brand h2 {
 	margin: 0;
 	font-size: 24px;
+	padding-bottom: 0;
 }
 
 .container-sideNav, .container-logo, .container-user {
@@ -148,5 +149,9 @@ header {
 	.userProfile img {
 		width: 45px;
 		height: 45px;
+	}
+
+	.container-fluid {
+		justify-content: space-around;
 	}
 }

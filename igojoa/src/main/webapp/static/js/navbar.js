@@ -15,13 +15,13 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
   }
-
+  // 이벤트 리스너
   function setupEventListeners() {
-    const $goToMain = document.querySelector('#goToMain');
+    const $goToMain = document.querySelector('#logo');
     if ($goToMain) {
       $goToMain.addEventListener('click', goToMain);
     }
-    
+
     const $sideNavBtn = document.querySelector('#sideNavBtn');
     if ($sideNavBtn) {
       $sideNavBtn.addEventListener('click', toggleSideNav);
@@ -33,8 +33,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const $loginBtn = document.querySelector('#loginBtn');
-    if($loginBtn) {
-      $loginBtn.addEventListener('click', goToLoginRegister)
+    if ($loginBtn) {
+      $loginBtn.addEventListener('click', goToLoginRegister);
     }
 
     const $logoutBtn = document.querySelector('#logoutBtn');
@@ -108,9 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
       $userProfile.classList.remove('show');
     }
   }
-
-
-
+  
   function updateMainMargin() {
     const $bannerContainer = document.querySelector('.banner-container');
     const $main = document.querySelector('main');
@@ -134,11 +132,11 @@ document.addEventListener('DOMContentLoaded', function () {
   function handleLogout(e) {
     e.preventDefault();
     axios
-      .get('./logout')
+      .get(contextPath + '/user/logout')
       .then((res) => {
         if (res.status === 200) {
           console.log('로그아웃 성공');
-          location.href = '../'; // 또는 적절한 메인 페이지 URL
+          location.href = contextPath + '/'; // 또는 적절한 메인 페이지 URL
         }
       })
       .catch((err) => console.error('로그아웃 실패:', err));
@@ -166,9 +164,9 @@ document.addEventListener('DOMContentLoaded', function () {
   function sendPosition(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    console.log(LoginUserId);
+    
     axios
-      .post('../place/verifyLocation', null, {
+      .post(contextPath + '/place/verifyLocation', null, {
         params: {
           latitude: latitude,
           longitude: longitude,
@@ -210,17 +208,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 마이페이지로 이동
   function goToUserProfile() {
-    window.location.href = 'user/userProfile';
+    window.location.href = contextPath + '/user/userProfile';
   }
 
   // 로그인 회원가입 페이지로 이동
-  function goToLoginRegister(){
-    window.location.href = 'user/loginRegister';
+  function goToLoginRegister() {
+    window.location.href = contextPath + '/user/loginRegister';
   }
 
   // 메인페이지로 이동
-  function goToMain(){
-    window.location.href = '/';
+  function goToMain() {
+    window.location.href = contextPath + '/';
   }
 });
-
