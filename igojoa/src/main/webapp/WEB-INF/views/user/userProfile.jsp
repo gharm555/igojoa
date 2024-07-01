@@ -27,10 +27,10 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 
         <c:url var="cssResetCss" value="/css/cssReset.css" />
         <link rel="stylesheet" href="${cssResetCss}" />
-        <c:url var="userProfileCss" value="/css/userProfile.css" />
-        <link rel="stylesheet" href="${userProfileCss}" />
         <c:url var="navbarCss" value="/css/navbar.css" />
         <link rel="stylesheet" href="${navbarCss}" />
+        <c:url var="userProfileCss" value="/css/userProfile.css" />
+        <link rel="stylesheet" href="${userProfileCss}" />
         <c:url var="datePickerCss" value="/css/datePicker.css" />
         <link rel="stylesheet" href="${datePickerCss}" />
 
