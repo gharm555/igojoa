@@ -20,56 +20,7 @@ uri="jakarta.tags.core"%>
   <body>
     <%@ include file="../header.jspf" %>
     <main>
-    <c:set var="pd" value="${PlaceDetailDto}" />
-      <div class="banner-container">
-        <div class="banner-content">
-          <div
-            id="banner-inner"
-            class="carousel slide"
-            data-bs-ride="carousel"
-            data-bs-interval="3000"
-            data-bs-pause="false"
-          >
-          <!-- TODO:  사진 값 넣어야함 -->
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img src="/img/img1.png" class="d-block w-100" alt="..." />
-              </div>
-              <div class="carousel-item">
-                <img src="/img/img2.jpg" class="d-block w-100" alt="..." />
-              </div>
-              <div class="carousel-item">
-                <img src="/img/img3.jpg" class="d-block w-100" alt="..." />
-              </div>
-            </div>
-            <button
-              class="carousel-control-prev"
-              type="button"
-              data-bs-target="#banner-inner"
-              data-bs-slide="prev"
-            >
-              <span
-                class="carousel-control-prev-icon"
-                aria-hidden="true"
-              ></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button
-              class="carousel-control-next"
-              type="button"
-              data-bs-target="#banner-inner"
-              data-bs-slide="next"
-            >
-              <span
-                class="carousel-control-next-icon"
-                aria-hidden="true"
-              ></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
+    <c:set var="pd" value="${PlaceDetailDto}" />     
       <div class="container">
         <div class="row justify-content-center mb-5">
           <div class="col-lg-6 mb-4">

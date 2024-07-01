@@ -1,0 +1,239 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap");
+
+body {
+  line-height: 1.8;
+  padding-top: 56px; /* 네비게이션 바 높이만큼 패딩 추가 */
+}
+
+h2,
+h3,
+h4,
+h5 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+p {
+  font-size: 1.2rem;
+}
+
+h2 {
+  font-size: 2.2rem;
+}
+
+#map,
+#carouselExampleIndicators {
+  height: 400px;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  border: none;
+  transition: all 0.3s ease;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
+
+.card-header.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, var(--primary-color), #6184b2);
+  border: none;
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(45deg, #3a5a8a, var(--primary-color));
+  box-shadow: 0 4px 10px rgba(74, 111, 165, 0.3);
+}
+
+.media {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.media:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+}
+
+.media-content img {
+  width: 60px;
+  height: 60px;
+  margin-right: 20px;
+  border: 3px solid var(--secondary-color);
+}
+
+.carousel-item img {
+  object-fit: cover;
+  height: 400px;
+}
+
+.like-btn {
+  transition: all 0.3s ease;
+  border: 2px solid var(--primary-color);
+}
+
+.like-btn:hover,
+.like-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* 뱃지 카운팅 */
+
+#emojiList {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.emoji-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+}
+.emoji-content {
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+.emoji {
+  font-size: 24px;
+  margin-right: 10px;
+}
+.text {
+  font-size: 14px;
+}
+.count {
+  font-size: 14px;
+  color: #666;
+  z-index: 1;
+}
+.background-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #e0f2f1;
+  z-index: 0;
+}
+
+/* 위로 가는 버튼*/
+#scrollToTopBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: none; /* 초기에는 숨김 */
+  transition: opacity 0.3s;
+}
+
+#scrollToTopBtn:hover {
+  background-color: #555;
+}
+
+/* 스크롤바 스타일 */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a5a8a;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 2000px) {
+  .container {
+    padding: 20px;
+  }
+
+  @media (min-width: 1400px) {
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl,
+    .container-xxl {
+      max-width: 1500px;
+    }
+  }
+
+  #map,
+  #carouselExampleIndicators {
+    height: 400px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+}
+
+/* 애니메이션 효과 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card,
+.media {
+  animation: fadeIn 0.5s ease-out;
+}
