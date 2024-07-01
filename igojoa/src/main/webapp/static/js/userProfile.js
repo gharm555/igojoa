@@ -51,7 +51,7 @@ $passwordShowBtn.addEventListener("click", function () {
 });
 
 // 비밀번호 검증 & 일치 여부 확인
-$newPasswordInput.addEventListener("input", function () {
+$newPasswordInput.addEventListener("change", function () {
     const result = checkPasswordStrength(this.value);
     $passwordFeedback.textContent = result.message;
     $passwordFeedback.style.color = result.color;
@@ -67,8 +67,8 @@ $newPasswordInput.addEventListener("input", function () {
     checkPasswordMatch();
 });
 
-$confirmPasswordInput.addEventListener("input", checkPasswordMatch);
-$newPasswordInput.addEventListener("input", checkPasswordMatch);
+$confirmPasswordInput.addEventListener("change", checkPasswordMatch);
+$newPasswordInput.addEventListener("change", checkPasswordMatch);
 
 // 비밀번호 검증
 function checkPasswordStrength(password) {
@@ -121,38 +121,41 @@ function checkPasswordMatch() {
 }
 
 // 사용자 닉네임 중복 검사
-document.querySelector("input#nickName").addEventListener("input", function () {
-    const nickName = this.value;
-    const uri = `./checkNickName?nickName=${nickName}`;
-    const $nickNameFeedback = document.querySelector("#nickNameFeedback");
+document
+    .querySelector("input#nickName")
+    .addEventListener("change", function () {
+        const nickName = this.value;
+        const uri = `./checkNickName?nickName=${nickName}`;
+        const $nickNameFeedback = document.querySelector("#nickNameFeedback");
 
-    axios
-        .get(uri)
-        .then((response) => {
-            if (response.data === true) {
-                if (nickName.length >= 12) {
-                    $nickNameFeedback.textContent =
-                        "닉네임은 12글자 미만으로 입력해주세요.";
-                    $nickNameFeedback.style.color = "red";
+        axios
+            .get(uri)
+            .then((response) => {
+                if (response.data === true) {
+                    if (nickName.length >= 12) {
+                        $nickNameFeedback.textContent =
+                            "닉네임은 12글자 미만으로 입력해주세요.";
+                        $nickNameFeedback.style.color = "red";
+                    } else {
+                        $nickNameFeedback.textContent =
+                            "변경 가능한 닉네임입니다.";
+                        $nickNameFeedback.style.color = "green";
+                    }
                 } else {
-                    $nickNameFeedback.textContent = "변경 가능한 닉네임입니다.";
-                    $nickNameFeedback.style.color = "green";
+                    $nickNameFeedback.textContent = "중복된 닉네임입니다.";
+                    $nickNameFeedback.style.color = "red";
                 }
-            } else {
-                $nickNameFeedback.textContent = "중복된 닉네임입니다.";
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                $nickNameFeedback.textContent =
+                    "오류가 발생했습니다. 다시 시도해 주세요.";
                 $nickNameFeedback.style.color = "red";
-            }
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-            $nickNameFeedback.textContent =
-                "오류가 발생했습니다. 다시 시도해 주세요.";
-            $nickNameFeedback.style.color = "red";
-        });
-});
+            });
+    });
 
 // 사용자 이메일 중복 검사
-document.querySelector("input#email").addEventListener("input", function () {
+document.querySelector("input#email").addEventListener("change", function () {
     const email = this.value;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const $emailFeedback = document.querySelector("#emailFeedback");
@@ -291,27 +294,58 @@ $updateBtn.addEventListener("click", function (e) {
 
 // 입력 값 변경 감지 함수
 function checkForChanges() {
+    // 공백이 전혀 없어야 하는 경우를 위한 정규식
+    const noSpaceRegex = /^\S*$/;
+
+    // 연속된 공백을 허용하지 않기 위한 정규식
+    const noConsecutiveSpaceRegex = /^(?!.*\s\s).*$/;
+
+    // 현재 값 가져오기
     const currentValues = {
-        nickName: $nickName.value,
-        email: $emailInput.value,
-        phoneNumber:
-            $phone1Input.value + $phone2Input.value + $phone3Input.value,
+        nickName: $nickName.value.trim(),
+        email: $emailInput.value.trim(),
+        phoneNumber: (
+            $phone1Input.value +
+            $phone2Input.value +
+            $phone3Input.value
+        ).trim(),
     };
 
-    // 값 변경 확인
+    // 경고 메시지 초기화
+    $nickNameFeedback.textContent = "";
+    $emailFeedback.textContent = "";
+    $phoneFeedback.textContent = "";
+
+    // 값 변경 확인 및 공백 검사
     let isChanged = false;
+    let isValid = true;
     for (let key in originalValues) {
-        if (originalValues[key] !== currentValues[key]) {
+        if (
+            originalValues[key] !== currentValues[key] &&
+            currentValues[key] !== ""
+        ) {
             isChanged = true;
-            break;
+        }
+
+        // 전혀 공백을 허용하지 않는 경우
+        if (!noSpaceRegex.test(currentValues[key])) {
+            isValid = false;
+            document.querySelector(`#${key}Feedback`).textContent =
+                "공백을 포함할 수 없습니다.";
+        }
+
+        // 연속된 공백을 허용하지 않는 경우
+        else if (!noConsecutiveSpaceRegex.test(currentValues[key])) {
+            isValid = false;
+            document.querySelector(`#${key}Feedback`).textContent =
+                "연속된 공백을 포함할 수 없습니다.";
         }
     }
 
     // "정보 수정" 버튼 활성화 또는 비활성화
-    $updateBtn.disabled = !isChanged;
+    $updateBtn.disabled = !(isChanged && isValid);
 }
 
-// 정보수정 버튼 활성화 이벤트 ----->
 // 각 입력 필드에 이벤트 리스너 추가
 $nickName.addEventListener("input", checkForChanges);
 $emailInput.addEventListener("input", checkForChanges);
@@ -321,4 +355,3 @@ $phone3Input.addEventListener("input", checkForChanges);
 
 // 초기 상태에서는 버튼 비활성화
 $updateBtn.disabled = true;
-// <----- 정보수정 버튼 활성화 이벤트
