@@ -20,67 +20,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
     <link rel="stylesheet" href="${loginRegistrationCss}" />
   </head>
   <body>
-    <header>
-      <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
-          <div class="container-sideNav">
-            <button
-              class="navbar-toggler"
-              type="button"
-              onclick="toggleSideNav()"
-              aria-controls="sideNav"
-            >
-              <span class="navbar-toggler-icon"></span>
-            </button>
-          </div>
-          <div class="container-logo">
-            <a class="navbar-brand mx-auto" id="goToTop" href="#"
-              ><h2 class="m-0">아이고좋아</h2></a
-            >
-          </div>
-          <div class="container-user">
-            <c:if test="${userId == null}">
-              <button
-                type="button"
-                class="btn btn-outline-primary me-2 nav-btn"
-                id="btnLogin"
-              >
-                로그인
-              </button>
-            </c:if>
-            <c:if test="${userId != null}">
-              <div class="userProfile" onclick="toggleProfileDropdown()">
-                <img src="${userProfileUrl}" alt="프로필 사진" />
-                <div class="dropdown-menu">
-                  <a class="dropdown-item">마이페이지</a>
-                  <a class="dropdown-item" id="locationVerifyBtn">위치인증</a>
-                  <span class="dropdown-item">포인트정보: 999</span>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" id="logoutBtn">로그아웃</a>
-                </div>
-              </div>
-            </c:if>
-          </div>
-        </div>
-      </nav>
-
-      <div id="sideNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#" id="goMain">메인</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" id="goPopular">추천명소</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" id="goGame">미니게임</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" id="goFAQ">자주묻는질문</a>
-          </li>
-        </ul>
-      </div>
-    </header>
+    <%@ include file="../header.jspf" %>
     <main>
       <div class="container">
         <div class="box signin">
