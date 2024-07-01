@@ -30,4 +30,9 @@
 		ORDER BY pointsGetLoseTime DESC
 		LIMIT 1
 	</select>
+	<update id="subtractPoints">
+		UPDATE points
+		SET currentsPoints = currentsPoints - #{points}
+		WHERE userId = #{userId}
+	</update>
 </mapper>
