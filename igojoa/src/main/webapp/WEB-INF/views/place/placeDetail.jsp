@@ -10,9 +10,9 @@ uri="jakarta.tags.core"%>
     <title>상세보기</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <c:url var="cssResetUrl" value="./css/cssReset.css" />
-    <c:url var="postDetailCssUrl" value="./css/postDetail.css" />
-    <c:url var="navbarCssUrl" value="./css/navbar.css" />
+    <c:url var="cssResetUrl" value="/css/cssReset.css" />
+    <c:url var="postDetailCssUrl" value="/css/postDetail.css" />
+    <c:url var="navbarCssUrl" value="/css/navbar.css" />
     <link rel="stylesheet" href="${cssResetUrl}" />
     <link rel="stylesheet" href="${postDetailCssUrl}" />
     <link rel="stylesheet" href="${navbarCssUrl}" />
@@ -21,54 +21,6 @@ uri="jakarta.tags.core"%>
     <%@ include file="../header.jspf" %>
     <main>
     <c:set var="pd" value="${PlaceDetailDto}" />
-      <div class="banner-container">
-        <div class="banner-content">
-          <div
-            id="banner-inner"
-            class="carousel slide"
-            data-bs-ride="carousel"
-            data-bs-interval="3000"
-            data-bs-pause="false"
-          >
-          <!-- TODO:  사진 값 넣어야함 -->
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img src="/img/img1.png" class="d-block w-100" alt="..." />
-              </div>
-              <div class="carousel-item">
-                <img src="/img/img2.jpg" class="d-block w-100" alt="..." />
-              </div>
-              <div class="carousel-item">
-                <img src="/img/img3.jpg" class="d-block w-100" alt="..." />
-              </div>
-            </div>
-            <button
-              class="carousel-control-prev"
-              type="button"
-              data-bs-target="#banner-inner"
-              data-bs-slide="prev"
-            >
-              <span
-                class="carousel-control-prev-icon"
-                aria-hidden="true"
-              ></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button
-              class="carousel-control-next"
-              type="button"
-              data-bs-target="#banner-inner"
-              data-bs-slide="next"
-            >
-              <span
-                class="carousel-control-next-icon"
-                aria-hidden="true"
-              ></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
-        </div>
-      </div>
 
       <div class="container">
         <div class="row justify-content-center mb-5">
@@ -388,8 +340,8 @@ uri="jakarta.tags.core"%>
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <c:url var="navbarJsUrl" value="../js/navbar.js" />
-    <c:url var="postDetailJsUrl" value="../js/postDetail.js" />
+    <c:url var="navbarJsUrl" value="/js/navbar.js" />
+    <c:url var="postDetailJsUrl" value="/js/postDetail.js" />
     <script src="${navbarJsUrl}"></script>
     <script src="${postDetailJsUrl}"></script>
     <script >
