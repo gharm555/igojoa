@@ -478,6 +478,130 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     >
                       정렬
                     </button>
+                  </div>
+
+                  <div>
+                    <button type="submit" class="btn btn-primary" id="updateBtn">정보 수정</button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- TODO: 내 활동내역 -->
+              <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel" tabindex="0">
+                <h2 class="mb-4">내활동내역</h2>
+                <div class="search-container">
+
+              
+                  <select id="province-select" class="form-select" aria-label="도/광역시 선택">
+
+                    <option value="all" selected>전체</option>
+                    <option value="gyeonggi">경기도</option>
+                    <option value="gangwon">강원도</option>
+                    <option value="jeollabuk">전라북도</option>
+                    <option value="jeollanam">전라남도</option>
+                    <option value="gyeongsangbuk">경상북도</option>
+                    <option value="gyeongsangnam">경상남도</option>
+                    <option value="chungcheongbuk">충청북도</option>
+                    <option value="chungcheongnam">충청남도</option>
+                    <option value="seoul">서울시</option>
+                    <option value="busan">부산시</option>
+                    <option value="daegu">대구시</option>
+                    <option value="incheon">인천시</option>
+                    <option value="gwangju">광주시</option>
+                    <option value="daejeon">대전시</option>
+                    <option value="ulsan">울산시</option>
+                    <option value="jeju">제주도</option>
+                  </select>
+
+                  <select id="search-category">
+
+                    <option value="likesPost">좋아요게시물</option>
+                    <option value="likesReviews">좋아요리뷰</option>
+                    <option value="reviews">작성리뷰</option>
+                    <option value="locations">위치인증장소</option>
+                  </select>
+                  <input type="text" placeholder="검색어를 입력하세요..." />
+                  <button>검색</button>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <input type="text" id="date-range" placeholder="" />
+
+                  <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                      <button
+                        class="nav-link active"
+                        id="nav-home-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-home"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-home"
+                        aria-selected="true"
+                      >
+                        좋아요 게시물
+                      </button>
+                      <button
+                        class="nav-link"
+                        id="nav-liked-posts-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-liked-posts"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-liked-posts"
+                        aria-selected="false"
+                      >
+                        좋아요 리뷰
+                      </button>
+                      <button
+                        class="nav-link"
+                        id="nav-profile-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-profile"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-profile"
+                        aria-selected="false"
+                      >
+                        작성 리뷰
+                      </button>
+                      <button
+                        class="nav-link"
+                        id="nav-contact-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-contact"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-contact"
+                        aria-selected="false"
+                      >
+                        위치인증 장소
+                      </button>
+                    </div>
+                  </nav>
+                </div>
+                <div class="tab-content" id="nav-tabContent">
+                  <!------ 좋아요 게시물 목록 섹션 --------->
+                  <div
+                    class="tab-pane fade show active"
+                    id="nav-home"
+                    role="tabpanel"
+                    aria-labelledby="nav-home-tab"
+                    tabindex="0"
+                  >
+                    <ul class="list-group" id="activityList">
+                      <!-- -------- 좋아요게시물 목록 작성 추가 ------->
+                      <li class="list-group-item d-flex align-items-center">
+                        <img
+                          src="https://placehold.co/50x50"
+                          alt="프로필"
+                          class="rounded-circle me-3"
+                          width="50"
+                          height="50"
+                        />
+                        <div>
+                          <p class="mb-0">부산시 전포동 열람실 게시물에 좋아요를 눌렀습니다.</p>
+                          <small class="text-muted">2024.06.19 10:15</small>
+                        </div>
                     <ul class="dropdown-menu" aria-labelledby="sortDropdown">
                       <li>
                         <a
@@ -1208,17 +1332,22 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 </div>
             </div>
         </div>
-        <!-- Axios 라이브러리는 js보다 먼저 load 되어야 함 -->
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js"></script>
+      </div>
+    </div>
+    <!-- Axios 라이브러리는 js보다 먼저 load 되어야 함 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js"></script>
+    <c:url var="userProfileJs" value="/js/userProfile.js" />
+    <script src="${userProfileJs}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <c:url var="navbarJs" value="/js/navbar.js" />
+    <script src="${navbarJs}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 
-        <c:url var="userProfileJs" value="/js/userProfile.js" />
-        <script src="${userProfileJs}"></script>
+    <script>
+      const LoginUserId = '${userId}';
+    </script>
 
-        <c:url var="navbarJs" value="/js/navbar.js" />
-        <script src="${navbarJs}"></script>
-    </body>
+  </body>
 </html>
