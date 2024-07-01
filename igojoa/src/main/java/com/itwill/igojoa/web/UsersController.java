@@ -198,24 +198,18 @@ public class UsersController {
 	@PostMapping("/updateProfile")
 	@ResponseBody
 	public ResponseEntity<?> updateProfile(@RequestBody Users user, HttpSession session) {
-	    String userId = (String) session.getAttribute("userId");
-	    user.setUserId(userId);
-	    
-	    try {
-	        // 서비스 계층 호출 (여기서 MyBatis를 사용하여 DB 업데이트 수행)
-	        boolean updated = userService.updateUsers(user);
-	        
-	        if (updated) {
-	            return ResponseEntity.ok(Map.of("success", true));
-	        } else {
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	                                 .body(Map.of("success", false, "message", "업데이트를 수행할 수 없습니다."));
-	        }
-	    } catch (Exception e) {
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	                             .body(Map.of("success", false, "message", "서버 오류 발생: " + e.getMessage()));
-	    }
-	}
+		String userId = (String) session.getAttribute("userId");
+		user.setUserId(userId);
 
+		// 서비스 계층 호출 (여기서 MyBatis를 사용하여 DB 업데이트 수행)
+		boolean updated = userService.updateUsers(user);
+
+		if (updated) {
+			return ResponseEntity.ok(Map.of("success", true));
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(Map.of("success", false, "message", "업데이트를 수행할 수 없습니다."));
+		}
+	}
 
 }
