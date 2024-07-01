@@ -769,5 +769,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 
     <c:url var="navbarJs" value="/js/navbar.js" />
     <script src="${navbarJs}"></script>
+    <script>
+      const LoginUserId = '${userId}';
+    </script>
   </body>
 </html>

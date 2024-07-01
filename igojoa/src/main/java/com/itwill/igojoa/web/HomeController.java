@@ -2,6 +2,7 @@ package com.itwill.igojoa.web;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.itwill.igojoa.dto.place.PlaceListDto;
 import com.itwill.igojoa.dto.place.PlaceSearchDto;
 import com.itwill.igojoa.service.PlaceService;
+import com.itwill.igojoa.service.PointsService;
+import com.itwill.igojoa.service.UsersService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 public class HomeController {
 
 	private final PlaceService placeService;
+	private final PointsService pointsService;
+	private final UsersService usersService;
 
 	@GetMapping("/")
 	public String home(Model model, HttpSession session) {
@@ -29,9 +34,11 @@ public class HomeController {
 			System.out.println("세션에 저장된 아이디가 없습니다.");
 		}
 		System.out.println("세션에 저장된 아이디: " + userId);
-		if (session.getAttribute("searchKeyword") != null) {
-			session.removeAttribute("searchKeyword");
+		if (userId != null) {
+			model.addAttribute("userProfileUrl", usersService.getUserInfo(userId).getUserProfileUrl());
+			model.addAttribute("points", pointsService.selectPoints(userId));
 		}
+
 		// 홈 디폴트 리스트 세팅
 		final String addressCategory = ""; // 지역 카테고리
 		final String searchKeyword = ""; // 검색어
@@ -50,4 +57,29 @@ public class HomeController {
 
 		return "home";
 	}
+
+	@GetMapping("/game")
+	public ResponseEntity<String> game(String userId, String rank) {
+		System.out.println("game");
+		System.out.println(userId);
+		System.out.println(rank);
+		pointsService.subtractPoints(userId, 150);
+		pointsService.insertPointLog(userId, "뽑기", 150);
+		pointsService.insertPointLog(userId, rank, 0);
+		switch (rank) {
+			case "1":
+				return ResponseEntity.ok("1");
+			case "2":
+				return ResponseEntity.ok("2");
+			case "3":
+				return ResponseEntity.ok("3");
+			case "4":
+				return ResponseEntity.ok("4");
+			case "5":
+				return ResponseEntity.ok("5");
+			default:
+				return ResponseEntity.ok("0");
+		}
+	}
+
 }
