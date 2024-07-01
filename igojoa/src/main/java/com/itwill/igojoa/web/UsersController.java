@@ -20,6 +20,7 @@ import com.itwill.igojoa.dto.users.UsersLoginDto;
 import com.itwill.igojoa.dto.users.UsersRegisterDto;
 import com.itwill.igojoa.entity.Points;
 import com.itwill.igojoa.entity.Users;
+import com.itwill.igojoa.service.PlaceVerifiedService;
 import com.itwill.igojoa.service.PointsService;
 import com.itwill.igojoa.service.S3Service;
 import com.itwill.igojoa.service.UsersService;
@@ -38,16 +39,17 @@ public class UsersController {
 	private final UsersService userService;
 	private final S3Service s3Service;
 	private final PointsService pointsService;
+	private final PlaceVerifiedService placeVerifiedService;
 
 	@GetMapping("/loginRegister")
 	public String registerForm(Model model, HttpSession session) {
 		Object userIdObj = session.getAttribute("userId");
-//        if (userIdObj != null) {
-//            int sessionCheck = userService.sessionTorF(userIdObj.toString());
-//            if (sessionCheck == 1) {
-//                return "redirect:/";
-//            }
-//        }
+		if (userIdObj != null) {
+			int sessionCheck = userService.sessionTorF(userIdObj.toString());
+			if (sessionCheck == 1) {
+				return "redirect:/";
+			}
+		}
 		String defaultImageUrl = s3Service.getUserProfileDefaultImageUrl();
 		model.addAttribute("defaultImageUrl", defaultImageUrl);
 
@@ -86,7 +88,6 @@ public class UsersController {
 			Users user = userService.selectByIdAndPassword(userLoginDto.toEntity());
 			if (user != null) {
 				session.setAttribute("userId", user.getUserId());
-				session.setAttribute("userProfileUrl", user.getUserProfileUrl());
 				boolean pointsAdded = pointsService.addLoginPoints(user.getUserId());
 				Map<String, Object> response = new HashMap<>();
 				response.put("success", true);
@@ -107,7 +108,6 @@ public class UsersController {
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			session.removeAttribute("userId");
-			session.removeAttribute("userProfileUrl");
 		}
 		// 메인페이지로 이동
 //		return ResponseEntity.ok("redirect:/");
@@ -173,6 +173,9 @@ public class UsersController {
 	@DeleteMapping("/deleteUser")
 	public ResponseEntity<String> deleteUser(@RequestParam(name = "userId") String userId, HttpServletRequest request) {
 		userService.deleteUser(userId);
+		pointsService.deletePoints(userId);
+		pointsService.deletePointsLog(userId);
+		placeVerifiedService.deletePlaceVerified(userId);
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			session.invalidate();
@@ -191,7 +194,7 @@ public class UsersController {
 		session.setAttribute("userProfileUrl", user.getUserProfileUrl());
 		session.setAttribute("nickName", user.getNickName());
 		session.setAttribute("currentsPoints", points.getCurrentsPoints());
-		
+
 		model.addAttribute("userInfo", result);
 
 		return "user/userProfile";

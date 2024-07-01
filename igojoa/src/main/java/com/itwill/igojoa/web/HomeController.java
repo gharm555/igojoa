@@ -2,14 +2,16 @@ package com.itwill.igojoa.web;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.itwill.igojoa.dto.place.PlaceListDto;
 import com.itwill.igojoa.dto.place.PlaceSearchDto;
 import com.itwill.igojoa.service.PlaceService;
+import com.itwill.igojoa.service.PointsService;
+import com.itwill.igojoa.service.UsersService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 public class HomeController {
 
 	private final PlaceService placeService;
+	private final PointsService pointsService;
+	private final UsersService usersService;
 
 	@GetMapping("/")
 	public String home(Model model, HttpSession session) {
@@ -30,12 +34,16 @@ public class HomeController {
 			System.out.println("세션에 저장된 아이디가 없습니다.");
 		}
 		System.out.println("세션에 저장된 아이디: " + userId);
+		if (userId != null) {
+			model.addAttribute("userProfileUrl", usersService.getUserInfo(userId).getUserProfileUrl());
+			model.addAttribute("points", pointsService.selectPoints(userId));
+		}
 
 		// 홈 디폴트 리스트 세팅
 		final String addressCategory = ""; // 지역 카테고리
 		final String searchKeyword = ""; // 검색어
 		final String sortKey = "iScore"; // 정렬 기준
-		final Integer sortValue = 1; // 오름차순 내림차순 ( 1 || 0 )
+		final Integer sortValue = 0; // 오름차순 내림차순 ( 1 || 0 )
 		final Integer startRowValue = 0; // 시작할 행
 		final Integer rowCnt = 9; // 반환될 행의 갯수
 
@@ -44,9 +52,34 @@ public class HomeController {
 				.rowCnt(rowCnt).build();
 		List<PlaceListDto> res = placeService.selectPlaceList(placeSearchDto);
 
-		model.addAttribute("list", res);
+		model.addAttribute("placesInfo", res);
 		System.out.println(res);
 
 		return "home";
 	}
+
+	@GetMapping("/game")
+	public ResponseEntity<String> game(String userId, String rank) {
+		System.out.println("game");
+		System.out.println(userId);
+		System.out.println(rank);
+		pointsService.subtractPoints(userId, 150);
+		pointsService.insertPointLog(userId, "뽑기", 150);
+		pointsService.insertPointLog(userId, rank, 0);
+		switch (rank) {
+			case "1":
+				return ResponseEntity.ok("1");
+			case "2":
+				return ResponseEntity.ok("2");
+			case "3":
+				return ResponseEntity.ok("3");
+			case "4":
+				return ResponseEntity.ok("4");
+			case "5":
+				return ResponseEntity.ok("5");
+			default:
+				return ResponseEntity.ok("0");
+		}
+	}
+
 }

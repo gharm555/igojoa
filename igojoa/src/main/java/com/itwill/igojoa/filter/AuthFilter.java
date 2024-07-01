@@ -48,7 +48,6 @@ public class AuthFilter extends HttpFilter implements Filter {
                 target = URLEncoder.encode(reqUrl + "?" + qs, "UTF-8");
             }
             log.debug("target: {}", target);
-
             String redirectUrl = req.getContextPath() + "/user/loginRegister?target=" + target;
             ((HttpServletResponse) response).sendRedirect(redirectUrl);
         }
