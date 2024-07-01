@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,13 +13,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwill.igojoa.dto.users.UsersInfoDto;
 import com.itwill.igojoa.dto.users.UsersLoginDto;
 import com.itwill.igojoa.dto.users.UsersRegisterDto;
-import com.itwill.igojoa.entity.Points;
 import com.itwill.igojoa.entity.Users;
 import com.itwill.igojoa.service.PlaceVerifiedService;
 import com.itwill.igojoa.service.PointsService;
@@ -142,6 +144,7 @@ public class UsersController {
 		} else {
 			return ResponseEntity.ok(0);
 		}
+
 	}
 
 	@GetMapping("/checkUserId")
@@ -187,16 +190,27 @@ public class UsersController {
 	public String getUserInfo(HttpSession session, Model model) {
 		String userId = (String) session.getAttribute("userId");
 
-		Users user = userService.getUserInfo(userId);
-		Points points = pointsService.getPointsByUserId(userId);
-		UsersInfoDto result = UsersInfoDto.fromEntity(user, points);
-		// 개인마다 다른 정보는 session에 저장하는게 맞다 - advice
-		session.setAttribute("userProfileUrl", user.getUserProfileUrl());
-		session.setAttribute("nickName", user.getNickName());
-		session.setAttribute("currentsPoints", points.getCurrentsPoints());
-
+		UsersInfoDto result = userService.getUserInfo(userId);
 		model.addAttribute("userInfo", result);
 
 		return "user/userProfile";
 	}
+
+	@PostMapping("/updateProfile")
+	@ResponseBody
+	public ResponseEntity<?> updateProfile(@RequestBody Users user, HttpSession session) {
+		String userId = (String) session.getAttribute("userId");
+		user.setUserId(userId);
+
+		// 서비스 계층 호출 (여기서 MyBatis를 사용하여 DB 업데이트 수행)
+		boolean updated = userService.updateUsers(user);
+
+		if (updated) {
+			return ResponseEntity.ok(Map.of("success", true));
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(Map.of("success", false, "message", "업데이트를 수행할 수 없습니다."));
+		}
+	}
+
 }
