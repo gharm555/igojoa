@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.itwill.igojoa.dto.place.PlaceSpaceDto;
 import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
@@ -59,6 +60,7 @@ public class PlaceVerifiedService {
 		return distance <= 300;
 	}
 
+	@Transactional
 	public int visitVerificationConfirmation(PlacesFavoriteDto placesFavoriteDto) {
 		Optional<PlacesFavoriteDto> optionalPlacesFavorite = Optional.ofNullable(placesFavoriteDto);
 		int res = 0;
