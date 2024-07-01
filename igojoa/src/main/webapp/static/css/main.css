@@ -11,22 +11,29 @@ body {
   padding: 20px;
   background-color: var(--main-bg-color);
   color: var(--main-text-color);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 main {
   position: relative;
-  height: 300vh;
   margin-top: 134px;
   transition: margin-top 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
+
 #btnPlus {
   background-color: var(--primary-color);
   color: white;
 }
+
 .btn-group .btn {
   background-color: var(--link-color);
   color: white;
-
   margin-right: 5px;
   border: none;
   border-radius: var(--border-radius);
@@ -70,10 +77,16 @@ main {
 .banner-toggle:hover {
   background-color: var(--link-hover-color);
 }
+
 .main-container {
   width: 100%;
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+  padding: 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .main-card-body img {
@@ -144,10 +157,15 @@ main {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: var(--border-radius);
   overflow: hidden;
+  display: flex;
+  justify-content: center; /* 화면 가운데 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
 }
+
 section {
   min-height: 800px; /* 모든 섹션의 최소 높이 설정 */
 }
+
 body {
   display: flex;
   flex-direction: column;
@@ -156,6 +174,10 @@ body {
 
 main {
   flex: 1;
+}
+
+.main-search-bar {
+  width: auto;
 }
 
 .main-search-bar select,
@@ -186,11 +208,13 @@ main {
 }
 
 .main-card {
+  width: auto;
   border: none;
   border-radius: var(--border-radius);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   background-color: white;
+  margin-bottom: 20px;
 }
 
 .main-card:hover {
@@ -313,6 +337,7 @@ footer .text-center {
   padding: 1rem 0;
   background-color: var(--main-bg-color);
 }
+
 .main-custom-heart.red-color {
   color: #dc3545;
 }
@@ -335,16 +360,40 @@ footer .text-center {
   display: none;
   transition: opacity 0.3s;
 }
-
-#scrollToTopBtn:hover {
-  background-color: #555;
-}
-
-/* 아이폰 12 해상도에 맞춘 반응형 디자인 */
 @media (max-width: 390px) {
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
   .main-card-body img {
-    height: 120px;
-    width: 80%;
+    height: 100px;
+  }
+
+  .main-card {
+    width: 70%;
+    margin: 0 auto;
+    padding: 10px;
+  }
+
+  .main-container {
+    padding: 0 10px; /* 컨테이너의 패딩도 조정 */
+  }
+
+  .main-badge {
+    font-size: 0.7rem;
+    padding: 0.3em 0.5em;
+  }
+
+  .main-custom-heart {
+    font-size: 20px;
+  }
+
+  .main-search-bar select,
+  .main-search-bar input,
+  .main-search-bar button {
+    padding: 10px 15px;
+    font-size: 14px;
   }
 
   .main-card-header h1 {
@@ -353,25 +402,16 @@ footer .text-center {
 
   .main-card-footer h3,
   .main-card-footer h5 {
+    font-size: 0.9rem;
+  }
+
+  .main-card-footer p {
     font-size: 0.8rem;
   }
 
-  .main-badge {
-    font-size: 0.7rem;
-    padding: 0.3em 0.5em;
-  }
-
-  .btn {
-    padding: 5px 10px;
-    font-size: 0.8rem;
-  }
-
-  .footer-meta {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .comment-text {
-    font-size: 0.8rem;
+  .username,
+  .date,
+  .likes {
+    font-size: 0.8em;
   }
 }

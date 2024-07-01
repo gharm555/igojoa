@@ -3,10 +3,10 @@ main {
   justify-content: center;
   align-items: center;
   min-height: 73vh;
-  /*transition: 1s;*/
+  transition: 1s;
   position: relative;
   margin-top: 80px;
-  /*transition: margin-top 0.3s ease;*/
+  transition: margin-top 0.3s ease;
   box-shadow: none;
 }
 
@@ -56,8 +56,8 @@ main {
   z-index: 998;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
   border-radius: var(--border-radius);
-  /*transition: 0.5s;*/
-  /*transition-delay: 0.5s;*/
+  transition: 0.5s;
+  transition-delay: 0.5s;
   overflow: hidden;
 }
 .slide .formBx {
@@ -72,24 +72,24 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  /*transition: 0.5s;*/
+  transition: 0.5s;
   background: #fff;
 }
 .formBx .form.signupform {
   top: 120%;
-  /*transition-delay: 0s;*/
+  transition-delay: 0s;
 }
 .slide .formBx .form.signupform {
   top: 0;
-  /*transition-delay: 1s;*/
+  transition-delay: 1s;
 }
 .formBx .form.signinform {
   top: 0;
-  /*transition-delay: 1s;*/
+  transition-delay: 1s;
 }
 .slide .formBx .form.signinform {
   top: -100%;
-  /*transition-delay: 0s;*/
+  transition-delay: 0s;
 }
 .formBx .form form {
   display: flex;
@@ -132,9 +132,11 @@ main {
 }
 
 #register-profileimg {
-  width: 120px;
+  width: 130px;
+  height: 130px;
   margin-bottom: 15px;
   border: 1px solid gray;
+  object-fit: cover;
 }
 
 .image-upload {
@@ -145,7 +147,6 @@ main {
 .image-upload img {
   width: 120px; /* Adjust the size as needed */
   /* Adjust the size as needed */
-  object-fit: cover;
   cursor: pointer;
 }
 

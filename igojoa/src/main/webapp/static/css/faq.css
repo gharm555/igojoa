@@ -1,39 +1,102 @@
-/* Import Google Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
-
 /* FAQ 섹션 스타일 */
 .faq-body {
-  padding-left: 10%;
-  padding-right: 10%;
-  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--main-bg-color);
+  padding: 50px 10%;
   font-family: var(--main-font);
   color: var(--main-text-color);
-  background-color: var(--main-bg-color);
+  min-height: 800px;
 }
 
-.accordion {
-  width: 80%;
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-top: 50px;
-  background-color: white;
-  border-radius: var(--border-radius);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.accordion-button {
-  font-weight: bold;
-  background-color: var(--main-bg-color);
-  color: var(--main-text-color);
-}
-
-.accordion-button:hover {
-  background-color: var(--link-hover-color);
-  color: white;
-}
-
-.accordion-body {
+.faq-content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
   padding: 20px;
-  background-color: #f8f9fa;
-  border-top: 1px solid #dee2e6;
+  border-radius: var(--border-radius);
+}
+
+.faq-box {
+  margin-top: 100px;
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 30px; /* 세로 간격 조절 */
+}
+
+.faq-box h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.faq-box p {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .faq-box {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .faq-box h2 {
+    font-size: 20px;
+  }
+
+  .faq-box p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .faq-body {
+    padding: 20px 5%;
+  }
+
+  .faq-box {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .faq-box h2 {
+    font-size: 18px;
+  }
+
+  .faq-box p {
+    font-size: 12px;
+  }
+}
+
+/* 아이폰 12 해상도에 맞춘 반응형 디자인 */
+@media (max-width: 390px) {
+  .faq-body {
+    padding: 10px 5%;
+    padding: 20px 5%; /* 패딩 조정 */
+  }
+
+  .faq-box {
+    width: 100%;
+    padding: 10px;
+    margin-top: 30px; /* 섹션 간격 조정 */
+    margin-bottom: 10px; /* 섹션 간격 조정 */
+  }
+  section {
+    min-height: 400px;
+  }
+  .faq-box h2 {
+    font-size: 16px;
+  }
+
+  .faq-box p {
+    font-size: 10px;
+  }
 }

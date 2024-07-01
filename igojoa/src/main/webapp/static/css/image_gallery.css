@@ -1,4 +1,3 @@
-/* Import Google Fonts */
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
 
 /* 이미지 갤러리 섹션 스타일 */
@@ -25,7 +24,7 @@
 }
 
 .gallery-box {
-  margin-top: 100px;
+  margin-top: 30px; /* 줄인 간격 */
   position: relative;
   width: 200px;
   height: 300px;
@@ -105,7 +104,6 @@
 }
 
 /* 반응형 디자인 */
-/* 반응형 디자인 */
 @media (max-width: 768px) {
   .gallery-box {
     width: 150px;
@@ -130,12 +128,14 @@
 @media (max-width: 480px) {
   .gallery-body {
     padding: 20px 5%;
+    min-height: 400px;
   }
 
   .gallery-box {
     width: 100px;
     height: 150px;
-    margin-bottom: 15px; /* 세로 간격 조절 */
+    /* 세로 간격 조절 */
+    margin: 0 auto;
   }
 
   .gallery-btns {
@@ -154,26 +154,28 @@
 
 /* 아이폰 12 해상도에 맞춘 반응형 디자인 */
 @media (max-width: 390px) {
-  .gallery-body {
-    padding: 10px 5%;
-  }
-
   .gallery-box {
-    width: 90px;
-    height: 130px;
-    margin-bottom: 10px; /* 세로 간격 조절 */
+    width: 150px;
+    height: 200px;
+    margin-top: 20px;
+    margin-bottom: 10px;
   }
 
   .gallery-btns {
-    margin-top: 150px; /* 세로 간격 조절 */
+    margin-top: 100px;
   }
 
   .gallery-btns .gallery-btn {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
   }
 
   #location-name {
-    font-size: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .gallery-body {
+    padding: 15px 5%;
+    min-height: 250px;
   }
 }

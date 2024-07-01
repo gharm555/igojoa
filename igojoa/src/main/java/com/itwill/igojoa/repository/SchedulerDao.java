@@ -4,4 +4,6 @@ public interface SchedulerDao {
 	void updatePlaceStats();
 	
 	void updateBestReviews();
+	
+	void updateBestBadge();
 }
