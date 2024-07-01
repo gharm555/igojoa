@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 마이페이지로 이동
   function goToUserProfile() {
-    window.location.href = 'user/userProfile';
+    window.location.href = './userProfile';
   }
 
   // 로그인 회원가입 페이지로 이동
