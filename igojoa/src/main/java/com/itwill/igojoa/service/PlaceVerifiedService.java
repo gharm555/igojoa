@@ -74,4 +74,19 @@ public class PlaceVerifiedService {
     public int deletePlaceVerified(String userId) {
         return placeVerifiedDao.deletePlaceVerified(userId);
     }
+
+    @Transactional
+    public int visitVerificationConfirmation(PlacesFavoriteDto placesFavoriteDto) {
+        Optional<PlacesFavoriteDto> optionalPlacesFavorite = Optional.ofNullable(placesFavoriteDto);
+        int res = 0;
+        if (!optionalPlacesFavorite.isEmpty()) {
+            placesFavoriteDto = optionalPlacesFavorite.get();
+        } else {
+
+            return res;
+        }
+        res = placeVerifiedDao.visitVerificationConfirmation(placesFavoriteDto);
+
+        return res;
+    }
 }
