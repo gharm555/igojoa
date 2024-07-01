@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> <%@ taglib prefix="c"
-uri="jakarta.tags.core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html lang="ko">
   <head>
@@ -20,46 +20,7 @@ uri="jakarta.tags.core"%>
     <link rel="stylesheet" href="${loginRegistrationCss}" />
   </head>
   <body>
-    <header>
-      <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
-          <div class="container-sideNav">
-            <button class="navbar-toggler" type="button" onclick="toggleSideNav()" aria-controls="sideNav">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-          </div>
-          <div class="container-logo">
-            <a class="navbar-brand mx-auto" id="goToTop" href="#"><h2 class="m-0">아이고좋아</h2></a>
-          </div>
-          <div class="container-user">
-            <c:if test="${userId == null}">
-              <button type="button" class="btn btn-outline-primary me-2 nav-btn" id="btnLogin">로그인</button>
-            </c:if>
-            <c:if test="${userId != null}">
-              <div class="userProfile" onclick="toggleProfileDropdown()">
-                <img src="${userProfileUrl}" alt="프로필 사진" />
-                <div class="dropdown-menu">
-                  <a class="dropdown-item">마이페이지</a>
-                  <a class="dropdown-item" id="locationVerifyBtn">위치인증</a>
-                  <span class="dropdown-item">포인트정보: 999</span>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" id="logoutBtn">로그아웃</a>
-                </div>
-              </div>
-            </c:if>
-          </div>
-        </div>
-      </nav>
-
-      <div id="sideNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="#" id="goMain">메인</a></li>
-          <li class="nav-item"><a class="nav-link" href="#" id="goPopular">추천명소</a></li>
-          <li class="nav-item"><a class="nav-link" href="#" id="goGame">미니게임</a></li>
-          <li class="nav-item"><a class="nav-link" href="#" id="goFAQ">자주묻는질문</a></li>
-        </ul>
-      </div>
-    </header>
+    <%@ include file="../header.jspf" %>
     <main>
       <div class="container">
         <div class="box signin">
@@ -91,14 +52,29 @@ uri="jakarta.tags.core"%>
                 placeholder="비밀번호를 입력해 주세요"
               />
               <!-- 로그인 체크 메시지 -->
-              <div id="login-check-message" class="invalid-feedback" style="display: none"></div>
-              <input type="submit" class="form-control" id="loginBtn" value="로그인" />
+              <div
+                id="login-check-message"
+                class="invalid-feedback"
+                style="display: none"
+              ></div>
+              <input
+                type="submit"
+                class="form-control"
+                id="loginBtn"
+                value="로그인"
+              />
               <div class="find">
-                <a class="text-decoration-underline" data-bs-toggle="modal" data-bs-target="#findUserIdModal"
+                <a
+                  class="text-decoration-underline"
+                  data-bs-toggle="modal"
+                  data-bs-target="#findUserIdModal"
                   >아이디를 잊으셨나요?</a
                 >
                 <span> | </span>
-                <a class="text-decoration-underline" data-bs-toggle="modal" data-bs-target="#findPasswordModal"
+                <a
+                  class="text-decoration-underline"
+                  data-bs-toggle="modal"
+                  data-bs-target="#findPasswordModal"
                   >비밀번호를 잊으셨나요?</a
                 >
               </div>
@@ -106,7 +82,12 @@ uri="jakarta.tags.core"%>
           </div>
           <div class="form signupform">
             <c:url var="registerUrl" value="/user/register" />
-            <form action="${registerUrl}" id="registerForm" method="post" enctype="multipart/form-data">
+            <form
+              action="${registerUrl}"
+              id="registerForm"
+              method="post"
+              enctype="multipart/form-data"
+            >
               <h3>회원가입</h3>
               <div class="image-upload d-flex justify-content-center">
                 <label for="profile-input">
@@ -138,7 +119,11 @@ uri="jakarta.tags.core"%>
                 name="userId"
                 oninput="validateInput('userId', this.value)"
               />
-              <div id="id-check-message" class="invalid-feedback" style="display: none"></div>
+              <div
+                id="id-check-message"
+                class="invalid-feedback"
+                style="display: none"
+              ></div>
 
               <input
                 type="password"
@@ -148,7 +133,11 @@ uri="jakarta.tags.core"%>
                 name="password"
                 oninput="validateInput('password', this.value)"
               />
-              <div id="password-check-message" class="invalid-feedback" style="display: none"></div>
+              <div
+                id="password-check-message"
+                class="invalid-feedback"
+                style="display: none"
+              ></div>
 
               <input
                 type="password"
@@ -157,7 +146,11 @@ uri="jakarta.tags.core"%>
                 id="password-confirm"
                 oninput="validateInput('password-confirm', this.value)"
               />
-              <div id="password-confirm-check-message" class="invalid-feedback" style="display: none"></div>
+              <div
+                id="password-confirm-check-message"
+                class="invalid-feedback"
+                style="display: none"
+              ></div>
 
               <input
                 type="text"
@@ -167,7 +160,11 @@ uri="jakarta.tags.core"%>
                 name="nickName"
                 oninput="validateInput('nickName', this.value)"
               />
-              <div id="nickname-check-message" class="invalid-feedback" style="display: none"></div>
+              <div
+                id="nickname-check-message"
+                class="invalid-feedback"
+                style="display: none"
+              ></div>
 
               <input
                 type="email"
@@ -177,7 +174,11 @@ uri="jakarta.tags.core"%>
                 name="email"
                 oninput="validateInput('email', this.value)"
               />
-              <div id="email-check-message" class="invalid-feedback" style="display: none"></div>
+              <div
+                id="email-check-message"
+                class="invalid-feedback"
+                style="display: none"
+              ></div>
 
               <div class="d-flex align-items-baseline">
                 <input
@@ -213,9 +214,18 @@ uri="jakarta.tags.core"%>
                   oninput="validateInput('phone', this.value)"
                 />
               </div>
-              <div id="phone-check-message" class="invalid-feedback" style="display: none"></div>
+              <div
+                id="phone-check-message"
+                class="invalid-feedback"
+                style="display: none"
+              ></div>
               <div id="register-check-message" style="display: none"></div>
-              <input type="submit" id="registerBtn" name="registerBtn" value="회원가입" />
+              <input
+                type="submit"
+                id="registerBtn"
+                name="registerBtn"
+                value="회원가입"
+              />
             </form>
           </div>
         </div>
@@ -234,7 +244,12 @@ uri="jakarta.tags.core"%>
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="findUserIdModalLabel">본인 인증</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body" id="findUserIdModalBody">
             <!-- 아이디 찾기 폼 내용 -->
@@ -252,11 +267,23 @@ uri="jakarta.tags.core"%>
               class="form-control mt-2"
               placeholder="닉네임을 입력해 주세요"
             />
-            <label id="findUserIdMessage" class="invalid-feedback" style="display: none"></label>
+            <label
+              id="findUserIdMessage"
+              class="invalid-feedback"
+              style="display: none"
+            ></label>
           </div>
           <div class="modal-footer" id="findUserIdModalFooter">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-            <button type="button" id="verifyUserIdBtn" class="btn btn-primary">확인</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              닫기
+            </button>
+            <button type="button" id="verifyUserIdBtn" class="btn btn-primary">
+              확인
+            </button>
           </div>
         </div>
       </div>
@@ -274,11 +301,21 @@ uri="jakarta.tags.core"%>
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="findPasswordModalLabel">본인 인증</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body" id="findPasswordModalBody">
             <!-- 비밀번호 찾기 폼 내용 -->
-            <input type="text" id="userIdForFindPassword" class="form-control" placeholder="아이디를 입력해 주세요" />
+            <input
+              type="text"
+              id="userIdForFindPassword"
+              class="form-control"
+              placeholder="아이디를 입력해 주세요"
+            />
             <input
               type="email"
               id="emailForFindPassword"
@@ -291,35 +328,74 @@ uri="jakarta.tags.core"%>
               class="form-control mt-2"
               placeholder="닉네임을 입력해 주세요"
             />
-            <label id="findPasswordMessage" class="invalid-feedback" style="display: none"></label>
+            <label
+              id="findPasswordMessage"
+              class="invalid-feedback"
+              style="display: none"
+            ></label>
           </div>
           <div class="modal-footer" id="findPasswordModalFooter">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-            <button type="button" id="verifyPasswordBtn" class="btn btn-primary">확인</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              닫기
+            </button>
+            <button
+              type="button"
+              id="verifyPasswordBtn"
+              class="btn btn-primary"
+            >
+              확인
+            </button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 알림 모달 -->
-    <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="alertModal"
+      tabindex="-1"
+      aria-labelledby="alertModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="alertModalLabel">회원가입</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body" id="alertModalBody"></div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              확인
+            </button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Include Font Awesome for icons -->
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
     <!-- BootStrap-->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

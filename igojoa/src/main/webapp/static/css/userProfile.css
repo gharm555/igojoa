@@ -12,9 +12,14 @@ main {
   transition: margin-top 0.3s ease;
   box-shadow: none;
 }
-h2 {
 
+h2 {
   font-size: 30px;
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 10px;
 }
 
 .container {
@@ -73,24 +78,6 @@ h2 {
   padding: 40px;
   height: 110%;
 }
-
-h2 {
-  color: var(--primary-color);
-  margin-bottom: 30px;
-  font-weight: 700;
-  position: relative;
-  padding-bottom: 10px;
-}
-
-/* h2::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 50px;
-    height: 3px;
-    background-color: var(--primary-color);
-  } */
 
 /* 카드 스타일 */
 .card {
@@ -188,12 +175,12 @@ h2 {
   border-radius: var(--border-radius);
   font-family: var(--main-font);
   font-size: 16px;
-  height: 44px; /* 높이를 약간 증가시켰습니다 */
+  height: 44px;
 }
 
 .search-container select {
   background-color: var(--secondary-color);
-  width: 120px;
+  width: 134px;
   flex-shrink: 0;
 }
 
@@ -203,15 +190,15 @@ h2 {
 }
 
 .search-container button {
-  min-width: 100px; /* 버튼의 최소 너비를 늘렸습니다 */
-  padding: 10px 15px; /* 좌우 패딩을 늘렸습니다 */
+  min-width: 100px;
+  padding: 10px 15px;
   border: none;
   background-color: var(--primary-color);
   color: white;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.3s ease;
-  white-space: nowrap; /* 버튼 텍스트가 줄바꿈되지 않도록 설정 */
+  white-space: nowrap;
 }
 
 .search-container button:hover {
@@ -244,6 +231,13 @@ h2 {
   border-bottom: 2px solid var(--primary-color);
 }
 
+/* 내활동내역 데이터피커 */
+#date-range {
+  padding: 10px;
+  font-size: 16px;
+  width: 210px;
+}
+
 /* 아이콘 텍스트 스타일 */
 .icon-text {
   display: flex;
@@ -252,7 +246,7 @@ h2 {
   margin-bottom: 10px;
 }
 
-.circular-icon {    /*  뱃지 */
+.circular-icon {
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -269,9 +263,9 @@ h2 {
 
 /* 리스트 스크롤바 */
 #activityList {
-  max-height: calc(70vh - 280px); /* 높이 */
+  max-height: calc(70vh - 280px);
   overflow-y: auto;
-  padding-bottom: 20px; /* 하단 여백 추가 */
+  padding-bottom: 20px;
 }
 
 #activityList::-webkit-scrollbar {
@@ -294,26 +288,6 @@ h2 {
 
 #activityList .list-group-item:last-child {
   margin-bottom: 0;
-}
-
-/* 반응형 스타일 */
-@media (max-width: 768px) {
-  .sidebar,
-  .content {
-    padding: 30px;
-  }
-
-  .search-container {
-    flex-direction: column;
-  }
-
-  .search-container select,
-  .search-container input[type="text"],
-  .search-container button {
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
 }
 
 /* 포인트 내역 탭 스타일 */
@@ -375,7 +349,74 @@ h2 {
   overflow-y: auto;
 }
 
+/* 반응형 스타일 */
+@media (max-width: 1200px) {
+  .container {
+    height: 95vh;
+  }
+
+  .sidebar, .content {
+    padding: 20px;
+  }
+
+  .profile-img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .nav-pills .nav-link {
+    padding: 10px 15px;
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    height: auto;
+    min-height: 95vh;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+  .sidebar, .content {
+    width: 100%;
+  }
+
+  .sidebar {
+    padding-bottom: 30px;
+  }
+
+  .content {
+    padding-top: 30px;
+  }
+}
+
 @media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  .card-body {
+    padding: 15px;
+  }
+
+  .search-container {
+    flex-direction: column;
+  }
+
+  .search-container select,
+  .search-container input[type="text"],
+  .search-container button {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
   #v-pills-messages .row {
     flex-direction: column;
   }
@@ -386,16 +427,20 @@ h2 {
   }
 }
 
-@media (max-width: 768px) {
-  .search-container {
-    flex-wrap: wrap;
-  }
+/* 스크롤바 스타일 */
+::-webkit-scrollbar {
+  width: 8px;
+}
 
-  .search-container select,
-  .search-container input[type="text"],
-  .search-container button {
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a5a8a;
 }

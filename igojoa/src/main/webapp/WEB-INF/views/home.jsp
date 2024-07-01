@@ -2,14 +2,17 @@
   pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>통합 웹 페이지</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"/>
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>아이고조아</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
     <c:url var="cssResetCss" value="/css/cssReset.css" />
     <link rel="stylesheet" href="${cssResetCss}" />
     <c:url var="navbarCss" value="/css/navbar.css" />
@@ -70,7 +73,7 @@
                 </div>
             </div>
 
-                    <!-- Initial 9 places loaded from the server -->
+        </section>           <!-- Initial 9 places loaded from the server -->
         <section>
         <div class="container-fluid main-container" id="container">
             <div class="row text-center">
@@ -314,4 +317,6 @@
     <c:url var="lottoJs" value="/js/lotto.js" />
     <script src="${lottoJs}"></script>
 </body>
+
+
 </html>
