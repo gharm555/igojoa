@@ -73,8 +73,7 @@
                 </div>
             </div>
 
-        </section>           <!-- Initial 9 places loaded from the server -->
-        <section>
+
         <div class="container-fluid main-container" id="container">
             <div class="row text-center">
                 <!-- Initial 9 places loaded from the server -->
@@ -308,14 +307,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <c:url var="imageGalleryJs" value="/js/ImageGallery.js" />
-    <script src="${navJs}"></script>
     <c:url var="mainJs" value="/js/main.js" />
     <script src="${mainJs}"></script>
-    <c:url var="navJs" value="/js/nav.js" />
-    <script src="${imageGalleryJs}"></script>
+    <c:url var="navJs" value="/js/navbar.js" />
+    <script src="${navJs}"></script>
     <c:url var="lottoJs" value="/js/lotto.js" />
     <script src="${lottoJs}"></script>
+    <c:url var="imageGalleryJs" value="/js/image_gallery.js" />
+    <script src="${imageGalleryJs}"></script>
 </body>
 
 
