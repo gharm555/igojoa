@@ -17,15 +17,12 @@
 		CONCAT(p.largeAddress , ' ', p.midiumAddress) AS
 		address,
 		COUNT(pf.userId) as userFavorite,
-		ps.parkingAvailable ,
-		ps.`view` ,
-		ps.nightView ,
-		ps.freeEntry ,
-		ps.easyTransport ,
+		ps.highestBadge ,
+		ps.secondHighestBadge ,
 		ps.iScore ,
 		ps.review AS reviewCnt,
 		ps.placeVerified,
-		br.userId ,
+		u.nickName ,
 		br.review ,
 		br.modifiedAt ,
 		br.likeCount ,
@@ -39,18 +36,25 @@
 		ON
 		pf.placeName =
 		p.placeName
-		AND pf.userId = '${userId}'
+		AND pf.userId =
+		'${userId}'
 		LEFT JOIN placesStats ps
 		ON
 		ps.placeName = p.placeName
-		LEFT JOIN
+		LEFT
+		JOIN
 		bestReviews br
 		ON
 		br.placeName =
 		p.placeName
+		LEFT JOIN users u
+		ON
+		br.userId
+		= u.userId
 		LEFT JOIN placeImages pi2
 		ON
-		pi2.placeName = p.placeName
+		pi2.placeName =
+		p.placeName
 		WHERE
 		<if test='addressCategory != ""'>
 			p.largeAddress = '${addressCategory}' and
@@ -75,10 +79,12 @@
 			ps.iScore DESC
 		</if>
 		<if test='sortKey.equals("userFavorite") and sortValue == 1'>
-			ORDER BY userFavorite DESC, ps.iScore DESC , ps.placeVerified DESC
+			ORDER BY userFavorite DESC, ps.iScore DESC ,
+			ps.placeVerified DESC
 		</if>
 		<if test='sortKey.equals("userFavorite") and sortValue == 0'>
-			ORDER BY userFavorite ASC, ps.iScore DESC , ps.placeVerified DESC
+			ORDER BY userFavorite ASC, ps.iScore DESC ,
+			ps.placeVerified DESC
 		</if>
 		<if test='sortKey.equals("reviewCnt") and sortValue == 1'>
 			ORDER BY reviewCnt DESC, userFavorite ASC, ps.iScore DESC
@@ -90,11 +96,89 @@
 		${startRowValue} ,
 		${rowCnt}
 	</select>
+
 	<select id="selectPlaceSpaceList" resultType="PlaceSpaceDto">
 		SELECT
-			placeName,
-			placeLatitude,
-			placeLongitude
+		placeName,
+		placeLatitude,
+		placeLongitude
 		FROM places
 	</select>
+
+	<insert id="clickHeart">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		INSERT INTO placesFavorite (placeName,userId)
+		values('${placeName}',
+		'${userId}')
+	</insert>
+
+	<delete id="deleteHeart">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		DELETE FROM placesFavorite WHERE placeName = '${placeName}' AND userId
+		=
+		'${userId}'
+	</delete>
+
+	<select id="selectPlaceDetail" resultType="PlaceDetailDto">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		SELECT
+		p.placeName ,
+		pi2.firstUrl,
+		pi2.secondUrl,
+		pi2.thirdUrl,
+		CONCAT(p.largeAddress , ' ',
+		p.midiumAddress, ' ',
+		p.smallAddress) AS
+		address,
+		p.placeDescription ,
+		p.placeLatitude ,
+		p.placeLongitude ,
+		p.operatingHours,
+		ps.parkingAvailable AS
+		totalParkingAvailable ,
+		ps.`view` AS totalView ,
+		ps.nightView AS
+		totalNightView ,
+		ps.freeEntry AS
+		totalFreeEntry ,
+		ps.easyTransport AS
+		totalEasyTransport ,
+		ps.iScore AS
+		avgIScore,
+		COALESCE(r.review, "") AS
+		review,
+		COALESCE(r.parkingAvailable,
+		0) AS
+		parkingAvailable,
+		COALESCE(r.`view`,
+		0) AS `view`,
+		COALESCE(r.nightView, 0) AS nightView,
+		COALESCE(r.freeEntry, 0) AS
+		freeEntry,
+		COALESCE(r.easyTransport, 0) AS
+		easyTransport,
+		COALESCE(r.iScore, 2) AS iScore
+		FROM
+		places p
+		LEFT JOIN
+		placesStats ps
+		ON
+		ps.placeName = p.placeName
+		LEFT JOIN placeImages pi2
+		ON pi2.placeName =
+		p.placeName
+		LEFT JOIN reviews r
+		ON
+		r.placeName =
+		p.placeName
+		AND r.userId =
+		'${userId}'
+		WHERE
+		p.placeName =
+		'${placeName}'
+	</select>
+
 </mapper>

@@ -22,6 +22,7 @@ public class IgojoaScheduler {
 	public void runUpdatePlaceStatsJob() {
 		log.debug("스케쥴러 가동");
 		schedulerService.updatePlaceStats();
+		schedulerService.updateBestBadge();
 		log.debug("스케쥴러 정상 종료");
 	}
 

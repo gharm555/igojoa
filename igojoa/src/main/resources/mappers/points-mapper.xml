@@ -31,4 +31,18 @@
 		ORDER BY pointsGetLoseTime DESC
 		LIMIT 1
 	</select>
+	<update id="subtractPoints">
+		UPDATE points
+		SET currentsPoints = currentsPoints - #{points}
+		WHERE userId = #{userId}
+	</update>
+	<delete id="deletePoints" parameterType="String">
+		DELETE FROM points WHERE userId = #{userId}
+	</delete>
+	<delete id="deletePointsLog" parameterType="String">
+		DELETE FROM pointsLogs WHERE userId = #{userId}
+	</delete>
+	<select id="selectPoints" parameterType="String" resultType="string">
+		SELECT currentsPoints FROM points WHERE userId = #{userId}
+	</select>
 </mapper>
