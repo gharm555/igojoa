@@ -42,8 +42,10 @@ public class ReviewRestController {
 
 			return ResponseEntity.ok(res);
 		} else {
+			reviewDto.setPlaceName(placeName);
+			reviewDto.setUserId(userId);
 			log.debug("\n\n" + reviewDto.toString() + "\n\n");
-			int i = reviewService.insertReview();
+			int i = reviewService.insertReview(reviewDto);
 
 			return ResponseEntity.ok(i);
 		}
