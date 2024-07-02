@@ -1,7 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> <%@ taglib prefix="c"
+uri="jakarta.tags.core"%> <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%> <%@ taglib prefix="fn"
+uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="KR">
   <head>
@@ -9,11 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    
+
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css" rel="stylesheet" />
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 
     <c:url var="cssResetCss" value="/css/cssReset.css" />
@@ -191,7 +190,15 @@
                     <input type="password" class="form-control" id="newPassword" value="" />
                     <small id="passwordFeedback" class="form-text"></small>
                     <div id="passwordStrength" class="progress mt-2 d-none" style="height: 5px">
-                      <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                      <div
+                        id="progress-bar"
+                        class="progress-bar"
+                        role="progressbar"
+                        style="width: 0%"
+                        aria-valuenow="0"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      ></div>
                     </div>
                   </div>
                   <div class="mb-3 d-none" id="passwordGroup2">
@@ -305,24 +312,41 @@
                   </nav>
                 </div>
                 <div class="tab-content" id="nav-tabContent">
-                  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+                  <div
+                    class="tab-pane fade show active"
+                    id="nav-home"
+                    role="tabpanel"
+                    aria-labelledby="nav-home-tab"
+                    tabindex="0"
+                  >
                     <ul class="list-group" id="activityList">
-                      <li class="list-group-item d-flex align-items-center">
-                        <img
-                          src="https://placehold.co/50x50"
-                          alt="프로필"
-                          class="rounded-circle me-3"
-                          width="50"
-                          height="50"
-                        />
-                        <div>
-                          <p class="mb-0">부산시 전포동 열람실 게시물에 좋아요를 눌렀습니다.</p>
-                          <small class="text-muted">2024.06.19 10:15</small>
-                        </div>
-                      </li>
+                      <c:forEach var="userActivity" items="${userActivites}">
+                        <li class="list-group-item d-flex align-items-center">
+                          <img
+                            src="${userActivity.firstUrl}"
+                            alt="프로필"
+                            class="rounded-circle me-3"
+                            width="50"
+                            height="50"
+                          />
+                          <div>
+                            <p class="mb-0">부산시 전포동 열람실 게시물에 좋아요를 눌렀습니다.</p>
+                            <p class="mb-0">
+                              ${userActivity.address} ${userActivity.placeName} 게시물에 좋아요를 눌렀습니다.
+                            </p>
+                            <small class="text-muted">${userActivity.createdTime}</small>
+                          </div>
+                        </li>
+                      </c:forEach>
                     </ul>
                   </div>
-                  <div class="tab-pane fade" id="nav-liked-posts" role="tabpanel" aria-labelledby="nav-liked-posts-tab" tabindex="0">
+                  <div
+                    class="tab-pane fade"
+                    id="nav-liked-posts"
+                    role="tabpanel"
+                    aria-labelledby="nav-liked-posts-tab"
+                    tabindex="0"
+                  >
                     <ul class="list-group" id="likedPostsList">
                       <li class="list-group-item d-flex align-items-center">
                         <img
@@ -339,7 +363,13 @@
                       </li>
                     </ul>
                   </div>
-                  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+                  <div
+                    class="tab-pane fade"
+                    id="nav-profile"
+                    role="tabpanel"
+                    aria-labelledby="nav-profile-tab"
+                    tabindex="0"
+                  >
                     <ul class="list-group" id="activityList">
                       <li class="list-group-item d-flex align-items-center">
                         <img
@@ -370,7 +400,13 @@
                       <!-- 추가 리뷰 목록 작성 -->
                     </ul>
                   </div>
-                  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
+                  <div
+                    class="tab-pane fade"
+                    id="nav-contact"
+                    role="tabpanel"
+                    aria-labelledby="nav-contact-tab"
+                    tabindex="0"
+                  >
                     <ul class="list-group" id="likedPostsList">
                       <li class="list-group-item d-flex align-items-center">
                         <img
@@ -444,7 +480,13 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" id="withdrawalModal" tabindex="-1" aria-labelledby="withdrawalModalLabel" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="withdrawalModal"
+      tabindex="-1"
+      aria-labelledby="withdrawalModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -466,7 +508,7 @@
     <script src="${navbarJs}"></script>
     <c:url var="userProfileJs" value="/js/userProfile.js" />
     <script src="${userProfileJs}"></script>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
   </body>
