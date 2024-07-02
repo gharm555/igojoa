@@ -12,16 +12,16 @@ const $passwordStrength = document.querySelector("#passwordStrength");
 // <---------- 비밀번호 변수
 
 // 정보수정 변수 ---------->
-const $form = document.querySelector('#editProfileForm');
-const $nickName = document.querySelector('input#nickName');
-const $nickNameFeedback = document.querySelector('#nickNameFeedback');
-const $emailInput = document.querySelector('input#email');
-const $emailFeedback = document.querySelector('#emailFeedback');
-const $phone1Input = document.querySelector('#phone1');
-const $phone2Input = document.querySelector('#phone2');
-const $phone3Input = document.querySelector('#phone3');
-const $phoneFeedback = document.querySelector('#phoneFeedback');
-const $updateBtn = document.querySelector('#updateBtn');
+const $form = document.querySelector("#editProfileForm");
+const $nickName = document.querySelector("input#nickName");
+const $nickNameFeedback = document.querySelector("#nickNameFeedback");
+const $emailInput = document.querySelector("input#email");
+const $emailFeedback = document.querySelector("#emailFeedback");
+const $phone1Input = document.querySelector("#phone1");
+const $phone2Input = document.querySelector("#phone2");
+const $phone3Input = document.querySelector("#phone3");
+const $phoneFeedback = document.querySelector("#phoneFeedback");
+const $updateBtn = document.querySelector("#updateBtn");
 const originalValues = {
   nickName: $nickName.value,
   email: $emailInput.value,
@@ -66,18 +66,15 @@ $newPasswordInput.addEventListener("input", function () {
   $passwordFeedback.style.color = result.color;
 
   if ($passwordStrength) {
-
     if (this.value === "") {
       $passwordStrength.classList.add("d-none");
     } else {
       $passwordStrength.classList.remove("d-none");
-
     }
   }
 
   checkPasswordMatch();
 });
-
 
 $confirmPasswordInput.addEventListener("input", checkPasswordMatch);
 // $newPasswordInput.addEventListener("input", checkPasswordMatch);
@@ -94,7 +91,6 @@ function checkPasswordStrength(password) {
 
       message: "유효한 비밀번호입니다",
       color: "green",
-
     };
   } else if (!isLongEnough && !hasNumber) {
     return {
@@ -102,7 +98,6 @@ function checkPasswordStrength(password) {
 
       message: "8자리 이상, 숫자가 포함된 비밀번호로 해주세요",
       color: "red",
-
     };
   } else if (isTooLong) {
     return {
@@ -365,44 +360,44 @@ function checkForChanges() {
     isPasswordValid = true;
     isChanged = true;
   }
-
+}
 // 각 입력 필드에 이벤트 리스너 추가
-$nickName.addEventListener('input', checkForChanges);
-$emailInput.addEventListener('input', checkForChanges);
-$phone1Input.addEventListener('input', checkForChanges);
-$phone2Input.addEventListener('input', checkForChanges);
-$phone3Input.addEventListener('input', checkForChanges);
-$newPasswordInput.addEventListener('input', checkForChanges);
-$confirmPasswordInput.addEventListener('input', checkForChanges);
+$nickName.addEventListener("input", checkForChanges);
+$emailInput.addEventListener("input", checkForChanges);
+$phone1Input.addEventListener("input", checkForChanges);
+$phone2Input.addEventListener("input", checkForChanges);
+$phone3Input.addEventListener("input", checkForChanges);
+$newPasswordInput.addEventListener("input", checkForChanges);
+$confirmPasswordInput.addEventListener("input", checkForChanges);
 // 초기 상태에서는 버튼 비활성화
 $updateBtn.disabled = true;
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
   // 포인트내역에 있는 FullCalendar 및 포인트 내역 관련 코드
   let calendar;
-  const $pointHistoryTab = document.querySelector('#v-pills-messages-tab');
+  const $pointHistoryTab = document.querySelector("#v-pills-messages-tab");
   const pointHistory = [
-    { date: '2024-06-25', content: '게시글 작성', points: 100 },
-    { date: '2024-06-24', content: '댓글 작성', points: 50 },
-    { date: '2024-06-27', content: '포인트 사용', points: -200 },
-    { date: '2024-06-29', content: '이벤트 참여', points: 500 },
-    { date: '2024-06-29', content: '이벤트 참여', points: 500 },
-    { date: '2024-06-29', content: '상품 구매', points: -1000 },
-    { date: '2024-06-29', content: '리뷰 작성', points: 200 },
-    { date: '2024-06-26', content: '출석 체크', points: 10 },
+    { date: "2024-06-25", content: "게시글 작성", points: 100 },
+    { date: "2024-06-24", content: "댓글 작성", points: 50 },
+    { date: "2024-06-27", content: "포인트 사용", points: -200 },
+    { date: "2024-06-29", content: "이벤트 참여", points: 500 },
+    { date: "2024-06-29", content: "이벤트 참여", points: 500 },
+    { date: "2024-06-29", content: "상품 구매", points: -1000 },
+    { date: "2024-06-29", content: "리뷰 작성", points: 200 },
+    { date: "2024-06-26", content: "출석 체크", points: 10 },
   ];
 
-  if (typeof FullCalendar === 'undefined') {
-    console.error('FullCalendar library is not loaded');
+  if (typeof FullCalendar === "undefined") {
+    console.error("FullCalendar library is not loaded");
     return;
   }
 
-  $pointHistoryTab.addEventListener('shown.bs.tab', initializeCalendar);
+  $pointHistoryTab.addEventListener("shown.bs.tab", initializeCalendar);
 
   function initializeCalendar() {
-    const $calendarEl = document.querySelector('#calendar');
+    const $calendarEl = document.querySelector("#calendar");
     if (!$calendarEl) {
-      console.error('Calendar element not found');
+      console.error("Calendar element not found");
       return;
     }
 
@@ -413,16 +408,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const dailyTotals = calculateDailyTotals(pointHistory);
 
     calendar = new FullCalendar.Calendar($calendarEl, {
-      initialView: 'dayGridMonth',
+      initialView: "dayGridMonth",
       buttonText: {
-        today: '오늘',
+        today: "오늘",
       },
       headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: '',
+        left: "prev,next today",
+        center: "title",
+        right: "",
       },
-      locale: 'ko',
+      locale: "ko",
       events: dailyTotals,
       eventContent: function (arg) {
         return {
@@ -434,20 +429,20 @@ document.addEventListener('DOMContentLoaded', function () {
       },
       datesSet: function (info) {
         updatePointHistory(info.start);
-        const $todayButton = document.querySelector('.fc-today-button');
+        const $todayButton = document.querySelector(".fc-today-button");
         if ($todayButton) {
           $todayButton.disabled = false;
         }
       },
-      height: 'auto',
+      height: "auto",
     });
 
     calendar.render();
-    console.log('Calendar rendered');
+    console.log("Calendar rendered");
 
-    const $todayButton = document.querySelector('.fc-today-button');
+    const $todayButton = document.querySelector(".fc-today-button");
     if ($todayButton) {
-      $todayButton.addEventListener('click', function () {
+      $todayButton.addEventListener("click", function () {
         const today = new Date();
         calendar.gotoDate(today);
         updatePointHistory(today);
@@ -479,9 +474,9 @@ document.addEventListener('DOMContentLoaded', function () {
           title: `+${totals[date].earned}P`,
           start: date,
           allDay: true,
-          backgroundColor: '#28a745',
-          borderColor: '#28a745',
-          textColor: '#ffffff',
+          backgroundColor: "#28a745",
+          borderColor: "#28a745",
+          textColor: "#ffffff",
         });
       }
       if (totals[date].spent > 0) {
@@ -489,9 +484,9 @@ document.addEventListener('DOMContentLoaded', function () {
           title: `-${totals[date].spent}P`,
           start: date,
           allDay: true,
-          backgroundColor: '#dc3545',
-          borderColor: '#dc3545',
-          textColor: '#ffffff',
+          backgroundColor: "#dc3545",
+          borderColor: "#dc3545",
+          textColor: "#ffffff",
         });
       }
     });
@@ -502,13 +497,15 @@ document.addEventListener('DOMContentLoaded', function () {
   function updatePointHistory(date) {
     const formattedDate =
       date.getFullYear() +
-      '-' +
-      String(date.getMonth() + 1).padStart(2, '0') +
-      '-' +
-      String(date.getDate()).padStart(2, '0');
+      "-" +
+      String(date.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(date.getDate()).padStart(2, "0");
 
-    const $table = document.querySelector('#pointHistoryTable').querySelector('tbody');
-    $table.innerHTML = '';
+    const $table = document
+      .querySelector("#pointHistoryTable")
+      .querySelector("tbody");
+    $table.innerHTML = "";
 
     let earnedPoints = 0;
     let spentPoints = 0;
@@ -528,8 +525,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    document.querySelector('#earnedPoints').textContent = earnedPoints; // 얻은포인트
-    document.querySelector('#spentPoints').textContent = spentPoints; // 소비포인트
+    document.querySelector("#earnedPoints").textContent = earnedPoints; // 얻은포인트
+    document.querySelector("#spentPoints").textContent = spentPoints; // 소비포인트
 
     console.log(`Updating for date: ${formattedDate}`);
   }
@@ -539,17 +536,17 @@ document.addEventListener('DOMContentLoaded', function () {
   function getTodayDate() {
     const today = new Date();
     const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
 
   function enableTodayButton() {
-    const $todayButton = document.querySelector('.fc-today-button');
+    const $todayButton = document.querySelector(".fc-today-button");
     if ($todayButton) {
       $todayButton.disabled = false;
-      $todayButton.removeEventListener('click', handleTodayButtonClick);
-      $todayButton.addEventListener('click', handleTodayButtonClick);
+      $todayButton.removeEventListener("click", handleTodayButtonClick);
+      $todayButton.addEventListener("click", handleTodayButtonClick);
     }
   }
 
@@ -563,26 +560,25 @@ document.addEventListener('DOMContentLoaded', function () {
   initializeCalendar();
 
   // placeholder에 오늘 날짜 설정
-  document.getElementById('date-range').placeholder = getTodayDate();
+  document.getElementById("date-range").placeholder = getTodayDate();
 
   // Flatpickr 스타일시트를 동적으로 로드
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css';
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css";
   document.head.appendChild(link);
 
   // Flatpickr 초기화
   flatpickr.localize(flatpickr.l10ns.ko);
-  const datePicker = flatpickr('#date-range', {
-    mode: 'range',
-    dateFormat: 'Y-m-d',
-    minDate: 'today',
+  const datePicker = flatpickr("#date-range", {
+    mode: "range",
+    dateFormat: "Y-m-d",
+    minDate: "today",
     maxDate: new Date().fp_incr(365),
-    disableMobile: 'true',
+    disableMobile: "true",
     defaultDate: getTodayDate(),
     onChange: function (selectedDates, dateStr, instance) {
       console.log(selectedDates); // 선택된 날짜
     },
   });
 });
-
