@@ -73,8 +73,7 @@
                 </div>
             </div>
 
-        </section>           <!-- Initial 9 places loaded from the server -->
-        <section>
+
         <div class="container-fluid main-container" id="container">
             <div class="row text-center">
                 <!-- Initial 9 places loaded from the server -->

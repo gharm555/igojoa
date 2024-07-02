@@ -41,10 +41,7 @@ header {
 .navbar-brand h2 {
 	margin: 0;
 	font-size: 24px;
-<<<<<<< HEAD
-=======
 	padding-bottom: 0;
->>>>>>> bd57672ee1fb79e401160ba32fcbd4c705889435
 }
 
 .container-sideNav, .container-logo, .container-user {
@@ -86,6 +83,15 @@ header {
 
 .dropdown-item {
 	cursor: pointer;
+}
+
+.dropdown-item:nth-child(3) {
+	pointer-events: none;
+}
+
+.dropdown-item:hover {
+	text-decoration: none;
+	background-color: var(--primary-color);
 }
 
 .nav-btn {
@@ -153,11 +159,8 @@ header {
 		width: 45px;
 		height: 45px;
 	}
-<<<<<<< HEAD
-=======
 
 	.container-fluid {
 		justify-content: space-around;
 	}
->>>>>>> bd57672ee1fb79e401160ba32fcbd4c705889435
 }
