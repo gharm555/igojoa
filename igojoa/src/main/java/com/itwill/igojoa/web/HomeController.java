@@ -42,6 +42,7 @@ public class HomeController {
 			session.removeAttribute("searchKeyword");
 		}
 		
+//		userId = "김진성";
 		// 홈 디폴트 리스트 세팅
 		final String addressCategory = ""; // 지역 카테고리
 		final String searchKeyword = ""; // 검색어
@@ -70,18 +71,18 @@ public class HomeController {
 		pointsService.insertPointLog(userId, "뽑기", 150);
 		pointsService.insertPointLog(userId, rank, 0);
 		switch (rank) {
-			case "1":
-				return ResponseEntity.ok("1");
-			case "2":
-				return ResponseEntity.ok("2");
-			case "3":
-				return ResponseEntity.ok("3");
-			case "4":
-				return ResponseEntity.ok("4");
-			case "5":
-				return ResponseEntity.ok("5");
-			default:
-				return ResponseEntity.ok("0");
+		case "1":
+			return ResponseEntity.ok("1");
+		case "2":
+			return ResponseEntity.ok("2");
+		case "3":
+			return ResponseEntity.ok("3");
+		case "4":
+			return ResponseEntity.ok("4");
+		case "5":
+			return ResponseEntity.ok("5");
+		default:
+			return ResponseEntity.ok("0");
 		}
 	}
 

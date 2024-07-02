@@ -14,6 +14,7 @@ import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
 import com.itwill.igojoa.service.PlaceService;
 import com.itwill.igojoa.service.PlaceVerifiedService;
 import com.itwill.igojoa.service.PointsService;
+import com.itwill.igojoa.service.UsersService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -28,37 +29,37 @@ public class PlaceController {
 	private final PlaceVerifiedService placeVerifiedService;
 	private final PlaceService placeService;
 	private final PointsService pointsService;
-	
-    @PostMapping("/verifyLocation")
-    public ResponseEntity<String> verifyPlace(@RequestParam(name = "latitude") double latitude,
-            @RequestParam(name = "longitude") double longitude,
-            @RequestParam(name = "userId") String userId) {
-        boolean isVerified = placeVerifiedService.verifyUserLocation(latitude, longitude, userId);
-        if (isVerified) {
-            pointsService.addPlaceVerifiedPoints(userId);
-            pointsService.insertPointLog(userId, "위치인증", 1000);
-            return ResponseEntity.ok("위치인증 성공");
-        } else {
-            return ResponseEntity.badRequest().body("위치인증 실패");
-        }
-    }
+	private final UsersService usersService;
 
-    @GetMapping("/details/{placeName}")
-    public String placeDetailPage(@PathVariable String placeName, Model model) {
-        log.debug("\n\n" + placeName + "\n\n");
-        String userId = (String) session.getAttribute("userId");
-        // if (userId != null) {
-        // int sessionCheck = usersService.sessionTorF(userId);
-        // if (sessionCheck == 0) {
-        //
-        // return "redirect:/";
-        // }
-        // }
-        userId = "오진호"; // 테스트 코드
-        PlacesFavoriteDto placesFavoriteDto = PlacesFavoriteDto.builder().placeName(placeName).userId(userId).build();
-        PlaceDetailDto res = placeService.selectPlaceDetail(placesFavoriteDto);
-        model.addAttribute("PlaceDetailDto", res);
+	@PostMapping("/verifyLocation")
+	public ResponseEntity<String> verifyPlace(@RequestParam(name = "latitude") double latitude,
+			@RequestParam(name = "longitude") double longitude, @RequestParam(name = "userId") String userId) {
+		boolean isVerified = placeVerifiedService.verifyUserLocation(latitude, longitude, userId);
+		if (isVerified) {
+			pointsService.addPlaceVerifiedPoints(userId);
+			pointsService.insertPointLog(userId, "위치인증", 1000);
+			return ResponseEntity.ok("위치인증 성공");
+		} else {
+			return ResponseEntity.badRequest().body("위치인증 실패");
+		}
+	}
 
-        return "/place/placeDetail";
-    }
+	@GetMapping("/details/{placeName}")
+	public String placeDetailPage(@PathVariable String placeName, Model model) {
+		log.debug("\n\n" + placeName + "\n\n");
+		String userId = (String) session.getAttribute("userId");
+		if (userId != null) {
+			int sessionCheck = usersService.sessionTorF(userId);
+			if (sessionCheck == 0) {
+
+				return "redirect:/";
+			}
+		}
+//        userId = "오진호"; // 테스트 코드
+		PlacesFavoriteDto placesFavoriteDto = PlacesFavoriteDto.builder().placeName(placeName).userId(userId).build();
+		PlaceDetailDto res = placeService.selectPlaceDetail(placesFavoriteDto);
+		model.addAttribute("PlaceDetailDto", res);
+
+		return "/place/placeDetail";
+	}
 }

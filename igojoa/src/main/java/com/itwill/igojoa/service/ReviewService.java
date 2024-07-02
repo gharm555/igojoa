@@ -31,7 +31,8 @@ public class ReviewService {
 		if (!optionalReviewDto.isEmpty()) {
 			dto = optionalReviewDto.get();
 		} else {
-			dto = new ReviewDto();
+
+			return new ArrayList<>();
 		}
 		Reviews reviews = reviewDto.toEntity(dto);
 		int i = reviewDao.insertReview(reviews);

@@ -24,7 +24,7 @@ public class ReviewServiceTest {
 	public void insertReviewTest() {
 		log.debug("insertReviewTest");
 		// 리뷰 작성 테스트
-		ReviewDto reviews = ReviewDto.builder().placeName("아이티윌").userId("ㅂㄷ")
+		ReviewDto reviews = ReviewDto.builder().placeName("아이티윌").userId("ohjinho0421")
 				.review("ㅋㅋㅋ").parkingAvailable(1)
 				.view(1).nightView(0).freeEntry(1).easyTransport(1).iscore(3)
 				.build();

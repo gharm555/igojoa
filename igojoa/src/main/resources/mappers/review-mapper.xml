@@ -40,9 +40,61 @@
 
 	<select id="selectPlaceReviews" resultType="ReviewListDto">
 		<bind name="placeName" value="placeName" />
-		SELECT * FROM reviews r
-		WHERE r.placeName = '${ placeName }'
-		ORDER BY modifiedAt
+		SELECT
+		r.placeName ,
+		r.userId ,
+		r.review ,
+		r.modifiedAt ,
+		r.parkingAvailable ,
+		r.`view` ,
+		r.nightView ,
+		r.freeEntry ,
+		r.easyTransport ,
+		r.iScore,
+		COALESCE(rl.cntLike, 0) AS cntLike,
+		COALESCE(myLike.myLike, 0) AS myLike
+		FROM
+		reviews r
+		LEFT JOIN (
+		SELECT
+		rl.placeName ,
+		rl.userId ,
+		COUNT(*) AS cntLike
+		FROM
+		reviewLikes rl
+		WHERE
+		rl.placeName = '${ placeName }'
+		GROUP BY
+		rl.placeName ,
+		rl.userId ) rl
+		ON
+		rl.placeName = r.placeName
+		and rl.userId = r.userId
+		LEFT JOIN (
+		SELECT
+		rl.userId ,
+		rl.placeName ,
+		rl.likeUserId ,
+		COUNT(*) AS myLike
+		FROM
+		reviewLikes rl
+		WHERE
+		rl.placeName = '${ placeName }'
+		AND rl.likeUserId =
+		'${ userId }'
+		GROUP BY
+		rl.placeName ,
+		rl.userId ,
+		rl.likeUserId
+		) myLike
+		ON
+		myLike.placeName = r.placeName AND myLike.userId = r.userId
+		WHERE
+		r.placeName = '${ placeName }'
+		ORDER BY
+		modifiedAt
 		DESC
+		LIMIT 0, 8
 	</select>
+
 </mapper>
