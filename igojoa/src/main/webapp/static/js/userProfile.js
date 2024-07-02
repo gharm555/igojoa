@@ -365,7 +365,7 @@ function checkForChanges() {
     isPasswordValid = true;
     isChanged = true;
   }
-
+}
 // 각 입력 필드에 이벤트 리스너 추가
 $nickName.addEventListener('input', checkForChanges);
 $emailInput.addEventListener('input', checkForChanges);
