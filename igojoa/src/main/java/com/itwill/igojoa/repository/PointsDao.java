@@ -19,7 +19,7 @@ public interface PointsDao {
     int addLoginPoints(String userId, int points);
 
     // 뽑기 포인트 차감
-    int subtractPoints(String userId, int points);
+    int subtractPoints(String userId);
 
     // 회원 탈퇴 시 포인트 삭제
     int deletePoints(String userId);

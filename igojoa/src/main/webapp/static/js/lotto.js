@@ -1,12 +1,11 @@
-let points = 10000;
-const costPerPlay = 200;
-
+const costPerPlay = 150;
+let isGameInProgress = false;
 // DOM 요소 선택
 const $result = document.querySelector("#result");
 const $bonus = document.querySelector("#bonus");
 const $playButton = document.querySelector("#playButton");
 const $resetNumbersButton = document.querySelector("#resetNumbersButton");
-const $numberSelects = document.querySelectorAll(".number-select");
+const $numberInputs = document.querySelectorAll(".number-input");
 const $points = document.querySelector("#points");
 const $rank = document.querySelector("#rank");
 
@@ -20,7 +19,7 @@ if (
   !$bonus ||
   !$playButton ||
   !$resetNumbersButton ||
-  !$numberSelects ||
+  !$numberInputs ||
   !$points ||
   !$rank ||
   !$modal ||
@@ -34,11 +33,6 @@ if (
 let userNumbers = new Set();
 let winBalls = [];
 let bonus;
-
-// 남은 포인트 업데이트 함수
-function updatePoints() {
-  $points.textContent = `남은 포인트: ${points}`;
-}
 
 // 숫자에 따라 공의 색상을 설정하는 함수
 function colorize(number, $tag) {
@@ -68,35 +62,12 @@ const showBall = (number, $target) => {
   }, 100);
 };
 
-// 1부터 36까지의 숫자 옵션을 생성하는 함수
-function createNumberSelects() {
-  const numbers = [
-    [1, 2, 3, 4, 5, 6],
-    [7, 8, 9, 10, 11, 12],
-    [13, 14, 15, 16, 17, 18],
-    [19, 20, 21, 22, 23, 24],
-    [25, 26, 27, 28, 29, 30],
-    [31, 32, 33, 34, 35, 36],
-  ];
-
-  $numberSelects.forEach((select, index) => {
-    select.innerHTML = "";
-    numbers[index].forEach((number) => {
-      const option = document.createElement("option");
-      option.value = number;
-      option.textContent = number;
-      select.appendChild(option);
-    });
-    select.addEventListener("change", updateUserNumbers);
-  });
-}
-
 // 유저가 선택한 번호를 업데이트하는 함수
 function updateUserNumbers() {
   userNumbers.clear();
-  $numberSelects.forEach((select) => {
-    const value = parseInt(select.value);
-    if (!isNaN(value)) {
+  $numberInputs.forEach((input) => {
+    const value = parseInt(input.value);
+    if (!isNaN(value) && value >= 1 && value <= 36) {
       userNumbers.add(value);
     }
   });
@@ -106,25 +77,43 @@ function updateUserNumbers() {
 
 // 새로운 함수: 플레이 버튼 상태 업데이트
 function updatePlayButtonState() {
-  if (userNumbers.size === 6) {
-    $playButton.disabled = false;
-  } else {
-    $playButton.disabled = true;
-  }
+  $playButton.disabled = userNumbers.size !== 6;
 }
-
+// 선택된 숫자를 정렬하고 화면에 표시하는 함수
+function sortAndDisplayNumbers() {
+  const sortedNumbers = Array.from(userNumbers).sort((a, b) => a - b);
+  $numberInputs.forEach((input, index) => {
+    input.value = sortedNumbers[index] || "";
+  });
+}
 // 선택된 숫자를 초기화하는 함수
 function resetNumbers() {
-  userNumbers.clear();
-  $numberSelects.forEach((select) => {
-    select.selectedIndex = -1; // 첫 번째 항목으로 초기화
+  $numberInputs.forEach((input) => {
+    input.value = "";
   });
-  $result.innerHTML = ""; // 당첨 번호 초기화
-  $bonus.innerHTML = ""; // 보너스 번호 초기화
-  $rank.textContent = ""; // 결과 초기화
+  userNumbers.clear();
   updatePlayButtonState();
 }
+// 숫자 입력 시 1부터 36까지로 제한
+$numberInputs.forEach((input) => {
+  input.addEventListener("input", () => {
+    if (input.value < 1) input.value = 1;
+    if (input.value > 36) input.value = 36;
+    updateUserNumbers();
+  });
+});
 
+// 초기값을 설정하는 함수
+function setInitialNumbers() {
+  for (let i = 0; i < 6; i++) {
+    $numberInputs[i].value = i * 6 + 1; // 1, 7, 13, 19, 25, 31
+  }
+  updateUserNumbers();
+  sortAndDisplayNumbers();
+}
+
+$resetNumbersButton.addEventListener("click", resetNumbers);
+$playButton.addEventListener("click", playLotto);
 // 당첨 순위를 계산하는 함수
 function getRank(winBalls, bonusBall, userNumbersArray) {
   const matchedNumbers = winBalls.filter((number) =>
@@ -150,22 +139,38 @@ function getRank(winBalls, bonusBall, userNumbersArray) {
 // 로또 게임을 실행하는 함수
 function playLotto() {
   console.log("playLotto 함수 호출됨");
-
+  console.log(LoginUserId);
+  if (LoginUserId == null || LoginUserId == "" || LoginUserId == undefined) {
+    alert("로그인 해주세요.");
+    window.location.href = contextPath + "/user/loginRegister";
+    return;
+  }
+  if (isGameInProgress) {
+    alert("이미 게임이 진행 중입니다.");
+    return;
+  }
   if (userNumbers.size !== 6) {
     console.log("번호가 6개 선택되지 않았습니다.");
     alert("6개의 번호를 선택해주세요.");
     return;
   }
-
-  if (points < costPerPlay) {
-    console.log("포인트가 부족합니다.");
+  // 중복 번호 체크
+  if (new Set(Array.from(userNumbers)).size !== 6) {
+    alert("중복된 번호가 있습니다. 서로 다른 6개의 번호를 선택해주세요.");
+    return;
+  }
+  console.log(points);
+  if (points < costPerPlay || points == null) {
     alert("포인트가 부족합니다!");
     return;
   }
+  sortAndDisplayNumbers();
 
-  points -= costPerPlay;
-  updatePoints();
-
+  // 게임 진행 중으로 설정
+  isGameInProgress = true;
+  // 버튼 비활성화
+  $playButton.disabled = true;
+  // 결과 초기화
   $result.innerHTML = "";
   $bonus.innerHTML = "";
   $rank.textContent = "";
@@ -188,12 +193,36 @@ function playLotto() {
       showBall(winBalls[i], $result);
     }, (i + 1) * 1000);
   }
-
+  const result = getRank(winBalls, bonus, Array.from(userNumbers));
+  console.log(LoginUserId);
+  console.log(result.rank);
+  axios
+    .post(
+      contextPath + "/game",
+      {
+        userId: LoginUserId,
+        rank: result.rank,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => {
+      console.log("Success:", response.data);
+      $points.textContent = "남은 포인트: " + response.data;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
   setTimeout(() => {
     showBall(bonus, $bonus);
-    const result = getRank(winBalls, bonus, Array.from(userNumbers));
     $rank.textContent = `결과: ${result.rank}`;
     showModal(result);
+
+    isGameInProgress = false;
+    $playButton.disabled = false;
   }, 7000);
 }
 
@@ -230,9 +259,6 @@ window.addEventListener("click", (event) => {
 // 초기 설정 및 이벤트 리스너 추가
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM 로드 완료");
-  $resetNumbersButton.addEventListener("click", resetNumbers);
-  $playButton.addEventListener("click", playLotto);
-  updatePoints();
-  createNumberSelects();
+  setInitialNumbers();
   updatePlayButtonState();
 });
