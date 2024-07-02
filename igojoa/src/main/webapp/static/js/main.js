@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("하트 클릭됨:", placeName);
                 const uri = "./clickHeart";
 
-                axios.put(uri,  placeName )
+                axios.put(uri, placeName )
                     .then((response) => {
                         console.log("응답 데이터:", response.data);
                     })

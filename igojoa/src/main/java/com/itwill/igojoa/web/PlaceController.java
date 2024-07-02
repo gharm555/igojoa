@@ -28,7 +28,7 @@ public class PlaceController {
 	private final PlaceVerifiedService placeVerifiedService;
 	private final PlaceService placeService;
 	private final PointsService pointsService;
-	
+
     @PostMapping("/verifyLocation")
     public ResponseEntity<String> verifyPlace(@RequestParam(name = "latitude") double latitude,
             @RequestParam(name = "longitude") double longitude,

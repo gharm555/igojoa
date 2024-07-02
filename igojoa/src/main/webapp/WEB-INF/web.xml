@@ -35,7 +35,7 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>AuthFilter</filter-name>
-		<url-pattern>/user/postDetail</url-pattern>
+		<url-pattern>/place/placeDetail</url-pattern>
 		<url-pattern>/user/userProfile</url-pattern>
 	</filter-mapping>
 	<!-- Listener 설정 -->

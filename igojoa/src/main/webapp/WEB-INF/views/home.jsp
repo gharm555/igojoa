@@ -74,6 +74,7 @@
             </div>
         </div>
 
+
         <div class="container-fluid main-container" id="container">
             <div class="row text-center" id="cardMain">
                 <!-- Initial 9 places loaded from the server -->
@@ -132,28 +133,28 @@
             <div class="gallery-body">
                 <div class="gallery-content-container">
                     <div class="gallery-box">
-                        <span style="--i: 1">
-                            <img src="/img/골방 1.jpg" data-name="짜라라짜짜짜짜"/>
+                        <span style="--i: 0">
+                            <img src="/img/골방 1.jpg" data-name="짜라라짜짜짜"/>
                         </span>
-                        <span style="--i: 2">
+                        <span style="--i: 1">
                             <img src="/img/골방 2.jpg" data-name="광개토대왕"/>
                         </span>
-                        <span style="--i: 3">
+                        <span style="--i: 2">
                             <img src="/img/골방 3.jpg" data-name="아이스크림"/>
                         </span>
-                        <span style="--i: 4">
+                        <span style="--i: 3">
                             <img src="/img/골방 1.jpg" data-name="에베레스트"/>
                         </span>
-                        <span style="--i: 5">
+                        <span style="--i: 4">
                             <img src="/img/골방 2.jpg" data-name="지구 온난화"/>
                         </span>
-                        <span style="--i: 6">
+                        <span style="--i: 5">
                             <img src="/img/골방 3.jpg" data-name="오케스트라"/>
                         </span>
-                        <span style="--i: 7">
+                        <span style="--i: 6">
                             <img src="/img/골방 1.jpg" data-name="껄껄껄껄"/>
                         </span>
-                        <span style="--i: 8">
+                        <span style="--i: 7">
                             <img src="/img/골방 3.jpg" data-name="안녕하세요"/>
                         </span>
                     </div>
@@ -173,14 +174,14 @@
             <div class="lotto-container">
                 <h1 class="lotto-h1 fs-1">로또</h1>
                 <div class="user-numbers">
-                    <label for="number-selects">번호를 선택하세요 (1-36):</label>
-                    <div id="number-selects" class="number-selects">
-                        <select class="number-select"></select>
-                        <select class="number-select"></select>
-                        <select class="number-select"></select>
-                        <select class="number-select"></select>
-                        <select class="number-select"></select>
-                        <select class="number-select"></select>
+                    <label for="number-inputs">번호를 선택하세요 (1-36):</label>
+                    <div id="number-inputs" class="number-inputs">
+                        <input type="number" class="number-input" min="1" max="36"></input>
+                        <input type="number" class="number-input" min="1" max="36"></input>
+                        <input type="number" class="number-input" min="1" max="36"></input>
+                        <input type="number" class="number-input" min="1" max="36"></input>
+                        <input type="number" class="number-input" min="1" max="36"></input>
+                        <input type="number" class="number-input" min="1" max="36"></input>
                     </div>
                     <button id="resetNumbersButton">번호 초기화</button>
                 </div>
@@ -190,8 +191,8 @@
                     <span class="bonus-label">보너스:</span>
                     <div id="bonus" class="ball-container"></div>
                 </div>
-                <div id="points"></div>
-                <div id="rank" class="rank"></div>
+                <div id="points" name="points">남은 포인트 : ${points}</div>
+                <div id="rank" class="rank" name="rank"></div>
                 <button id="playButton">추첨하기</button>
             </div>
         </section>
@@ -308,7 +309,6 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-   
     <c:url var="navbarJs" value="/js/navbar.js" />
     <script src="${navbarJs}"></script>
     <c:url var="mainJs" value="/js/main.js" />
@@ -318,6 +318,13 @@
     <c:url var="lottoJs" value="/js/lotto.js" />
     <script src="${lottoJs}"></script>
 
+
+
+
+    <script>
+        const LoginUserId = '${userId}';
+        const points = '${points}';
+    </script>
 
 </body>
 

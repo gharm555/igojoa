@@ -32,4 +32,6 @@ public class PlaceDetailDto {
 	private Integer freeEntry;
 	private Integer easyTransport;
 	private Integer iScore;
+	
+	
 }
