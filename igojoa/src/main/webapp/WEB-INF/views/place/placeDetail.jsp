@@ -1,15 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> <%@ taglib prefix="c"
-uri="jakarta.tags.core"%> 
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%> 
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%> <%@
+taglib prefix="fmt" uri="jakarta.tags.fmt"%> <%@ taglib prefix="fn"
+uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>상세보기</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
     <c:url var="cssResetUrl" value="/css/cssReset.css" />
     <c:url var="postDetailCssUrl" value="/css/postDetail.css" />
     <c:url var="navbarCssUrl" value="/css/navbar.css" />
@@ -20,7 +27,7 @@ uri="jakarta.tags.core"%>
   <body>
     <%@ include file="../header.jspf" %>
     <main>
-    <c:set var="pd" value="${PlaceDetailDto}" />
+      <c:set var="pd" value="${PlaceDetailDto}" />
 
       <div class="container">
         <div class="row justify-content-center mb-5">
@@ -56,7 +63,7 @@ uri="jakarta.tags.core"%>
                 ></button>
               </div>
               <div class="carousel-inner">
-              <!-- 이미지 넣어야함 -->
+                <!-- 이미지 넣어야함 -->
                 <div class="carousel-item active">
                   <img
                     src="/img/열람실 2.jpg"
@@ -117,10 +124,10 @@ uri="jakarta.tags.core"%>
                     <h2 class="card-title mb-5">
                       ${ pd.placeName }
                       <span
-                        id="difficultyBadge"
+                        id="iscoreBedge"
                         class="badge bg-secondary ms-2"
                         style="font-size: 11px"
-                      ></span>
+                      >${ pd.IScore } </span>
                     </h2>
                     <button
                       class="btn btn-link p-0 text-decoration-none"
@@ -332,51 +339,58 @@ uri="jakarta.tags.core"%>
       <button id="scrollToTopBtn" title="Go to top">↑</button>
     </main>
 
-    
-
     <script
       type="text/javascript"
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=dbb366fd56b3d7369ab7ed5f8caff982"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+    <script>
+      console.log("Defining emojiData");
+      let emojiData = [
+          { emoji: "🏞️", text: '"경치좋은"', count: "${pd.totalView}", key: "view" },
+          { emoji: "💵", text: '"무료입장"', count: "${pd.totalFreeEntry}", key: "freeEntry" },
+          { emoji: "🌃", text: '"야경"', count: "${pd.totalNightView}", key: "nightView" },
+          { emoji: "🛣️", text: '"교통원활"', count: "${pd.totalEasyTransport}", key: "easyTransport" },
+          { emoji: "🚗", text: '"주차가능"', count: "${pd.totalParkingAvailable}", key: "parkingAvailable" }
+      ];
+      console.log("emojiData defined:", emojiData);
+          let mapData = {
+              latitude: ${pd.placeLatitude},
+              longitude: ${pd.placeLongitude}
+          };
+          console.log("emojiData and mapData initialized");
+
+
+          let pd = {
+          	    placeName: "<c:out value='${pd.placeName}' />",
+          	    firstUrl: "<c:out value='${pd.firstUrl}' />",
+          	    secondUrl: "<c:out value='${pd.secondUrl}' />",
+          	    thirdUrl: "<c:out value='${pd.thirdUrl}' />",
+          	    address: "<c:out value='${pd.address}' />",
+          	    placeDescription: "<c:out value='${pd.placeDescription}' />",
+          	    placeLatitude: Number("<c:out value='${pd.placeLatitude}' />") || null,
+          	    placeLongitude: Number("<c:out value='${pd.placeLongitude}' />") || null,
+          	    operatingHours: "<c:out value='${pd.operatingHours}' />",
+          	    totalParkingAvailable: Number("<c:out value='${pd.totalParkingAvailable}' />") || 0,
+          	    totalView: Number("<c:out value='${pd.totalView}' />") || 0,
+          	    totalNightView: Number("<c:out value='${pd.totalNightView}' />") || 0,
+          	    totalFreeEntry: Number("<c:out value='${pd.totalFreeEntry}' />") || 0,
+          	    totalEasyTransport: Number("<c:out value='${pd.totalEasyTransport}' />") || 0,
+          	    avgIScore: Number("<c:out value='${pd.avgIScore}' />") || 0,
+          	    review: "<c:out value='${pd.review}' />",
+          	    parkingAvailable: Boolean("<c:out value='${pd.parkingAvailable}' />"),
+          	    view: Boolean("<c:out value='${pd.view}' />"),
+          	    nightView: Boolean("<c:out value='${pd.nightView}' />"),
+          	    freeEntry: Boolean("<c:out value='${pd.freeEntry}' />"),
+          	    easyTransport: Boolean("<c:out value='${pd.easyTransport}' />"),
+          	    iScore: Number("<c:out value='${pd.IScore}' />") || 0
+          	};
+    </script>
+
     <c:url var="navbarJsUrl" value="/js/navbar.js" />
     <c:url var="postDetailJsUrl" value="/js/postDetail.js" />
     <script src="${navbarJsUrl}"></script>
     <script src="${postDetailJsUrl}"></script>
-    <script >
-    let emojiData = [
-    	  { emoji: "🏞️", text: '"경치좋은"', count: "${pd.totalView}", key: "view" },
-    	  {
-    	    emoji: "💵",
-    	    text: '"무료입장"',
-    	    count: "${pd.totalFreeEntry}",
-    	    key: "freeEntry",
-    	  },
-    	  {
-    	    emoji: "🌃",
-    	    text: '"야경"',
-    	    count: "${pd.totalNightView}",
-    	    key: "nightView",
-    	  },
-    	  {
-    	    emoji: "🛣️",
-    	    text: '"교통원활"',
-    	    count: "${pd.totalEasyTransport}",
-    	    key: "easyTransport",
-    	  },
-    	  {
-    	    emoji: "🚗",
-    	    text: '"주차가능"',
-    	    count: "${ pd.totalParkingAvailable }",
-    	    key: "parkingAvailable",
-    	  },
-    	];
-    </script>
-    
-        let mapData = {
-        latitude: ${pd.placeLatitude},
-        longitude: ${pd.placeLongitude}
-    };
   </body>
 </html>
