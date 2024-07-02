@@ -34,13 +34,15 @@ public class PlaceController {
 	@PostMapping("/verifyLocation")
 	public ResponseEntity<String> verifyPlace(@RequestParam(name = "latitude") double latitude,
 			@RequestParam(name = "longitude") double longitude, @RequestParam(name = "userId") String userId) {
-		boolean isVerified = placeVerifiedService.verifyUserLocation(latitude, longitude, userId);
-		if (isVerified) {
+		String isVerified = placeVerifiedService.verifyUserLocation(latitude, longitude, userId);
+		if (isVerified.equals("위치 인증 성공")) {
 			pointsService.addPlaceVerifiedPoints(userId);
 			pointsService.insertPointLog(userId, "위치인증", 1000);
-			return ResponseEntity.ok("위치인증 성공");
+			return ResponseEntity.ok(isVerified);
+		} else if (isVerified.equals("이미 위치 인증 한 장소입니다.")) {
+			return ResponseEntity.ok(isVerified);
 		} else {
-			return ResponseEntity.badRequest().body("위치인증 실패");
+			return ResponseEntity.badRequest().body(isVerified);
 		}
 	}
 
@@ -55,7 +57,7 @@ public class PlaceController {
 				return "redirect:/";
 			}
 		}
-//        userId = "오진호"; // 테스트 코드
+		// userId = "오진호"; // 테스트 코드
 		PlacesFavoriteDto placesFavoriteDto = PlacesFavoriteDto.builder().placeName(placeName).userId(userId).build();
 		PlaceDetailDto res = placeService.selectPlaceDetail(placesFavoriteDto);
 		model.addAttribute("PlaceDetailDto", res);

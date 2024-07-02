@@ -392,5 +392,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <c:url var="postDetailJsUrl" value="/js/postDetail.js" />
     <script src="${navbarJsUrl}"></script>
     <script src="${postDetailJsUrl}"></script>
+    <script>
+      const LoginUserId = "${userId}";
+    </script>
   </body>
 </html>

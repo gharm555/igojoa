@@ -80,7 +80,7 @@
                 <!-- Initial 9 places loaded from the server -->
    <c:forEach var="place" items="${placesInfo}" varStatus="status">
     <div class="col-lg-4 col-md-6 mb-3 card-item ${status.index > 5 ? 'd-none extra-card' : ''}">
-        <div class="main-card">
+        <div class="main-card go-to-details" data-place-name="${place.placeName}">
             <div class="main-card-header bg-transparent">
                 <div class="d-flex justify-content-between align-items-center">
                     <h1 class="main-card-title">${place.placeName}</h1>
