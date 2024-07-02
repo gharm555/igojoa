@@ -192,7 +192,9 @@ public class UsersController {
 
 		UsersInfoDto result = userService.getUserInfo(userId);
 		model.addAttribute("userInfo", result);
-
+		
+		// TODO userActivities에 페이지 로드 될 때 디폴트 값 model 통해서 실어주기
+		
 		return "user/userProfile";
 	}
 
