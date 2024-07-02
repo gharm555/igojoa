@@ -1,5 +1,6 @@
 package com.itwill.igojoa.repository;
 
+import com.itwill.igojoa.dto.users.UsersInfoDto;
 import com.itwill.igojoa.entity.Users;
 
 public interface UsersDao {
@@ -11,7 +12,7 @@ public interface UsersDao {
 
 	Users selectByIdAndPassword(Users user);
 
-	Users getUserInfo(String userId);
+	UsersInfoDto getUserInfo(String userId);
 
 	String findUserId(String email, String nickName);
 
@@ -28,5 +29,6 @@ public interface UsersDao {
 	boolean checkPhoneNumber(String phoneNumber);
 
 	int deleteUser(String userId);
-
+	
+	boolean updateUsers(Users user);
 }
