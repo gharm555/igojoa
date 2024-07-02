@@ -1,7 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> <%@ taglib prefix="c"
+uri="jakarta.tags.core"%> <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%> <%@ taglib prefix="fn"
+uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="KR">
   <head>
@@ -299,86 +298,109 @@
                   </nav>
                 </div>
                 <div class="tab-content" id="nav-tabContent">
-                  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+                  <div
+                    class="tab-pane fade show active"
+                    id="nav-home"
+                    role="tabpanel"
+                    aria-labelledby="nav-home-tab"
+                    tabindex="0"
+                  >
                     <ul class="list-group" id="activityList">
-                      <li class="list-group-item d-flex align-items-center">
-                        <img
-                          src="https://placehold.co/50x50"
-                          alt="프로필"
-                          class="rounded-circle me-3"
-                          width="50"
-                          height="50"
-                        />
-                        <div>
-                          <p class="mb-0">부산시 전포동 열람실 게시물에 좋아요를 눌렀습니다.</p>
-                          <small class="text-muted">2024.06.19 10:15</small>
-                        </div>
-                      </li>
+                      <c:forEach items="${userFavoritePlaces}" var="favoritePlaces">
+                        <li class="list-group-item d-flex align-items-center">
+                          <img
+                            src="${favoritePlaces.firstUrl}"
+                            alt="게시물 썸네일"
+                            class="rounded-circle me-3"
+                            width="50"
+                            height="50"
+                          />
+                          <div>
+                            <p class="mb-0">
+                              ${favoritePlaces.address} ${favoritePlaces.placeName} 게시물에 좋아요를 눌렀습니다.
+                            </p>
+                            <small class="text-muted">${favoritePlaces.createdTime}</small>
+                          </div>
+                        </li>
+                      </c:forEach>
                     </ul>
                   </div>
-                  <div class="tab-pane fade" id="nav-liked-posts" role="tabpanel" aria-labelledby="nav-liked-posts-tab" tabindex="0">
+                  <div
+                    class="tab-pane fade"
+                    id="nav-liked-posts"
+                    role="tabpanel"
+                    aria-labelledby="nav-liked-posts-tab"
+                    tabindex="0"
+                  >
                     <ul class="list-group" id="likedPostsList">
-                      <li class="list-group-item d-flex align-items-center">
-                        <img
-                          src="https://placehold.co/50x50"
-                          alt="게시물 썸네일"
-                          class="rounded-circle me-3"
-                          width="50"
-                          height="50"
-                        />
-                        <div>
-                          <p class="mb-0">서울 야경 명소 Top 10 리뷰에 좋아요를 눌렀습니다.</p>
-                          <small class="text-muted">2024.06.25 18:30</small>
-                        </div>
-                      </li>
+                      <c:forEach items="${userFavoriteReviews.firstUrl}" var="favoriteReviews">
+                        <li class="list-group-item d-flex align-items-center">
+                          <img
+                            src="${favoriteReviews.firstUrl}"
+                            alt="게시물 썸네일"
+                            class="rounded-circle me-3"
+                            width="50"
+                            height="50"
+                          />
+                          <div>
+                            <p class="mb-0">
+                              ${favoriteReviews.placeName}에 ${favoriteReviews.userNickName}님의 리뷰
+                              ${favoriteReviews.review}에 좋아요를 눌렀습니다.
+                            </p>
+                            <small class="text-muted">${favoriteReviews.createdTime}</small>
+                          </div>
+                        </li>
+                      </c:forEach>
                     </ul>
                   </div>
-                  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+                  <div
+                    class="tab-pane fade"
+                    id="nav-profile"
+                    role="tabpanel"
+                    aria-labelledby="nav-profile-tab"
+                    tabindex="0"
+                  >
                     <ul class="list-group" id="activityList">
-                      <li class="list-group-item d-flex align-items-center">
-                        <img
-                          src="https://placehold.co/50x50"
-                          alt="프로필"
-                          class="rounded-circle me-3"
-                          width="50"
-                          height="50"
-                        />
-                        <div>
-                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
-                          <small class="text-muted">2024.06.20 14:30</small>
-                        </div>
-                      </li>
-                      <li class="list-group-item d-flex align-items-center">
-                        <img
-                          src="https://placehold.co/50x50"
-                          alt="프로필"
-                          class="rounded-circle me-3"
-                          width="50"
-                          height="50"
-                        />
-                        <div>
-                          <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
-                          <small class="text-muted">2024.06.20 14:30</small>
-                        </div>
-                      </li>
-                      <!-- 추가 리뷰 목록 작성 -->
+                      <c:forEach items="${userWrittenReviews}" var="writtenReviews">
+                        <li class="list-group-item d-flex align-items-center">
+                          <img
+                            src="${writtenReviews.firstUrl}"
+                            alt="프로필"
+                            class="rounded-circle me-3"
+                            width="50"
+                            height="50"
+                          />
+                          <div>
+                            <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
+                            <small class="text-muted">2024.06.20 14:30</small>
+                          </div>
+                        </li>
+                      </c:forEach>
                     </ul>
                   </div>
-                  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
+                  <div
+                    class="tab-pane fade"
+                    id="nav-contact"
+                    role="tabpanel"
+                    aria-labelledby="nav-contact-tab"
+                    tabindex="0"
+                  >
                     <ul class="list-group" id="likedPostsList">
-                      <li class="list-group-item d-flex align-items-center">
-                        <img
-                          src="https://placehold.co/50x50"
-                          alt="게시물 썸네일"
-                          class="rounded-circle me-3"
-                          width="50"
-                          height="50"
-                        />
-                        <div>
-                          <p class="mb-0">아이티윌 에서 위치인증을 하였습니다.</p>
-                          <small class="text-muted">2024.06.25 18:30</small>
-                        </div>
-                      </li>
+                      <c:forEach items="${userVerifiedPlaces}" var="verifiedPlaces">
+                        <li class="list-group-item d-flex align-items-center">
+                          <img
+                            src="https://placehold.co/50x50"
+                            alt="게시물 썸네일"
+                            class="rounded-circle me-3"
+                            width="50"
+                            height="50"
+                          />
+                          <div>
+                            <p class="mb-0">아이티윌 에서 위치인증을 하였습니다.</p>
+                            <small class="text-muted">2024.06.25 18:30</small>
+                          </div>
+                        </li>
+                      </c:forEach>
                     </ul>
                   </div>
                 </div>
@@ -438,7 +460,13 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" id="withdrawalModal" tabindex="-1" aria-labelledby="withdrawalModalLabel" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="withdrawalModal"
+      tabindex="-1"
+      aria-labelledby="withdrawalModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
