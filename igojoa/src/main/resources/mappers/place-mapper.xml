@@ -197,4 +197,12 @@
 		'${ placeName }'
 	</select>
 
+	<select id="selectPlaceNameAndImageUrl" resultType="PlaceBestListDto">
+		SELECT ps.placeName, pi.firstUrl
+		FROM placesStats ps
+		LEFT JOIN placeImages pi
+		ON pi.placeName = ps.placeName
+		ORDER BY ps.placeVerified DESC, ps.placeFavorite DESC
+		LIMIT 8
+	</select>
 </mapper>

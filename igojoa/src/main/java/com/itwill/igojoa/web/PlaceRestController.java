@@ -57,7 +57,7 @@ public class PlaceRestController {
 				return ResponseEntity.badRequest().body(0);
 			}
 		}
-//		userId = "테스터"; // 테스트 코드
+
 		PlacesFavoriteDto placesFavoriteDto = PlacesFavoriteDto.builder().placeName(placeName).userId(userId).build();
 		int res = placeService.clickHeart(placesFavoriteDto);
 		if (res == 1) {
@@ -80,7 +80,6 @@ public class PlaceRestController {
 				return ResponseEntity.badRequest().body(0);
 			}
 		}
-//		userId = "테스터"; // 테스트 코드
 		PlacesFavoriteDto placesFavoriteDto = PlacesFavoriteDto.builder().placeName(placeName).userId(userId).build();
 		System.out.println(placesFavoriteDto);
 		int res = placeService.deleteHeart(placesFavoriteDto);

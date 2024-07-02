@@ -33,4 +33,5 @@ public class PlaceDetailDto {
 	private Integer easyTransport;
 	private Integer iScore;
 	private Integer userFavorite;
+	
 }
