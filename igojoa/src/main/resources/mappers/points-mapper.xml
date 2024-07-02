@@ -33,7 +33,7 @@
 	</select>
 	<update id="subtractPoints">
 		UPDATE points
-		SET currentsPoints = currentsPoints - #{points}
+		SET currentsPoints = currentsPoints - 150
 		WHERE userId = #{userId}
 	</update>
 	<delete id="deletePoints" parameterType="String">
