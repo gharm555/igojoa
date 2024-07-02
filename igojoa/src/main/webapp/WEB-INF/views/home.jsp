@@ -131,28 +131,28 @@
             <div class="gallery-body">
                 <div class="gallery-content-container">
                     <div class="gallery-box">
-                        <span style="--i: 1">
-                            <img src="/img/골방 1.jpg" data-name="짜라라짜짜짜짜"/>
+                        <span style="--i: 0">
+                            <img src="/img/골방 1.jpg" data-name="짜라라짜짜짜"/>
                         </span>
-                        <span style="--i: 2">
+                        <span style="--i: 1">
                             <img src="/img/골방 2.jpg" data-name="광개토대왕"/>
                         </span>
-                        <span style="--i: 3">
+                        <span style="--i: 2">
                             <img src="/img/골방 3.jpg" data-name="아이스크림"/>
                         </span>
-                        <span style="--i: 4">
+                        <span style="--i: 3">
                             <img src="/img/골방 1.jpg" data-name="에베레스트"/>
                         </span>
-                        <span style="--i: 5">
+                        <span style="--i: 4">
                             <img src="/img/골방 2.jpg" data-name="지구 온난화"/>
                         </span>
-                        <span style="--i: 6">
+                        <span style="--i: 5">
                             <img src="/img/골방 3.jpg" data-name="오케스트라"/>
                         </span>
-                        <span style="--i: 7">
+                        <span style="--i: 6">
                             <img src="/img/골방 1.jpg" data-name="껄껄껄껄"/>
                         </span>
-                        <span style="--i: 8">
+                        <span style="--i: 7">
                             <img src="/img/골방 3.jpg" data-name="안녕하세요"/>
                         </span>
                     </div>

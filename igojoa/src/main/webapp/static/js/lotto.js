@@ -194,6 +194,28 @@ function playLotto() {
     }, (i + 1) * 1000);
   }
   const result = getRank(winBalls, bonus, Array.from(userNumbers));
+  console.log(LoginUserId);
+  console.log(result.rank);
+  axios
+    .post(
+      contextPath + "/game",
+      {
+        userId: LoginUserId,
+        rank: result.rank,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => {
+      console.log("Success:", response.data);
+      $points.textContent = "남은 포인트: " + response.data;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
   setTimeout(() => {
     showBall(bonus, $bonus);
     $rank.textContent = `결과: ${result.rank}`;
@@ -201,29 +223,6 @@ function playLotto() {
 
     isGameInProgress = false;
     $playButton.disabled = false;
-
-    console.log(LoginUserId);
-    console.log(result.rank);
-    axios
-      .post(
-        contextPath + "/game",
-        {
-          userId: LoginUserId,
-          rank: result.rank,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        console.log("Success:", response.data);
-        $points.textContent = "남은 포인트: " + response.data;
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
   }, 7000);
 }
 

@@ -2,6 +2,7 @@ package com.itwill.igojoa.repository;
 
 import java.util.List;
 
+import com.itwill.igojoa.dto.place.PlaceBestListDto;
 import com.itwill.igojoa.dto.place.PlaceDetailDto;
 import com.itwill.igojoa.dto.place.PlaceListDto;
 import com.itwill.igojoa.dto.place.PlaceSearchDto;
@@ -19,4 +20,6 @@ public interface PlaceDao {
 	int deleteHeart(PlacesFavorite placesFavorite);
 
 	PlaceDetailDto selectPlaceDetail(PlacesFavoriteDto placesFavoriteDto);
+
+	List<PlaceBestListDto> selectPlaceNameAndImageUrl();
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.itwill.igojoa.dto.place.PlaceBestListDto;
 import com.itwill.igojoa.dto.place.PlaceListDto;
 import com.itwill.igojoa.dto.place.PlaceSearchDto;
 import com.itwill.igojoa.dto.points.LottoDto;
@@ -69,10 +70,19 @@ public class HomeController {
 		System.out.println("game");
 		System.out.println(lottoDto.getUserId());
 		System.out.println(lottoDto.getRank());
-		pointsService.subtractPoints(lottoDto.getUserId(), 150);
+		pointsService.subtractPoints(lottoDto.getUserId());
 		pointsService.insertPointLog(lottoDto.getUserId(), "뽑기", 150);
 		pointsService.insertPointLog(lottoDto.getUserId(), lottoDto.getRank(), 0);
 		return ResponseEntity.ok(pointsService.selectPoints(lottoDto.getUserId()));
+	}
+
+	@GetMapping("/imageGallery")
+	public ResponseEntity<List<PlaceBestListDto>> imageGallery(Model model) {
+
+		List<PlaceBestListDto> imageGallery = placeService.selectPlaceNameAndImageUrl();
+		log.debug("imageGallery: {}", imageGallery);
+		model.addAttribute("imageGallery", imageGallery);
+		return ResponseEntity.ok(imageGallery);
 	}
 
 }
