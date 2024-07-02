@@ -62,9 +62,9 @@ public class PointsService {
 	}
 
 	// 뽑기 시 포인트 차감
-	public ResponseEntity<Integer> subtractPoints(String userId, int points) {
-		if (pointsDao.getPointsByUserId(userId).getCurrentsPoints() >= points) {
-			int updateCount = pointsDao.subtractPoints(userId, points);
+	public ResponseEntity<Integer> subtractPoints(String userId) {
+		if (pointsDao.getPointsByUserId(userId).getCurrentsPoints() >= 150) {
+			int updateCount = pointsDao.subtractPoints(userId);
 			return updateCount > 0 ? ResponseEntity.ok(updateCount) : ResponseEntity.ok(0);
 		} else {
 			return ResponseEntity.ok(0);
