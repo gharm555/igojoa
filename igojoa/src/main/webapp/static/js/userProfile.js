@@ -375,3 +375,212 @@ $confirmPasswordInput.addEventListener("input", checkForChanges);
 
 // 초기 상태에서는 버튼 비활성화
 $updateBtn.disabled = true;
+
+document.addEventListener('DOMContentLoaded', function () {
+  // 포인트내역에 있는 FullCalendar 및 포인트 내역 관련 코드
+  let calendar;
+  const $pointHistoryTab = document.querySelector('#v-pills-messages-tab');
+  const pointHistory = [
+    { date: '2024-06-25', content: '게시글 작성', points: 100 },
+    { date: '2024-06-24', content: '댓글 작성', points: 50 },
+    { date: '2024-06-27', content: '포인트 사용', points: -200 },
+    { date: '2024-06-29', content: '이벤트 참여', points: 500 },
+    { date: '2024-06-29', content: '이벤트 참여', points: 500 },
+    { date: '2024-06-29', content: '상품 구매', points: -1000 },
+    { date: '2024-06-29', content: '리뷰 작성', points: 200 },
+    { date: '2024-06-26', content: '출석 체크', points: 10 },
+  ];
+
+  if (typeof FullCalendar === 'undefined') {
+    console.error('FullCalendar library is not loaded');
+    return;
+  }
+
+  $pointHistoryTab.addEventListener('shown.bs.tab', initializeCalendar);
+
+  function initializeCalendar() {
+    const $calendarEl = document.querySelector('#calendar');
+    if (!$calendarEl) {
+      console.error('Calendar element not found');
+      return;
+    }
+
+    if (calendar) {
+      calendar.destroy();
+    }
+
+    const dailyTotals = calculateDailyTotals(pointHistory);
+
+    calendar = new FullCalendar.Calendar($calendarEl, {
+      initialView: 'dayGridMonth',
+      buttonText: {
+        today: '오늘',
+      },
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: '',
+      },
+      locale: 'ko',
+      events: dailyTotals,
+      eventContent: function (arg) {
+        return {
+          html: arg.event.title,
+        };
+      },
+      dateClick: function (info) {
+        updatePointHistory(info.date);
+      },
+      datesSet: function (info) {
+        updatePointHistory(info.start);
+        const $todayButton = document.querySelector('.fc-today-button');
+        if ($todayButton) {
+          $todayButton.disabled = false;
+        }
+      },
+      height: 'auto',
+    });
+
+    calendar.render();
+    console.log('Calendar rendered');
+
+    const $todayButton = document.querySelector('.fc-today-button');
+    if ($todayButton) {
+      $todayButton.addEventListener('click', function () {
+        const today = new Date();
+        calendar.gotoDate(today);
+        updatePointHistory(today);
+      });
+    }
+
+    updatePointHistory(new Date());
+  }
+
+  function calculateDailyTotals(pointHistory) {
+    const totals = {};
+
+    pointHistory.forEach((item) => {
+      if (!totals[item.date]) {
+        totals[item.date] = { earned: 0, spent: 0 };
+      }
+      if (item.points > 0) {
+        totals[item.date].earned += item.points;
+      } else {
+        totals[item.date].spent += Math.abs(item.points);
+      }
+    });
+
+    const events = [];
+
+    Object.keys(totals).forEach((date) => {
+      if (totals[date].earned > 0) {
+        events.push({
+          title: `+${totals[date].earned}P`,
+          start: date,
+          allDay: true,
+          backgroundColor: '#28a745',
+          borderColor: '#28a745',
+          textColor: '#ffffff',
+        });
+      }
+      if (totals[date].spent > 0) {
+        events.push({
+          title: `-${totals[date].spent}P`,
+          start: date,
+          allDay: true,
+          backgroundColor: '#dc3545',
+          borderColor: '#dc3545',
+          textColor: '#ffffff',
+        });
+      }
+    });
+
+    return events;
+  }
+
+  function updatePointHistory(date) {
+    const formattedDate =
+      date.getFullYear() +
+      '-' +
+      String(date.getMonth() + 1).padStart(2, '0') +
+      '-' +
+      String(date.getDate()).padStart(2, '0');
+
+    const $table = document.querySelector('#pointHistoryTable').querySelector('tbody');
+    $table.innerHTML = '';
+
+    let earnedPoints = 0;
+    let spentPoints = 0;
+
+    pointHistory.forEach((item) => {
+      if (item.date === formattedDate) {
+        let row = $table.insertRow();
+        row.insertCell(0).textContent = item.date;
+        row.insertCell(1).textContent = item.content;
+        row.insertCell(2).textContent = item.points;
+
+        if (item.points > 0) {
+          earnedPoints += item.points;
+        } else {
+          spentPoints += Math.abs(item.points);
+        }
+      }
+    });
+
+    document.querySelector('#earnedPoints').textContent = earnedPoints; // 얻은포인트
+    document.querySelector('#spentPoints').textContent = spentPoints; // 소비포인트
+
+    console.log(`Updating for date: ${formattedDate}`);
+  }
+
+  /** 내 활동내역 데이터 피커  */
+  // 오늘 날짜를 YYYY-MM-DD 형식으로 반환하는 함수
+  function getTodayDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  function enableTodayButton() {
+    const $todayButton = document.querySelector('.fc-today-button');
+    if ($todayButton) {
+      $todayButton.disabled = false;
+      $todayButton.removeEventListener('click', handleTodayButtonClick);
+      $todayButton.addEventListener('click', handleTodayButtonClick);
+    }
+  }
+
+  function handleTodayButtonClick() {
+    const today = new Date();
+    calendar.gotoDate(today);
+    updatePointHistory(today);
+  }
+
+  // 초기 로드 시 달력 렌더링
+  initializeCalendar();
+
+  // placeholder에 오늘 날짜 설정
+  document.getElementById('date-range').placeholder = getTodayDate();
+
+  // Flatpickr 스타일시트를 동적으로 로드
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css';
+  document.head.appendChild(link);
+
+  // Flatpickr 초기화
+  flatpickr.localize(flatpickr.l10ns.ko);
+  const datePicker = flatpickr('#date-range', {
+    mode: 'range',
+    dateFormat: 'Y-m-d',
+    minDate: 'today',
+    maxDate: new Date().fp_incr(365),
+    disableMobile: 'true',
+    defaultDate: getTodayDate(),
+    onChange: function (selectedDates, dateStr, instance) {
+      console.log(selectedDates); // 선택된 날짜
+    },
+  });
+});

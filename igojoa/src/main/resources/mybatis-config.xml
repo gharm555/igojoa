@@ -32,6 +32,12 @@
 			type="com.itwill.igojoa.dto.users.UsersLoginDto" />
 		<typeAlias alias="UsersInfoDto"
 			type="com.itwill.igojoa.dto.users.UsersInfoDto" />
+		<typeAlias alias="UserFavoritePlacesDto"
+			type="com.itwill.igojoa.dto.users.UserFavoritePlacesDto" />
+		<typeAlias alias="UserFavoriteReviewsDto"
+			type="com.itwill.igojoa.dto.users.UserFavoriteReviewsDto" />
+		<typeAlias alias="UserWrittenReviewsDto"
+			type="com.itwill.igojoa.dto.users.UserWrittenReviewsDto" />
 		<typeAlias alias="PlaceListDto"
 			type="com.itwill.igojoa.dto.place.PlaceListDto" />
 		<typeAlias alias="PlaceSpaceDto"
@@ -42,10 +48,11 @@
 			type="com.itwill.igojoa.dto.place.PlaceSearchDto" />
 		<typeAlias alias="PlaceDetailDto"
 			type="com.itwill.igojoa.dto.place.PlaceDetailDto" />
-        <typeAlias alias="ReviewListDto"
-            type="com.itwill.igojoa.dto.review.ReviewListDto" />
+		<typeAlias alias="ReviewListDto"
+			type="com.itwill.igojoa.dto.review.ReviewListDto" />
 		<typeAlias alias="PlaceBestListDto"
 			type="com.itwill.igojoa.dto.place.PlaceBestListDto" />
+
 
 	</typeAliases>
 </configuration>

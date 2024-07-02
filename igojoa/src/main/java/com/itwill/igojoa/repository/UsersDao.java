@@ -1,5 +1,8 @@
 package com.itwill.igojoa.repository;
 
+import com.itwill.igojoa.dto.users.UserFavoritePlacesDto;
+import com.itwill.igojoa.dto.users.UserFavoriteReviewsDto;
+import com.itwill.igojoa.dto.users.UserWrittenReviewsDto;
 import com.itwill.igojoa.dto.users.UsersInfoDto;
 import com.itwill.igojoa.entity.Users;
 
@@ -31,4 +34,10 @@ public interface UsersDao {
 	int deleteUser(String userId);
 	
 	boolean updateUsers(Users user);
+	
+	UserFavoritePlacesDto getUserFavoritePlaces(String userId);
+	
+	UserFavoriteReviewsDto getUserFavoriteReviews(String userId);
+	
+	UserWrittenReviewsDto getUserWrittenReviews(String userId);
 }

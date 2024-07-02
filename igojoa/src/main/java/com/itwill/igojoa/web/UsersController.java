@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwill.igojoa.dto.users.UserFavoritePlacesDto;
+import com.itwill.igojoa.dto.users.UserFavoriteReviewsDto;
+import com.itwill.igojoa.dto.users.UserWrittenReviewsDto;
 import com.itwill.igojoa.dto.users.UsersInfoDto;
 import com.itwill.igojoa.dto.users.UsersLoginDto;
 import com.itwill.igojoa.dto.users.UsersRegisterDto;
@@ -194,10 +197,12 @@ public class UsersController {
 			model.addAttribute("userProfileUrl", usersService.getUserInfo(userId).getUserProfileUrl());
 			model.addAttribute("points", pointsService.selectPoints(userId));
 		}
-		UsersInfoDto result = userService.getUserInfo(userId);
-		model.addAttribute("userInfo", result);
+		UsersInfoDto userInfoDto = userService.getUserInfo(userId);
+		model.addAttribute("userInfo", userInfoDto);
 		
 		// TODO userActivities에 페이지 로드 될 때 디폴트 값 model 통해서 실어주기
+		UserFavoritePlacesDto userFavoritePlacesDto = userService.getUserFavoritePlaces(userId);
+		model.addAttribute("userFavoritePlaces", userFavoritePlacesDto);
 		
 		return "user/userProfile";
 	}
@@ -208,7 +213,6 @@ public class UsersController {
 		String userId = (String) session.getAttribute("userId");
 		user.setUserId(userId);
 
-		// 서비스 계층 호출 (여기서 MyBatis를 사용하여 DB 업데이트 수행)
 		boolean updated = userService.updateUsers(user);
 
 		if (updated) {
@@ -218,5 +222,40 @@ public class UsersController {
 					.body(Map.of("success", false, "message", "업데이트를 수행할 수 없습니다."));
 		}
 	}
+	
+	@GetMapping("/userFavoritePlaces")
+	public ResponseEntity<UserFavoritePlacesDto> userFavoritePlaces(HttpSession session, Model model) {
+		String userId = (String) session.getAttribute("userId");
+		
+		UserFavoritePlacesDto userFavoritePlacesDto = userService.getUserFavoritePlaces(userId);
+		
+		model.addAttribute("userFavoritePlaces", userFavoritePlacesDto);
+		
+		return ResponseEntity.ok(userFavoritePlacesDto);
+	}
+	
+	@GetMapping("/userFavoriteReviews")
+	public ResponseEntity<UserFavoriteReviewsDto> userFavoriteReviews(HttpSession session, Model model) {
+		String userId = (String) session.getAttribute("userId");
+		
+		UserFavoriteReviewsDto userFavoriteReviewsDto = userService.getUserFavoriteReviews(userId);
+		
+		model.addAttribute("userFavoriteReviews", userFavoriteReviewsDto);
+		
+		return ResponseEntity.ok(userFavoriteReviewsDto);
+	}
+	
+	@GetMapping("/userWrittenReviews")
+	public ResponseEntity<UserWrittenReviewsDto> userWrittenReviews(HttpSession session, Model model) {
+		String userId = (String) session.getAttribute("userId");
+		
+		UserWrittenReviewsDto userWrittenReviewsDto = userService.getUserWrittenReviews(userId);
+		
+		model.addAttribute("userWrittenReviews", userWrittenReviewsDto);
+		
+		return ResponseEntity.ok(userWrittenReviewsDto);
+	}
+	
+//	@GetMapping("/userVerifiedPlaces")
 
 }

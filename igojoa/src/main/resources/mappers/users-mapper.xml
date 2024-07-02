@@ -104,4 +104,49 @@
 		WHERE userId = #{userId}
 	</update>
 
+	<!-- User가 좋아한 장소 정보들 가져오기 -->
+	<select id="getUserFavoritePlaces"
+		resultType="UserFavoritePlacesDto" parameterType="String">
+		SELECT
+		places.placeName,
+		CONCAT(places.largeAddress, ' ',
+		places.midiumAddress) AS address,
+		placeImages.firstUrl,
+		DATE_FORMAT(placesFavorite.createdTime, '%Y.%m.%d %H:%i') as createdAt
+		FROM places
+		JOIN placesFavorite ON places.placeName =
+		placesFavorite.placeName
+		JOIN placeImages ON places.placeName =
+		placeImages.placeName
+		WHERE
+		placesFavorite.userId = #{userId}
+	</select>
+
+	<!-- User가 좋아요한 리뷰 정보들 가져오기 -->
+	<select id="getUserFavoriteReviews"
+		resultType="UserFavoriteReviewsDto" parameterType="String">
+		SELECT
+		places.placeName, CONCAT(places.largeAddress, '
+		',places.midiumAddress) AS address, placeImages.firstUrl,
+		DATE_FORMAT(placesFavorite.createdTime, '%Y.%m.%d %H:%i') AS createdAt
+		FROM places
+		JOIN placesFavorite ON places.placeName =
+		placesFavorite.placeName
+		JOIN placeImages ON places.placeName =
+		placeImages.placeName
+		WHERE placesFavorite.userId = #{userId};
+	</select>
+
+	<!-- User가 작성한 리뷰 정보들 가져오기 -->
+	<select id="getUserWrittenReviews"
+		resultType="UserWrittenReviewsDto" parameterType="String">
+		SELECT placeImages.firstUrl, places.placeName, CONCAT(places.largeAddress, '
+		',places.midiumAddress) AS address, reviews.review,
+		DATE_FORMAT(reviews.createdAt, '%Y.%m.%d %H:%i') AS createdAt
+		FROM placeImages
+		JOIN places ON placeImages.placeName = places.placeName
+		JOIN reviews ON places.placeName = reviews.placeName
+		WHERE reviews.userId = #{userId};
+	</select>
+
 </mapper>

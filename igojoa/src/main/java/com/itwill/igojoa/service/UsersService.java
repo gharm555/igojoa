@@ -2,6 +2,9 @@ package com.itwill.igojoa.service;
 
 import org.springframework.stereotype.Service;
 
+import com.itwill.igojoa.dto.users.UserFavoritePlacesDto;
+import com.itwill.igojoa.dto.users.UserFavoriteReviewsDto;
+import com.itwill.igojoa.dto.users.UserWrittenReviewsDto;
 import com.itwill.igojoa.dto.users.UsersInfoDto;
 import com.itwill.igojoa.entity.Users;
 import com.itwill.igojoa.repository.PointsDao;
@@ -73,5 +76,17 @@ public class UsersService {
 	
 	public boolean updateUsers(Users user) {
 		return userDao.updateUsers(user);
+	}
+	
+	public UserFavoritePlacesDto getUserFavoritePlaces(String userId) {
+		return userDao.getUserFavoritePlaces(userId);
+	}
+	
+	public UserFavoriteReviewsDto getUserFavoriteReviews(String userId) {
+		return userDao.getUserFavoriteReviews(userId);
+	}
+	
+	public UserWrittenReviewsDto getUserWrittenReviews(String userId) {
+		return userDao.getUserWrittenReviews(userId);
 	}
 }
