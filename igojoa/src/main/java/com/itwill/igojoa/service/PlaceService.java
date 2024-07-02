@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itwill.igojoa.dto.place.PlaceBestListDto;
 import com.itwill.igojoa.dto.place.PlaceDetailDto;
 import com.itwill.igojoa.dto.place.PlaceListDto;
 import com.itwill.igojoa.dto.place.PlaceSearchDto;
@@ -93,4 +94,9 @@ public class PlaceService {
 
 		return placeDetailDto;
 	}
+
+	public List<PlaceBestListDto> selectPlaceNameAndImageUrl() {
+		return placeDao.selectPlaceNameAndImageUrl();
+	}
+
 }

@@ -42,6 +42,7 @@ public class UsersController {
 	private final S3Service s3Service;
 	private final PointsService pointsService;
 	private final PlaceVerifiedService placeVerifiedService;
+	private final UsersService usersService;
 
 	@GetMapping("/loginRegister")
 	public String registerForm(Model model, HttpSession session) {
@@ -112,7 +113,7 @@ public class UsersController {
 			session.removeAttribute("userId");
 		}
 		// 메인페이지로 이동
-//		return ResponseEntity.ok("redirect:/");
+		// return ResponseEntity.ok("redirect:/");
 		return ResponseEntity.ok("로그아웃 성공");
 	}
 
@@ -189,7 +190,10 @@ public class UsersController {
 	@GetMapping("/userProfile")
 	public String getUserInfo(HttpSession session, Model model) {
 		String userId = (String) session.getAttribute("userId");
-
+		if (userId != null) {
+			model.addAttribute("userProfileUrl", usersService.getUserInfo(userId).getUserProfileUrl());
+			model.addAttribute("points", pointsService.selectPoints(userId));
+		}
 		UsersInfoDto result = userService.getUserInfo(userId);
 		model.addAttribute("userInfo", result);
 		
