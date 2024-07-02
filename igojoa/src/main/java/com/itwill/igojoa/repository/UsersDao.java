@@ -1,5 +1,7 @@
 package com.itwill.igojoa.repository;
 
+import java.util.List;
+
 import com.itwill.igojoa.dto.users.UserFavoritePlacesDto;
 import com.itwill.igojoa.dto.users.UserFavoriteReviewsDto;
 import com.itwill.igojoa.dto.users.UserWrittenReviewsDto;
@@ -35,7 +37,7 @@ public interface UsersDao {
 	
 	boolean updateUsers(Users user);
 	
-	UserFavoritePlacesDto getUserFavoritePlaces(String userId);
+	List<UserFavoritePlacesDto> getUserFavoritePlaces(String userId);
 	
 	UserFavoriteReviewsDto getUserFavoriteReviews(String userId);
 	

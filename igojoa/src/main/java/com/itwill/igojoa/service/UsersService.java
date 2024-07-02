@@ -1,5 +1,7 @@
 package com.itwill.igojoa.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.itwill.igojoa.dto.users.UserFavoritePlacesDto;
@@ -78,7 +80,7 @@ public class UsersService {
 		return userDao.updateUsers(user);
 	}
 	
-	public UserFavoritePlacesDto getUserFavoritePlaces(String userId) {
+	public List<UserFavoritePlacesDto> getUserFavoritePlaces(String userId) {
 		return userDao.getUserFavoritePlaces(userId);
 	}
 	

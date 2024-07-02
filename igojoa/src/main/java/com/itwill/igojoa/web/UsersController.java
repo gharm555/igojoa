@@ -2,6 +2,7 @@ package com.itwill.igojoa.web;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -201,7 +202,7 @@ public class UsersController {
 		model.addAttribute("userInfo", userInfoDto);
 		
 		// TODO userActivities에 페이지 로드 될 때 디폴트 값 model 통해서 실어주기
-		UserFavoritePlacesDto userFavoritePlacesDto = userService.getUserFavoritePlaces(userId);
+		List<UserFavoritePlacesDto> userFavoritePlacesDto = userService.getUserFavoritePlaces(userId);
 		model.addAttribute("userFavoritePlaces", userFavoritePlacesDto);
 		
 		return "user/userProfile";
@@ -223,38 +224,38 @@ public class UsersController {
 		}
 	}
 	
-	@GetMapping("/userFavoritePlaces")
-	public ResponseEntity<UserFavoritePlacesDto> userFavoritePlaces(HttpSession session, Model model) {
-		String userId = (String) session.getAttribute("userId");
-		
-		UserFavoritePlacesDto userFavoritePlacesDto = userService.getUserFavoritePlaces(userId);
-		
-		model.addAttribute("userFavoritePlaces", userFavoritePlacesDto);
-		
-		return ResponseEntity.ok(userFavoritePlacesDto);
-	}
-	
-	@GetMapping("/userFavoriteReviews")
-	public ResponseEntity<UserFavoriteReviewsDto> userFavoriteReviews(HttpSession session, Model model) {
-		String userId = (String) session.getAttribute("userId");
-		
-		UserFavoriteReviewsDto userFavoriteReviewsDto = userService.getUserFavoriteReviews(userId);
-		
-		model.addAttribute("userFavoriteReviews", userFavoriteReviewsDto);
-		
-		return ResponseEntity.ok(userFavoriteReviewsDto);
-	}
-	
-	@GetMapping("/userWrittenReviews")
-	public ResponseEntity<UserWrittenReviewsDto> userWrittenReviews(HttpSession session, Model model) {
-		String userId = (String) session.getAttribute("userId");
-		
-		UserWrittenReviewsDto userWrittenReviewsDto = userService.getUserWrittenReviews(userId);
-		
-		model.addAttribute("userWrittenReviews", userWrittenReviewsDto);
-		
-		return ResponseEntity.ok(userWrittenReviewsDto);
-	}
+//	@GetMapping("/userFavoritePlaces")
+//	public ResponseEntity<UserFavoritePlacesDto> userFavoritePlaces(HttpSession session, Model model) {
+//		String userId = (String) session.getAttribute("userId");
+//		
+//		UserFavoritePlacesDto userFavoritePlacesDto = userService.getUserFavoritePlaces(userId);
+//		
+//		model.addAttribute("userFavoritePlaces", userFavoritePlacesDto);
+//		
+//		return ResponseEntity.ok(userFavoritePlacesDto);
+//	}
+//	
+//	@GetMapping("/userFavoriteReviews")
+//	public ResponseEntity<UserFavoriteReviewsDto> userFavoriteReviews(HttpSession session, Model model) {
+//		String userId = (String) session.getAttribute("userId");
+//		
+//		UserFavoriteReviewsDto userFavoriteReviewsDto = userService.getUserFavoriteReviews(userId);
+//		
+//		model.addAttribute("userFavoriteReviews", userFavoriteReviewsDto);
+//		
+//		return ResponseEntity.ok(userFavoriteReviewsDto);
+//	}
+//	
+//	@GetMapping("/userWrittenReviews")
+//	public ResponseEntity<UserWrittenReviewsDto> userWrittenReviews(HttpSession session, Model model) {
+//		String userId = (String) session.getAttribute("userId");
+//		
+//		UserWrittenReviewsDto userWrittenReviewsDto = userService.getUserWrittenReviews(userId);
+//		
+//		model.addAttribute("userWrittenReviews", userWrittenReviewsDto);
+//		
+//		return ResponseEntity.ok(userWrittenReviewsDto);
+//	}
 	
 //	@GetMapping("/userVerifiedPlaces")
 
