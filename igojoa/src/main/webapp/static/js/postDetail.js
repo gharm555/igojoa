@@ -1,12 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
+  console.log("js에 들어왔다.");
   // (1)카카오 지도 초기화
   initializeKakaoMap();
 
   // (2)이모지 리스트 생성
   createEmojiList();
-  
-  
-   ////// (3)상세페이지 좋아요 버튼 ////////
+
+  // (3) 게시물의 모든리뷰 생성
+  showAllReview();
+
+  ////// (4)상세페이지 좋아요 버튼 활성화 ////////
   const $heartIcon = document.querySelector("#favoriteHeart");
 
   function updateHeartIcon() {
@@ -67,22 +70,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
   });
-  
-  
-  
-  
-  
-  
-  
-  
-  /** (4)로그인한 유저의 리뷰 가지고 오기 */
+
+  /** ------------------ (5)로그인한 유저가 작성한 리뷰 가지고 오기 ------------------- */
   // 모든 체크박스 레이블을 선택합니다.
-  const labels = document.querySelectorAll(
+  const $labels = document.querySelectorAll(
     '.btn-group[aria-label="Basic checkbox toggle button group"] label'
   );
 
   // 각 레이블에 대해 반복합니다.
-  labels.forEach((label) => {
+  $labels.forEach((label) => {
     // 레이블에 연결된 체크박스를 찾습니다.
     const checkbox = document.getElementById(label.getAttribute("for"));
 
@@ -108,18 +104,28 @@ document.addEventListener("DOMContentLoaded", function () {
       radioId = "btnradio1"; // 상
       break;
     default:
-      console.log("Invalid iScore value");
+      console.log("Invalid iScore value:", pd.iScore);
       radioId = null; // 유효하지 않은 값일 경우 null로 설정
-      return;
   }
-  // 해당하는 라디오 버튼을 선택합니다.
-  const radioButton = document.getElementById(radioId);
-  if (radioButton) {
-    radioButton.checked = true;
-  }
-  ///////////////////////////////////////////////////////////////
 
-  /** 장소의 토탈 iscore 값을 받아와서 난이도 보여*/
+  console.log("Selected radioId:", radioId);
+
+  if (radioId) {
+    // 해당하는 라디오 버튼을 선택합니다.
+    const $radioButton = document.querySelector(`#${radioId}`);
+    console.log("선택한 라디오버튼 :", $radioButton);
+
+    if ($radioButton) {
+      $radioButton.checked = true;
+      console.log("Radio button checked:", radioId);
+    } else {
+      console.log("Radio button not found for id:", radioId);
+    }
+  } else {
+    console.log("No valid radioId selected");
+  }
+
+  /** --------------- (6) 장소의 avgIscore 값을 받아와서 장소이름 옆에 보여주기 ----------*/
   const $iscoreBedge = document.querySelector("#iscoreBedge");
   const avgiScore = $iscoreBedge.textContent.trim();
 
@@ -153,18 +159,9 @@ document.addEventListener("DOMContentLoaded", function () {
     $iscoreBedge.textContent = "난이도: ";
   }
 
- 
-
- 
-  
-
-  
-
- 
-
-  /** 리뷰 수정하기 */
-
+  /** --------------------  리뷰 수정하기 -------------------------- */
   // TODO: 수정하기 버튼 만들기
+
   function updateReview() {
     const reviewData = {
       parkingAvailable: pd.parkingAvailable ? 1 : 0,
@@ -198,44 +195,114 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
   }
+
+ 
+
+
+
 });
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+//TODO:
+/** ---------------- 게시물에 달린 모든 리뷰 가져오기 ----------------------- */
+function showAllReview() {
+  const placeName = pd.placeName;
+  if (!placeName) {
+    console.error("placeName is undefined");
+    return;
+  }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- /* 이모지 리스트 생성 */
-  function createEmojiList() {
-    console.log("Creating Emoji List");
-    console.log("emojiData:", emojiData); // 디버깅: emojiData 출력
+  const uri = `${contextPath}/${encodeURIComponent(
+    placeName
+  )}/selectDefaultReview`;
+  console.log("모든 리뷰 가져오기 URI:", uri);
 
-    const $listContainer = document.querySelector("#emojiList");
-    if (!$listContainer) {
-      console.error("#emojiList element not found");
-      return;
-    }
+  axios
+    .get(uri)
+    .then((response) => {
+      console.log("가져온 리뷰 목록:", response.data);
+      displayReviews(response.data);
+    })
+    .catch((error) => {
+      console.error("리뷰 가져오기 실패:", error);
+      if (error.response) {
+        console.error("서버 응답:", error.response.data);
+      } else if (error.request) {
+        console.error("응답 없음");
+      } else {
+        console.error("요청 오류:", error.message);
+      }
+    });
+}
 
-    // count를 숫자로 변환하고 최대값 찾기
-    const maxCount = Math.max(
-      ...emojiData.map((item) => {
-        const count = parseInt(item.count) || 0;
-        console.log(`${item.key} count:`, count); // 디버깅: 각 항목의 count 출력
-        return count;
-      })
-    );
+function displayReviews(reviews) {
+  console.log("Displaying reviews:", reviews);
 
-    console.log("maxCount:", maxCount); // 디버깅: maxCount 출력
+  // 댓글 목록 html 삽입이 될 섹션
+  const $reviewListSection = document.querySelector("#reviewList");
 
-    $listContainer.innerHTML = ""; // 기존 내용 초기화
+  if (!$reviewListSection) {
+    console.error("#reviewList element not found");
+    return;
+  }
 
-    emojiData.forEach((item) => {
-      const emojiItem = document.createElement("div");
-      emojiItem.className = "emoji-item";
+  if (!Array.isArray(reviews) || reviews.length === 0) {
+    $reviewListSection.innerHTML = "<p>아직 리뷰가 없습니다.</p>";
+    return;
+  }
 
-      // count를 숫자로 변환
+  let htmlStr = "";
+  reviews.forEach((review) => {
+    htmlStr += `
+    <div class="card card-body my-1">
+                <div style="font-size: 0.825rem;">
+                    <span>${review.userId}</span>
+                    <span class="fw-bold">${review.userId}</span>
+                    <span class="text-secondary">${review.userId}</span>
+                </div>
+                <div>${review.review}</div>
+              
+            </div>`;
+  });
+
+  $reviewListSection.innerHTML = htmlStr;
+  console.log("Reviews displayed");
+}
+
+/* ----------------------------  이모지 리스트 생성 ------------------------- */
+function createEmojiList() {
+  console.log("Creating Emoji List");
+  console.log("emojiData:", emojiData); // 디버깅: emojiData 출력
+
+  const $listContainer = document.querySelector("#emojiList");
+  if (!$listContainer) {
+    console.error("#emojiList element not found");
+    return;
+  }
+
+  // count를 숫자로 변환하고 최대값 찾기
+  const maxCount = Math.max(
+    ...emojiData.map((item) => {
       const count = parseInt(item.count) || 0;
-      const ratio = maxCount > 0 ? (count / maxCount) * 100 : 0;
+      console.log(`${item.key} count:`, count); // 디버깅: 각 항목의 count 출력
+      return count;
+    })
+  );
 
-      emojiItem.innerHTML = `
+  console.log("maxCount:", maxCount); // 디버깅: maxCount 출력
+
+  $listContainer.innerHTML = ""; // 기존 내용 초기화
+
+  emojiData.forEach((item) => {
+    const emojiItem = document.createElement("div");
+    emojiItem.className = "emoji-item";
+
+    // count를 숫자로 변환
+    const count = parseInt(item.count) || 0;
+    const ratio = maxCount > 0 ? (count / maxCount) * 100 : 0;
+
+    emojiItem.innerHTML = `
             <div class="background-fill" style="width: ${ratio}%;"></div>
             <div class="emoji-content">
                 <span class="emoji">${item.emoji}</span>
@@ -243,82 +310,72 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
             <span class="count">${count}</span>
         `;
-      $listContainer.appendChild(emojiItem);
-    });
+    $listContainer.appendChild(emojiItem);
+  });
 
-    console.log("Emoji list created successfully");
-  }
+  console.log("Emoji list created successfully");
+}
 
+/* ---------------------------- 카카오 지도 -------------------------- */
+function initializeKakaoMap() {
+  if (typeof mapData !== "undefined" && mapData.latitude && mapData.longitude) {
+    var latitude = parseFloat(mapData.latitude);
+    var longitude = parseFloat(mapData.longitude);
 
-
-
- /* 카카오 지도 */
-  function initializeKakaoMap() {
-    if (
-      typeof mapData !== "undefined" &&
-      mapData.latitude &&
-      mapData.longitude
-    ) {
-      var latitude = parseFloat(mapData.latitude);
-      var longitude = parseFloat(mapData.longitude);
-
-      if (!isNaN(latitude) && !isNaN(longitude)) {
-        if (typeof kakao !== "undefined" && kakao.maps) {
-          let $container = document.querySelector("#map");
-          if ($container) {
-            let kakaoMap = new kakao.maps.LatLng(latitude, longitude);
-            let options = {
-              center: kakaoMap,
-              level: 3,
-            };
-            console.log(kakaoMap);
-            let map = new kakao.maps.Map($container, options);
-            let markerPosition = kakaoMap;
-            let marker = new kakao.maps.Marker({
-              position: markerPosition,
-            });
-            marker.setMap(map);
-          } else {
-            console.error("Map container not found");
-          }
+    if (!isNaN(latitude) && !isNaN(longitude)) {
+      if (typeof kakao !== "undefined" && kakao.maps) {
+        let $container = document.querySelector("#map");
+        if ($container) {
+          let kakaoMap = new kakao.maps.LatLng(latitude, longitude);
+          let options = {
+            center: kakaoMap,
+            level: 3,
+          };
+          console.log(kakaoMap);
+          let map = new kakao.maps.Map($container, options);
+          let markerPosition = kakaoMap;
+          let marker = new kakao.maps.Marker({
+            position: markerPosition,
+          });
+          marker.setMap(map);
         } else {
-          console.error("Kakao maps API not loaded");
+          console.error("Map container not found");
         }
       } else {
-        console.error("Invalid latitude or longitude values");
+        console.error("Kakao maps API not loaded");
       }
     } else {
-      console.error("Map data is not defined or incomplete");
+      console.error("Invalid latitude or longitude values");
     }
+  } else {
+    console.error("Map data is not defined or incomplete");
   }
-  
-  
-  
-  
-  /*  -------- 위로가는 버튼 --------- */
-  //  버튼 요소 선택
-  const $scrollToTopBtn = document.querySelector("#scrollToTopBtn");
+}
 
-  // 스크롤 이벤트 리스너 추가
-  window.addEventListener("scroll", scrollFunction);
+/*  ----------------------- 위로가는 버튼 ---------------------------- */
+//  버튼 요소 선택
+const $scrollToTopBtn = document.querySelector("#scrollToTopBtn");
 
-  function scrollFunction() {
-    // 페이지를 100px 이상 스크롤했을 때 버튼 표시
-    if (
-      document.body.scrollTop > 100 ||
-      document.documentElement.scrollTop > 100
-    ) {
-      $scrollToTopBtn.style.display = "block";
-    } else {
-      $scrollToTopBtn.style.display = "none";
-    }
+// 스크롤 이벤트 리스너 추가
+window.addEventListener("scroll", scrollFunction);
+
+function scrollFunction() {
+  // 페이지를 100px 이상 스크롤했을 때 버튼 표시
+  if (
+    document.body.scrollTop > 100 ||
+    document.documentElement.scrollTop > 100
+  ) {
+    $scrollToTopBtn.style.display = "block";
+  } else {
+    $scrollToTopBtn.style.display = "none";
   }
+}
 
-  // 버튼 클릭 이벤트 리스너 추가
-  $scrollToTopBtn.addEventListener("click", function () {
-    // 부드러운 스크롤 효과로 페이지 최상단으로 이동
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+// 버튼 클릭 이벤트 리스너 추가
+$scrollToTopBtn.addEventListener("click", function () {
+  // 부드러운 스크롤 효과로 페이지 최상단으로 이동
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
   });
+});
