@@ -104,4 +104,157 @@
 		WHERE userId = #{userId}
 	</update>
 
+	<!-- User가 좋아한 장소 정보들 전체 가져오기 -->
+	<select id="getUserFavoritePlaces"
+		resultType="UserFavoritePlacesDto" parameterType="UserSearchDto">
+		<bind name="userId" value="userId" />
+		SELECT
+			places.placeName,
+			CONCAT(places.largeAddress, ' ',
+			places.midiumAddress) AS address,
+			placeImages.firstUrl,
+			DATE_FORMAT(placesFavorite.createdTime, '%Y.%m.%d %H:%i') as createdAt
+		FROM places
+		 	JOIN placesFavorite ON places.placeName = placesFavorite.placeName
+			JOIN placeImages ON places.placeName = placeImages.placeName
+		WHERE
+			placesFavorite.userId = '${ userId }'
+	</select>
+	
+	<!-- 유저가 좋아한 장소 정보들 검색결과 가져오기 -->
+	<select id="searchUserFavoritePlaces" resultType="UserFavoritePlacesDto" parameterType="UserSearchDto">
+		<bind name="userId" value="userId" />
+		<bind name="searchKeyword" value="'%' + keyword + '%'" />
+		SELECT
+			places.placeName,
+			CONCAT(places.largeAddress, ' ',
+			places.midiumAddress) AS address,
+			placeImages.firstUrl,
+			DATE_FORMAT(placesFavorite.createdTime, '%Y.%m.%d %H:%i') as createdAt
+		FROM places
+		 	JOIN placesFavorite ON places.placeName = placesFavorite.placeName
+			JOIN placeImages ON places.placeName = placeImages.placeName
+		WHERE
+        	placesFavorite.userId = #{userId}
+        	<if test="searchKeyword != null and searchKeyword != ''">
+           	 	AND upper(places.placeName) LIKE upper(#{searchKeyword})
+        	</if>
+        	<if test="largeAddress != null and largeAddress != ''">
+            	AND places.largeAddress = #{largeAddress}
+        	</if>
+        	<if test="calendar != null and calendar != ''">
+            	AND DATE_FORMAT(placesFavorite.createdTime, '%Y.%m.%d') = #{calendar}
+        	</if>
+    	ORDER BY placesFavorite.createdTime DESC
+	</select>
+
+	<!-- User가 좋아요한 리뷰 정보들 가져오기 -->
+	<select id="getUserFavoriteReviews"
+		resultType="UserFavoriteReviewsDto" parameterType="UserSearchDto">
+		<bind name="userId" value="userId" />
+		SELECT
+		places.placeName, CONCAT(places.largeAddress, '
+		',places.midiumAddress) AS address, placeImages.firstUrl,
+		DATE_FORMAT(placesFavorite.createdTime, '%Y.%m.%d %H:%i') AS createdAt
+		FROM places
+		JOIN placesFavorite ON places.placeName =
+		placesFavorite.placeName
+		JOIN placeImages ON places.placeName =
+		placeImages.placeName
+		WHERE placesFavorite.userId = '${ userId }'
+	</select>
+
+	<!-- User가 작성한 리뷰 정보들 가져오기 -->
+	<select id="getUserWrittenReviews"
+		resultType="UserWrittenReviewsDto" parameterType="UserSearchDto">
+		<bind name="userId" value="userId" />
+		SELECT placeImages.firstUrl, places.placeName, CONCAT(places.largeAddress, '
+		',places.midiumAddress) AS address, reviews.review,
+		DATE_FORMAT(reviews.createdAt, '%Y.%m.%d %H:%i') AS createdAt
+		FROM placeImages
+		JOIN places ON placeImages.placeName = places.placeName
+		JOIN reviews ON places.placeName = reviews.placeName
+		WHERE reviews.userId = '${ userId }'
+	</select>
+	
+	<!-- 유저 활동내역 전체 -->
+	<select id="getAllUserRelatedInfo" resultType="UserRelatedInfoDto" parameterType="UserSearchDto">
+	<bind name="userId" value="userId" />
+	<bind name="startRowValue" value="startRowValue" />
+	<bind name="rowCnt" value="rowCnt" />
+    /* 좋아요한 명소들 */
+    SELECT 
+        'favorite_places' AS type,
+        places.placeName, 
+        CONCAT(places.largeAddress, ' ', places.midiumAddress) AS address, 
+        placeImages.firstUrl, 
+        DATE_FORMAT(placesFavorite.createdTime, '%Y.%m.%d %H:%i') AS createdAt,
+        NULL AS review,
+        NULL AS likeUserId,
+        NULL AS nickName
+    FROM places
+    JOIN placesFavorite ON places.placeName = placesFavorite.placeName
+    JOIN placeImages ON places.placeName = placeImages.placeName
+    WHERE placesFavorite.userId = '${ userId }'
+
+    UNION ALL
+
+    /* 좋아요한 리뷰들 */
+    SELECT 
+        'liked_reviews' AS type,
+        places.placeName, 
+        NULL AS address, 
+        placeImages.firstUrl, 
+        DATE_FORMAT(reviewLikes.createdTime, '%Y.%m.%d %H:%i') AS createdAt,
+        reviews.review,
+        reviewLikes.likeUserId,
+        users.nickName
+    FROM places
+    JOIN reviews ON places.placeName = reviews.placeName
+    JOIN reviewLikes ON reviews.placeName = reviewLikes.placeName AND reviews.userId = reviewLikes.userId
+    JOIN users ON reviewLikes.likeUserId = users.userId
+    JOIN placeImages ON places.placeName = placeImages.placeName
+    WHERE reviewLikes.likeUserId = '${ userId }'
+
+    UNION ALL
+
+    /* 작성한 리뷰들 */
+    SELECT 
+        'written_reviews' AS type,
+        places.placeName, 
+        CONCAT(places.largeAddress, ' ', places.midiumAddress) AS address, 
+        placeImages.firstUrl, 
+        DATE_FORMAT(reviews.createdAt, '%Y.%m.%d %H:%i') AS createdAt,
+        reviews.review,
+        NULL AS likeUserId,
+        NULL AS nickName
+    FROM placeImages
+    JOIN places ON placeImages.placeName = places.placeName
+    JOIN reviews ON places.placeName = reviews.placeName
+    WHERE reviews.userId = '${ userId }'
+
+    UNION ALL
+
+    /* 위치 인증한 장소 */
+    SELECT 
+        'verified_places' AS type,
+        placeVerified.placeName, 
+        CONCAT(places.largeAddress, ' ', places.midiumAddress) AS address, 
+        placeImages.firstUrl, 
+        DATE_FORMAT(placeVerified.verifiedTime, '%Y.%m.%d %H:%i') AS createdAt,
+        NULL AS review,
+        NULL AS likeUserId,
+        NULL AS nickName
+    FROM placeVerified
+    JOIN places ON placeVerified.placeName = places.placeName
+    JOIN placeImages ON placeVerified.placeName = placeImages.placeName
+    WHERE placeVerified.userId = '${ userId }'
+
+    ORDER BY createdAt
+    
+    <if test="startRowValue != null and rowCnt != null">
+        LIMIT #{startRowValue}, #{rowCnt}
+    </if>
+  </select>
+
 </mapper>
