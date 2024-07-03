@@ -18,10 +18,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class PlaceVerifiedService {
-	private final PlaceVerifiedDao placeVerifiedDao;
-	private final PlaceDao placeDao;
+    private final PlaceVerifiedDao placeVerifiedDao;
+    private final PlaceDao placeDao;
 
-    public boolean verifyUserLocation(double userLatitude, double userLongitude, String userId) {
+    public String verifyUserLocation(double userLatitude, double userLongitude, String userId) {
         List<PlaceSpaceDto> places = placeDao.selectPlaceSpaceList();
         for (PlaceSpaceDto place : places) {
             double placeLatitude = place.getPlaceLatitude();
@@ -33,24 +33,24 @@ public class PlaceVerifiedService {
                 System.out.println(placeName + "장소가 300m 이내에 있습니다.");
                 if (isAlreadyVerifiedToday(userId, placeName)) {
                     System.out.println("이미 위치 인증 한 장소입니다.");
-                    return false;
+                    return "이미 위치 인증 한 장소입니다.";
                 }
                 insertUserLocation(userLatitude, userLongitude, placeName, userId);
-                return true;
+                return "위치 인증 성공";
             }
         }
         System.out.println("300m 이내에 장소가 없습니다.");
-        return false;
+        return "위치 인증 실패";
     }
 
-	private void insertUserLocation(double latitude, double longitude, String placeName, String userId) {
-		PlaceVerified placeVerified = new PlaceVerified();
-		placeVerified.setPlaceLatitude(latitude);
-		placeVerified.setPlaceLongitude(longitude);
-		placeVerified.setPlaceName(placeName);
-		placeVerified.setUserId(userId);
-		placeVerifiedDao.insert(placeVerified);
-	}
+    private void insertUserLocation(double latitude, double longitude, String placeName, String userId) {
+        PlaceVerified placeVerified = new PlaceVerified();
+        placeVerified.setPlaceLatitude(latitude);
+        placeVerified.setPlaceLongitude(longitude);
+        placeVerified.setPlaceName(placeName);
+        placeVerified.setUserId(userId);
+        placeVerifiedDao.insert(placeVerified);
+    }
 
     private boolean isWithin300Meters(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371; // 지구 반지름 (km)
