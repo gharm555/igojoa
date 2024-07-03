@@ -2,6 +2,7 @@ package com.itwill.igojoa.web;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +21,6 @@ import com.itwill.igojoa.service.UsersService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -67,14 +67,21 @@ public class HomeController {
 	}
 
 	@PostMapping("/game")
-	public ResponseEntity<String> game(@RequestBody LottoDto lottoDto) {
+	public ResponseEntity<String> game(@RequestBody LottoDto lottoDto, HttpSession session) {
 		System.out.println("game");
 		System.out.println(lottoDto.getUserId());
 		System.out.println(lottoDto.getRank());
-		pointsService.subtractPoints(lottoDto.getUserId());
-		pointsService.insertPointLog(lottoDto.getUserId(), "뽑기", 150);
-		pointsService.insertPointLog(lottoDto.getUserId(), lottoDto.getRank(), 0);
-		return ResponseEntity.ok(pointsService.selectPoints(lottoDto.getUserId()));
+		if (session.getAttribute("userId") != null && session.getAttribute("userId").equals(lottoDto.getUserId())) {
+			pointsService.subtractPoints(lottoDto.getUserId());
+			pointsService.insertPointLog(lottoDto.getUserId(), "뽑기", 150);
+			pointsService.insertPointLog(lottoDto.getUserId(), lottoDto.getRank(), 0);
+			return ResponseEntity.ok(pointsService.selectPoints(lottoDto.getUserId()));
+		} else if (lottoDto.getRank().equals("1등") || lottoDto.getRank().equals("2등")) {
+			return ResponseEntity.badRequest().body("등수 바꾸지마라");
+		} else {
+			return ResponseEntity.badRequest().body("아이디 바꾸지마라");
+		}
+
 	}
 
 	@GetMapping("/imageGallery")

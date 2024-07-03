@@ -205,7 +205,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (heartClickable === 1) {
           console.log("하트 클릭됨:", placeName);
           const uri = "./clickHeart";
-
+          if (LoginUserId !== null) {
+            window.location.href = `${contextPath}/user/loginRegister`;
+          }
           axios
             .put(uri, placeName)
             .then((response) => {

@@ -6,7 +6,8 @@ const $bonus = document.querySelector("#bonus");
 const $playButton = document.querySelector("#playButton");
 const $resetNumbersButton = document.querySelector("#resetNumbersButton");
 const $numberInputs = document.querySelectorAll(".number-input");
-const $points = document.querySelector("#points");
+const $points = document.querySelectorAll("#points");
+const $pointsText = document.querySelectorAll(".points");
 const $rank = document.querySelector("#rank");
 
 const $modal = document.querySelector("#resultModal");
@@ -138,6 +139,7 @@ function getRank(winBalls, bonusBall, userNumbersArray) {
 
 // 로또 게임을 실행하는 함수
 function playLotto() {
+  let success = false;
   console.log("playLotto 함수 호출됨");
   console.log(LoginUserId);
   if (LoginUserId == null || LoginUserId == "" || LoginUserId == undefined) {
@@ -211,19 +213,23 @@ function playLotto() {
     )
     .then((response) => {
       console.log("Success:", response.data);
-      $points.textContent = "남은 포인트: " + response.data;
+      success = true;
+      getPoints();
     })
     .catch((error) => {
-      console.error("Error:", error);
+      alert(error.response.data);
+      success = false;
     });
-  setTimeout(() => {
-    showBall(bonus, $bonus);
-    $rank.textContent = `결과: ${result.rank}`;
-    showModal(result);
+  if (success) {
+    setTimeout(() => {
+      showBall(bonus, $bonus);
+      $rank.textContent = `결과: ${result.rank}`;
+      showModal(result);
 
-    isGameInProgress = false;
-    $playButton.disabled = false;
-  }, 7000);
+      isGameInProgress = false;
+      $playButton.disabled = false;
+    }, 7000);
+  }
 }
 
 // 모달 창을 표시하는 함수
@@ -262,3 +268,20 @@ document.addEventListener("DOMContentLoaded", () => {
   setInitialNumbers();
   updatePlayButtonState();
 });
+function getPoints() {
+  axios.get(contextPath + "/user/getPoints").then((res) => {
+    if (res.data.success) {
+      let points = res.data.points.toString();
+      let cumulativePoint = res.data.cumulativePoint.toString();
+      points = points.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      cumulativePoint = cumulativePoint.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      const $points = document.querySelectorAll(".points");
+      $points.forEach(($point) => {
+        $point.innerHTML = points;
+      });
+    } else {
+      alert(res.data.message);
+      window.location.href = contextPath + "/user/loginRegister";
+    }
+  });
+}

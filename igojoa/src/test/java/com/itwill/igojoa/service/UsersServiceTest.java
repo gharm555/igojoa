@@ -61,22 +61,28 @@ public class UsersServiceTest {
     	log.info("가져온정보 = {}", userRelatedInfoDto);
     }
     
-//    @Test
-//    public void searchUserFavoritePlaces() {
+    @Test
+    public void searchUserFavoritePlaces() {
 //    	UserSearchDto searchDto = UserSearchDto.builder()
 //                .userId("sangwontest2")
 //                .searchKeyword("뮤")
 //                .startRowValue(0)
 //                .rowCnt(3)
 //                .build();
-//        
-//    	log.info("써치디티오 상태 = {}", searchDto);
-//    	
-//        List<UserFavoritePlacesDto> results = usersService.searchUserFavoritePlaces(searchDto);
-//        
-//        Assertions.assertNotNull(results);
-//
-//        log.info("가져온 정보 = {}", results);
-//    }
+        
+    	UserSearchDto searchDto = UserSearchDto.builder()
+    			.userId("sangwontest2")
+    			.searchKeyword("")
+    			.largeAddress("경기도")
+    			.startRowValue(0)
+    			.rowCnt(3)
+    			.build();
+    	
+    	log.info("써치디티오 상태 = {}", searchDto);
+    	
+        List<UserFavoritePlacesDto> results = usersService.searchUserFavoritePlaces(searchDto);
+        
+        log.info("가져온 정보 = {}", results);
+    }
     
 }
