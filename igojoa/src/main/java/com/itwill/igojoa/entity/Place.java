@@ -17,6 +17,6 @@ public class Place {
 	private String placeDescription;
 	private Double placeLatitude;
 	private Double placeLongitude;
-	private String openHours;
+	private String operatingHours;
 	private Integer iScore;
 }
