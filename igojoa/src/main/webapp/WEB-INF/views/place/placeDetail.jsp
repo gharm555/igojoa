@@ -26,7 +26,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <link rel="stylesheet" href="${navbarCssUrl}" />
   </head>
   <body>
-    <%@ include file="../header.jspf" %>
+    <header>
+      <%@ include file="../header.jspf" %>
+    </header>
     <main>
       <c:set var="pd" value="${PlaceDetailDto}" />
       <c:set var="place" value="${placesInfo}" />
@@ -387,5 +389,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <c:url var="postDetailJsUrl" value="/js/postDetail.js" />
     <script src="${navbarJsUrl}"></script>
     <script src="${postDetailJsUrl}"></script>
+    <script>
+      const LoginUserId = "${userId}";
+    </script>
   </body>
 </html>

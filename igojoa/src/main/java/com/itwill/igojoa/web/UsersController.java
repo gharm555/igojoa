@@ -199,9 +199,9 @@ public class UsersController {
 			model.addAttribute("userProfileUrl", usersService.getUserInfo(userId).getUserProfileUrl());
 			model.addAttribute("points", pointsService.selectPoints(userId));
 		}
-//		UsersInfoDto userInfoDto = userService.getUserInfo(userId);
-//		model.addAttribute("userInfo", userInfoDto);
-		
+		// UsersInfoDto userInfoDto = userService.getUserInfo(userId);
+		// model.addAttribute("userInfo", userInfoDto);
+
 		return "user/userProfile";
 	}
 
@@ -220,48 +220,67 @@ public class UsersController {
 					.body(Map.of("success", false, "message", "업데이트를 수행할 수 없습니다."));
 		}
 	}
-	
-//	@GetMapping("/allUserRelatedInfo")
-//	public ResponseEntity<List<UserRelatedInfoDto>> getAllUserRelatedInfo(HttpSession session, Model model) {
-//		String userId = (String) session.getAttribute("userId");
-//		List<UserRelatedInfoDto> allUserRelatedInfo = userService.getAllUserRelatedInfo(userId);
-//		
-//		return ResponseEntity.ok(allUserRelatedInfo);
-//	}
-	
-//	@GetMapping("/userFavoritePlaces")
-//	public ResponseEntity<UserFavoritePlacesDto> userFavoritePlaces(HttpSession session, Model model) {
-//		String userId = (String) session.getAttribute("userId");
-//		
-//		UserFavoritePlacesDto userFavoritePlacesDto = userService.getUserFavoritePlaces(userId);
-//		
-//		model.addAttribute("userFavoritePlaces", userFavoritePlacesDto);
-//		
-//		return ResponseEntity.ok(userFavoritePlacesDto);
-//	}
-//	
-//	@GetMapping("/userFavoriteReviews")
-//	public ResponseEntity<UserFavoriteReviewsDto> userFavoriteReviews(HttpSession session, Model model) {
-//		String userId = (String) session.getAttribute("userId");
-//		
-//		UserFavoriteReviewsDto userFavoriteReviewsDto = userService.getUserFavoriteReviews(userId);
-//		
-//		model.addAttribute("userFavoriteReviews", userFavoriteReviewsDto);
-//		
-//		return ResponseEntity.ok(userFavoriteReviewsDto);
-//	}
-//	
-//	@GetMapping("/userWrittenReviews")
-//	public ResponseEntity<UserWrittenReviewsDto> userWrittenReviews(HttpSession session, Model model) {
-//		String userId = (String) session.getAttribute("userId");
-//		
-//		UserWrittenReviewsDto userWrittenReviewsDto = userService.getUserWrittenReviews(userId);
-//		
-//		model.addAttribute("userWrittenReviews", userWrittenReviewsDto);
-//		
-//		return ResponseEntity.ok(userWrittenReviewsDto);
-//	}
-	
-//	@GetMapping("/userVerifiedPlaces")
+
+	// @GetMapping("/allUserRelatedInfo")
+	// public ResponseEntity<List<UserRelatedInfoDto>>
+	// getAllUserRelatedInfo(HttpSession session, Model model) {
+	// String userId = (String) session.getAttribute("userId");
+	// List<UserRelatedInfoDto> allUserRelatedInfo =
+	// userService.getAllUserRelatedInfo(userId);
+	//
+	// return ResponseEntity.ok(allUserRelatedInfo);
+	// }
+
+	// @GetMapping("/userFavoritePlaces")
+	// public ResponseEntity<UserFavoritePlacesDto> userFavoritePlaces(HttpSession
+	// session, Model model) {
+	// String userId = (String) session.getAttribute("userId");
+	//
+	// UserFavoritePlacesDto userFavoritePlacesDto =
+	// userService.getUserFavoritePlaces(userId);
+	//
+	// model.addAttribute("userFavoritePlaces", userFavoritePlacesDto);
+	//
+	// return ResponseEntity.ok(userFavoritePlacesDto);
+	// }
+	//
+	// @GetMapping("/userFavoriteReviews")
+	// public ResponseEntity<UserFavoriteReviewsDto> userFavoriteReviews(HttpSession
+	// session, Model model) {
+	// String userId = (String) session.getAttribute("userId");
+	//
+	// UserFavoriteReviewsDto userFavoriteReviewsDto =
+	// userService.getUserFavoriteReviews(userId);
+	//
+	// model.addAttribute("userFavoriteReviews", userFavoriteReviewsDto);
+	//
+	// return ResponseEntity.ok(userFavoriteReviewsDto);
+	// }
+	//
+	// @GetMapping("/userWrittenReviews")
+	// public ResponseEntity<UserWrittenReviewsDto> userWrittenReviews(HttpSession
+	// session, Model model) {
+	// String userId = (String) session.getAttribute("userId");
+	//
+	// UserWrittenReviewsDto userWrittenReviewsDto =
+	// userService.getUserWrittenReviews(userId);
+	//
+	// model.addAttribute("userWrittenReviews", userWrittenReviewsDto);
+	//
+	// return ResponseEntity.ok(userWrittenReviewsDto);
+	// }
+
+	// @GetMapping("/userVerifiedPlaces")
+
+	@GetMapping("/getPoints")
+	public ResponseEntity<?> getPoints(HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+					.body(Map.of("success", false, "message", "로그인 해주세요."));
+		}
+		String userId = (String) session.getAttribute("userId");
+		return ResponseEntity.ok(Map.of("success", true, "points", pointsService.selectPoints(userId),
+				"cumulativePoint", usersService.getUserInfo(userId).getCumulativePoint()));
+	}
 
 }

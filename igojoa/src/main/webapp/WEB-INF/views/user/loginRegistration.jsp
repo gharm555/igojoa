@@ -20,7 +20,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
     <link rel="stylesheet" href="${loginRegistrationCss}" />
   </head>
   <body>
-    <%@ include file="../header.jspf" %>
+    <header>
+      <%@ include file="../header.jspf" %>
+    </header>
     <main>
       <div class="container">
         <div class="box signin">
