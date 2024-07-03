@@ -37,6 +37,7 @@ public class PlaceRestController {
 		if (searchKeyword == null) {
 			placeSearchDto.setSearchKeyword("");
 		} else {
+			placeSearchDto.setUserId((String) session.getAttribute("userId"));
 			session.setAttribute("searchKeyword", searchKeyword);
 			placeSearchDto.setSearchKeyword(searchKeyword);
 			System.out.println(searchKeyword);
