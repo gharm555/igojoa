@@ -543,6 +543,9 @@ document.addEventListener('DOMContentLoaded', function () {
   link.href = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css';
   document.head.appendChild(link);
 
+  let startDate = '';
+  let endDate = '';
+
   // Flatpickr 초기화
   flatpickr.localize(flatpickr.l10ns.ko);
   const datePicker = flatpickr('#date-range', {
@@ -558,6 +561,10 @@ document.addEventListener('DOMContentLoaded', function () {
         instance.element.placeholder = '전체기간';
         updatePointHistoryForAllPeriod();
       } else if (selectedDates.length === 2) {
+        startDate = formatDate(selectedDates[0]);
+        endDate = formatDate(selectedDates[1]);
+        console.log(startDate);
+        console.log(endDate);
         updatePointHistoryForDateRange(selectedDates[0], selectedDates[1]);
       }
     },
@@ -576,6 +583,12 @@ document.addEventListener('DOMContentLoaded', function () {
       wrapper.appendChild(clearButton);
     },
   });
+
+  function formatDate(date) {
+    const offset = date.getTimezoneOffset();
+    const adjustedDate = new Date(date.getTime() - (offset * 60 * 1000));
+    return adjustedDate.toISOString().split('T')[0];
+  }
 
   function updatePointHistoryForAllPeriod() {
     const $table = document.querySelector('#pointHistoryTable').querySelector('tbody');
@@ -632,11 +645,6 @@ document.addEventListener('DOMContentLoaded', function () {
   updatePointHistoryForAllPeriod();
 });
 
-
-
-
-
-
 // 유저 활동 내역
 const $userActivityTab = document.querySelector('#v-pills-disabled-tab');
 const $addressSelect = document.querySelector('#address-select');
@@ -654,7 +662,7 @@ let sortOrder = {
   writtenReview: 'desc',
   verifiedPlace: 'desc',
 };
-
+// 초기 데이터 불러오기
 $userActivityTab.addEventListener('click', () => {
   axios
     .get(contextPath + '/user/userProfile/userRelatedInfo', {})
@@ -669,6 +677,29 @@ $userActivityTab.addEventListener('click', () => {
       console.error('Error fetching user related info:', error);
     });
 });
+
+
+
+
+
+//// 검색 데이터 불러오기
+//$searchBtn.addEventListener('click', () => {
+//  const url = '';
+//  if(currentTab === 'total') {
+//    url = contextPath + '/user/userProfile/userRelatedInfo';
+//  } else if(currentTab === 'favoritePlace') {
+//    url = contextPath + '/user/userProfile/searchFavoritePlaces';
+//  } else if(currentTab === 'likedReview') {
+//    url = contextPath + '/user/userProfile/searchFavoriteReviews';
+//  } else if(currentTab === 'writtenReview'){
+//    url = contextPath + '/user/userProfile/searchWrittenReviews';
+//  } else {
+//    url = contextPath + '/user/userProfile/searchVerifiedPlaces';
+//  }
+
+//  axios
+//    .get(url, )
+//})
 
 tabs.forEach((tab) => {
   document.querySelector(`#nav-${tab}-tab`).addEventListener('click', () => {
@@ -731,7 +762,7 @@ function displayUserRelatedInfo(data) {
         <img src="${info.firstUrl}" alt="게시물 썸네일" class="rounded-circle me-3" width="50" height="50" />
         <div>
           <p class="mb-0">
-            ${info.address} ${info.placeName} 리뷰에 좋아요를 눌렀습니다.
+            ${info.placeName}에 ${info.reviewAuthor}님 리뷰 '${info.review}'에 좋아요를 눌렀습니다.
           </p>
           <small class="text-muted">${info.createdAt}</small>
         </div>
@@ -784,7 +815,7 @@ function displayUserRelatedInfo(data) {
         <img src="${review.firstUrl}" alt="게시물 썸네일" class="rounded-circle me-3" width="50" height="50" />
         <div>
           <p class="mb-0">
-            ${review.address} ${review.placeName} 리뷰에 좋아요를 눌렀습니다.
+            ${review.placeName}에 ${review.reviewAuthor}님 리뷰 '${review.review}'에 좋아요를 눌렀습니다.
           </p>
           <small class="text-muted">${review.createdAt}</small>
         </div>
@@ -867,10 +898,3 @@ function sortDataDesc() {
     globalData.userVerifiedPlaces.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   }
 }
-
-
-
-
-
-
-
