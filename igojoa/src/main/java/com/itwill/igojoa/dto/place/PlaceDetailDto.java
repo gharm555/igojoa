@@ -18,7 +18,7 @@ public class PlaceDetailDto {
 	private String placeDescription;
 	private Double placeLatitude;
 	private Double placeLongitude;
-	private Integer operatingHours;
+	private String operatingHours;
 	private Integer totalParkingAvailable;
 	private Integer totalView;
 	private Integer totalNightView;

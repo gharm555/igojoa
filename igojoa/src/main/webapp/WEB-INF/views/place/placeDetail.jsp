@@ -195,7 +195,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     value="주차가능"
                     autocomplete="off"
                   />
-                  <label class="btn btn-outline-primary" for="btncheck1"
+                  <label class="btn btn-outline-primary" for="btncheck1" 
                     >주차가능</label
                   >
                   <input
@@ -287,7 +287,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   id="reviewText"
                   rows="4"
                   placeholder="리뷰를 작성해주세요"
-                ></textarea>
+                >   </textarea>
                 <button type="submit" class="btn btn-primary">작성완료</button>
               </form>
             </div>
