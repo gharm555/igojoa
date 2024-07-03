@@ -657,7 +657,7 @@ let sortOrder = {
 
 $userActivityTab.addEventListener('click', () => {
   axios
-    .get(contextPath + '/userRelatedInfo', {})
+    .get(contextPath + '/user/userProfile/userRelatedInfo', {})
     .then((response) => {
       console.log('Data fetched successfully:', response.data);
       globalData = response.data;
@@ -867,5 +867,10 @@ function sortDataDesc() {
     globalData.userVerifiedPlaces.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   }
 }
+
+
+
+
+
 
 

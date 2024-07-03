@@ -26,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user/userProfile")
 public class UsersRestController {
 	private final HttpSession session;
 	private final UsersService usersService;
@@ -40,8 +39,8 @@ public class UsersRestController {
 		userSearchDto.setUserId(userId);
 
 		// 테스트 코드
-		userSearchDto.setStartRowValue(0);
-		userSearchDto.setRowCnt(4);
+		//userSearchDto.setStartRowValue(0);
+		//userSearchDto.setRowCnt(10);
 
 		List<UserRelatedInfoDto> userRelatedInfoDto = usersService.getAllUserRelatedInfo(userSearchDto);
 		List<UserFavoritePlacesDto> userFavoritePlacesDto = usersService.getUserFavoritePlaces(userSearchDto);
