@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user/userProfile")
+//@RequestMapping("/user/userProfile")
 public class UsersRestController {
 	private final HttpSession session;
 	private final UsersService usersService;
@@ -35,13 +35,13 @@ public class UsersRestController {
 	public ResponseEntity<Map<String, Object>> getAllUserRelatedInfo(@ModelAttribute UserSearchDto userSearchDto) {
 		String userId = (String) session.getAttribute("userId");
 		
-		userId = "sangwontest2"; // 테스트코드
+//		userId = "sangwontest2"; // 테스트코드
 		log.debug("userId = {}", userId);
 		userSearchDto.setUserId(userId);
 
 		// 테스트 코드
-		userSearchDto.setStartRowValue(0);
-		userSearchDto.setRowCnt(4);
+//		userSearchDto.setStartRowValue(0);
+//		userSearchDto.setRowCnt(4);
 
 		List<UserRelatedInfoDto> userRelatedInfoDto = usersService.getAllUserRelatedInfo(userSearchDto);
 		List<UserFavoritePlacesDto> userFavoritePlacesDto = usersService.getUserFavoritePlaces(userSearchDto);
@@ -63,7 +63,7 @@ public class UsersRestController {
 	public ResponseEntity<List<UserFavoritePlacesDto>> searchUserFavoritePlaces(@ModelAttribute UserSearchDto userSearchDto) {
 		String userId = (String) session.getAttribute("userId");
 		
-		userId = "sangwontest2"; // 테스트코드
+//		userId = "sangwontest2"; // 테스트코드
 		
 		userSearchDto.setUserId(userId);
 		
@@ -76,7 +76,7 @@ public class UsersRestController {
 	public ResponseEntity<List<UserFavoriteReviewsDto>> searchUserFavoriteReviews(@ModelAttribute UserSearchDto userSearchDto) {
 		String userId = (String) session.getAttribute("userId");
 		
-		userId = "sangwontest2"; // 테스트코드
+//		userId = "sangwontest2"; // 테스트코드
 		
 		userSearchDto.setUserId(userId);
 		
@@ -89,7 +89,6 @@ public class UsersRestController {
 			session.setAttribute("searchKeyword", searchKeyword);
 			userSearchDto.setSearchKeyword(searchKeyword);
 		}
-		
 		// <-- 추가된 코드
 		
 		List<UserFavoriteReviewsDto> searchUserFavoriteReviews = usersService.searchUserFavoriteReviews(userSearchDto);
