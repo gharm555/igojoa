@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.itwill.igojoa.dto.users.UserFavoritePlacesDto;
 import com.itwill.igojoa.dto.users.UserFavoriteReviewsDto;
+import com.itwill.igojoa.dto.users.UserRelatedInfoDto;
+import com.itwill.igojoa.dto.users.UserSearchDto;
 import com.itwill.igojoa.dto.users.UserWrittenReviewsDto;
 import com.itwill.igojoa.dto.users.UsersInfoDto;
 import com.itwill.igojoa.entity.Users;
@@ -37,9 +39,13 @@ public interface UsersDao {
 	
 	boolean updateUsers(Users user);
 	
-	List<UserFavoritePlacesDto> getUserFavoritePlaces(String userId);
+	List<UserFavoritePlacesDto> getUserFavoritePlaces(UserSearchDto userSearchDto);
 	
-	UserFavoriteReviewsDto getUserFavoriteReviews(String userId);
+	List<UserFavoritePlacesDto> searchUserFavoritePlaces(UserSearchDto userSearchDto);
 	
-	UserWrittenReviewsDto getUserWrittenReviews(String userId);
+	List<UserFavoriteReviewsDto> getUserFavoriteReviews(UserSearchDto userSearchDto);
+	
+	List<UserWrittenReviewsDto> getUserWrittenReviews(UserSearchDto userSearchDto);
+	
+	List<UserRelatedInfoDto> getAllUserRelatedInfo(UserSearchDto userSearchDto);
 }

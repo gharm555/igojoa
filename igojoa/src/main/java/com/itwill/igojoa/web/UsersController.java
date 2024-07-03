@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwill.igojoa.dto.users.UserFavoritePlacesDto;
 import com.itwill.igojoa.dto.users.UserFavoriteReviewsDto;
+import com.itwill.igojoa.dto.users.UserRelatedInfoDto;
 import com.itwill.igojoa.dto.users.UserWrittenReviewsDto;
 import com.itwill.igojoa.dto.users.UsersInfoDto;
 import com.itwill.igojoa.dto.users.UsersLoginDto;
@@ -198,12 +199,8 @@ public class UsersController {
 			model.addAttribute("userProfileUrl", usersService.getUserInfo(userId).getUserProfileUrl());
 			model.addAttribute("points", pointsService.selectPoints(userId));
 		}
-		UsersInfoDto userInfoDto = userService.getUserInfo(userId);
-		model.addAttribute("userInfo", userInfoDto);
-		
-		// TODO userActivities에 페이지 로드 될 때 디폴트 값 model 통해서 실어주기
-		List<UserFavoritePlacesDto> userFavoritePlacesDto = userService.getUserFavoritePlaces(userId);
-		model.addAttribute("userFavoritePlaces", userFavoritePlacesDto);
+//		UsersInfoDto userInfoDto = userService.getUserInfo(userId);
+//		model.addAttribute("userInfo", userInfoDto);
 		
 		return "user/userProfile";
 	}
@@ -223,6 +220,14 @@ public class UsersController {
 					.body(Map.of("success", false, "message", "업데이트를 수행할 수 없습니다."));
 		}
 	}
+	
+//	@GetMapping("/allUserRelatedInfo")
+//	public ResponseEntity<List<UserRelatedInfoDto>> getAllUserRelatedInfo(HttpSession session, Model model) {
+//		String userId = (String) session.getAttribute("userId");
+//		List<UserRelatedInfoDto> allUserRelatedInfo = userService.getAllUserRelatedInfo(userId);
+//		
+//		return ResponseEntity.ok(allUserRelatedInfo);
+//	}
 	
 //	@GetMapping("/userFavoritePlaces")
 //	public ResponseEntity<UserFavoritePlacesDto> userFavoritePlaces(HttpSession session, Model model) {

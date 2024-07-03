@@ -1,4 +1,4 @@
-package com.itwill.igojoa.dto.place;
+package com.itwill.igojoa.dto.users;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,15 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class PlaceSearchDto {
+public class UserSearchDto {
 	private String userId;
-	private String addressCategory;
 	private String searchKeyword;
-	private String sortKey;
-	private Integer sortValue;
+	private String largeAddress; // 도/광역시
+    private String calendar; // 날짜 (YYYY.MM.DD)
+	private String sortKey; // 정렬 키
+	private Integer sortValue; // 정렬 값
 	private Integer startRowValue; // 시작할 행을 정하는 필드
 	private Integer rowCnt; // 몇개나 표시할지 정하는 필드
 }

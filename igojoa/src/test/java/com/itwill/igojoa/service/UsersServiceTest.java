@@ -1,5 +1,10 @@
 package com.itwill.igojoa.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +13,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.itwill.igojoa.dto.users.UserFavoritePlacesDto;
 import com.itwill.igojoa.dto.users.UserFavoriteReviewsDto;
+import com.itwill.igojoa.dto.users.UserRelatedInfoDto;
+import com.itwill.igojoa.dto.users.UserSearchDto;
+import com.itwill.igojoa.dto.users.UserWrittenReviewsDto;
 import com.itwill.igojoa.dto.users.UsersInfoDto;
 import com.itwill.igojoa.entity.Users;
 import com.itwill.igojoa.repository.UsersDao;
@@ -37,17 +45,38 @@ public class UsersServiceTest {
     }
     
 //    @Test
-    public void getUserFavoritePlaces() {
-    	UserFavoritePlacesDto test = usersService.getUserFavoritePlaces("sangwontest2");
-    	log.info("장소이름 = {}", test.getPlaceName());
-    	log.info("장소주소 = {}", test.getAddress());
-    	log.info("장소사진주소 = {}", test.getFirstUrl());
-    	log.info("생성시간 = {}", test.getCreatedAt());
+    public void getAllUserRelatedInfo() {
+    	UserSearchDto userSearchDto = UserSearchDto.builder().userId("sangwontest2").build();
+    	List<UserRelatedInfoDto> userRelatedInfoDto = usersService.getAllUserRelatedInfo(userSearchDto);
+		List<UserFavoritePlacesDto> userFavoritePlacesDto = usersService.getUserFavoritePlaces(userSearchDto);
+		List<UserFavoriteReviewsDto> userFavoriteReviewsDto = usersService.getUserFavoriteReviews(userSearchDto);
+		List<UserWrittenReviewsDto> userWrittenReviewsDto = usersService.getUserWrittenReviews(userSearchDto);
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("userRelatedInfo", userRelatedInfoDto);
+		result.put("userFavoritePlaces", userFavoritePlacesDto);
+		result.put("userFavoriteReviews", userFavoriteReviewsDto);
+		result.put("userWrittenReviews", userWrittenReviewsDto);
+    	
+    	log.info("가져온정보 = {}", userRelatedInfoDto);
     }
     
-    @Test
-    public void getUserFavoriteReviews() {
-    	UserFavoriteReviewsDto test = usersService.getUserFavoriteReviews("sangwontest2");
-    	log.info("가져온정보 = {}", test);
-    }
+//    @Test
+//    public void searchUserFavoritePlaces() {
+//    	UserSearchDto searchDto = UserSearchDto.builder()
+//                .userId("sangwontest2")
+//                .searchKeyword("뮤")
+//                .startRowValue(0)
+//                .rowCnt(3)
+//                .build();
+//        
+//    	log.info("써치디티오 상태 = {}", searchDto);
+//    	
+//        List<UserFavoritePlacesDto> results = usersService.searchUserFavoritePlaces(searchDto);
+//        
+//        Assertions.assertNotNull(results);
+//
+//        log.info("가져온 정보 = {}", results);
+//    }
+    
 }
