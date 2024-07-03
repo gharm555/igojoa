@@ -312,23 +312,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     tabindex="0"
                   >
                     <ul class="list-group" id="totalList">
-                      <c:forEach items="${userFavoritePlaces}" var="favoritePlaces">
-                        <li class="list-group-item d-flex align-items-center">
-                          <img
-                            src="${favoritePlaces.firstUrl}"
-                            alt="게시물 썸네일"
-                            class="rounded-circle me-3"
-                            width="50"
-                            height="50"
-                          />
-                          <div>
-                            <p class="mb-0">
-                              
-                            </p>
-                            <small class="text-muted"></small>
-                          </div>
-                        </li>
-                      </c:forEach>
+                      
+                      
                     </ul>
                   </div>
                   <div

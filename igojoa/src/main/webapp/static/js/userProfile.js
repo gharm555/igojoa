@@ -635,3 +635,237 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
+
+// 유저 활동 내역
+const $userActivityTab = document.querySelector('#v-pills-disabled-tab');
+const $addressSelect = document.querySelector('#address-select');
+const $searchInput = document.querySelector('#search-input');
+const $searchBtn = document.querySelector('#userActivitySearchBtn');
+const $dateRange = document.querySelector('#date-range');
+const $tabContent = document.querySelector('#nav-tabContent');
+const tabs = ['total', 'favoritePlace', 'likedReview', 'writtenReview', 'verifiedPlace'];
+let globalData = {};
+let currentTab = 'total';
+let sortOrder = {
+  total: 'desc',
+  favoritePlace: 'desc',
+  likedReview: 'desc',
+  writtenReview: 'desc',
+  verifiedPlace: 'desc',
+};
+
+$userActivityTab.addEventListener('click', () => {
+  axios
+    .get(contextPath + '/userRelatedInfo', {})
+    .then((response) => {
+      console.log('Data fetched successfully:', response.data);
+      globalData = response.data;
+      resetSortOrder();
+      sortDataDesc();
+      displayUserRelatedInfo(globalData);
+    })
+    .catch((error) => {
+      console.error('Error fetching user related info:', error);
+    });
+});
+
+tabs.forEach((tab) => {
+  document.querySelector(`#nav-${tab}-tab`).addEventListener('click', () => {
+    if (currentTab === tab) {
+      reverseData(tab);
+    } else {
+      currentTab = tab;
+      resetSortOrder();
+      sortDataDesc();
+      displayUserRelatedInfo(globalData);
+    }
+  });
+});
+
+function displayUserRelatedInfo(data) {
+  const userRelatedInfo = data.userRelatedInfo || [];
+  const userFavoritePlaces = data.userFavoritePlaces || [];
+  const userFavoriteReviews = data.userFavoriteReviews || [];
+  const userWrittenReviews = data.userWrittenReviews || [];
+  const userVerifiedPlaces = data.userVerifiedPlaces || [];
+
+  const $userRelatedInfoList = document.querySelector('#totalList');
+  const $userFavoritePlacesList = document.querySelector('#favoritePlaceList');
+  const $userFavoriteReviewsList = document.querySelector('#likedReviewList');
+  const $userWrittenReviewsList = document.querySelector('#writtenReviewList');
+  const $userVerifiedPlacesList = document.querySelector('#verifiedPlaceList');
+
+  $userRelatedInfoList.innerHTML = userRelatedInfo.length
+    ? ''
+    : '<li class="list-group-item">활동 내역이 없습니다.</li>';
+  $userFavoritePlacesList.innerHTML = userFavoritePlaces.length
+    ? ''
+    : '<li class="list-group-item">활동 내역이 없습니다.</li>';
+  $userFavoriteReviewsList.innerHTML = userFavoriteReviews.length
+    ? ''
+    : '<li class="list-group-item">활동 내역이 없습니다.</li>';
+  $userWrittenReviewsList.innerHTML = userWrittenReviews.length
+    ? ''
+    : '<li class="list-group-item">활동 내역이 없습니다.</li>';
+  $userVerifiedPlacesList.innerHTML = userVerifiedPlaces.length
+    ? ''
+    : '<li class="list-group-item">활동 내역이 없습니다.</li>';
+
+  userRelatedInfo.forEach((info) => {
+    if (info.type === 'favorite_places') {
+      $userRelatedInfoList.innerHTML += `
+      <li class="list-group-item d-flex align-items-center">
+        <img src="${info.firstUrl}" alt="프로필" class="rounded-circle me-3" width="50" height="50" />
+        <div>
+          <p class="mb-0">
+            ${info.address} ${info.placeName} 게시물에 좋아요를 눌렀습니다.
+          </p>
+          <small class="text-muted">${info.createdAt}</small>
+        </div>
+      </li>
+    `;
+    } else if (info.type === 'favorite_reviews') {
+      $userRelatedInfoList.innerHTML += `
+      <li class="list-group-item d-flex align-items-center">
+        <img src="${info.firstUrl}" alt="게시물 썸네일" class="rounded-circle me-3" width="50" height="50" />
+        <div>
+          <p class="mb-0">
+            ${info.address} ${info.placeName} 리뷰에 좋아요를 눌렀습니다.
+          </p>
+          <small class="text-muted">${info.createdAt}</small>
+        </div>
+      </li>
+    `;
+    } else if (info.type === 'written_reviews') {
+      $userRelatedInfoList.innerHTML += `
+      <li class="list-group-item d-flex align-items-center">
+        <img src="${info.firstUrl}" alt="프로필" class="rounded-circle me-3" width="50" height="50" />
+        <div>
+          <p class="mb-0">
+            ${info.address} ${info.placeName}에 "${info.review}" 리뷰를 남겼습니다.
+          </p>
+          <small class="text-muted">${info.createdAt}</small>
+        </div>
+      </li>
+    `;
+    } else if (info.type === 'verified_places') {
+      $userRelatedInfoList.innerHTML += `
+      <li class="list-group-item d-flex align-items-center">
+        <img src="${info.firstUrl}" alt="게시물 썸네일" class="rounded-circle me-3" width="50" height="50" />
+        <div>
+          <p class="mb-0">
+            ${info.address} ${info.placeName} 위치인증을 했습니다.
+          </p>
+          <small class="text-muted">${info.createdAt}</small>
+        </div>
+      </li>
+    `;
+    }
+  });
+
+  userFavoritePlaces.forEach((place) => {
+    $userFavoritePlacesList.innerHTML += `
+      <li class="list-group-item d-flex align-items-center">
+        <img src="${place.firstUrl}" alt="프로필" class="rounded-circle me-3" width="50" height="50" />
+        <div>
+          <p class="mb-0">
+            ${place.address} ${place.placeName} 게시물에 좋아요를 눌렀습니다.
+          </p>
+          <small class="text-muted">${place.createdAt}</small>
+        </div>
+      </li>
+    `;
+  });
+
+  userFavoriteReviews.forEach((review) => {
+    $userFavoriteReviewsList.innerHTML += `
+      <li class="list-group-item d-flex align-items-center">
+        <img src="${review.firstUrl}" alt="게시물 썸네일" class="rounded-circle me-3" width="50" height="50" />
+        <div>
+          <p class="mb-0">
+            ${review.address} ${review.placeName} 리뷰에 좋아요를 눌렀습니다.
+          </p>
+          <small class="text-muted">${review.createdAt}</small>
+        </div>
+      </li>
+    `;
+  });
+
+  userWrittenReviews.forEach((written) => {
+    $userWrittenReviewsList.innerHTML += `
+      <li class="list-group-item d-flex align-items-center">
+        <img src="${written.firstUrl}" alt="프로필" class="rounded-circle me-3" width="50" height="50" />
+        <div>
+          <p class="mb-0">
+            ${written.address} ${written.placeName}에 "${written.review}" 리뷰를 남겼습니다.
+          </p>
+          <small class="text-muted">${written.createdAt}</small>
+        </div>
+      </li>
+    `;
+  });
+
+  userVerifiedPlaces.forEach((verified) => {
+    $userVerifiedPlacesList.innerHTML += `
+      <li class="list-group-item d-flex align-items-center">
+        <img src="${verified.firstUrl}" alt="게시물 썸네일" class="rounded-circle me-3" width="50" height="50" />
+        <div>
+          <p class="mb-0">
+            ${verified.address} ${verified.placeName} 위치인증을 했습니다.
+          </p>
+          <small class="text-muted">${verified.createdAt}</small>
+        </div>
+      </li>
+    `;
+  });
+}
+
+function reverseData(tab) {
+  const dataArrayMap = {
+    total: globalData.userRelatedInfo,
+    favoritePlace: globalData.userFavoritePlaces,
+    likedReview: globalData.userFavoriteReviews,
+    writtenReview: globalData.userWrittenReviews,
+    verifiedPlace: globalData.userVerifiedPlaces,
+  };
+
+  // 현재 탭 데이터 역순 정렬
+  dataArrayMap[tab].reverse();
+
+  // 정렬 순서 토글
+  sortOrder[tab] = sortOrder[tab] === 'asc' ? 'desc' : 'asc';
+
+  // 역순 정렬된 데이터 다시 표시
+  displayUserRelatedInfo(globalData);
+}
+
+function resetSortOrder() {
+  sortOrder = {
+    total: 'desc',
+    favoritePlace: 'desc',
+    likedReview: 'desc',
+    writtenReview: 'desc',
+    verifiedPlace: 'desc',
+  };
+}
+
+function sortDataDesc() {
+  if (globalData.userRelatedInfo) {
+    globalData.userRelatedInfo.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
+  if (globalData.userFavoritePlaces) {
+    globalData.userFavoritePlaces.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
+  if (globalData.userFavoriteReviews) {
+    globalData.userFavoriteReviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
+  if (globalData.userWrittenReviews) {
+    globalData.userWrittenReviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
+  if (globalData.userVerifiedPlaces) {
+    globalData.userVerifiedPlaces.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
+}
+
+
