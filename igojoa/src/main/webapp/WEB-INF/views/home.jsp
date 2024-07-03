@@ -33,10 +33,12 @@
 </head>
 
 <body>
-    <%@ include file="header.jspf"%>
 
+    <%@ include file="header.jspf"%>
+ <main>
     <!-- Main Section -->
     <section id="main-section">
+   
     <div class="d-flex justify-content-center my-5" id="search-bar">
         <div class="input-group main-search-bar">
             <select id="province-select" class="form-select" aria-label="도/광역시 선택">
@@ -79,7 +81,7 @@
         <!-- Initial 9 places loaded from the server -->
         <c:forEach var="place" items="${placesInfo}" varStatus="status">
             <div class="col-lg-4 col-md-6 mb-3 card-item ${status.index > 5 ? 'd-none extra-card' : ''}">
-                <div class="main-card" id="of-to-details">
+                <div class="main-card" id="go-to-details">
                     <div class="main-card-header bg-transparent">
                         <div class="d-flex justify-content-between align-items-center">
                             <h1 class="main-card-title">${place.placeName}</h1>
@@ -127,6 +129,46 @@
 </section>
 
         <hr class="my-5"/>
+ <!-- Image Gallery Section -->
+        <section id="image-gallery-section" class="mt-5">
+            <h2 class="text-center my-5 fs-2">명소 추천</h2>
+            <div class="gallery-body">
+                <div class="gallery-content-container">
+                    <div class="gallery-box">
+                        <span style="--i: 1">
+                            <img src="/img/골방 1.jpg" data-name="짜라라짜짜짜짜"/>
+                        </span>
+                        <span style="--i: 2">
+                            <img src="/img/골방 2.jpg" data-name="광개토대왕"/>
+                        </span>
+                        <span style="--i: 3">
+                            <img src="/img/골방 3.jpg" data-name="아이스크림"/>
+                        </span>
+                        <span style="--i: 4">
+                            <img src="/img/골방 1.jpg" data-name="에베레스트"/>
+                        </span>
+                        <span style="--i: 5">
+                            <img src="/img/골방 2.jpg" data-name="지구 온난화"/>
+                        </span>
+                        <span style="--i: 6">
+                            <img src="/img/골방 3.jpg" data-name="오케스트라"/>
+                        </span>
+                        <span style="--i: 7">
+                            <img src="/img/골방 1.jpg" data-name="껄껄껄껄"/>
+                        </span>
+                        <span style="--i: 8">
+                            <img src="/img/골방 3.jpg" data-name="안녕하세요"/>
+                        </span>
+                    </div>
+
+                    <div class="gallery-btns">
+                        <div class="gallery-btn prev"></div>
+                        <div id="location-name"></div>
+                        <div class="gallery-btn next"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Lotto Section -->
         <section id="lotto-section" class="lotto-body">
@@ -219,8 +261,8 @@
         </section>
         <hr class="my-5"/>
         <button id="scrollToTopBtn" title="Go to top">↑</button>
-    </main>
-
+  
+</main>
     <footer class="bg-light text-center text-lg-start mt-4">
         <div class="container p-4">
             <div class="row">
@@ -266,6 +308,7 @@
             © 2024 아이고좋아. All rights reserved.
         </div>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <c:url var="navbarJs" value="/js/navbar.js" />
