@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.itwill.igojoa.dto.place.PlaceSearchDto;
 import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
 import com.itwill.igojoa.dto.review.ReviewDto;
 import com.itwill.igojoa.dto.review.ReviewListDto;
@@ -63,7 +65,19 @@ public class ReviewRestController {
 		ReviewSelectDto reviewSelectDto = ReviewSelectDto.builder().placeName(placeName).userId(userId)
 				.orderBy("cntLikeDESC").startRowValue(0).rowCnt(8).build();
 		List<ReviewListDto> reviewListDtos = reviewService.selectReview(reviewSelectDto);
-		
+
+		return ResponseEntity.ok(reviewListDtos);
+	}
+
+	@GetMapping("/{placeName}/sortReview")
+	public ResponseEntity<List<ReviewListDto>> sortReview(@PathVariable String placeName,
+			@ModelAttribute ReviewSelectDto reviewSelectDto) {
+		String userId = (String) session.getAttribute("userId");
+		userId = "ohjinho0421";
+		reviewSelectDto.setPlaceName(placeName);
+		reviewSelectDto.setUserId(userId);
+		List<ReviewListDto> reviewListDtos = reviewService.selectReview(reviewSelectDto);
+
 		return ResponseEntity.ok(reviewListDtos);
 	}
 }

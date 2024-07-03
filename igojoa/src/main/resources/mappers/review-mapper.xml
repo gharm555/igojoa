@@ -46,19 +46,18 @@
 		<bind name="startRowValue" value="startRowValue" />
 		<bind name="rowCnt" value="rowCnt" />
 		SELECT
-		r.placeName ,
-		r.userId ,
-		r.review ,
-		r.modifiedAt ,
-		r.parkingAvailable ,
-		r.`view` ,
-		r.nightView ,
-		r.freeEntry ,
-		r.easyTransport ,
-		r.iScore,
-		COALESCE(rl.cntLike, 0) AS cntLike,
-		COALESCE(myLike.myLike, 0) AS myLike,
-		u.userProfileUrl
+		u.nickName ,
+        r.review ,
+        r.modifiedAt ,
+        r.parkingAvailable ,
+        r.`view` ,
+        r.nightView ,
+        r.freeEntry ,
+        r.easyTransport ,
+        r.iScore,
+        COALESCE(rl.cntLike, 0) AS cntLike,
+        COALESCE(myLike.myLike, 0) AS myLike,
+        u.userProfileUrl
 		FROM
 		reviews r
 		LEFT JOIN (
