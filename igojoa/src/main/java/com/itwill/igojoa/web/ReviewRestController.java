@@ -3,6 +3,7 @@ package com.itwill.igojoa.web;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
 import com.itwill.igojoa.dto.review.ReviewDto;
 import com.itwill.igojoa.dto.review.ReviewListDto;
+import com.itwill.igojoa.dto.review.ReviewSelectDto;
 import com.itwill.igojoa.service.PlaceVerifiedService;
 import com.itwill.igojoa.service.ReviewService;
 import com.itwill.igojoa.service.UsersService;
@@ -29,8 +31,7 @@ public class ReviewRestController {
 	private final UsersService usersService;
 
 	@PutMapping("/{placeName}/newReview")
-	public ResponseEntity<?> newReview(@PathVariable String placeName,
-			@RequestBody ReviewDto reviewDto) {
+	public ResponseEntity<?> newReview(@PathVariable String placeName, @RequestBody ReviewDto reviewDto) {
 		// 방문인증 검증
 		log.debug("\n\n" + placeName + "\n\n");
 		String userId = (String) session.getAttribute("userId");
@@ -41,7 +42,6 @@ public class ReviewRestController {
 				return ResponseEntity.badRequest().body(-1);
 			}
 		}
-		
 		PlacesFavoriteDto placesFavoriteDto = PlacesFavoriteDto.builder().placeName(placeName).userId(userId).build();
 		int i = placeVerifiedService.visitVerificationConfirmation(placesFavoriteDto);
 		if (i == 0) {
@@ -57,4 +57,13 @@ public class ReviewRestController {
 		}
 	}
 
+	@GetMapping("/{placeName}/selectDefaultReview")
+	public ResponseEntity<List<ReviewListDto>> selectDefaultReview(@PathVariable String placeName) {
+		String userId = (String) session.getAttribute("userId");
+		ReviewSelectDto reviewSelectDto = ReviewSelectDto.builder().placeName(placeName).userId(userId)
+				.orderBy("cntLikeDESC").startRowValue(0).rowCnt(8).build();
+		List<ReviewListDto> reviewListDtos = reviewService.selectReview(reviewSelectDto);
+		
+		return ResponseEntity.ok(reviewListDtos);
+	}
 }

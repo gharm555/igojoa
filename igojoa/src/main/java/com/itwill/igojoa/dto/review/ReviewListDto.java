@@ -22,4 +22,5 @@ public class ReviewListDto {
 	private Integer freeEntry;
 	private Integer easyTransport;
 	private Integer iScore;
+	private String userProfileUrl;
 }
