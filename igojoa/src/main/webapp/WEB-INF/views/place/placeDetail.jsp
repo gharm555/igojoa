@@ -25,7 +25,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <link rel="stylesheet" href="${navbarCssUrl}" />
   </head>
   <body>
-    <%@ include file="../header.jspf" %>
+    <header>
+      <%@ include file="../header.jspf" %>
+    </header>
     <main>
       <c:set var="pd" value="${PlaceDetailDto}" />
 

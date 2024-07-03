@@ -196,9 +196,9 @@ public class UsersController {
 		}
 		UsersInfoDto result = userService.getUserInfo(userId);
 		model.addAttribute("userInfo", result);
-		
+
 		// TODO userActivities에 페이지 로드 될 때 디폴트 값 model 통해서 실어주기
-		
+
 		return "user/userProfile";
 	}
 
@@ -217,6 +217,17 @@ public class UsersController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(Map.of("success", false, "message", "업데이트를 수행할 수 없습니다."));
 		}
+	}
+
+	@GetMapping("/getPoints")
+	public ResponseEntity<?> getPoints(HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+					.body(Map.of("success", false, "message", "로그인 해주세요."));
+		}
+		String userId = (String) session.getAttribute("userId");
+		return ResponseEntity.ok(Map.of("success", true, "points", pointsService.selectPoints(userId),
+				"cumulativePoint", usersService.getUserInfo(userId).getCumulativePoint()));
 	}
 
 }

@@ -37,7 +37,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
         <title>내정보</title>
     </head>
     <body>
-        <%@ include file="../header.jspf" %>
+        <header>
+            <%@ include file="../header.jspf" %>
+        </header>
         <main style="margin-top: 120px">
             <div class="container p-0">
                 <div class="row g-0 h-100">
@@ -178,24 +180,27 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                                             id="currentsPoints"
                                         >
                                             현재 포인트:
+                                            <span class="points">
                                             <fmt:formatNumber
                                                 value="${userInfo.currentsPoints}"
                                                 type="number"
                                                 groupingUsed="true"
                                             />
+                                            </span>
                                             P
                                         </p>
-
                                         <p
                                             class="card-text"
                                             id="cumulativePoint"
                                         >
                                             누적 포인트:
+                                            <span class="cumulativePoint">
                                             <fmt:formatNumber
                                                 value="${userInfo.cumulativePoint}"
                                                 type="number"
                                                 groupingUsed="true"
-                                            />
+                                                />
+                                            </span>
                                             P
                                         </p>
                                     </div>

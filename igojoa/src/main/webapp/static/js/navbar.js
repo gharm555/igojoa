@@ -217,6 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((res) => {
         if (res.data === "위치 인증 성공") {
           alert("위치인증에 성공했습니다.");
+          getPoints();
         }
         if (res.data === "이미 위치 인증 한 장소입니다.") {
           alert("이미 위치 인증 한 장소입니다.");
@@ -247,6 +248,26 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("알 수 없는 오류가 발생했습니다.");
         break;
     }
+  }
+
+  function getPoints() {
+    axios.get(contextPath + "/user/getPoints").then((res) => {
+      if (res.data.success) {
+        let points = res.data.points.toString();
+        let cumulativePoint = res.data.cumulativePoint.toString();
+        points = points.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        cumulativePoint = cumulativePoint.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        const $points = document.querySelectorAll(".points");
+        const $cumulativePoint = document.querySelector(".cumulativePoint");
+        $points.forEach(($point) => {
+          $point.innerHTML = points;
+        });
+        $cumulativePoint.innerHTML = cumulativePoint;
+      } else {
+        alert(res.data.message);
+        window.location.href = contextPath + "/user/loginRegister";
+      }
+    });
   }
 
   // 마이페이지로 이동

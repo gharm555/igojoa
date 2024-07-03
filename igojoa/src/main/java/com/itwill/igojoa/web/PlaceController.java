@@ -2,6 +2,7 @@ package com.itwill.igojoa.web;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ public class PlaceController {
 	private final PointsService pointsService;
 	private final UsersService usersService;
 
+	@Transactional
 	@PostMapping("/verifyLocation")
 	public ResponseEntity<String> verifyPlace(@RequestParam(name = "latitude") double latitude,
 			@RequestParam(name = "longitude") double longitude, @RequestParam(name = "userId") String userId) {
@@ -52,6 +54,8 @@ public class PlaceController {
 		String userId = (String) session.getAttribute("userId");
 		if (userId != null) {
 			int sessionCheck = usersService.sessionTorF(userId);
+			model.addAttribute("userProfileUrl", usersService.getUserInfo(userId).getUserProfileUrl());
+			model.addAttribute("points", pointsService.selectPoints(userId));
 			if (sessionCheck == 0) {
 
 				return "redirect:/";
