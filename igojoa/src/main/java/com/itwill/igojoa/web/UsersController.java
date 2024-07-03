@@ -199,8 +199,8 @@ public class UsersController {
 			model.addAttribute("userProfileUrl", usersService.getUserInfo(userId).getUserProfileUrl());
 			model.addAttribute("points", pointsService.selectPoints(userId));
 		}
-		// UsersInfoDto userInfoDto = userService.getUserInfo(userId);
-		// model.addAttribute("userInfo", userInfoDto);
+		UsersInfoDto userInfoDto = userService.getUserInfo(userId);
+		model.addAttribute("userInfo", userInfoDto);
 
 		return "user/userProfile";
 	}

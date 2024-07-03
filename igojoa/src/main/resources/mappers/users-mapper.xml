@@ -124,7 +124,9 @@
 	<!-- 유저가 좋아한 장소 정보들 검색결과 가져오기 -->
 	<select id="searchUserFavoritePlaces" resultType="UserFavoritePlacesDto" parameterType="UserSearchDto">
 		<bind name="userId" value="userId" />
-		<bind name="searchKeyword" value="'%' + keyword + '%'" />
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<bind name="searchKeyword" value="'%' + searchKeyword + '%'" />
+		</if>
 		SELECT
 			places.placeName,
 			CONCAT(places.largeAddress, ' ',
@@ -148,23 +150,52 @@
     	ORDER BY placesFavorite.createdTime DESC
 	</select>
 
-	<!-- User가 좋아요한 리뷰 정보들 가져오기 -->
+	<!-- 유저가 좋아요한 리뷰 정보들 가져오기 -->
 	<select id="getUserFavoriteReviews"
 		resultType="UserFavoriteReviewsDto" parameterType="UserSearchDto">
 		<bind name="userId" value="userId" />
 		SELECT
-		places.placeName, CONCAT(places.largeAddress, '
-		',places.midiumAddress) AS address, placeImages.firstUrl,
-		DATE_FORMAT(placesFavorite.createdTime, '%Y.%m.%d %H:%i') AS createdAt
+			places.placeName,
+			reviews.review,
+			DATE_FORMAT(reviews.createdAt, '%Y.%m.%d %H:%i') AS createdAt,
+			placeImages.firstUrl,
+			reviewLikes.userId AS reviewAuthor
 		FROM places
-		JOIN placesFavorite ON places.placeName =
-		placesFavorite.placeName
-		JOIN placeImages ON places.placeName =
-		placeImages.placeName
-		WHERE placesFavorite.userId = '${ userId }'
+			JOIN reviews ON places.placeName = reviews.placeName
+			JOIN reviewLikes ON reviews.placeName = reviewLikes.placeName AND reviews.userId = reviewLikes.userId
+			JOIN placeImages ON places.placeName = placeImages.placeName
+		WHERE reviewLikes.likeUserId = #{userId}
+		ORDER BY reviews.createdAt DESC
+	</select>
+	
+	<!-- 유저가 좋아요한 리뷰 정보들 검색결과 가져오기  -->
+	<select id="searchUserFavoriteReviews" resultType="UserFavoriteReviewsDto" parameterType="UserSearchDto">
+		<bind name="searchKeyword" value="searchKeyword" />
+		SELECT
+			places.placeName,
+			reviews.review,
+			DATE_FORMAT(reviews.createdAt, '%Y.%m.%d %H:%i') AS createdAt,
+			placeImages.firstUrl,
+			reviewLikes.userId AS reviewAuthor
+		FROM places
+			JOIN reviews ON places.placeName = reviews.placeName
+			JOIN reviewLikes ON reviews.placeName = reviewLikes.placeName AND reviews.userId = reviewLikes.userId
+			JOIN placeImages ON places.placeName = placeImages.placeName
+		WHERE
+			reviewLikes.likeUserId = #{userId}
+			<if test="searchKeyword != null and searchKeyword != ''">
+           	 	AND upper(places.placeName) LIKE upper('%${searchKeyword}%')
+        	</if>
+        	<if test="largeAddress != null and largeAddress != ''">
+            	AND places.largeAddress = #{largeAddress}
+        	</if>
+        	<if test="calendar != null and calendar != ''">
+            	AND DATE_FORMAT(reviews.createdAt, '%Y.%m.%d') = #{calendar}
+        	</if>
+        ORDER BY reviews.createdAt DESC
 	</select>
 
-	<!-- User가 작성한 리뷰 정보들 가져오기 -->
+	<!-- 유저가 작성한 리뷰 정보들 가져오기 -->
 	<select id="getUserWrittenReviews"
 		resultType="UserWrittenReviewsDto" parameterType="UserSearchDto">
 		<bind name="userId" value="userId" />
@@ -175,6 +206,20 @@
 		JOIN places ON placeImages.placeName = places.placeName
 		JOIN reviews ON places.placeName = reviews.placeName
 		WHERE reviews.userId = '${ userId }'
+	</select>
+	
+	<!-- 유저가 위치인증한 장소 정보들 가져오기 -->
+	<select id="getUserVerifiedPlaces" resultType="UserVerifiedPlacesDto" parameterType="UserSearchDto">
+		SELECT
+			placeImages.firstUrl,
+			placeVerified.placeName,
+			DATE_FORMAT(placeVerified.verifiedTime, '%Y.%m.%d %H:%i') AS createdAt,
+			CONCAT(places.largeAddress, ' ', places.midiumAddress) AS address
+		FROM placeVerified
+			JOIN places ON placeVerified.placeName = places.placeName
+			JOIN placeImages ON placeVerified.placeName = placeImages.placeName
+		WHERE
+			placeVerified.userId = #{userId}
 	</select>
 	
 	<!-- 유저 활동내역 전체 -->

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.itwill.igojoa.dto.users.UserFavoritePlacesDto;
 import com.itwill.igojoa.dto.users.UserFavoriteReviewsDto;
@@ -61,22 +62,27 @@ public class UsersServiceTest {
     	log.info("가져온정보 = {}", userRelatedInfoDto);
     }
     
-//    @Test
-//    public void searchUserFavoritePlaces() {
+    @Test
+    public void searchUserFavoritePlaces() {
 //    	UserSearchDto searchDto = UserSearchDto.builder()
 //                .userId("sangwontest2")
 //                .searchKeyword("뮤")
 //                .startRowValue(0)
 //                .rowCnt(3)
 //                .build();
-//        
-//    	log.info("써치디티오 상태 = {}", searchDto);
-//    	
-//        List<UserFavoritePlacesDto> results = usersService.searchUserFavoritePlaces(searchDto);
-//        
-//        Assertions.assertNotNull(results);
-//
-//        log.info("가져온 정보 = {}", results);
-//    }
+    	
+    	UserSearchDto searchDto = UserSearchDto.builder()
+    			.userId("sangwontest2")
+    			.largeAddress("강원도")
+    			.startRowValue(0)
+    			.rowCnt(3)
+    			.build();
+        
+    	log.info("써치디티오 상태 = {}", searchDto);
+    	
+        List<UserFavoritePlacesDto> results = usersService.searchUserFavoritePlaces(searchDto);
+        
+        log.info("가져온 정보 = {}", results);
+    }
     
 }
