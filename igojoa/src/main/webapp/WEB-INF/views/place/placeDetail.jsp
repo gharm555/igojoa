@@ -13,6 +13,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -30,7 +31,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     </header>
     <main>
       <c:set var="pd" value="${PlaceDetailDto}" />
-
+      <c:set var="place" value="${placesInfo}" />
       <div class="container">
         <div class="row justify-content-center mb-5">
           <div class="col-lg-6 mb-4">
@@ -68,21 +69,21 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 <!-- 이미지 넣어야함 -->
                 <div class="carousel-item active">
                   <img
-                    src="/img/열람실 2.jpg"
+                    src="${ pd.firstUrl }"
                     class="d-block w-100"
                     alt="..."
                   />
                 </div>
                 <div class="carousel-item">
                   <img
-                    src="/img/열람실 1.jpg"
+                    src="${pd.secondUrl }"
                     class="d-block w-100"
                     alt="..."
                   />
                 </div>
                 <div class="carousel-item">
                   <img
-                    src="/img/열람실 3.jpg"
+                    src="${pd.thirdUrl }"
                     class="d-block w-100"
                     alt="..."
                   />
@@ -129,17 +130,10 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         id="iscoreBedge"
                         class="badge bg-secondary ms-2"
                         style="font-size: 11px"
-                      >${ pd.IScore } </span>
+                      >${ pd.avgIScore } </span>
                     </h2>
-                    <button
-                      class="btn btn-link p-0 text-decoration-none"
-                      id="likeButton"
-                    >
-                      <i
-                        class="far fa-heart"
-                        style="color: #4a6fa5; font-size: 1.5rem"
-                      ></i>
-                    </button>
+                    <i id="favoriteHeart" class="bi-heart" style="color: red;" data-favorite="${pd.userFavorite}"></i>
+                     
                   </div>
 
                   <p class="card-text mb-3">
@@ -197,7 +191,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     value="주차가능"
                     autocomplete="off"
                   />
-                  <label class="btn btn-outline-primary" for="btncheck1"
+                  <label class="btn btn-outline-primary" for="btncheck1" data-parkingAvailable="${pd.parkingAvailable}"
                     >주차가능</label
                   >
                   <input
@@ -208,7 +202,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     value="경치좋은"
                     autocomplete="off"
                   />
-                  <label class="btn btn-outline-primary" for="btncheck2"
+                  <label class="btn btn-outline-primary" for="btncheck2" data-view="${ pd.view }"
                     >경치좋은</label
                   >
                   <input
@@ -219,7 +213,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     value="무료입장"
                     autocomplete="off"
                   />
-                  <label class="btn btn-outline-primary" for="btncheck3"
+                  <label class="btn btn-outline-primary" for="btncheck3" data-freeEntry="${pd.freeEntry}"
                     >무료입장</label
                   >
                   <input
@@ -230,7 +224,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     value="야경"
                     autocomplete="off"
                   />
-                  <label class="btn btn-outline-primary" for="btncheck4"
+                  <label class="btn btn-outline-primary" for="btncheck4" data-nightView="${pd.nightView}"
                     >야경</label
                   >
                   <input
@@ -241,7 +235,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     value="교통원활"
                     autocomplete="off"
                   />
-                  <label class="btn btn-outline-primary" for="btncheck5"
+                  <label class="btn btn-outline-primary" for="btncheck5" data-easyTransport="${pd.easyTransport}"
                     >교통원활</label
                   >
                 </div>
@@ -289,7 +283,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   id="reviewText"
                   rows="4"
                   placeholder="리뷰를 작성해주세요"
-                ></textarea>
+                >${ pd.review }</textarea>
                 <button type="submit" class="btn btn-primary">작성완료</button>
               </form>
             </div>
@@ -386,7 +380,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           	    nightView: Boolean("<c:out value='${pd.nightView}' />"),
           	    freeEntry: Boolean("<c:out value='${pd.freeEntry}' />"),
           	    easyTransport: Boolean("<c:out value='${pd.easyTransport}' />"),
-          	    iScore: Number("<c:out value='${pd.IScore}' />") || 0
+          	    iScore: Number("<c:out value='${pd.IScore}' />") || 0,
+          	    userFavorite:  Number("<c:out value='${pd.userFavorite}' />") || 0
           	};
     </script>
 

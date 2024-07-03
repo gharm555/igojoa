@@ -51,7 +51,7 @@ public class HomeController {
 		final String addressCategory = ""; // 지역 카테고리
 		final String searchKeyword = ""; // 검색어
 		final String sortKey = "iScore"; // 정렬 기준
-		final Integer sortValue = 1; // 오름차순 내림차순 ( 1 || 0 )
+		final Integer sortValue = 0; // 오름차순 내림차순 ( 1 || 0 )
 		final Integer startRowValue = 0; // 시작할 행
 		final Integer rowCnt = 9; // 반환될 행의 갯수
 

@@ -38,8 +38,13 @@
 		${ iScore });
 	</insert>
 
-	<select id="selectPlaceReviews" resultType="ReviewListDto">
+	<select id="selectPlaceReviews" parameterType="ReviewSelectDto"
+		resultType="ReviewListDto">
 		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		<bind name="orderBy" value="orderBy" />
+		<bind name="startRowValue" value="startRowValue" />
+		<bind name="rowCnt" value="rowCnt" />
 		SELECT
 		r.placeName ,
 		r.userId ,
@@ -52,7 +57,8 @@
 		r.easyTransport ,
 		r.iScore,
 		COALESCE(rl.cntLike, 0) AS cntLike,
-		COALESCE(myLike.myLike, 0) AS myLike
+		COALESCE(myLike.myLike, 0) AS myLike,
+		u.userProfileUrl
 		FROM
 		reviews r
 		LEFT JOIN (
@@ -69,7 +75,8 @@
 		rl.userId ) rl
 		ON
 		rl.placeName = r.placeName
-		and rl.userId = r.userId
+		and rl.userId
+		= r.userId
 		LEFT JOIN (
 		SELECT
 		rl.userId ,
@@ -81,20 +88,45 @@
 		WHERE
 		rl.placeName = '${ placeName }'
 		AND rl.likeUserId =
-		'${ userId }'
+		'${
+		userId }'
 		GROUP BY
 		rl.placeName ,
 		rl.userId ,
 		rl.likeUserId
 		) myLike
 		ON
-		myLike.placeName = r.placeName AND myLike.userId = r.userId
+		myLike.placeName =
+		r.placeName
+		AND myLike.userId = r.userId
+		LEFT JOIN
+		users u
+		ON
+		u.userId = r.userId
 		WHERE
-		r.placeName = '${ placeName }'
-		ORDER BY
-		modifiedAt
-		DESC
-		LIMIT 0, 8
+		r.placeName = '${
+		placeName }'
+		<if test='orderBy.equals("modifiedAtDESC")'>
+			ORDER BY
+			modifiedAt
+			DESC
+		</if>
+		<if test='orderBy.equals("modifiedAtASC")'>
+			ORDER BY
+			modifiedAt
+			ASC
+		</if>
+		<if test='orderBy.equals("cntLikeDESC")'>
+			ORDER BY
+			cntLike
+			DESC
+		</if>
+		<if test='orderBy.equals("cntLikeASC")'>
+			ORDER BY
+			cntLike
+			ASC
+		</if>
+		LIMIT ${ startRowValue }, ${ rowCnt }
 	</select>
 
 </mapper>
