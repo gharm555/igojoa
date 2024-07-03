@@ -167,7 +167,7 @@ h2 {
 }
 
 .search-container select,
-.search-container input[type="text"],
+.search-container input[type='text'],
 .search-container button {
   padding: 10px;
   margin-right: 10px;
@@ -184,7 +184,7 @@ h2 {
   flex-shrink: 0;
 }
 
-.search-container input[type="text"] {
+.search-container input[type='text'] {
   flex-grow: 1;
   min-width: 200px;
 }
@@ -236,6 +236,8 @@ h2 {
   padding: 10px;
   font-size: 16px;
   width: 210px;
+  border-radius: var(--border-radius);
+  border: 1px solid #ddd;
 }
 
 /* 아이콘 텍스트 스타일 */
@@ -262,31 +264,31 @@ h2 {
 }
 
 /* 리스트 스크롤바 */
-#activityList {
-  max-height: calc(70vh - 280px);
+.list-group {
+max-height: calc(70vh - 280px);
   overflow-y: auto;
   padding-bottom: 20px;
 }
 
-#activityList::-webkit-scrollbar {
+.list-group::-webkit-scrollbar {
   width: 8px;
 }
 
-#activityList::-webkit-scrollbar-track {
+.list-group::-webkit-scrollbar-track {
   background: #f8f9fa;
   border-radius: 4px;
 }
 
-#activityList::-webkit-scrollbar-thumb {
+.list-group::-webkit-scrollbar-thumb {
   background: var(--primary-color);
   border-radius: 4px;
 }
 
-#activityList::-webkit-scrollbar-thumb:hover {
+.list-group::-webkit-scrollbar-thumb:hover {
   background: #3a5a8a;
 }
 
-#activityList .list-group-item:last-child {
+.list-group .list-group-item:last-child {
   margin-bottom: 0;
 }
 
@@ -355,7 +357,8 @@ h2 {
     height: 95vh;
   }
 
-  .sidebar, .content {
+  .sidebar,
+  .content {
     padding: 20px;
   }
 
@@ -379,7 +382,8 @@ h2 {
     flex-direction: column;
   }
 
-  .sidebar, .content {
+  .sidebar,
+  .content {
     width: 100%;
   }
 
@@ -410,7 +414,7 @@ h2 {
   }
 
   .search-container select,
-  .search-container input[type="text"],
+  .search-container input[type='text'],
   .search-container button {
     width: 100%;
     margin-right: 0;
@@ -425,6 +429,56 @@ h2 {
   #v-pills-messages .col-md-5 {
     width: 100%;
   }
+}
+
+.custom-all-period-btn {
+  background-color: var(--primary-color);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  transition: background-color 0.3s;
+}
+
+.flatpickr-calendar {
+  /* 기존 캘린더의 너비를 조절할 수 있습니다 */
+  width: 350px !important;
+}
+
+/* 버튼을 캘린더 하단 중앙에 배치 */
+.flatpickr-calendar::after {
+  content: '';
+  display: block;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.flatpickr-calendar .custom-all-period-btn {
+  display: inline-block;
+}
+
+/* 새로운 스타일 추가 */
+.flatpickr-day {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 40px !important; /* 날짜 셀의 높이 조정 */
+}
+
+.flatpickr-days {
+  width: 100% !important;
+}
+
+.dayContainer {
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
 }
 
 /* 스크롤바 스타일 */

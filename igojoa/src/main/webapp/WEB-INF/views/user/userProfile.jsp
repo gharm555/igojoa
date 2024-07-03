@@ -212,7 +212,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
               <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel" tabindex="0">
                 <h2 class="mb-4">내활동내역</h2>
                 <div class="search-container">
-                  <select id="province-select" class="form-select" aria-label="도/광역시 선택">
+                  <select id="province-select address" class="form-select" aria-label="도/광역시 선택">
                     <option selected>도/광역시</option>
                     <option value="gyeonggi">경기도</option>
                     <option value="gangwon">강원도</option>
@@ -231,15 +231,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     <option value="ulsan">울산시</option>
                     <option value="jeju">제주도</option>
                   </select>
-
-                  <select id="search-category">
-                    <option value="likesPost">좋아요게시물</option>
-                    <option value="likesReviews">좋아요리뷰</option>
-                    <option value="reviews">작성리뷰</option>
-                    <option value="locations">위치인증장소</option>
-                  </select>
-                  <input type="text" placeholder="검색어를 입력하세요..." />
-                  <button>검색</button>
+                  <input type="text" placeholder="검색어를 입력하세요..." id="search-input"/>
+                  <button type="submit" id="userActivitySearchBtn">검색</button>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
                   <input type="text" id="date-range" placeholder="" />
@@ -248,48 +241,60 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                       <button
                         class="nav-link active"
-                        id="nav-home-tab"
+                        id="nav-total-tab"
                         data-bs-toggle="tab"
-                        data-bs-target="#nav-home"
+                        data-bs-target="#nav-total"
                         type="button"
                         role="tab"
-                        aria-controls="nav-home"
+                        aria-controls="nav-total"
                         aria-selected="true"
                       >
-                        좋아요 게시물
+                        전체 내역
                       </button>
                       <button
                         class="nav-link"
-                        id="nav-liked-posts-tab"
+                        id="nav-favoritePlace-tab"
                         data-bs-toggle="tab"
-                        data-bs-target="#nav-liked-posts"
+                        data-bs-target="#nav-favoritePlace"
                         type="button"
                         role="tab"
-                        aria-controls="nav-liked-posts"
+                        aria-controls="nav-favoritePlace"
                         aria-selected="false"
                       >
-                        좋아요 리뷰
+                        좋아요한 게시물
                       </button>
                       <button
                         class="nav-link"
-                        id="nav-profile-tab"
+                        id="nav-likedReview-tab"
                         data-bs-toggle="tab"
-                        data-bs-target="#nav-profile"
+                        data-bs-target="#nav-likedReview"
                         type="button"
                         role="tab"
-                        aria-controls="nav-profile"
+                        aria-controls="nav-likedReview"
                         aria-selected="false"
                       >
-                        작성 리뷰
+                        좋아요한 리뷰
                       </button>
                       <button
                         class="nav-link"
-                        id="nav-contact-tab"
+                        id="nav-writtenReview-tab"
                         data-bs-toggle="tab"
-                        data-bs-target="#nav-contact"
+                        data-bs-target="#nav-writtenReview"
                         type="button"
                         role="tab"
-                        aria-controls="nav-contact"
+                        aria-controls="nav-writtenReview"
+                        aria-selected="false"
+                      >
+                        작성한 리뷰
+                      </button>
+                      <button
+                        class="nav-link"
+                        id="nav-verifiedPlace-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-verifiedPlace"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-verifiedPlace"
                         aria-selected="false"
                       >
                         위치인증 장소
@@ -300,12 +305,12 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 <div class="tab-content" id="nav-tabContent">
                   <div
                     class="tab-pane fade show active"
-                    id="nav-home"
+                    id="nav-total"
                     role="tabpanel"
-                    aria-labelledby="nav-home-tab"
+                    aria-labelledby="nav-total-tab"
                     tabindex="0"
                   >
-                    <ul class="list-group" id="activityList">
+                    <ul class="list-group" id="totalList">
                       <c:forEach items="${userFavoritePlaces}" var="favoritePlaces">
                         <li class="list-group-item d-flex align-items-center">
                           <img
@@ -327,12 +332,39 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   </div>
                   <div
                     class="tab-pane fade"
-                    id="nav-liked-posts"
+                    id="nav-favoritePlace"
                     role="tabpanel"
-                    aria-labelledby="nav-liked-posts-tab"
+                    aria-labelledby="nav-favoritePlace-tab"
                     tabindex="0"
                   >
-                    <ul class="list-group" id="likedPostsList">
+                    <ul class="list-group" id="favoritePlaceList">
+                      <c:forEach items="${userFavoritePlaces}" var="favoritePlaces">
+                        <li class="list-group-item d-flex align-items-center">
+                          <img
+                            src="${favoritePlaces.firstUrl}"
+                            alt="게시물 썸네일"
+                            class="rounded-circle me-3"
+                            width="50"
+                            height="50"
+                          />
+                          <div>
+                            <p class="mb-0">
+                              ${favoritePlaces.address} ${favoritePlaces.placeName} 게시물에 좋아요를 눌렀습니다.
+                            </p>
+                            <small class="text-muted">${favoritePlaces.createdTime}</small>
+                          </div>
+                        </li>
+                      </c:forEach>
+                    </ul>
+                  </div>
+                  <div
+                    class="tab-pane fade"
+                    id="nav-likedReview"
+                    role="tabpanel"
+                    aria-labelledby="nav-likdedReview-tab"
+                    tabindex="0"
+                  >
+                    <ul class="list-group" id="likedReviewList">
                       <c:forEach items="${userFavoriteReviews.firstUrl}" var="favoriteReviews">
                         <li class="list-group-item d-flex align-items-center">
                           <img
@@ -355,12 +387,12 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   </div>
                   <div
                     class="tab-pane fade"
-                    id="nav-profile"
+                    id="nav-writtenReview"
                     role="tabpanel"
-                    aria-labelledby="nav-profile-tab"
+                    aria-labelledby="nav-writtenReview-tab"
                     tabindex="0"
                   >
-                    <ul class="list-group" id="activityList">
+                    <ul class="list-group" id="writtenReviewList">
                       <c:forEach items="${userWrittenReviews}" var="writtenReviews">
                         <li class="list-group-item d-flex align-items-center">
                           <img
@@ -380,12 +412,12 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   </div>
                   <div
                     class="tab-pane fade"
-                    id="nav-contact"
+                    id="nav-verifiedPlace"
                     role="tabpanel"
-                    aria-labelledby="nav-contact-tab"
+                    aria-labelledby="nav-verifiedPlace-tab"
                     tabindex="0"
                   >
-                    <ul class="list-group" id="likedPostsList">
+                    <ul class="list-group" id="verifiedPlaceList">
                       <c:forEach items="${userVerifiedPlaces}" var="verifiedPlaces">
                         <li class="list-group-item d-flex align-items-center">
                           <img
