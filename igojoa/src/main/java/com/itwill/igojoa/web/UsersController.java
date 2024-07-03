@@ -200,7 +200,7 @@ public class UsersController {
 			model.addAttribute("points", pointsService.selectPoints(userId));
 		}
 		UsersInfoDto userInfoDto = userService.getUserInfo(userId);
-		 model.addAttribute("userInfo", userInfoDto);
+		model.addAttribute("userInfo", userInfoDto);
 
 		return "user/userProfile";
 	}
