@@ -46,6 +46,8 @@
             type="com.itwill.igojoa.dto.review.ReviewListDto" />
 		<typeAlias alias="PlaceBestListDto"
 			type="com.itwill.igojoa.dto.place.PlaceBestListDto" />
+		<typeAlias alias="ReviewSelectDto"
+            type="com.itwill.igojoa.dto.review.ReviewSelectDto" />
 
 	</typeAliases>
 </configuration>

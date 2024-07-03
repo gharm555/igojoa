@@ -12,7 +12,7 @@
         </button>
       </div>
       <div class="container-logo">
-        <a class="navbar-brand mx-auto" id="logo"><h2 class="m-0">아이고좋아</h2></a>
+        <a class="navbar-brand mx-auto" id="logo"><h2 class="m-0">아이고조아</h2></a>
       </div>
       <div class="container-user">
         <c:if test="${userId == null}">

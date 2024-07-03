@@ -50,6 +50,8 @@ public class PlaceController {
 		String userId = (String) session.getAttribute("userId");
 		if (userId != null) {
 			int sessionCheck = usersService.sessionTorF(userId);
+			model.addAttribute("userProfileUrl", usersService.getUserInfo(userId).getUserProfileUrl());
+			model.addAttribute("points", pointsService.selectPoints(userId));
 			if (sessionCheck == 0) {
 
 				return "redirect:/";

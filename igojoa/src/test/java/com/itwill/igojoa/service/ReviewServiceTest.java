@@ -24,12 +24,14 @@ public class ReviewServiceTest {
 	public void insertReviewTest() {
 		log.debug("insertReviewTest");
 		// 리뷰 작성 테스트
-		ReviewDto reviews = ReviewDto.builder().placeName("아이티윌").userId("ohjinho0421")
+		ReviewDto reviews = ReviewDto.builder().placeName("아이티윌").userId("123")
 				.review("ㅋㅋㅋ").parkingAvailable(1)
 				.view(1).nightView(0).freeEntry(1).easyTransport(1).iscore(3)
 				.build();
 
 		List<ReviewListDto> res = reviewService.insertReview(reviews);
-		System.out.println("\n\n" + res + "\n\n");
+		for (ReviewListDto reviewListDto : res) {
+			System.out.println("\n\n" + reviewListDto + "\n\n");
+		}
 	}
 }

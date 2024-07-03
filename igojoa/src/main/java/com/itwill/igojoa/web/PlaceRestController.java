@@ -51,12 +51,14 @@ public class PlaceRestController {
 	public ResponseEntity<Integer> clickHeart(@RequestBody String placeName) {
 		log.debug("\n\n" + placeName + "\n\n");
 		String userId = (String) session.getAttribute("userId");
-		if (userId != null) {
+		if (!userId.isEmpty()) {
 			int sessionCheck = usersService.sessionTorF(userId);
 			if (sessionCheck == 0) {
 
 				return ResponseEntity.badRequest().body(0);
 			}
+		} else {
+			return ResponseEntity.ok(0);
 		}
 
 		PlacesFavoriteDto placesFavoriteDto = PlacesFavoriteDto.builder().placeName(placeName).userId(userId).build();
@@ -74,12 +76,14 @@ public class PlaceRestController {
 	public ResponseEntity<Integer> deleteHeart(@PathVariable String placeName) {
 		log.debug("\n\n" + placeName + "\n\n");
 		String userId = (String) session.getAttribute("userId");
-		if (userId != null) {
+		if (!userId.isEmpty()) {
 			int sessionCheck = usersService.sessionTorF(userId);
 			if (sessionCheck == 0) {
 
 				return ResponseEntity.badRequest().body(0);
 			}
+		} else {
+			return ResponseEntity.ok(0);
 		}
 		PlacesFavoriteDto placesFavoriteDto = PlacesFavoriteDto.builder().placeName(placeName).userId(userId).build();
 		System.out.println(placesFavoriteDto);
