@@ -632,10 +632,6 @@ document.addEventListener('DOMContentLoaded', function () {
   updatePointHistoryForAllPeriod();
 });
 
-// // - 유저 활동 내역 -
 
-// // 요소
-// const $addressSelect = document.querySelector('#province-select');
-// const $searchInput = document.querySelector('#search-input');
-// const $searchBtn = document.querySelector('#userActivitySearchBtn');
-// const dateRangeInput = document.querySelector('#date-rang')
+
+

@@ -212,7 +212,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
               <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel" tabindex="0">
                 <h2 class="mb-4">내활동내역</h2>
                 <div class="search-container">
-                  <select id="province-select address" class="form-select" aria-label="도/광역시 선택">
+                  <select id="address-select" class="form-select" aria-label="도/광역시 선택">
                     <option selected>도/광역시</option>
                     <option value="gyeonggi">경기도</option>
                     <option value="gangwon">강원도</option>
@@ -231,12 +231,11 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     <option value="ulsan">울산시</option>
                     <option value="jeju">제주도</option>
                   </select>
-                  <input type="text" placeholder="검색어를 입력하세요..." id="search-input"/>
+                  <input type="text" placeholder="검색어를 입력하세요..." id="search-input" />
                   <button type="submit" id="userActivitySearchBtn">검색</button>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
                   <input type="text" id="date-range" placeholder="" />
-
                   <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                       <button
@@ -322,9 +321,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                           />
                           <div>
                             <p class="mb-0">
-                              ${favoritePlaces.address} ${favoritePlaces.placeName} 게시물에 좋아요를 눌렀습니다.
+                              
                             </p>
-                            <small class="text-muted">${favoritePlaces.createdTime}</small>
+                            <small class="text-muted"></small>
                           </div>
                         </li>
                       </c:forEach>
@@ -349,9 +348,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                           />
                           <div>
                             <p class="mb-0">
-                              ${favoritePlaces.address} ${favoritePlaces.placeName} 게시물에 좋아요를 눌렀습니다.
+                            
                             </p>
-                            <small class="text-muted">${favoritePlaces.createdTime}</small>
+                            <small class="text-muted"></small>
                           </div>
                         </li>
                       </c:forEach>
@@ -376,10 +375,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                           />
                           <div>
                             <p class="mb-0">
-                              ${favoriteReviews.placeName}에 ${favoriteReviews.userNickName}님의 리뷰
-                              ${favoriteReviews.review}에 좋아요를 눌렀습니다.
+                              
                             </p>
-                            <small class="text-muted">${favoriteReviews.createdTime}</small>
+                            <small class="text-muted"></small>
                           </div>
                         </li>
                       </c:forEach>
@@ -403,8 +401,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                             height="50"
                           />
                           <div>
-                            <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
-                            <small class="text-muted">2024.06.20 14:30</small>
+                            <p class="mb-0"></p>
+                            <small class="text-muted"></small>
                           </div>
                         </li>
                       </c:forEach>
@@ -428,8 +426,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                             height="50"
                           />
                           <div>
-                            <p class="mb-0">아이티윌 에서 위치인증을 하였습니다.</p>
-                            <small class="text-muted">2024.06.25 18:30</small>
+                            <p class="mb-0"></p>
+                            <small class="text-muted">/small>
                           </div>
                         </li>
                       </c:forEach>
