@@ -42,7 +42,7 @@ public class UsersRestController {
 		// 테스트 코드
 		userSearchDto.setStartRowValue(0);
 		userSearchDto.setRowCnt(4);
-		
+
 		List<UserRelatedInfoDto> userRelatedInfoDto = usersService.getAllUserRelatedInfo(userSearchDto);
 		List<UserFavoritePlacesDto> userFavoritePlacesDto = usersService.getUserFavoritePlaces(userSearchDto);
 		List<UserFavoriteReviewsDto> userFavoriteReviewsDto = usersService.getUserFavoriteReviews(userSearchDto);
