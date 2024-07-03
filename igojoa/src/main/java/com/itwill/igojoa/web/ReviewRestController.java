@@ -41,7 +41,7 @@ public class ReviewRestController {
 				return ResponseEntity.badRequest().body(-1);
 			}
 		}
-		userId = "김진성"; // 테스트 코드
+		
 		PlacesFavoriteDto placesFavoriteDto = PlacesFavoriteDto.builder().placeName(placeName).userId(userId).build();
 		int i = placeVerifiedService.visitVerificationConfirmation(placesFavoriteDto);
 		if (i == 0) {
