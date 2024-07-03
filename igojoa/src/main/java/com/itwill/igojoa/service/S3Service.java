@@ -2,24 +2,27 @@ package com.itwill.igojoa.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ListObjectsV2Request;
+import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.itwill.igojoa.entity.Users;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 public class S3Service {
-	private String bucketName = "igojoa";
-	private final AmazonS3 amazonS3;
+    private String bucketName = "igojoa";
+    private final AmazonS3 amazonS3;
 
     private String changedImageName(String UsersId, String originName) { // 이미지 이름 중복 방지를 위해 랜덤으로 생성
         return UsersId + "_" + originName;
@@ -37,9 +40,8 @@ public class S3Service {
             throw new RuntimeException(e);
         }
 
-		return amazonS3.getUrl(bucketName, changedName).toString(); // 데이터베이스에 저장할 이미지가 저장된 주소를 반환
-	}
-
+        return amazonS3.getUrl(bucketName, changedName).toString(); // 데이터베이스에 저장할 이미지가 저장된 주소를 반환
+    }
 
     public Users uploadImage(MultipartFile image, Users user) {
         if (image == null || image.isEmpty()) {
@@ -68,5 +70,4 @@ public class S3Service {
     public String getUserProfileDefaultImageUrl() {
         return amazonS3.getUrl(bucketName, "default.jpg").toString();
     }
-    
 }

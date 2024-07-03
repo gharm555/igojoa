@@ -1,7 +1,14 @@
 package com.itwill.igojoa.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.itwill.igojoa.dto.users.UserFavoritePlacesDto;
+import com.itwill.igojoa.dto.users.UserFavoriteReviewsDto;
+import com.itwill.igojoa.dto.users.UserRelatedInfoDto;
+import com.itwill.igojoa.dto.users.UserSearchDto;
+import com.itwill.igojoa.dto.users.UserWrittenReviewsDto;
 import com.itwill.igojoa.dto.users.UsersInfoDto;
 import com.itwill.igojoa.entity.Users;
 import com.itwill.igojoa.repository.PointsDao;
@@ -73,5 +80,25 @@ public class UsersService {
 	
 	public boolean updateUsers(Users user) {
 		return userDao.updateUsers(user);
+	}
+	
+	public List<UserFavoritePlacesDto> getUserFavoritePlaces(UserSearchDto userSearchDto) {
+		return userDao.getUserFavoritePlaces(userSearchDto);
+	}
+	
+	public List<UserFavoritePlacesDto> searchUserFavoritePlaces(UserSearchDto userSearchDto) {
+		return userDao.searchUserFavoritePlaces(userSearchDto);
+	}
+	
+	public List<UserFavoriteReviewsDto> getUserFavoriteReviews(UserSearchDto userSearchDto) {
+		return userDao.getUserFavoriteReviews(userSearchDto);
+	}
+	
+	public List<UserWrittenReviewsDto> getUserWrittenReviews(UserSearchDto userSearchDto) {
+		return userDao.getUserWrittenReviews(userSearchDto);
+	}
+	
+	public List<UserRelatedInfoDto> getAllUserRelatedInfo(UserSearchDto userSearchDto) {
+		return userDao.getAllUserRelatedInfo(userSearchDto);
 	}
 }

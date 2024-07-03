@@ -8,6 +8,7 @@
   font-family: var(--main-font);
   color: var(--main-text-color);
   min-height: 800px;
+  gap: 50px;
 }
 
 .faq-content-container {

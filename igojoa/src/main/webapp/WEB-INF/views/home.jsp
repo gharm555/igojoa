@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
   pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>아이고조아</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 
@@ -29,16 +31,53 @@
     <link rel="stylesheet" href="${imageGalleryCss}" />
     <c:url var="lottoCss" value="/css/lotto.css" />
     <link rel="stylesheet" href="${lottoCss}" />
-
 </head>
 
 <body>
-
+<header>
     <%@ include file="header.jspf"%>
- <main>
+<div class="banner-toggle-container">
+        <button class="btn btn-outline-primary banner-toggle nav-btn" id="banner-toggle">
+          <i class="fas fa-chevron-down"></i>
+        </button>
+      </div>
+
+      <div class="banner-container">
+        <div class="banner-content">
+          <div
+            id="banner-inner"
+            class="carousel slide"
+            data-bs-ride="carousel"
+            data-bs-interval="3000"
+            data-bs-pause="false"
+          >
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png" class="w-100" alt="..." />
+              </div>
+              <div class="carousel-item">
+                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png" class="w-100" alt="..." />
+              </div>
+              <div class="carousel-item">
+                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png" class="w-100" alt="..." />
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#banner-inner" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#banner-inner" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
     <!-- Main Section -->
     <section id="main-section">
-   
     <div class="d-flex justify-content-center my-5" id="search-bar">
         <div class="input-group main-search-bar">
             <select id="province-select" class="form-select" aria-label="도/광역시 선택">
@@ -81,7 +120,7 @@
         <!-- Initial 9 places loaded from the server -->
         <c:forEach var="place" items="${placesInfo}" varStatus="status">
             <div class="col-lg-4 col-md-6 mb-3 card-item ${status.index > 5 ? 'd-none extra-card' : ''}">
-                <div class="main-card" id="go-to-details">
+                <div class="main-card go-to-details" data-place-name="${place.placeName}">
                     <div class="main-card-header bg-transparent">
                         <div class="d-flex justify-content-between align-items-center">
                             <h1 class="main-card-title">${place.placeName}</h1>
@@ -128,36 +167,35 @@
 </div>
 </section>
 
-        <hr class="my-5"/>
- <!-- Image Gallery Section -->
+        <!-- Image Gallery Section -->
         <section id="image-gallery-section" class="mt-5">
             <h2 class="text-center my-5 fs-2">명소 추천</h2>
             <div class="gallery-body">
                 <div class="gallery-content-container">
                     <div class="gallery-box">
+                        <span style="--i: 0">
+                            <img />
+                        </span>
                         <span style="--i: 1">
-                            <img src="/img/골방 1.jpg" data-name="짜라라짜짜짜짜"/>
+                            <img />
                         </span>
                         <span style="--i: 2">
-                            <img src="/img/골방 2.jpg" data-name="광개토대왕"/>
+                            <img />
                         </span>
                         <span style="--i: 3">
-                            <img src="/img/골방 3.jpg" data-name="아이스크림"/>
+                            <img />
                         </span>
                         <span style="--i: 4">
-                            <img src="/img/골방 1.jpg" data-name="에베레스트"/>
+                            <img />
                         </span>
                         <span style="--i: 5">
-                            <img src="/img/골방 2.jpg" data-name="지구 온난화"/>
+                            <img />
                         </span>
                         <span style="--i: 6">
-                            <img src="/img/골방 3.jpg" data-name="오케스트라"/>
+                            <img />
                         </span>
                         <span style="--i: 7">
-                            <img src="/img/골방 1.jpg" data-name="껄껄껄껄"/>
-                        </span>
-                        <span style="--i: 8">
-                            <img src="/img/골방 3.jpg" data-name="안녕하세요"/>
+                            <img />
                         </span>
                     </div>
 
@@ -169,6 +207,7 @@
                 </div>
             </div>
         </section>
+        <hr class="my-5"/>
 
         <!-- Lotto Section -->
         <section id="lotto-section" class="lotto-body">
@@ -192,7 +231,7 @@
                     <span class="bonus-label">보너스:</span>
                     <div id="bonus" class="ball-container"></div>
                 </div>
-                <div id="points" name="points">남은 포인트 : ${points}</div>
+                <div id="points" name="points">남은 포인트 : <span class="points"><fmt:formatNumber value="${points}" type="number" groupingUsed="true" /></span> P</div>
                 <div id="rank" class="rank" name="rank"></div>
                 <button id="playButton">추첨하기</button>
             </div>
@@ -261,8 +300,8 @@
         </section>
         <hr class="my-5"/>
         <button id="scrollToTopBtn" title="Go to top">↑</button>
-  
-</main>
+    </main>
+
     <footer class="bg-light text-center text-lg-start mt-4">
         <div class="container p-4">
             <div class="row">
@@ -308,7 +347,6 @@
             © 2024 아이고좋아. All rights reserved.
         </div>
     </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <c:url var="navbarJs" value="/js/navbar.js" />
@@ -323,10 +361,6 @@
     <script>
         const LoginUserId = '${userId}';
         const points = '${points}';
-        function formatDate(dateArray) {
-            const [year, month, day] = dateArray;
-            return `${year}-${month}-${day}`;
-        }
     </script>
 
 </body>
