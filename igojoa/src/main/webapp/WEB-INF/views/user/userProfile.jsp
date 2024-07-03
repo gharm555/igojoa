@@ -22,7 +22,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <title>내정보</title>
   </head>
   <body>
-    <%@ include file="../header.jspf" %>
+    <header>
+      <%@ include file="../header.jspf" %>
+    </header>
     <main style="margin-top: 120px">
       <div class="container p-0">
         <div class="row g-0 h-100">
@@ -108,14 +110,14 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 
                     <h5 class="card-title mb-0 mt-3">포인트 현황</h5>
                     <p class="card-text" id="currentsPoints">
-                      현재 포인트:
-                      <fmt:formatNumber value="${userInfo.currentsPoints}" type="number" groupingUsed="true" />
+                      현재 포인트:<span class="points">
+                      <fmt:formatNumber value="${userInfo.currentsPoints}" type="number" groupingUsed="true" /></span>
                       P
                     </p>
 
                     <p class="card-text" id="cumulativePoint">
-                      누적 포인트:
-                      <fmt:formatNumber value="${userInfo.cumulativePoint}" type="number" groupingUsed="true" />
+                      누적 포인트:<span class="cumulativePoints">
+                      <fmt:formatNumber value="${userInfo.cumulativePoint}" type="number" groupingUsed="true" /></span>
                       P
                     </p>
                   </div>
@@ -520,5 +522,6 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <script src="${navbarJs}"></script>
     <c:url var="userProfileJs" value="/js/userProfile.js" />
     <script src="${userProfileJs}"></script>
+    <script> LoginUserId = "${UserId}" </script>
   </body>
 </html>

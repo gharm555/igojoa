@@ -503,8 +503,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    document.querySelector('#earnedPoints').textContent = earnedPoints;
-    document.querySelector('#spentPoints').textContent = spentPoints;
+    document.querySelector('#earnedPoints').textContent = earnedPoints; // 얻은포인트
+    document.querySelector('#spentPoints').textContent = spentPoints; // 소비포인트
 
     console.log(`Updating for date: ${formattedDate}`);
   }

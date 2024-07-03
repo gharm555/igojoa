@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
   pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>아이고조아</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 
@@ -32,100 +34,138 @@
 </head>
 
 <body>
+<header>
     <%@ include file="header.jspf"%>
+<div class="banner-toggle-container">
+        <button class="btn btn-outline-primary banner-toggle nav-btn" id="banner-toggle">
+          <i class="fas fa-chevron-down"></i>
+        </button>
+      </div>
 
-    <!-- Main Section -->
+      <div class="banner-container">
+        <div class="banner-content">
+          <div
+            id="banner-inner"
+            class="carousel slide"
+            data-bs-ride="carousel"
+            data-bs-interval="3000"
+            data-bs-pause="false"
+          >
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png" class="w-100" alt="..." />
+              </div>
+              <div class="carousel-item">
+                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png" class="w-100" alt="..." />
+              </div>
+              <div class="carousel-item">
+                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png" class="w-100" alt="..." />
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#banner-inner" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#banner-inner" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
     <main>
-<section id="main-section">
-        <div class="d-flex justify-content-center my-5" id="search-bar">
-            <div class="input-group main-search-bar">
-                <select id="province-select" class="form-select" aria-label="도/광역시 선택">
-                    <option selected value="">전체</option>
-                    <option value="seoul">서울시</option>
-                    <option value="gyeonggi">경기도</option>
-                    <option value="gangwon">강원도</option>
-                    <option value="jeollabuk">전라북도</option>
-                    <option value="jeollanam">전라남도</option>
-                    <option value="gyeongsangbuk">경상북도</option>
-                    <option value="gyeongsangnam">경상남도</option>
-                    <option value="chungcheongbuk">충청북도</option>
-                    <option value="chungcheongnam">충청남도</option>
-                    <option value="busan">부산시</option>
-                    <option value="daegu">대구시</option>
-                    <option value="incheon">인천시</option>
-                    <option value="gwangju">광주시</option>
-                    <option value="daejeon">대전시</option>
-                    <option value="ulsan">울산시</option>
-                    <option value="jeju">제주도</option>
-                </select>
-                <input type="text" id="search-keyword" class="form-control" placeholder="검색어를 입력하세요" aria-label="검색"/>
-                <button class="btn btn-secondary" id="search-button" type="button">
-                    <i class="bi bi-search"></i> 검색
-                </button>
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-center mb-5">
-            <div class="btn-group" role="group">
-                <button class="btn btn-outline-secondary" id="iScore" type="button">난이도</button>
-                <button class="btn btn-outline-secondary" id="placeVerified" type="button">방문횟수</button>
-                <button class="btn btn-outline-secondary" id="userFavorite" type="button">좋아요</button>
-                <button class="btn btn-outline-secondary" id="reviewCnt" type="button">댓글수</button>
-            </div>
-        </div>
-
-
-        <div class="container-fluid main-container" id="container">
-            <div class="row text-center" id="cardMain">
-                <!-- Initial 9 places loaded from the server -->
-   <c:forEach var="place" items="${placesInfo}" varStatus="status">
-    <div class="col-lg-4 col-md-6 mb-3 card-item ${status.index > 5 ? 'd-none extra-card' : ''}">
-        <div class="main-card">
-            <div class="main-card-header bg-transparent">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h1 class="main-card-title">${place.placeName}</h1>
-                     <i class="bi ${place.userFavorite == 1 ? 'bi-heart-fill red-color' : 'bi-heart'} main-custom-heart" 
-                     data-place-name="${place.placeName}" 
-                     data-user-favorite="${place.userFavorite}"></i>
-                </div>
-                <div class="main-badges mt-3">
-                    <span class="badge">${place.highestBadge}</span>
-                    <span class="badge">${place.secondHighestBadge}</span>
-                    <span class="badge difficulty ${place.IScore}">난이도: ${place.IScore}</span>
-                </div>
-            </div>
-            <div class="d-flex justify-content-between my-3 mx-3">
-                <h3>${place.address}</h3>
-                <h4>누적방문수: ${place.placeVerified}</h4>
-            </div>
-            <div class="main-card-body">
-                <img src="${place.firstUrl}" alt="${place.placeName}" class="img-fluid mb-2"/>
-                <img src="${place.secondUrl}" alt="${place.placeName}" class="img-fluid mb-2"/>
-                <img src="${place.thirdUrl}" alt="${place.placeName}" class="img-fluid mb-2"/>
-            </div>
-            <div class="main-card-footer bg-transparent">
-                <div class="footer-meta">
-                    <div class="user-info">
-                        <span class="username">${place.nickName}</span>
-                    </div>
-                    <div class="post-info">
-                        <span class="date"><i class="bi bi-calendar3"></i> ${place.modifiedAt}</span>
-                        <span class="likes"><i class="bi bi-heart-fill"></i> ${place.likeCount}</span>
-                    </div>
-                </div>
-                <div class="comment-section">
-                    <p class="comment-text"><i class="bi bi-chat-left-quote"></i> ${place.review}</p>
-                </div>
-            </div>
+    <!-- Main Section -->
+    <section id="main-section">
+    <div class="d-flex justify-content-center my-5" id="search-bar">
+        <div class="input-group main-search-bar">
+            <select id="province-select" class="form-select" aria-label="도/광역시 선택">
+                <option selected value="">전체</option>
+                <option value="seoul">서울시</option>
+                <option value="gyeonggi">경기도</option>
+                <option value="gangwon">강원도</option>
+                <option value="jeollabuk">전라북도</option>
+                <option value="jeollanam">전라남도</option>
+                <option value="gyeongsangbuk">경상북도</option>
+                <option value="gyeongsangnam">경상남도</option>
+                <option value="chungcheongbuk">충청북도</option>
+                <option value="chungcheongnam">충청남도</option>
+                <option value="busan">부산시</option>
+                <option value="daegu">대구시</option>
+                <option value="incheon">인천시</option>
+                <option value="gwangju">광주시</option>
+                <option value="daejeon">대전시</option>
+                <option value="ulsan">울산시</option>
+                <option value="jeju">제주도</option>
+            </select>
+            <input type="text" id="search-keyword" class="form-control" placeholder="검색어를 입력하세요" aria-label="검색"/>
+            <button class="btn btn-secondary" id="search-button" type="button">
+                <i class="bi bi-search"></i> 검색
+            </button>
         </div>
     </div>
-</c:forEach>
-            </div>
-            <div class="text-center">
-                <button class="btn btn-secondary mt-3" id="btnPlus">더보기</button>
-            </div>
+
+    <div class="d-flex justify-content-center mb-5">
+        <div class="btn-group" role="group">
+            <button class="btn btn-outline-secondary" id="iScore" type="button">난이도</button>
+            <button class="btn btn-outline-secondary" id="placeVerified" type="button">방문횟수</button>
+            <button class="btn btn-outline-secondary" id="userFavorite" type="button">좋아요</button>
+            <button class="btn btn-outline-secondary" id="reviewCnt" type="button">댓글수</button>
         </div>
-    </section>
+    </div>
+
+   <div class="container-fluid main-container" id="container">
+    <div class="row text-center" id="cardMain">
+        <!-- Initial 9 places loaded from the server -->
+        <c:forEach var="place" items="${placesInfo}" varStatus="status">
+            <div class="col-lg-4 col-md-6 mb-3 card-item ${status.index > 5 ? 'd-none extra-card' : ''}">
+                <div class="main-card go-to-details" data-place-name="${place.placeName}">
+                    <div class="main-card-header bg-transparent">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h1 class="main-card-title">${place.placeName}</h1>
+                            <i class="bi ${place.userFavorite == 1 ? 'bi-heart-fill red-color' : 'bi-heart'} main-custom-heart" 
+                            data-place-name="${place.placeName}" 
+                            data-user-favorite="${place.userFavorite}"></i>
+                        </div>
+                        <div class="main-badges mt-3">
+                            <span class="badge">${place.highestBadge}</span>
+                            <span class="badge">${place.secondHighestBadge}</span>
+                            <span class="badge difficulty ${place.IScore}">난이도: ${place.IScore}</span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between my-3 mx-3">
+                        <h3>${place.address}</h3>
+                        <h4>누적방문수: ${place.placeVerified}</h4>
+                    </div>
+                    <div class="main-card-body">
+                        <img src="${place.firstUrl}" alt="${place.placeName}" class="img-fluid mb-2"/>
+                        <img src="${place.secondUrl}" alt="${place.placeName}" class="img-fluid mb-2"/>
+                        <img src="${place.thirdUrl}" alt="${place.placeName}" class="img-fluid mb-2"/>
+                    </div>
+                    <div class="main-card-footer bg-transparent">
+                        <div class="footer-meta">
+                            <div class="user-info">
+                                <span class="username">${place.nickName}</span>
+                            </div>
+                            <div class="post-info">
+                                <span class="date"><i class="bi bi-calendar3"></i> ${place.modifiedAt}</span>
+                                <span class="likes"><i class="bi bi-heart-fill"></i> ${place.likeCount}</span>
+                            </div>
+                        </div>
+                        <div class="comment-section">
+                            <p class="comment-text"><i class="bi bi-chat-left-quote"></i> ${place.review}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-secondary mt-3" id="btnPlus">더보기</button>
+    </div>
+</div>
+</section>
 
         <!-- Image Gallery Section -->
         <section id="image-gallery-section" class="mt-5">
@@ -134,28 +174,28 @@
                 <div class="gallery-content-container">
                     <div class="gallery-box">
                         <span style="--i: 0">
-                            <img src="/img/골방 1.jpg" data-name="짜라라짜짜짜"/>
+                            <img />
                         </span>
                         <span style="--i: 1">
-                            <img src="/img/골방 2.jpg" data-name="광개토대왕"/>
+                            <img />
                         </span>
                         <span style="--i: 2">
-                            <img src="/img/골방 3.jpg" data-name="아이스크림"/>
+                            <img />
                         </span>
                         <span style="--i: 3">
-                            <img src="/img/골방 1.jpg" data-name="에베레스트"/>
+                            <img />
                         </span>
                         <span style="--i: 4">
-                            <img src="/img/골방 2.jpg" data-name="지구 온난화"/>
+                            <img />
                         </span>
                         <span style="--i: 5">
-                            <img src="/img/골방 3.jpg" data-name="오케스트라"/>
+                            <img />
                         </span>
                         <span style="--i: 6">
-                            <img src="/img/골방 1.jpg" data-name="껄껄껄껄"/>
+                            <img />
                         </span>
                         <span style="--i: 7">
-                            <img src="/img/골방 3.jpg" data-name="안녕하세요"/>
+                            <img />
                         </span>
                     </div>
 
@@ -191,7 +231,7 @@
                     <span class="bonus-label">보너스:</span>
                     <div id="bonus" class="ball-container"></div>
                 </div>
-                <div id="points" name="points">남은 포인트 : ${points}</div>
+                <div id="points" name="points">남은 포인트 : <span class="points"><fmt:formatNumber value="${points}" type="number" groupingUsed="true" /></span> P</div>
                 <div id="rank" class="rank" name="rank"></div>
                 <button id="playButton">추첨하기</button>
             </div>

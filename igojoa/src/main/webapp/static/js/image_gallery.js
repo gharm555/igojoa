@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
           img.src = place.firstUrl;
           img.alt = place.placeName;
           img.dataset.name = place.placeName;
+          img.onclick = goToPlaceDetail;
         }
       });
 
@@ -62,5 +63,8 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       locationName.textContent = "정보없음";
     }
+  }
+  function goToPlaceDetail() {
+    window.location.href = `${contextPath}/place/details/${images[currentIndex].dataset.name}`;
   }
 });
