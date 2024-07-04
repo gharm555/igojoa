@@ -216,22 +216,22 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 <div class="search-container">
                   <select id="address-select" class="form-select" aria-label="도/광역시 선택">
                     <option selected value="">전체</option>
-                    <option value="gyeonggi">경기도</option>
-                    <option value="gangwon">강원도</option>
-                    <option value="jeollabuk">전라북도</option>
-                    <option value="jeollanam">전라남도</option>
-                    <option value="gyeongsangbuk">경상북도</option>
-                    <option value="gyeongsangnam">경상남도</option>
-                    <option value="chungcheongbuk">충청북도</option>
-                    <option value="chungcheongnam">충청남도</option>
-                    <option value="seoul">서울시</option>
-                    <option value="busan">부산시</option>
-                    <option value="daegu">대구시</option>
-                    <option value="incheon">인천시</option>
-                    <option value="gwangju">광주시</option>
-                    <option value="daejeon">대전시</option>
-                    <option value="ulsan">울산시</option>
-                    <option value="jeju">제주도</option>
+                    <option value="경기도">경기도</option>
+                    <option value="강원도">강원도</option>
+                    <option value="전라북도">전라북도</option>
+                    <option value="전라남도">전라남도</option>
+                    <option value="경상북도">경상북도</option>
+                    <option value="경상남도">경상남도</option>
+                    <option value="충청북도">충청북도</option>
+                    <option value="충청남도">충청남도</option>
+                    <option value="서울시">서울시</option>
+                    <option value="부산시">부산시</option>
+                    <option value="대구시">대구시</option>
+                    <option value="인천시">인천시</option>
+                    <option value="광주시">광주시</option>
+                    <option value="대전시">대전시</option>
+                    <option value="울산시">울산시</option>
+                    <option value="제주도">제주도</option>
                   </select>
                   <input type="text" placeholder="검색어를 입력하세요..." id="search-input" />
                   <button type="submit" id="userActivitySearchBtn">검색</button>
