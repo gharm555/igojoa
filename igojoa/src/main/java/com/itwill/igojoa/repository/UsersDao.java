@@ -37,24 +37,17 @@ public interface UsersDao {
 	boolean checkPhoneNumber(String phoneNumber);
 
 	int deleteUser(String userId);
-	
+
 	boolean updateUsers(Users user);
-	
-	List<UserRelatedInfoDto> getAllUserRelatedInfo(UserSearchDto userSearchDto);
+
+	List<UserRelatedInfoDto> getUserRelatedInfo(UserSearchDto userSearchDto);
 
 	List<UserFavoritePlacesDto> getUserFavoritePlaces(UserSearchDto userSearchDto);
-	
-	List<UserFavoritePlacesDto> searchUserFavoritePlaces(UserSearchDto userSearchDto);
-	
+
 	List<UserFavoriteReviewsDto> getUserFavoriteReviews(UserSearchDto userSearchDto);
-	
-	List<UserFavoriteReviewsDto> searchUserFavoriteReviews(UserSearchDto userSearchDto);
-	
+
 	List<UserWrittenReviewsDto> getUserWrittenReviews(UserSearchDto userSearchDto);
-	
-	List<UserWrittenReviewsDto> searchUserWrittenReviews(UserSearchDto userSearchDto);
-	
+
 	List<UserVerifiedPlacesDto> getUserVerifiedPlaces(UserSearchDto userSearchDto);
-	
-	List<UserVerifiedPlacesDto> searchUserVerifiedPlaces(UserSearchDto userSearchDto);
+
 }
