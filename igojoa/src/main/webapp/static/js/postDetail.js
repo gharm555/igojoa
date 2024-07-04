@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
   //(3) 게시물의 모든리뷰 생성
   showAllReview();
 
-  //
   //(4)상세페이지 좋아요 버튼 활성화 //
   const $heartIcon = document.querySelector("#favoriteHeart");
 
