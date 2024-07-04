@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let images = box.querySelectorAll("img");
   let degrees = 0;
   let currentIndex = 0;
-  const totalImages = 8; // 총 이미지 수
+  const totalImages = 3; // 총 이미지 수
 
   // 이미지 갤러리 데이터 가져오기
   axios
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
   prev.addEventListener("click", function () {
     degrees += 45;
     currentIndex = (currentIndex - 1 + totalImages) % totalImages;
-    box.style = `transform: perspective(1000px) rotateY(${degrees}deg)`;
+    box.style = `transform: perspective(900px) rotateY(${degrees}deg)`;
     updateLocationName();
   });
 
