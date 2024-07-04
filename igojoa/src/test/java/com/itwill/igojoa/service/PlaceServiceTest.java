@@ -20,7 +20,7 @@ public class PlaceServiceTest {
 	@Autowired
 	private PlaceService placeService;
 
-	@Test
+//	@Test
 	public void showPlaceListTest() {
 		log.debug("showPlaceListTest()");
 		// 메인페이지 리스트
@@ -37,7 +37,7 @@ public class PlaceServiceTest {
 				.rowCnt(rowCnt).build();
 
 		List<PlaceListDto> res = placeService.selectPlaceList(placeSearchDto);
-		
+
 		System.out.println("\n\n\n\n\n");
 		for (PlaceListDto placeListDto : res) {
 			System.out.println(placeListDto);
@@ -45,12 +45,14 @@ public class PlaceServiceTest {
 		System.out.println("\n\n\n\n\n");
 	}
 
-//	@Test
-	public void placeListDtoTest() {
-		PlaceListDto dto = PlaceListDto.builder().placeName("??").iScore(null).build();
-		PlaceListDto p = PlaceListDto.sendHomeMainContent(dto);
+	@Test
+	public void searchFirstInitialTest() {
+		PlaceSearchDto placeSearchDto = PlaceSearchDto.builder().addressCategory("").searchKeyword("ㄱ").build();
+		List<String> res = placeService.searchFirstInitial(placeSearchDto);
 		System.out.println("\n\n\n\n\n");
-		System.out.println(p);
+		for (String string : res) {
+			System.out.println(string);
+		}
 		System.out.println("\n\n\n\n\n");
 	}
 }

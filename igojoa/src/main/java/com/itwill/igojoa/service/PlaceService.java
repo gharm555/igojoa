@@ -95,6 +95,13 @@ public class PlaceService {
 		return placeDetailDto;
 	}
 
+	@Transactional
+	public List<String> searchFirstInitial(PlaceSearchDto placeSearchDto) {
+		List<String> res = placeDao.searchFirstInitial(placeSearchDto);
+		
+		return res;
+	}
+
 	public List<PlaceBestListDto> selectPlaceNameAndImageUrl() {
 		return placeDao.selectPlaceNameAndImageUrl();
 	}

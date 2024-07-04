@@ -181,9 +181,14 @@
 		reviewLikes (userId,
 		placeName,
 		likeUserId)
-		values('${userId}',
+		SELECT
+		u.userId,
 		'${placeName}',
-		'${likeUserId}')
+		'${likeUserId}'
+		FROM
+		users u
+		WHERE
+		u.nickName = '${userId}'
 	</insert>
 
 	<delete id="deleteReviewLike">
@@ -194,9 +199,17 @@
 		FROM
 		reviewLikes
 		WHERE
-		userId = '${userId}'
+		userId =(
+		SELECT
+		userId
+		from
+		users
+		WHERE
+		nickName
+		= '${userId}')
 		AND placeName =
 		'${placeName}'
-		AND likeUserId = '${likeUserId}'
+		AND likeUserId =
+		'${likeUserId}'
 	</delete>
 </mapper>
