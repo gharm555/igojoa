@@ -13,7 +13,7 @@ public class UserSearchDto {
 	private String userId;
 	private String searchKeyword;
 	private String largeAddress; // 도/광역시
-    private String calendar; // 날짜 (YYYY.MM.DD)
+	private String calendar; // 날짜 (YYYY.MM.DD)
 	private String sortKey; // 정렬 키
 	private Integer sortValue; // 정렬 값
 	private Integer startRowValue; // 시작할 행을 정하는 필드
