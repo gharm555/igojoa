@@ -26,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user/userProfile")
 public class UsersRestController {
 	private final HttpSession session;
 	private final UsersService usersService;
