@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user/userProfile") // 테스트 코드
+//@RequestMapping("/user/userProfile") // 테스트 코드
 public class UsersRestController {
 	private final HttpSession session;
 	private final UsersService usersService;
@@ -35,13 +35,8 @@ public class UsersRestController {
 	public ResponseEntity<Map<String, Object>> getAllUserRelatedInfo(@ModelAttribute UserSearchDto userSearchDto) {
 		String userId = (String) session.getAttribute("userId");
 
-//		userId = "sangwontest2"; // 테스트코드
 		log.debug("userId = {}", userId);
 		userSearchDto.setUserId(userId);
-
-		// 테스트 코드
-//		userSearchDto.setStartRowValue(0);
-//		userSearchDto.setRowCnt(4);
 
 		List<UserRelatedInfoDto> userRelatedInfoDto = usersService.getAllUserRelatedInfo(userSearchDto);
 		List<UserFavoritePlacesDto> userFavoritePlacesDto = usersService.getUserFavoritePlaces(userSearchDto);
@@ -76,8 +71,6 @@ public class UsersRestController {
 	public ResponseEntity<List<UserFavoriteReviewsDto>> searchUserFavoriteReviews(@ModelAttribute UserSearchDto userSearchDto) {
 		String userId = (String) session.getAttribute("userId");
 
-		userId = "sangwontest2"; // 테스트 코드
-		
 		userSearchDto.setUserId(userId);
 
 		handleSearchKeyword(userSearchDto, userId);
@@ -91,8 +84,6 @@ public class UsersRestController {
 	public ResponseEntity<List<UserWrittenReviewsDto>> searchUserWrittenReviews(@ModelAttribute UserSearchDto userSearchDto) {
 		String userId = (String) session.getAttribute("userId");
 		
-		userId = "sangwontest2"; // 테스트 코드
-		
 		userSearchDto.setUserId(userId);
 		handleSearchKeyword(userSearchDto, userId);
 		
@@ -104,8 +95,6 @@ public class UsersRestController {
 	@GetMapping("/VerifiedPlaces")
 	public ResponseEntity<List<UserVerifiedPlacesDto>> searchUserVerifiedPlaces(@ModelAttribute UserSearchDto userSearchDto) {
 		String userId = (String) session.getAttribute("userId");
-		
-		userId = "sangwontest2"; // 테스트 코드
 		
 		userSearchDto.setUserId(userId);
 		handleSearchKeyword(userSearchDto, userId);
