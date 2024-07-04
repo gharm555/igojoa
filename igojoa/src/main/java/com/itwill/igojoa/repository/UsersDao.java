@@ -40,6 +40,8 @@ public interface UsersDao {
 	
 	boolean updateUsers(Users user);
 	
+	List<UserRelatedInfoDto> getAllUserRelatedInfo(UserSearchDto userSearchDto);
+
 	List<UserFavoritePlacesDto> getUserFavoritePlaces(UserSearchDto userSearchDto);
 	
 	List<UserFavoritePlacesDto> searchUserFavoritePlaces(UserSearchDto userSearchDto);
@@ -50,7 +52,9 @@ public interface UsersDao {
 	
 	List<UserWrittenReviewsDto> getUserWrittenReviews(UserSearchDto userSearchDto);
 	
-	List<UserRelatedInfoDto> getAllUserRelatedInfo(UserSearchDto userSearchDto);
+	List<UserWrittenReviewsDto> searchUserWrittenReviews(UserSearchDto userSearchDto);
 	
 	List<UserVerifiedPlacesDto> getUserVerifiedPlaces(UserSearchDto userSearchDto);
+	
+	List<UserVerifiedPlacesDto> searchUserVerifiedPlaces(UserSearchDto userSearchDto);
 }
