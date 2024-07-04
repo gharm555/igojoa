@@ -1,17 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
   console.log("js에 들어왔다.");
-  // (1)카카오 지도 초기화
+  //(1)카카오 지도 초기화
   initializeKakaoMap();
 
-  // (2)이모지 리스트 생성
+  //(2)이모지 리스트 생성
   createEmojiList();
 
-  // (3) 게시물의 모든리뷰 생성
+  //(3) 게시물의 모든리뷰 생성
   showAllReview();
 
-  ////// (4)상세페이지 좋아요 버튼 활성화 ////////
+  //(4)상세페이지 좋아요 버튼 활성화 //
   const $heartIcon = document.querySelector("#favoriteHeart");
 
+  //(5)리뷰 작성 버튼 활성화 //
+  const $createReviewBtn = document.querySelector("#createReviewBtn");
+  
+  //(6)리뷰 수정 버튼 활성화 //
+  const $updateReviewBtn = document.querySelector("#updateReviewBtn");
+
+  //(7)리뷰 삭제 버튼 활성화 //
+  const $deleteReviewBtn = document.querySelector("#deleteReviewBtn");
+  
+//(8) 게시물 좋아요 하트 버튼 활성화 //
   function updateHeartIcon() {
     if (pd.userFavorite === 0) {
       $heartIcon.classList.add("bi-heart");
@@ -159,53 +169,64 @@ document.addEventListener("DOMContentLoaded", function () {
     $iscoreBedge.textContent = "난이도: ";
   }
 
-  /** --------------------  리뷰 수정하기 -------------------------- */
-  // TODO: 수정하기 버튼 만들기
-
-  function updateReview() {
+  /** --------------------  리뷰 작성하기 -------------------------- */
+  $createReviewBtn.addEventListener("click", function () {
+    const selectedRadio = document.querySelector(
+      'input[name="difficulty"]:checked'
+    );
+    if (selectedRadio) {
+      switch (selectedRadio.id) {
+        case "btnradio1":
+          return 3; // 상
+        case "btnradio2":
+          return 2; // 중
+        case "btnradio3":
+          return 1; // 하
+      }
+    }
     const reviewData = {
-      parkingAvailable: pd.parkingAvailable ? 1 : 0,
-      view: pd.view ? 1 : 0,
-      freeEntry: pd.freeEntry ? 1 : 0,
-      nightView: pd.nightView ? 1 : 0,
-      easyTransport: pd.easyTransport ? 1 : 0,
-      iScore: pd.iScore,
-      review: pd.review,
+      review: document.querySelector("#reviewText").value,
+      parkingAvailable: document.querySelector("#btncheck1").checked ? 1 : 0,
+      view: document.querySelector("#btncheck2").checked ? 1 : 0,
+      nightView: document.querySelector("#btncheck3").checked ? 1 : 0,
+      freeEntry: document.querySelector("#btncheck4").checked ? 1 : 0,
+      easyTransport: document.querySelector("#btncheck5").checked ? 1 : 0,
+      iscore: selectedRadio,
     };
 
-    console.log("reviewData: ", reviewData);
+    console.log("Sending review data:", JSON.stringify(reviewData));
 
     const placeName = pd.placeName;
-    const uri = `/${placeName}/newReview`;
-    console.log("리뷰전체 불러오기에서 보내는 주소: ", uri);
+    const uri = `${contextPath}/${placeName}/newReview`;
+    console.log("리뷰 보내는 주소: ", uri);
 
     axios
       .put(uri, reviewData)
       .then((response) => {
-        console.log("Review updated successfully:", response.data);
-        alert("리뷰가 성공적으로 업데이트되었습니다.");
-        // 필요한 경우 여기서 페이지를 새로고침하거나 데이터를 다시 불러오기.
+        console.log("reviewData:", reviewData);
+        console.log("Server response:", response.data);
+        if (response.data === 0) {
+          alert("방문 인증이 필요합니다.");
+        } else {
+          alert("리뷰가 성공적으로 등록되었습니다.");
+          showAllReview();
+        }
       })
       .catch((error) => {
-        console.error("Error updating review:", error);
+        console.error("Error submitting review:", error);
         if (error.response) {
+          console.error("Server error response:", error.response.data);
           alert(error.response.data);
         } else {
-          alert("리뷰 업데이트에 실패했습니다.");
+          alert("리뷰 등록에 실패했습니다.");
         }
       });
-  }
-
- 
-
-
-
+  });
 });
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-//TODO:
-/** ---------------- 게시물에 달린 모든 리뷰 가져오기 ----------------------- */
+/** ---------------- 게시물에 달린 모든 리뷰  ----------------------- */
 function showAllReview() {
   const placeName = pd.placeName;
   if (!placeName) {
@@ -237,9 +258,6 @@ function showAllReview() {
 }
 
 function displayReviews(reviews) {
-  console.log("Displaying reviews:", reviews);
-
-  // 댓글 목록 html 삽입이 될 섹션
   const $reviewListSection = document.querySelector("#reviewList");
 
   if (!$reviewListSection) {
@@ -252,22 +270,75 @@ function displayReviews(reviews) {
     return;
   }
 
-  let htmlStr = "";
-  reviews.forEach((review) => {
-    htmlStr += `
-    <div class="card card-body my-1">
-                <div style="font-size: 0.825rem;">
-                    <span>${review.userId}</span>
-                    <span class="fw-bold">${review.userId}</span>
-                    <span class="text-secondary">${review.userId}</span>
-                </div>
-                <div>${review.review}</div>
-              
-            </div>`;
-  });
-
+  const htmlStr = reviews.map((review) => createReviewCard(review)).join("");
   $reviewListSection.innerHTML = htmlStr;
+
   console.log("Reviews displayed");
+
+  function createReviewCard(review) {
+    const badges = [
+      { name: "parkingAvailable", text: "🚗 주차가능" },
+      { name: "view", text: "🏞️ 경치좋은" },
+      { name: "nightView", text: "🌃 야경" },
+      { name: "freeEntry", text: "💵 무료입장" },
+      { name: "easyTransport", text: "🛣️ 교통원활" },
+    ];
+
+    const difficultyMap = {
+      1: "하",
+      2: "중",
+      3: "상",
+    };
+
+    const badgeHtml = badges
+      .map((badge) =>
+        review[badge.name]
+          ? `<span class="badge bg-primary me-1">${badge.text}</span>`
+          : ""
+      )
+      .join("");
+
+    const difficultyBadge = review.iscore
+      ? `<span class="badge bg-secondary me-1">난이도: ${
+          difficultyMap[review.iscore] || review.iscore
+        }</span>`
+      : `<h1>${review.iscore} 난이도 값은 이거다</h1>`;
+
+    const formattedDate = formatDate(review.modifiedAt);
+
+    return `
+    <div class="card mb-2">
+      <div class="card-body py-2 px-3">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div>
+            ${badgeHtml}
+            ${difficultyBadge}
+          </div>
+          <button class="btn btn-outline-primary btn-sm like-btn p-1" data-review-id="${
+            review.id
+          }">
+            <i class="bi bi-heart${review.isLiked ? "-fill" : ""}"></i>
+            <span class="like-count">${review.likeCount || 0}</span>
+          </button>
+        </div>
+        <div class="d-flex">
+          <img src="${
+            review.userProfileUrl
+          }" alt="User profile" class="rounded-circle me-2" style="width: 55px; height: 55px;">
+          <div class="flex-grow-1">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <h5 class="card-title mb-0">${review.nickName}</h5>
+              <small class="text-muted" style="font-size: 0.75rem;">${formattedDate}</small>
+            </div>
+            <p class="card-text mb-0" style="font-size: 0.875rem;">${
+              review.review
+            }</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  }
 }
 
 /* ----------------------------  이모지 리스트 생성 ------------------------- */
@@ -379,3 +450,22 @@ $scrollToTopBtn.addEventListener("click", function () {
     behavior: "smooth",
   });
 });
+
+/** ---------------------- 날짜 변환 ------------- ---------- */
+function formatDate(dateArray) {
+  if (!Array.isArray(dateArray) || dateArray.length < 6) {
+    console.error("Invalid date array:", dateArray);
+    return "Invalid Date";
+  }
+
+  const [year, month, day, hour, minute, second] = dateArray;
+  const date = new Date(year, month - 1, day, hour, minute, second);
+
+  const pad = (num) => num.toString().padStart(2, "0");
+
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+    date.getDate()
+  )} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(
+    date.getSeconds()
+  )}`;
+}
