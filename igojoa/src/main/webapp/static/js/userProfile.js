@@ -25,6 +25,11 @@ const originalValues = {
 };
 // <--------- 정보수정 변수
 
+// 달력 날짜 변수
+let startDate = '';
+let endDate = '';
+let datePicker;
+
 // 공백에 관한 정규식 -->
 const noSpaceRegex = /^\S*$/;
 const noConsecutiveSpaceRegex = /^(?!.*\s\s).*$/;
@@ -557,8 +562,25 @@ document.addEventListener('DOMContentLoaded', function () {
       if (selectedDates.length === 0) {
         instance.element.placeholder = '전체기간';
         updatePointHistoryForAllPeriod();
+      } else if (selectedDates.length === 1) {
+        startDate = formatDate(selectedDates[0]);
+        endDate = ''; // endDate를 빈 문자열로 설정
+        console.log('한개만 선택했을때 시작날짜' + startDate);
+        console.log('한개만 선택했을때 끝날짜' + endDate);
+        // 필요한 경우 여기서 처리할 작업을 추가
       } else if (selectedDates.length === 2) {
-        updatePointHistoryForDateRange(selectedDates[0], selectedDates[1]);
+        if (selectedDates[0].getTime() === selectedDates[1].getTime()) {
+          startDate = formatDate(selectedDates[0]);
+          endDate = ''; // 같은 날짜일 때 endDate를 빈 문자열로 설정
+          console.log('같은 날짜 선택했을때 시작날짜: ' + startDate);
+          console.log('같은 날짜 선택했을때 끝날짜: ' + endDate);
+        } else {
+          startDate = formatDate(selectedDates[0]);
+          endDate = formatDate(selectedDates[1]);
+          console.log('두개 선택했을때 시작날짜: ' + startDate);
+          console.log('두개 선택했을때 끝날짜: ' + endDate);
+          updatePointHistoryForDateRange(selectedDates[0], selectedDates[1]);
+        }
       }
     },
     onReady: function (selectedDates, dateStr, instance) {
@@ -569,13 +591,42 @@ document.addEventListener('DOMContentLoaded', function () {
       clearButton.innerHTML = '전체기간';
       clearButton.className = 'flatpickr-button flatpickr-clear custom-all-period-btn';
       clearButton.addEventListener('click', function () {
+        startDate = '';
+        endDate = '';
+        console.log('전체기간 눌렀을때 시작날짜' + startDate);
+        console.log('전체기간 눌렀을때 끝날짜' + endDate);
         instance.clear();
         instance.element.placeholder = '전체기간';
         updatePointHistoryForAllPeriod();
       });
       wrapper.appendChild(clearButton);
+      // '기간설정' 버튼
+      const setDateButton = document.createElement('button');
+      setDateButton.innerHTML = '기간설정';
+      setDateButton.className = 'flatpickr-button flatpickr-set custom-set-period-btn';
+      setDateButton.addEventListener('click', function () {
+        console.log('기간설정 눌렀을때 시작날짜: ' + startDate);
+        console.log('기간설정 눌렀을때 끝날짜: ' + endDate);
+        instance.close();
+        if (startDate && endDate) {
+          instance.element.value = `${startDate} - ${endDate}`;
+          updatePointHistoryForDateRange(startDate, endDate);
+        } else if (startDate) {
+          instance.element.value = `${startDate}`;
+        }
+      });
+      wrapper.appendChild(setDateButton);
     },
   });
+
+  function formatDate(date) {
+    const offset = date.getTimezoneOffset();
+    const adjustedDate = new Date(date.getTime() - offset * 60 * 1000);
+    const year = adjustedDate.getFullYear();
+    const month = String(adjustedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(adjustedDate.getDate()).padStart(2, '0');
+    return `${year}.${month}.${day}`;
+  }
 
   function updatePointHistoryForAllPeriod() {
     const $table = document.querySelector('#pointHistoryTable').querySelector('tbody');
@@ -632,19 +683,16 @@ document.addEventListener('DOMContentLoaded', function () {
   updatePointHistoryForAllPeriod();
 });
 
-
-
-
-
-
 // 유저 활동 내역
 const $userActivityTab = document.querySelector('#v-pills-disabled-tab');
 const $addressSelect = document.querySelector('#address-select');
 const $searchInput = document.querySelector('#search-input');
 const $searchBtn = document.querySelector('#userActivitySearchBtn');
-const $dateRange = document.querySelector('#date-range');
 const $tabContent = document.querySelector('#nav-tabContent');
 const tabs = ['total', 'favoritePlace', 'likedReview', 'writtenReview', 'verifiedPlace'];
+
+let startRowValue = 0;
+const rowCnt = 10;
 let globalData = {};
 let currentTab = 'total';
 let sortOrder = {
@@ -654,10 +702,62 @@ let sortOrder = {
   writtenReview: 'desc',
   verifiedPlace: 'desc',
 };
-
+// 초기 데이터 불러오기
 $userActivityTab.addEventListener('click', () => {
   axios
-    .get(contextPath + '/userRelatedInfo', {})
+    .get(contextPath + '/userRelatedInfo', {
+      params: {
+        startRowValue: 0,
+        rowCnt: 11,
+      },
+    })
+    .then((response) => {
+      console.log('Data fetched successfully:', response.data);
+      globalData = response.data;
+      resetSortOrder();
+      sortDataDesc();
+      displayUserRelatedInfo(globalData);
+    })
+    .catch((error) => {
+      console.error('Error fetching user related info:', error);
+    });
+});
+
+$addressSelect.addEventListener('change', () => {
+  console.log($addressSelect.value);
+});
+
+// 검색 데이터 불러오기
+$searchBtn.addEventListener('click', () => {
+  console.log(startDate);
+  console.log(endDate);
+  console.log($addressSelect.value);
+  console.log($searchInput.value);
+  console.log(currentTab);
+
+  let url = '';
+  if (currentTab === 'total') {
+    url = contextPath + '/userRelatedInfo';
+  } else if (currentTab === 'favoritePlace') {
+    url = contextPath + '/favoritePlaces';
+  } else if (currentTab === 'likedReview') {
+    url = contextPath + '/favoriteReviews';
+  } else if (currentTab === 'writtenReview') {
+    url = contextPath + '/writtenReviews';
+  } else {
+    url = contextPath + '/verifiedPlaces';
+  }
+
+  axios
+    .get(url, {
+      params: {
+        searchKeyword: $searchInput.value,
+        largeAddress: $addressSelect.value,
+        calendarMin: startDate,
+        calendarMax: endDate,
+        //TODO: 무한스크롤
+      },
+    })
     .then((response) => {
       console.log('Data fetched successfully:', response.data);
       globalData = response.data;
@@ -725,13 +825,13 @@ function displayUserRelatedInfo(data) {
         </div>
       </li>
     `;
-    } else if (info.type === 'favorite_reviews') {
+    } else if (info.type === 'liked_reviews') {
       $userRelatedInfoList.innerHTML += `
       <li class="list-group-item d-flex align-items-center">
         <img src="${info.firstUrl}" alt="게시물 썸네일" class="rounded-circle me-3" width="50" height="50" />
         <div>
           <p class="mb-0">
-            ${info.address} ${info.placeName} 리뷰에 좋아요를 눌렀습니다.
+            ${info.placeName}에 ${info.reviewAuthor}님 리뷰 '${info.review}'에 좋아요를 눌렀습니다.
           </p>
           <small class="text-muted">${info.createdAt}</small>
         </div>
@@ -784,7 +884,7 @@ function displayUserRelatedInfo(data) {
         <img src="${review.firstUrl}" alt="게시물 썸네일" class="rounded-circle me-3" width="50" height="50" />
         <div>
           <p class="mb-0">
-            ${review.address} ${review.placeName} 리뷰에 좋아요를 눌렀습니다.
+            ${review.placeName}에 ${review.reviewAuthor}님 리뷰 '${review.review}'에 좋아요를 눌렀습니다.
           </p>
           <small class="text-muted">${review.createdAt}</small>
         </div>
@@ -867,5 +967,3 @@ function sortDataDesc() {
     globalData.userVerifiedPlaces.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   }
 }
-
-
