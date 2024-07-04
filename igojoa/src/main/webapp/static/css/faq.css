@@ -10,7 +10,10 @@
   min-height: 800px;
   gap: 50px;
 }
-
+#faq-section {
+  width: 125%;
+  min-height: 300px;
+}
 .faq-content-container {
   display: flex;
   flex-direction: column;
@@ -41,7 +44,10 @@
   line-height: 1.5;
   margin-bottom: 20px;
 }
-
+#accordionExample {
+  width: 80%;
+  max-width: 800px;
+}
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .faq-box {
@@ -90,8 +96,9 @@
     margin-top: 30px; /* 섹션 간격 조정 */
     margin-bottom: 10px; /* 섹션 간격 조정 */
   }
-  section {
-    min-height: 400px;
+  #faq-section {
+    width: 125%;
+    min-height: 300px;
   }
   .faq-box h2 {
     font-size: 16px;
@@ -99,5 +106,11 @@
 
   .faq-box p {
     font-size: 10px;
+  }
+  .accordion-button {
+    font-size: 16px;
+  }
+  .accordion-body {
+    font-size: 14px;
   }
 }

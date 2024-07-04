@@ -248,105 +248,79 @@
         <section id="faq-section" class="faq-body">
             <h1 class="text-center mt-5 fs-1">자주 묻는 질문 (FAQ)</h1>
             <div class="accordion" id="accordionExample">
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            회원가입은 어떻게 하나요?
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            회원가입은 메인 페이지 우측 상단의 '회원가입' 버튼을 클릭하여 진행할 수 있습니다.
+                <c:forEach var="faq" items="${faqList}" varStatus="status">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button ${status.index == 0 ? '' : 'collapsed'}" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#collapse${status.index}" 
+                                    aria-expanded="${status.index == 0 ? 'true' : 'false'}" 
+                                    aria-controls="collapse${status.index}">
+                                ${faq.question}
+                            </button>
+                        </h2>
+                        <div id="collapse${status.index}" 
+                             class="accordion-collapse collapse ${status.index == 0 ? 'show' : ''}" 
+                             data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                ${faq.answer}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            로그인은 어떻게 하나요?
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            로그인은 메인 페이지 우측 상단의 '로그인' 버튼을 클릭하여 진행할 수 있습니다.
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            개인정보 수정은 어떻게 하나요?
-                        </button>
-                    </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            개인정보 수정은 로그인 후 마이페이지에서 가능합니다.
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                            비밀번호를 잊어버렸어요. 어떻게 해야 하나요?
-                        </button>
-                    </h2>
-                    <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            비밀번호를 잊어버린 경우, 비밀번호 찾기 기능을 이용해 주세요.
-                        </div>
-                    </div>
-                </div>
+                </c:forEach>
             </div>
         </section>
         <hr class="my-5"/>
         <button id="scrollToTopBtn" title="Go to top">↑</button>
     </main>
 
-    <footer class="bg-light text-center text-lg-start mt-4">
-        <div class="container p-4">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <h5 class="text-uppercase">회사 정보</h5>
-                    <ul class="list-unstyled mb-0">
-                        <li><a href="#!" class="text-dark">회사 소개</a></li>
-                        <li><a href="#!" class="text-dark">이용약관</a></li>
-                        <li><a href="#!" class="text-dark">개인정보처리방침</a></li>
-                        <li><a href="#!" class="text-dark">고객센터</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <h5 class="text-uppercase">추천 기능</h5>
-                    <ul class="list-unstyled mb-0">
-                        <li><a href="#!" class="text-dark">인기 명소</a></li>
-                        <li><a href="#!" class="text-dark">새로운 장소</a></li>
-                        <li><a href="#!" class="text-dark">이벤트</a></li>
-                        <li><a href="#!" class="text-dark">여행 팁</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <h5 class="text-uppercase">커뮤니티</h5>
-                    <ul class="list-unstyled mb-0">
-                        <li><a href="#!" class="text-dark">여행 후기</a></li>
-                        <li><a href="#!" class="text-dark">Q&A</a></li>
-                        <li><a href="#!" class="text-dark">모임</a></li>
-                        <li><a href="#!" class="text-dark">공지사항</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <h5 class="text-uppercase">팔로우하기</h5>
-                    <ul class="list-unstyled mb-0">
-                        <li><a href="#!" class="text-dark"><i class="fab fa-facebook-f"></i> Facebook</a></li>
-                        <li><a href="#!" class="text-dark"><i class="fab fa-instagram"></i> Instagram</a></li>
-                        <li><a href="#!" class="text-dark"><i class="fab fa-twitter"></i> Twitter</a></li>
-                        <li><a href="#!" class="text-dark"><i class="fab fa-youtube"></i> YouTube</a></li>
-                    </ul>
-                </div>
-            </div>
+<footer class="p-footer p-footer--dark">
+    <div class="p-footer__inner">
+        <div class="p-footer__site-group-list">
+            <ul class="p-footer__site-group">
+                <li>
+                    <div class="p-footer__site-group-title">회사 정보</div>
+                </li>
+                <li class="p-footer__site-group-item"><a href="">회사 소개</a></li>
+                <li class="p-footer__site-group-item"><a href="">이용약관</a></li>
+                <li class="p-footer__site-group-item"><a href="">개인정보처리방침</a></li>
+                <li class="p-footer__site-group-item"><a href="">고객센터</a></li>
+            </ul>
+            <ul class="p-footer__site-group">
+                <li>
+                    <div class="p-footer__site-group-title">추천 기능</div>
+                </li>
+                <li class="p-footer__site-group-item"><a href="">인기 명소</a></li>
+                <li class="p-footer__site-group-item"><a href="">새로운 장소</a></li>
+                <li class="p-footer__site-group-item"><a href="">이벤트</a></li>
+                <li class="p-footer__site-group-item"><a href="">여행 팁</a></li>
+            </ul>
+            <ul class="p-footer__site-group">
+                <li>
+                    <div class="p-footer__site-group-title">커뮤니티</div>
+                </li>
+                <li class="p-footer__site-group-item"><a href="">여행 후기</a></li>
+                <li class="p-footer__site-group-item"><a href="">Q&A</a></li>
+                <li class="p-footer__site-group-item"><a href="">모임</a></li>
+                <li class="p-footer__site-group-item"><a href="">공지사항</a></li>
+            </ul>
+            <ul class="p-footer__site-group">
+                <li>
+                    <div class="p-footer__site-group-title">팔로우하기</div>
+                </li>
+                <li class="p-footer__site-group-item"><a href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+                <li class="p-footer__site-group-item"><a href="#!" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a></li>
+                <li class="p-footer__site-group-item"><a href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a></li>
+                <li class="p-footer__site-group-item"><a href="#!" aria-label="YouTube"><i class="fab fa-youtube"></i> YouTube</a></li>
+            </ul>
+        
         </div>
-        <div class="text-center p-3" style="background-color: var(--main-bg-color)">
+         
+    </div>
+   <div class="text-center p-3" style="background-color: black">
             © 2024 아이고좋아. All rights reserved.
         </div>
-    </footer>
+</footer>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <c:url var="navbarJs" value="/js/navbar.js" />

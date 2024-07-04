@@ -8,7 +8,7 @@
 }
 
 body {
-  padding: 20px;
+  padding: 0;
   background-color: var(--main-bg-color);
   color: var(--main-text-color);
   display: flex;
@@ -162,8 +162,8 @@ main {
   align-items: center; /* 수직 가운데 정렬 */
 }
 
-section {
-  min-height: 800px; /* 모든 섹션의 최소 높이 설정 */
+#main-section {
+  min-height: 800px;
 }
 
 body {
@@ -176,17 +176,19 @@ main {
   flex: 1;
 }
 
-.main-search-bar {
-  width: auto;
-}
-
 .main-search-bar select,
 .main-search-bar input,
 .main-search-bar button {
   border: none;
-  padding: 15px 20px;
+  padding: 15px 20px 15px 20px;
+}
+.main-search-bar {
+  width: 70%;
 }
 
+#search-keyword {
+  width: 50%;
+}
 .main-search-bar select {
   background-color: #f8f9fa;
   border-right: 1px solid #ced4da;
@@ -264,7 +266,12 @@ main {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
+#container .text-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 .footer-meta {
   display: flex;
   justify-content: space-between;
@@ -320,8 +327,8 @@ a .main-card-footer .bi-heart-fill {
 
 footer {
   font-family: var(--main-font);
-  background-color: var(--main-text-color);
-  color: var(--main-text-color);
+  background-color: black;
+  color: white;
 }
 
 footer a {
@@ -338,7 +345,50 @@ footer .text-center {
   padding: 1rem 0;
   background-color: var(--main-bg-color);
 }
+/* 푸터  */
+.p-footer__inner {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
 
+.p-footer__site-group-list {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.p-footer__site-group {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.p-footer__site-group-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.p-footer__site-group-item {
+  margin-bottom: 5px;
+}
+
+.p-footer__copyright {
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  background-color: black;
+}
+
+@media (max-width: 768px) {
+  .p-footer__site-group-list {
+    flex-direction: column;
+  }
+
+  .p-footer__site-group {
+    margin-bottom: 20px;
+  }
+}
 .main-custom-heart.red-color {
   color: #dc3545;
 }
@@ -409,11 +459,17 @@ footer .text-center {
   align-items: center;
 }
 
-@media (max-width: 390px) and (max-device-width: 390px) {
+@media (max-width: 390px) {
   html,
   body {
+    margin: 0;
+    padding: 0;
     overflow-x: hidden;
     width: 100%;
+  }
+  #main-section {
+    width: 155%;
+    min-height: 400px;
   }
   .main-card-body img {
     height: 100px;
@@ -437,30 +493,46 @@ footer .text-center {
   .main-custom-heart {
     font-size: 20px;
   }
-
+  .main-search-bar {
+    width: 70%;
+  }
   .main-search-bar select,
   .main-search-bar input,
   .main-search-bar button {
-    padding: 10px 15px;
+    padding: 12px 10px 12px 10px;
     font-size: 14px;
   }
 
+  #search-keyword {
+    width: 33%;
+  }
   .main-card-header h1 {
     font-size: 1.2rem;
   }
-
+  .main-card-footer {
+    padding: 0;
+    padding-top: 5%;
+  }
   .main-card-footer h3,
   .main-card-footer h5 {
     font-size: 0.9rem;
   }
 
   .main-card-footer p {
-    font-size: 0.8rem;
+    font-size: 1.1rem;
   }
 
   .username,
   .date,
   .likes {
     font-size: 0.8em;
+  }
+  footer {
+    background-color: black;
+    font-size: 12px;
+    color: white;
+  }
+  footer .container {
+    width: 100%;
   }
 }

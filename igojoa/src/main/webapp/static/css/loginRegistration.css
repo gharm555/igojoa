@@ -111,7 +111,7 @@ main {
   border: var(--bs-border-width) solid var(--bs-border-color);
   letter-spacing: 0.1em;
 }
-.formBx .form form input[type='submit'] {
+.formBx .form form input[type="submit"] {
   background-color: var(--primary-color);
   border: none;
   color: #fff;
@@ -121,7 +121,7 @@ main {
   border-radius: 5px;
   margin-top: 10px;
 }
-.formBx .signupform form input[type='submit'] {
+.formBx .signupform form input[type="submit"] {
   background-color: var(--primary-color);
 }
 .find {
@@ -174,7 +174,7 @@ main {
   color: rgba(0, 0, 0, 0.9); /* Semi-transparent icon */
 }
 
-.image-upload input[type='file'] {
+.image-upload input[type="file"] {
   display: none;
 }
 

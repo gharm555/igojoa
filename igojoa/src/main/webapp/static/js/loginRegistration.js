@@ -108,7 +108,8 @@ function login() {
   }
 
   // URL 쿼리 파라미터 읽어오는 역할
-  const target = new URLSearchParams(window.location.search).get('target') || '';
+  const target =
+    new URLSearchParams(window.location.search).get("target") || "";
 
   axios
     .post("./login", null, {
@@ -128,13 +129,12 @@ function login() {
         if (response.data.target) {
           window.location.href = response.data.target;
         } else {
-          window.location.href = contextPath + '/';
+          window.location.href = contextPath + "/";
         }
       } else {
         $loginCheckMessage.innerHTML =
-          '아이디 또는 비밀번호를 잘못 입력했습니다.<br>입력하신 내용을 다시 확인해주세요.';
-        $loginCheckMessage.style.display = 'block';
-
+          "아이디 또는 비밀번호를 잘못 입력했습니다.<br>입력하신 내용을 다시 확인해주세요.";
+        $loginCheckMessage.style.display = "block";
       }
     })
     .catch((error) => {
@@ -174,10 +174,15 @@ function register() {
     nickName: $nickName.value,
   };
 
-
-  if (!userData.userId || !userData.password || !userData.email || !userData.phoneNumber || !userData.nickName) {
-    $registerCheckMessage.textContent = '입력정보를 확인해주세요';
-    $registerCheckMessage.style.display = 'block';
+  if (
+    !userData.userId ||
+    !userData.password ||
+    !userData.email ||
+    !userData.phoneNumber ||
+    !userData.nickName
+  ) {
+    $registerCheckMessage.textContent = "입력정보를 확인해주세요";
+    $registerCheckMessage.style.display = "block";
 
     return;
   }
@@ -310,8 +315,8 @@ function validateInput(type, value) {
   }
   // 입력창 메시지 초기화
 
-  if (value === '') {
-    displayValidationMessage($messageElement, '');
+  if (value === "") {
+    displayValidationMessage($messageElement, "");
   }
 }
 // 입력창 메시지 초기화 기능
@@ -329,7 +334,6 @@ function displayValidationMessage(element, message) {
 document.querySelectorAll("#registerForm input").forEach((input) => {
   input.addEventListener("input", () => {
     $registerCheckMessage.style.display = "none";
-
   });
 });
 
@@ -652,17 +656,15 @@ $findPasswordModal.addEventListener("hidden.bs.modal", function () {
 });
 
 // Hide the register check message when the user starts typing
-document.querySelectorAll('#registerForm input').forEach((input) => {
-  input.addEventListener('input', () => {
-    $registerCheckMessage.style.display = 'none';
-
+document.querySelectorAll("#registerForm input").forEach((input) => {
+  input.addEventListener("input", () => {
+    $registerCheckMessage.style.display = "none";
   });
 });
 
 // Hide the login check message when the user starts typing
-document.querySelectorAll('#loginForm input').forEach((input) => {
-  input.addEventListener('input', () => {
-    $loginCheckMessage.style.display = 'none';
-
+document.querySelectorAll("#loginForm input").forEach((input) => {
+  input.addEventListener("input", () => {
+    $loginCheckMessage.style.display = "none";
   });
 });

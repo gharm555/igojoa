@@ -353,4 +353,22 @@ document.addEventListener("DOMContentLoaded", () => {
       $bannerToggle.innerHTML = '<i class="fas fa-chevron-down"></i> ';
     }
   }
+  function checkSession() {
+    axios
+      .get(`${contextPath}/user/checkSession`)
+      .then((response) => {
+        if (response.data.success === false) {
+          alert(response.data.message);
+          window.location.href = `${contextPath}/user/loginRegister`;
+        }
+      })
+      .catch((error) => {
+        console.error("Session check error:", error);
+      });
+  }
+
+  // 30초마다 세션 체크
+  setInterval(checkSession, 30000);
+  // 페이지 로드 시 즉시 세션 체크
+  checkSession();
 });
