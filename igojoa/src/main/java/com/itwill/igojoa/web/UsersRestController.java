@@ -31,7 +31,7 @@ public class UsersRestController {
 	private final HttpSession session;
 	private final UsersService usersService;
 
-	@GetMapping("/userRelatedInfo")
+	@GetMapping("/allInfo")
 	public ResponseEntity<Map<String, Object>> getAllUserRelatedInfo(@ModelAttribute UserSearchDto userSearchDto) {
 		String userId = (String) session.getAttribute("userId");
 
@@ -54,7 +54,7 @@ public class UsersRestController {
 		return ResponseEntity.ok(result);
 	}
 
-	@GetMapping("/FavoritePlaces")
+	@GetMapping("/favoritePlaces")
 	public ResponseEntity<List<UserFavoritePlacesDto>> searchUserFavoritePlaces(@ModelAttribute UserSearchDto userSearchDto) {
 		String userId = (String) session.getAttribute("userId");
 
@@ -67,7 +67,7 @@ public class UsersRestController {
 		return ResponseEntity.ok(searchUserFavoritePlaces);
 	}
 
-	@GetMapping("/FavoriteReviews")
+	@GetMapping("/favoriteReviews")
 	public ResponseEntity<List<UserFavoriteReviewsDto>> searchUserFavoriteReviews(@ModelAttribute UserSearchDto userSearchDto) {
 		String userId = (String) session.getAttribute("userId");
 
@@ -80,7 +80,7 @@ public class UsersRestController {
 		return ResponseEntity.ok(searchUserFavoriteReviews);
 	}
 	
-	@GetMapping("/WrittenReviews")
+	@GetMapping("/writtenReviews")
 	public ResponseEntity<List<UserWrittenReviewsDto>> searchUserWrittenReviews(@ModelAttribute UserSearchDto userSearchDto) {
 		String userId = (String) session.getAttribute("userId");
 		
@@ -92,7 +92,7 @@ public class UsersRestController {
 		return ResponseEntity.ok(searchUserWrittenReviewsDto);
 	}
 	
-	@GetMapping("/VerifiedPlaces")
+	@GetMapping("/verifiedPlaces")
 	public ResponseEntity<List<UserVerifiedPlacesDto>> searchUserVerifiedPlaces(@ModelAttribute UserSearchDto userSearchDto) {
 		String userId = (String) session.getAttribute("userId");
 		
