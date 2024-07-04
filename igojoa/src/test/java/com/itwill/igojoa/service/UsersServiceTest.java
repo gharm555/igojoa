@@ -48,7 +48,7 @@ public class UsersServiceTest {
 //    @Test
     public void getAllUserRelatedInfo() {
     	UserSearchDto userSearchDto = UserSearchDto.builder().userId("sangwontest2").build();
-    	List<UserRelatedInfoDto> userRelatedInfoDto = usersService.getAllUserRelatedInfo(userSearchDto);
+    	List<UserRelatedInfoDto> userRelatedInfoDto = usersService.getUserRelatedInfo(userSearchDto);
 		List<UserFavoritePlacesDto> userFavoritePlacesDto = usersService.getUserFavoritePlaces(userSearchDto);
 		List<UserFavoriteReviewsDto> userFavoriteReviewsDto = usersService.getUserFavoriteReviews(userSearchDto);
 		List<UserWrittenReviewsDto> userWrittenReviewsDto = usersService.getUserWrittenReviews(userSearchDto);
@@ -62,27 +62,5 @@ public class UsersServiceTest {
     	log.info("가져온정보 = {}", userRelatedInfoDto);
     }
     
-    @Test
-    public void searchUserFavoritePlaces() {
-//    	UserSearchDto searchDto = UserSearchDto.builder()
-//                .userId("sangwontest2")
-//                .searchKeyword("뮤")
-//                .startRowValue(0)
-//                .rowCnt(3)
-//                .build();
-    	
-    	UserSearchDto searchDto = UserSearchDto.builder()
-    			.userId("sangwontest2")
-    			.largeAddress("강원도")
-    			.startRowValue(0)
-    			.rowCnt(3)
-    			.build();
-        
-    	log.info("써치디티오 상태 = {}", searchDto);
-    	
-        List<UserFavoritePlacesDto> results = usersService.searchUserFavoritePlaces(searchDto);
-        
-        log.info("가져온 정보 = {}", results);
-    }
     
 }

@@ -45,4 +45,30 @@
 	<select id="selectPoints" parameterType="String" resultType="string">
 		SELECT currentsPoints FROM points WHERE userId = #{userId}
 	</select>
+	
+	<!-- 유저가 출석했는지 여부를 체크 -->
+  	<select id="hasUserLogged" resultType="UserLoggedDto" parameterType="UserPointsQueryDto">
+		SELECT
+			DATE_FORMAT(pointsGetLoseTime, '%Y.%m.%d') AS loginDate
+		FROM
+			pointsLogs
+		WHERE
+			userId = #{userId}
+			AND userActivity = '로그인'
+			AND DATE_FORMAT(pointsGetLoseTime, '%Y.%m') = #{yearMonth}  
+  </select>
+  
+  <!-- 유저가 월별 몇점을 얻고 잃었는지 체크 -->
+  <select id="totalPointsGainedLost" resultType="UserMonthlyPointsDto" parameterType="UserPointsQueryDto">
+  	<![CDATA[
+  		SELECT
+  			IFNULL(SUM(CASE WHEN points > 0 THEN points ELSE 0 END), 0) AS totalPointsGained,
+  			IFNULL(SUM(CASE WHEN points < 0 THEN points ELSE 0 END), 0) AS totalPointsLost
+  		FROM
+  			pointsLogs
+  		WHERE
+  			userId = #{userId}
+  			AND DATE_FORMAT(pointsGetLoseTime, '%Y.%m') = #{yearMonth}
+  	]]>
+  </select>
 </mapper>

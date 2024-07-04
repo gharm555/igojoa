@@ -16,7 +16,7 @@ public class UserRelatedInfoDto {
 	private String firstUrl;
 	private String createdAt;
 	private String review;
-	private String likeUserId;
-	private String nickName;
-
+//	private String likeUserId;
+//	private String nickName;
+	private String reviewAuthor;
 }

@@ -1,10 +1,14 @@
 package com.itwill.igojoa.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.itwill.igojoa.dto.points.UserLoggedDto;
+import com.itwill.igojoa.dto.points.UserMonthlyPointsDto;
+import com.itwill.igojoa.dto.points.UserPointsQueryDto;
 import com.itwill.igojoa.entity.Points;
 import com.itwill.igojoa.repository.PointsDao;
 
@@ -82,5 +86,15 @@ public class PointsService {
 
 	public String selectPoints(String userId) {
 		return pointsDao.selectPoints(userId);
+	}
+	
+	// 유저가 출석했는지 여부를 체크
+	public List<UserLoggedDto> hasUserLogged(UserPointsQueryDto userPointsQueryDto) {
+		return pointsDao.hasUserLogged(userPointsQueryDto);
+	}
+	
+	// 유저가 월별 몇 점을 얻고 잃었는지 체크
+	public UserMonthlyPointsDto totalPointsGainedLost(UserPointsQueryDto userPointsQueryDto) {
+		return pointsDao.totalPointsGainedLost(userPointsQueryDto);
 	}
 }
