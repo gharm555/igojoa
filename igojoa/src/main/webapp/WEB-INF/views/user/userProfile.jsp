@@ -215,7 +215,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 <h2 class="mb-4">내활동내역</h2>
                 <div class="search-container">
                   <select id="address-select" class="form-select" aria-label="도/광역시 선택">
-                    <option selected>도/광역시</option>
+                    <option selected value="">전체</option>
                     <option value="gyeonggi">경기도</option>
                     <option value="gangwon">강원도</option>
                     <option value="jeollabuk">전라북도</option>

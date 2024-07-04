@@ -34,7 +34,6 @@ public class UsersRestController {
 	public ResponseEntity<Map<String, Object>> getAllUserRelatedInfo(@ModelAttribute UserSearchDto userSearchDto) {
 		String userId = (String) session.getAttribute("userId");
 		
-		userId = "sangwontest2"; // 테스트코드
 		log.debug("userId = {}", userId);
 		userSearchDto.setUserId(userId);
 
@@ -58,11 +57,9 @@ public class UsersRestController {
 		return ResponseEntity.ok(result);
 	}
 	
-	@GetMapping("/searchFavoritePlaces")
+	@GetMapping("/favoritePlaces")
 	public ResponseEntity<List<UserFavoritePlacesDto>> searchUserFavoritePlaces(@ModelAttribute UserSearchDto userSearchDto) {
 		String userId = (String) session.getAttribute("userId");
-		
-		userId = "sangwontest2"; // 테스트코드
 		
 		userSearchDto.setUserId(userId);
 		
@@ -71,11 +68,9 @@ public class UsersRestController {
 		return ResponseEntity.ok(searchUserFavoritePlaces);
 	}
 	
-	@GetMapping("/searchFavoriteReviews")
+	@GetMapping("/favoriteReviews")
 	public ResponseEntity<List<UserFavoriteReviewsDto>> searchUserFavoriteReviews(@ModelAttribute UserSearchDto userSearchDto) {
 		String userId = (String) session.getAttribute("userId");
-		
-		userId = "sangwontest2"; // 테스트코드
 		
 		userSearchDto.setUserId(userId);
 		
