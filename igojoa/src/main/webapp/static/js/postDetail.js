@@ -11,7 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //(4)상세페이지 좋아요 버튼 활성화 //
   const $heartIcon = document.querySelector("#favoriteHeart");
-
+ 
+ 
   //(5)리뷰 작성 버튼 활성화 //
   const $createReviewBtn = document.querySelector("#createReviewBtn");
   
