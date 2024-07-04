@@ -11,7 +11,6 @@
 		<bind name="view" value="view" />
 		<bind name="nightView" value="nightView" />
 		<bind name="freeEntry" value="freeEntry" />
-		<bind name="userId" value="userId" />
 		<bind name="easyTransport" value="easyTransport" />
 		<bind name="iScore" value="iScore" />
 		INSERT
@@ -38,6 +37,45 @@
 		${ iScore });
 	</insert>
 
+	<update id="updateReview">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		<bind name="review" value="review" />
+		<bind name="parkingAvailable" value="parkingAvailable" />
+		<bind name="view" value="view" />
+		<bind name="nightView" value="nightView" />
+		<bind name="freeEntry" value="freeEntry" />
+		<bind name="easyTransport" value="easyTransport" />
+		<bind name="iScore" value="iScore" />
+		UPDATE
+		reviews
+		SET
+		review = '${review}',
+		parkingAvailable =
+		${parkingAvailable},
+		`view` = ${view},
+		nightView = ${nightView},
+		freeEntry = ${freeEntry},
+		easyTransport = ${easyTransport},
+		iScore =
+		${iScore}
+		WHERE
+		placeName = '${placeName}'
+		AND userId = '${userId}'
+	</update>
+
+	<delete id="deleteReview">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		DELETE
+		FROM
+		reviews
+		WHERE
+		placeName = '${placeName}'
+		AND userId =
+		'${userId}'
+	</delete>
+
 	<select id="selectPlaceReviews" parameterType="ReviewSelectDto"
 		resultType="ReviewListDto">
 		<bind name="placeName" value="placeName" />
@@ -47,33 +85,37 @@
 		<bind name="rowCnt" value="rowCnt" />
 		SELECT
 		u.nickName ,
-        r.review ,
-        r.modifiedAt ,
-        r.parkingAvailable ,
-        r.`view` ,
-        r.nightView ,
-        r.freeEntry ,
-        r.easyTransport ,
-        r.iScore,
-        COALESCE(rl.cntLike, 0) AS cntLike,
-        COALESCE(myLike.myLike, 0) AS myLike,
-        u.userProfileUrl
+		r.review ,
+		r.modifiedAt ,
+		r.parkingAvailable ,
+		r.`view` ,
+		r.nightView ,
+		r.freeEntry ,
+		r.easyTransport ,
+		r.iScore,
+		COALESCE(rl.cntLike, 0) AS cntLike,
+		COALESCE(myLike.myLike, 0) AS
+		myLike,
+		u.userProfileUrl
 		FROM
 		reviews r
 		LEFT JOIN (
 		SELECT
 		rl.placeName ,
 		rl.userId ,
-		COUNT(*) AS cntLike
+		COUNT(*) AS
+		cntLike
 		FROM
 		reviewLikes rl
 		WHERE
-		rl.placeName = '${ placeName }'
+		rl.placeName = '${
+		placeName }'
 		GROUP BY
 		rl.placeName ,
 		rl.userId ) rl
 		ON
-		rl.placeName = r.placeName
+		rl.placeName =
+		r.placeName
 		and rl.userId
 		= r.userId
 		LEFT JOIN (
@@ -85,7 +127,8 @@
 		FROM
 		reviewLikes rl
 		WHERE
-		rl.placeName = '${ placeName }'
+		rl.placeName = '${ placeName
+		}'
 		AND rl.likeUserId =
 		'${
 		userId }'
@@ -97,7 +140,8 @@
 		ON
 		myLike.placeName =
 		r.placeName
-		AND myLike.userId = r.userId
+		AND myLike.userId
+		= r.userId
 		LEFT JOIN
 		users u
 		ON
@@ -128,4 +172,31 @@
 		LIMIT ${ startRowValue }, ${ rowCnt }
 	</select>
 
+	<insert id="clickReviewLike">
+		<bind name="userId" value="userId" />
+		<bind name="placeName" value="placeName" />
+		<bind name="likeUserId" value="likeUserId" />
+		INSERT
+		INTO
+		reviewLikes (userId,
+		placeName,
+		likeUserId)
+		values('${userId}',
+		'${placeName}',
+		'${likeUserId}')
+	</insert>
+
+	<delete id="deleteReviewLike">
+		<bind name="userId" value="userId" />
+		<bind name="placeName" value="placeName" />
+		<bind name="likeUserId" value="likeUserId" />
+		DELETE
+		FROM
+		reviewLikes
+		WHERE
+		userId = '${userId}'
+		AND placeName =
+		'${placeName}'
+		AND likeUserId = '${likeUserId}'
+	</delete>
 </mapper>

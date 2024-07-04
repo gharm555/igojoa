@@ -63,11 +63,11 @@
 		GROUP BY
 		p.placeName
 		<if test='sortKey.equals("iScore") and sortValue == 1'>
-			ORDER BY ps.iScore ASC, userFavorite DESC ,
+			ORDER BY ps.iScore DESC, userFavorite DESC ,
 			ps.placeVerified DESC
 		</if>
 		<if test='sortKey.equals("iScore") and sortValue == 0'>
-			ORDER BY ps.iScore DESC, userFavorite DESC ,
+			ORDER BY ps.iScore ASC, userFavorite DESC ,
 			ps.placeVerified DESC
 		</if>
 		<if test='sortKey.equals("placeVerified") and sortValue == 1'>

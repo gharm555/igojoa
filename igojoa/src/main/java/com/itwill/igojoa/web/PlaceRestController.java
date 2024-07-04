@@ -51,7 +51,7 @@ public class PlaceRestController {
 	public ResponseEntity<Integer> clickHeart(@RequestBody String placeName) {
 		log.debug("\n\n" + placeName + "\n\n");
 		String userId = (String) session.getAttribute("userId");
-		if (!userId.isEmpty()) {
+		if (userId != null) {
 			int sessionCheck = usersService.sessionTorF(userId);
 			if (sessionCheck == 0) {
 
@@ -76,7 +76,7 @@ public class PlaceRestController {
 	public ResponseEntity<Integer> deleteHeart(@PathVariable String placeName) {
 		log.debug("\n\n" + placeName + "\n\n");
 		String userId = (String) session.getAttribute("userId");
-		if (!userId.isEmpty()) {
+		if (userId != null) {
 			int sessionCheck = usersService.sessionTorF(userId);
 			if (sessionCheck == 0) {
 
@@ -86,7 +86,6 @@ public class PlaceRestController {
 			return ResponseEntity.ok(0);
 		}
 		PlacesFavoriteDto placesFavoriteDto = PlacesFavoriteDto.builder().placeName(placeName).userId(userId).build();
-		System.out.println(placesFavoriteDto);
 		int res = placeService.deleteHeart(placesFavoriteDto);
 		if (res == 1) {
 
