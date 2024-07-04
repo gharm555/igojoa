@@ -394,13 +394,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     calendar = new FullCalendar.Calendar($calendarEl, {
       initialView: 'dayGridMonth',
-      buttonText: {
-        today: '오늘',
-      },
       headerToolbar: {
-        left: 'prev,next today',
+        left: 'prev',
         center: 'title',
-        right: '',
+        right: 'next today'
+      },
+      buttonText: {
+        today: '오늘'
       },
       locale: 'ko',
       events: dailyTotals,
@@ -414,10 +414,6 @@ document.addEventListener('DOMContentLoaded', function () {
       },
       datesSet: function (info) {
         updatePointHistory(info.start);
-        const $todayButton = document.querySelector('.fc-today-button');
-        if ($todayButton) {
-          $todayButton.disabled = false;
-        }
       },
       height: 'auto',
     });
@@ -702,9 +698,13 @@ let sortOrder = {
   writtenReview: 'desc',
   verifiedPlace: 'desc',
 };
-// 초기 데이터 불러오기
+
 $userActivityTab.addEventListener('click', () => {
-  readData('total');
+  if (currentTab !== 'total') {
+    resetActivityTab();
+  } else {
+    readData('total');
+  }
 });
 
 // 데이터 가져오기
@@ -729,7 +729,8 @@ function readData(tab) {
         largeAddress: $addressSelect.value,
         calendarMin: startDate,
         calendarMax: endDate,
-        //TODO: 무한스크롤
+        startRowValue: 0,
+        rowCnt: 5
       },
     })
     .then((response) => {
@@ -914,14 +915,21 @@ function reverseData(tab) {
     verifiedPlace: activityData,
   };
 
-  // 현재 탭 데이터 역순 정렬
-  dataArrayMap[tab].reverse();
+  // 데이터 존재 여부 확인
+  if (dataArrayMap[tab] && Array.isArray(dataArrayMap[tab])) {
+    // 현재 탭 데이터 역순 정렬
+    dataArrayMap[tab].reverse();
 
-  // 정렬 순서 토글
-  sortOrder[tab] = sortOrder[tab] === 'asc' ? 'desc' : 'asc';
+    // 정렬 순서 토글
+    sortOrder[tab] = sortOrder[tab] === 'asc' ? 'desc' : 'asc';
 
-  // 역순 정렬된 데이터 다시 표시
-  displayActivityInfo(activityData, tab);
+    // 역순 정렬된 데이터 다시 표시
+    displayActivityInfo(activityData, tab);
+  } else {
+    console.log(`No data available for tab: ${tab}`);
+    // 데이터가 없을 때의 처리 (예: 빈 상태 표시)
+    displayActivityInfo({ [tab]: [] }, tab);
+  }
 }
 
 function resetSortOrder() {
@@ -951,3 +959,22 @@ function sortDataDesc() {
     activityData.userVerifiedPlaces.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   }
 }
+
+// 새로운 함수: 활동 내역 탭 초기화
+function resetActivityTab() {
+  currentTab = 'total';
+  $searchInput.value = '';
+  $addressSelect.value = '';
+  startDate = '';
+  endDate = '';
+  document.querySelector('#date-range').value = '';
+  
+  // 전체 탭 활성화
+  document.querySelector('#nav-total-tab').click();
+  
+  // 데이터 초기화 및 재로드
+  resetSortOrder();
+  readData('total');
+}
+
+// 포인트 내역 탭

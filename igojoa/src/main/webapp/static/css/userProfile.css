@@ -307,6 +307,7 @@ h2 {
 
 #calendar .fc-toolbar-title {
   font-size: 1.2em;
+  padding: 0;
 }
 
 #calendar .fc-button {
@@ -534,4 +535,85 @@ h2 {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #3a5a8a;
+}
+
+.fc {
+  font-family: 'Noto Sans KR', sans-serif;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.fc-header-toolbar {
+  background-color: #f8f9fa;
+  padding: 20px;
+}
+
+.fc-toolbar-title {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: #333;
+}
+
+.fc-button-primary {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: #333 !important;
+  font-size: 1.2em;
+  transition: color 0.3s ease;
+}
+
+.fc-button-primary:hover {
+  color: #007bff !important;
+}
+
+.fc-today-button {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+  color: white !important;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.fc-today-button:hover {
+  background-color: #0056b3 !important;
+  border-color: #0056b3 !important;
+}
+
+.fc-day-today {
+  background-color: #e6f2ff !important;
+}
+
+.fc-daygrid-day-number {
+  font-size: 1em;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.fc-event {
+  border-radius: 4px;
+  font-size: 0.9em;
+  padding: 2px 4px;
+}
+
+.fc-event-positive {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.fc-event-negative {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .fc-toolbar-title {
+    font-size: 1.4em;
+  }
+  
+  .fc-button-primary {
+    font-size: 1em;
+  }
 }
