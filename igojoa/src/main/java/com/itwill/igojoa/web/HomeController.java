@@ -65,7 +65,6 @@ public class HomeController {
 
 		return "home";
 	}
-	
 
 	@PostMapping("/game")
 	public ResponseEntity<String> game(@RequestBody LottoDto lottoDto) {

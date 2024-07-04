@@ -7,15 +7,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.itwill.igojoa.dto.place.PlaceSearchDto;
 import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
 import com.itwill.igojoa.dto.review.ReviewDto;
 import com.itwill.igojoa.dto.review.ReviewLikeDto;
@@ -70,7 +67,6 @@ public class ReviewRestController {
 	public ResponseEntity<?> updateReview(@PathVariable String placeName, @RequestBody ReviewDto reviewDto) {
 		log.debug("\n\n" + reviewDto.toString() + "\n\n");
 		String userId = (String) session.getAttribute("userId");
-		userId = "ohjinho0421"; // 테스트 코드
 		if (userId != null) {
 			int sessionCheck = usersService.sessionTorF(userId);
 			if (sessionCheck == 0) {
@@ -96,7 +92,6 @@ public class ReviewRestController {
 	@DeleteMapping("/deleteReview")
 	public ResponseEntity<?> deleteReview(@PathVariable String placeName) {
 		String userId = (String) session.getAttribute("userId");
-		userId = "ohjinho0421"; // 테스트 코드
 		if (userId != null) {
 			int sessionCheck = usersService.sessionTorF(userId);
 			if (sessionCheck == 0) {
@@ -134,7 +129,6 @@ public class ReviewRestController {
 	@PutMapping("/clickReviewLike")
 	public ResponseEntity<Integer> clickReviewLike(@PathVariable String placeName, @RequestBody String userId) {
 		String likeUserId = (String) session.getAttribute("userId");
-		likeUserId = "ohjinho0421"; // 테스트 코드
 		if (likeUserId == null) {
 			return ResponseEntity.ok(0);
 		}
@@ -150,7 +144,6 @@ public class ReviewRestController {
 			@RequestParam("userId") String userId) {
 		log.debug("\n\n" + placeName + "\n\n");
 		String likeUserId = (String) session.getAttribute("userId");
-		likeUserId = "ohjinho0421"; // 테스트 코드
 		if (likeUserId == null) {
 			return ResponseEntity.ok(0);
 		}
