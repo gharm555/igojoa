@@ -284,15 +284,17 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   rows="4"
                   placeholder="리뷰를 작성해주세요"
                 >${ pd.review }</textarea>
-                  <c:choose>
-                    <c:when test="${empty pd.review}">
-                      <button id="createReviewBtn" type="submit" class="btn btn-primary">작성완료</button>
-                    </c:when>
-                   <c:otherwise>
-                      <button id="updateReviewBtn" type="button" class="btn btn-warning">수정하기</button>
-                      <button id="deleteReviewBtn" type="button" class="btn btn-danger">삭제하기</button>
-                    </c:otherwise>
-                  </c:choose>
+                  <div id="reviewButtonsContainer">
+  <c:choose>
+    <c:when test="${empty pd.review}">
+      <button id="createReviewBtn" type="button" class="btn btn-primary">작성완료</button>
+    </c:when>
+    <c:otherwise>
+      <button id="updateReviewBtn" type="button" class="btn btn-warning">수정하기</button>
+      <button id="deleteReviewBtn" type="button" class="btn btn-danger">삭제하기</button>
+    </c:otherwise>
+  </c:choose>
+</div>
               </form>
             </div>
           </div>
@@ -398,7 +400,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <script src="${navbarJsUrl}"></script>
     <script src="${postDetailJsUrl}"></script>
     <script>
-      const LoginUserId = "${userId}";
+      const LoginUserId = "${userNickname}";
     </script>
   </body>
 </html>
