@@ -364,7 +364,7 @@
         			AND DATE_FORMAT(placeVerified.verifiedTime, '%Y.%m.%d') = #{calendarMin}
         		</when>
         	</choose>
-    ORDER BY createdAt
+    ORDER BY createdAt DESC
     
     <if test="startRowValue != null and rowCnt != null">
         LIMIT #{startRowValue}, #{rowCnt}
