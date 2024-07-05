@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function scrollToSection(sectionId) {
       const section = document.getElementById(sectionId);
       if (section) {
-        section.scrollIntoView({ behavior: "smooth", block: "center" });
+        section.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
     }
 
@@ -116,24 +116,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function toggleBanner() {
-    const $bannerContainer = document.querySelector(".banner-container");
-    const $bannerToggle = document.querySelector(".banner-toggle");
-    const $main = document.querySelector("main");
-
-    if ($bannerContainer && $bannerToggle && $main) {
-      const isOpen = $bannerContainer.classList.toggle("open");
-      $bannerToggle.innerHTML = isOpen
-        ? '<i class="fas fa-chevron-up"></i> '
-        : '<i class="fas fa-chevron-down"></i> ';
-
-      setTimeout(() => {
-        const bannerHeight = isOpen ? $bannerContainer.scrollHeight : 0;
-        $main.style.marginTop = `${134 + bannerHeight}px`;
-      }, 300);
-    }
-  }
-
   function handleDocumentClick(event) {
     const $userProfile = document.querySelector(".userProfile");
     const $dropdownMenu = document.querySelector(".dropdown-menu");
@@ -141,32 +123,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if ($userProfile && $dropdownMenu && !$userProfile.contains(event.target)) {
       $dropdownMenu.classList.remove("show");
       $userProfile.classList.remove("show");
-    }
-  }
-
-  function updateMainMargin() {
-    const $bannerContainer = document.querySelector(".banner-container");
-    const $main = document.querySelector("main");
-    if ($bannerContainer && $main) {
-      const bannerHeight = $bannerContainer.classList.contains("open")
-        ? $bannerContainer.scrollHeight
-        : 0;
-      $main.style.marginTop = `${134 + bannerHeight}px`;
-    }
-  }
-
-  function closeBannerOnScroll() {
-    const $bannerContainer = document.querySelector(".banner-container");
-    const $bannerToggle = document.querySelector(".banner-toggle");
-
-    if (
-      $bannerContainer &&
-      $bannerToggle &&
-      $bannerContainer.classList.contains("open")
-    ) {
-      $bannerContainer.classList.remove("open");
-      $bannerToggle.innerHTML = '<i class="fas fa-chevron-down"></i> ';
-      setTimeout(updateMainMargin, 300);
     }
   }
 

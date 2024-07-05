@@ -668,3 +668,57 @@ document.querySelectorAll("#loginForm input").forEach((input) => {
     $loginCheckMessage.style.display = "none";
   });
 });
+// 반응형 테스트
+document.addEventListener("DOMContentLoaded", function () {
+  const signinForm = document.querySelector(".signinform");
+  const signupForm = document.querySelector(".signupform");
+  function createSwitchFormButton(text, buttonText) {
+    const container = document.createElement("div");
+    container.classList.add("switch-form-container");
+
+    const switchText = document.createElement("span");
+    switchText.textContent = text;
+    switchText.classList.add("switch-form-text");
+
+    const switchBtn = document.createElement("button");
+    switchBtn.textContent = buttonText;
+    switchBtn.classList.add("switch-form-btn");
+
+    container.appendChild(switchText);
+    container.appendChild(switchBtn);
+
+    return { container, switchBtn };
+  }
+
+  const { container: signupContainer, switchBtn: switchToSignup } =
+    createSwitchFormButton("계정이 없으신가요?", "회원가입");
+  const { container: signinContainer, switchBtn: switchToSignin } =
+    createSwitchFormButton("계정이 이미 있으신가요?", "로그인");
+
+  function toggleForm() {
+    signinForm.classList.toggle("active");
+    signupForm.classList.toggle("active");
+  }
+
+  switchToSignup.addEventListener("click", toggleForm);
+  switchToSignin.addEventListener("click", toggleForm);
+
+  function updateFormLayout() {
+    if (window.innerWidth <= 390) {
+      if (!signinForm.contains(signupContainer)) {
+        signinForm.appendChild(signupContainer);
+        signupForm.appendChild(signinContainer);
+      }
+      signinForm.classList.add("active");
+      signupForm.classList.remove("active");
+    } else {
+      signupContainer.remove();
+      signinContainer.remove();
+      signinForm.classList.remove("active");
+      signupForm.classList.remove("active");
+    }
+  }
+
+  updateFormLayout();
+  window.addEventListener("resize", updateFormLayout);
+});

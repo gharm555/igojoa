@@ -50,18 +50,18 @@
             id="banner-inner"
             class="carousel slide"
             data-bs-ride="carousel"
-            data-bs-interval="3000"
+            data-bs-interval="5000"
             data-bs-pause="false"
           >
             <div class="carousel-inner">
               <div class="carousel-item active">
-                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png" class="w-100" alt="..." />
+                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png"  alt="..." />
               </div>
               <div class="carousel-item">
-                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png" class="w-100" alt="..." />
+                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png"  alt="..." />
               </div>
               <div class="carousel-item">
-                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png" class="w-100" alt="..." />
+                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png"  alt="..." />
               </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#banner-inner" data-bs-slide="prev">

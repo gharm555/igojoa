@@ -328,98 +328,94 @@ if (cardContainer) {
   });
 }
 
-// 배너 버튼
-const $bannerToggle = document.querySelector("#banner-toggle");
-$bannerToggle.addEventListener("click", toggleBanner);
-function toggleBanner() {
+function initializeBanner() {
+  const $bannerToggle = document.querySelector("#banner-toggle");
   const $bannerContainer = document.querySelector(".banner-container");
-  const $bannerToggle = document.querySelector(".banner-toggle");
-  const $main = document.querySelector("main"); // main 요소 선택
+  const $bannerToggleContainer = document.querySelector(
+    ".banner-toggle-container"
+  );
+  const $main = document.querySelector("main");
+  const $navbar = document.querySelector("nav");
 
-  const isOpen = $bannerContainer.classList.toggle("open");
-
-  if (isOpen) {
-    const bannerHeight = $bannerContainer.scrollHeight;
-    $main.style.marginTop = `${134 + bannerHeight}px`;
-    $bannerToggle.innerHTML = '<i class="fas fa-chevron-up"></i> ';
-  } else {
-    $main.style.marginTop = "134px"; // 기본 네비게이션 바와 토글 버튼 높이
-    $bannerToggle.innerHTML = '<i class="fas fa-chevron-down"></i> ';
+  // 필요한 요소들이 모두 존재하는지 확인
+  if (
+    !$bannerToggle ||
+    !$bannerContainer ||
+    !$bannerToggleContainer ||
+    !$main ||
+    !$navbar
+  ) {
+    console.error(
+      "Banner initialization failed: One or more required elements not found."
+    );
+    return;
   }
+
+  // 배너 높이를 동적으로 계산
+  const bannerHeight = $bannerContainer.scrollHeight;
+  const bannerToggleContainerHeight = $bannerToggleContainer.offsetHeight;
+
+  function updateBanner(isOpen) {
+    const navbarHeight = $navbar.offsetHeight;
+    if (isOpen) {
+      $main.style.marginTop = `${
+        navbarHeight + bannerHeight + bannerToggleContainerHeight
+      }px`;
+      $bannerContainer.style.height = `${bannerHeight}px`;
+    } else {
+      $main.style.marginTop = `${navbarHeight + bannerToggleContainerHeight}px`;
+      $bannerContainer.style.height = "0px";
+    }
+
+    $bannerToggle.innerHTML = isOpen
+      ? '<i class="fas fa-chevron-up"></i>'
+      : '<i class="fas fa-chevron-down"></i>';
+
+    $bannerContainer.classList.toggle("open", isOpen);
+  }
+
+  function toggleBanner() {
+    const isOpen = !$bannerContainer.classList.contains("open");
+    updateBanner(isOpen);
+  }
+
+  function closeBannerOnScroll() {
+    if ($bannerContainer.classList.contains("open")) {
+      updateBanner(false);
+    }
+  }
+
+  $bannerToggle.addEventListener("click", toggleBanner);
   window.addEventListener("scroll", closeBannerOnScroll, { passive: true });
 
-  // 문서 전체 클릭 이벤트 리스너 추가
-  document.addEventListener("click", function (event) {
-    const $userProfile = document.querySelector(".userProfile");
-    const $dropdownMenu = document.querySelector(".dropdown-menu");
-    if (!$userProfile.contains(event.target)) {
-      $dropdownMenu.classList.remove("show");
-      $userProfile.classList.remove("show");
-    }
-  });
+  // 초기 상태 설정
+  updateBanner(false);
 
-  // 페이지 로드 시 배너 상태 초기화
-  document.addEventListener("DOMContentLoaded", function () {
-    const bannerToggle = document.querySelector(".banner-toggle");
-    bannerToggle.innerHTML = '<i class="fas fa-chevron-down"></i> ';
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    const goToTopButton = document.getElementById("goToTop");
-
-    goToTopButton.addEventListener("click", function (e) {
-      e.preventDefault(); // 기본 링크 동작 방지
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth", // 부드러운 스크롤 효과
-      });
-    });
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    window.scrollTo(0, 0);
-  });
-
-  // 메인 위치 원상태로
-  function updateMainMargin() {
-    const $bannerContainer = document.querySelector(".banner-container");
-    const $main = document.querySelector("main"); // main 요소 선택
-
-    if ($bannerContainer.classList.contains("open")) {
-      const bannerHeight = $bannerContainer.scrollHeight;
-      $main.style.marginTop = `${134 + bannerHeight}px`;
-    } else {
-      $main.style.marginTop = "134px"; // 기본 네비게이션 바와 토글 버튼 높이
-    }
-  }
-  //  스크롤 시 배너 접힘
   function closeBannerOnScroll() {
-    const $bannerContainer = document.querySelector(".banner-container");
-    const $bannerToggle = document.querySelector(".banner-toggle");
-
     if ($bannerContainer.classList.contains("open")) {
-      $bannerContainer.classList.remove("open");
-      $bannerToggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
-      setTimeout(updateMainMargin, 300); // CSS transition 시간과 일치시킴
-      $bannerToggle.innerHTML = '<i class="fas fa-chevron-down"></i> ';
+      updateBanner(false);
     }
   }
-  function checkSession() {
-    axios
-      .get(`${contextPath}/user/checkSession`)
-      .then((response) => {
-        if (response.data.success === false) {
-          alert(response.data.message);
-          window.location.href = `${contextPath}/user/loginRegister`;
-        }
-      })
-      .catch((error) => {
-        console.error("Session check error:", error);
-      });
-  }
-
-  // 30초마다 세션 체크
-  setInterval(checkSession, 30000);
-  // 페이지 로드 시 즉시 세션 체크
-  checkSession();
+  window.addEventListener("scroll", closeBannerOnScroll, { passive: true });
 }
+
+// DOMContentLoaded 이벤트 리스너에서 initializeBanner 함수 호출
+document.addEventListener("DOMContentLoaded", initializeBanner);
+
+function checkSession() {
+  axios
+    .get(`${contextPath}/user/checkSession`)
+    .then((response) => {
+      if (response.data.success === false) {
+        alert(response.data.message);
+        window.location.href = `${contextPath}/user/loginRegister`;
+      }
+    })
+    .catch((error) => {
+      console.error("Session check error:", error);
+    });
+}
+// 30초마다 세션 체크
+setInterval(checkSession, 30000);
+// 페이지 로드 시 즉시 세션 체크
+checkSession();
