@@ -679,40 +679,37 @@ datePicker = flatpickr('#date-range', {
     wrapper.appendChild(setDateButton);
   },
 });
-// 오늘 날짜를 YYYY.MM.DD 형식으로 반환하는 함수
-function formatDate(date) {
-  const offset = date.getTimezoneOffset();
-  const adjustedDate = new Date(date.getTime() - offset * 60 * 1000);
-  const year = adjustedDate.getFullYear();
-  const month = String(adjustedDate.getMonth() + 1).padStart(2, '0');
-  const day = String(adjustedDate.getDate()).padStart(2, '0');
-  return `${year}.${month}.${day}`;
-}
+
 
 let calendar;
-let pointHistory = [];
+let currentMonth;
+let selectedDate;
+let previousSelectedCell;
+let attendanceDates = []; // 출석 날짜를 저장할 배열
 
-// DOM이 로드된 후 실행
-document.addEventListener('DOMContentLoaded', () => {
-  const $userPointTab = document.querySelector('#v-pills-messages');
-  $userPointTab.addEventListener('click', initializePointTab);
-});
+const $userPointTab = document.querySelector('#v-pills-messages-tab');
+$userPointTab.addEventListener('click', initializePointTab);
 
 function initializePointTab() {
-  // 포인트 내역 데이터 초기화 (실제로는 서버에서 가져와야 함)
-  pointHistory = [
-    { date: '2024-06-25', content: '게시글 작성', points: 100 },
-    { date: '2024-06-24', content: '댓글 작성', points: 50 },
-    { date: '2024-06-27', content: '포인트 사용', points: -200 },
-    { date: '2024-06-29', content: '이벤트 참여', points: 500 },
-    { date: '2024-06-29', content: '이벤트 참여', points: 500 },
-    { date: '2024-06-29', content: '상품 구매', points: -1000 },
-    { date: '2024-06-29', content: '리뷰 작성', points: 200 },
-    { date: '2024-06-26', content: '출석 체크', points: 10 },
-  ];
+  selectedDate = new Date();
+  currentMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+  fetchAttendanceData(currentMonth).then(() => {
+    initializeCalendar();
+    updatePointHistoryForDate(selectedDate);
+  });
+}
 
-  initializeCalendar();
-  updatePointHistoryForAllPeriod();
+function fetchAttendanceData(date) {
+  const yearMonth = formatYearMonth(date);
+  return axios.get(contextPath + '/userLogged', {
+    params: { yearMonth: yearMonth }
+  })
+  .then(function(response) {
+    attendanceDates = response.data.map(item => new Date(item.loginDate));
+  })
+  .catch(function(error) {
+    console.error('Error fetching attendance data:', error);
+  });
 }
 
 function initializeCalendar() {
@@ -729,98 +726,146 @@ function initializeCalendar() {
   calendar = new FullCalendar.Calendar($calendarEl, {
     initialView: 'dayGridMonth',
     headerToolbar: {
-      left: 'prev,next today',
+      left: 'prev,next',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay',
+      right: 'today',
     },
     buttonText: {
       today: '오늘',
-      month: '월',
-      week: '주',
-      day: '일',
     },
     locale: 'ko',
-    events: getCalendarEvents(),
-    eventClick: function (info) {
-      const clickedDate = info.event.start;
-      updatePointHistoryForDate(clickedDate);
+    dayCellContent: function(arg) {
+      let html = arg.dayNumberText;
+      if (isAttendanceDay(arg.date)) {
+        html += '<i class="fas fa-check-circle attendance-icon"></i>';
+      }
+      return { html: html };
+    },
+    dateClick: function(info) {
+      selectedDate = info.date;
+      updatePointHistoryForDate(selectedDate);
+      highlightSelectedDate(info.dayEl, info.date);
     },
     datesSet: function (info) {
-      updatePointHistoryForMonth(info.start);
+      currentMonth = info.view.currentStart;
+      fetchAttendanceData(currentMonth).then(() => {
+        calendar.render();
+        updatePointSummaryForMonth(currentMonth);
+      });
     },
+    dayCellDidMount: function(info) {
+      const today = new Date();
+      if (info.date.toDateString() === today.toDateString()) {
+        info.el.style.backgroundColor = '#4a86e8';
+        info.el.style.color = 'white';
+        info.el.style.fontWeight = 'bold';
+      }
+      if (selectedDate && info.date.toDateString() === selectedDate.toDateString()) {
+        highlightSelectedDate(info.el, info.date);
+      }
+    }
   });
 
   calendar.render();
 
-  // 오늘 버튼 이벤트 리스너 추가
   const todayButton = document.querySelector('.fc-today-button');
   if (todayButton) {
     todayButton.addEventListener('click', () => {
-      const today = new Date();
-      updatePointHistoryForDate(today);
+      selectedDate = new Date();
+      currentMonth = calendar.view.currentStart;
+      updatePointHistoryForDate(selectedDate);
+      updatePointSummaryForMonth(currentMonth);
+      highlightSelectedDate(null, selectedDate);
     });
   }
 }
 
-function getCalendarEvents() {
-  return pointHistory.map((item) => ({
-    title: `${item.points > 0 ? '+' : ''}${item.points}P`,
-    start: item.date,
-    allDay: true,
-    backgroundColor: item.points > 0 ? '#28a745' : '#dc3545',
-    borderColor: item.points > 0 ? '#28a745' : '#dc3545',
-    textColor: '#ffffff',
-  }));
+function isAttendanceDay(date) {
+  return attendanceDates.some(attendanceDate => 
+    attendanceDate.toDateString() === date.toDateString()
+  );
+}
+
+function highlightSelectedDate(cellEl, date) {
+  if (previousSelectedCell) {
+    previousSelectedCell.style.backgroundColor = '';
+    previousSelectedCell.style.fontWeight = 'normal';
+  }
+
+  const newSelectedCell = cellEl || calendar.getDate(date).dayEl;
+
+  const today = new Date();
+  const isToday = date.toDateString() === today.toDateString();
+
+  if (newSelectedCell) {
+    if (isToday) {
+      newSelectedCell.style.backgroundColor = '#4a86e8';
+      newSelectedCell.style.color = 'white';
+    } else {
+      newSelectedCell.style.backgroundColor = '#e6f2ff';
+    }
+    newSelectedCell.style.fontWeight = 'bold';
+    previousSelectedCell = newSelectedCell;
+  }
 }
 
 function updatePointHistoryForDate(date) {
   const formattedDate = formatDate(date);
-  const filteredHistory = pointHistory.filter((item) => item.date === formattedDate);
-  updatePointHistoryTable(filteredHistory);
-}
-
-function updatePointHistoryForMonth(date) {
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  const filteredHistory = pointHistory.filter((item) => {
-    const itemDate = new Date(item.date);
-    return itemDate.getFullYear() === year && itemDate.getMonth() === month;
+  axios.get(contextPath + '/pointsLogs', {
+    params: { yearMonthDay: formattedDate }
+  })
+  .then(function(response) {
+    updatePointHistoryTable(response.data);
+    if (calendar) {
+      calendar.render();
+    }
+  })
+  .catch(function(error) {
+    console.error('Error updating point history for date:', error);
   });
-  updatePointHistoryTable(filteredHistory);
 }
 
-function updatePointHistoryForAllPeriod() {
-  updatePointHistoryTable(pointHistory);
+function updatePointSummaryForMonth(date) {
+  const yearMonth = formatYearMonth(date);
+  axios.get(contextPath + '/pointsStats', {
+    params: { yearMonth: yearMonth }
+  })
+  .then(function(response) {
+    const { totalPointsGained, totalPointsLost } = response.data;
+    console.log(response.data);
+    document.querySelector('#earnedPoints').textContent = totalPointsGained;
+    document.querySelector('#spentPoints').textContent = Math.abs(totalPointsLost);
+  })
+  .catch(function(error) {
+    console.error('Error updating points display:', error);
+  });
 }
 
 function updatePointHistoryTable(history) {
   const $table = document.querySelector('#pointHistoryTable tbody');
   $table.innerHTML = '';
 
-  let earnedPoints = 0;
-  let spentPoints = 0;
-
-  history.forEach((item) => {
-    const row = $table.insertRow();
-    row.insertCell(0).textContent = item.date;
-    row.insertCell(1).textContent = item.content;
-    row.insertCell(2).textContent = item.points;
-
-    if (item.points > 0) {
-      earnedPoints += item.points;
-    } else {
-      spentPoints += Math.abs(item.points);
-    }
-  });
-
-  updatePointsDisplay(earnedPoints, spentPoints);
-}
-
-function updatePointsDisplay(earned, spent) {
-  document.querySelector('#earnedPoints').textContent = earned;
-  document.querySelector('#spentPoints').textContent = spent;
+  if (history.length === 0) {
+    $table.innerHTML = '<tr><td colspan="3" class="text-center">선택된 날짜의 내역이 없습니다.</td></tr>';
+  } else {
+    history.forEach(function(item) {
+      const row = $table.insertRow();
+      row.insertCell(0).textContent = formatDate(new Date(item.pointsGetLoseTime));
+      row.insertCell(1).textContent = item.userActivity;
+      row.insertCell(2).textContent = item.points;
+    });
+  }
 }
 
 function formatDate(date) {
-  return date.toISOString().split('T')[0];
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}.${month}.${day}`;
+}
+
+function formatYearMonth(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  return `${year}.${month}`;
 }

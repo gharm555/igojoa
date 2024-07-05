@@ -11,6 +11,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <c:url var="cssResetCss" value="/css/cssReset.css" />
     <link rel="stylesheet" href="${cssResetCss}" />
@@ -18,7 +19,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <link rel="stylesheet" href="${userProfileCss}" />
     <c:url var="navbarCss" value="/css/navbar.css" />
     <link rel="stylesheet" href="${navbarCss}" />
-
+    
     <title>내정보</title>
   </head>
   <body>
