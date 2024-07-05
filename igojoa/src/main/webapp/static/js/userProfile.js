@@ -869,3 +869,38 @@ function formatYearMonth(date) {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   return `${year}.${month}`;
 }
+
+// 유저 프로필 이미지 변경 변수 -------->
+const $profileImage = document.querySelector("#profileImage");
+const $$profileImage = document.querySelectorAll(".profileImage");
+const $profileImageInput = document.querySelector("#profileImageInput");
+// <-------------- 유저 프로필 이미지 변경 변수
+
+// 유저 프로필 이미지 변경
+$profileImage.addEventListener("click", function () {
+  $profileImageInput.click();
+});
+
+$profileImageInput.addEventListener("change", function () {
+  const file = event.target.files[0];
+  if (file) {
+      const formData = new FormData();
+      formData.append("newImage", file);
+
+      // 서버로 put 요청 보내기
+      axios
+          .put(contextPath + "/profileImage", formData, {
+              headers: {
+                  "Content-Type": "multipart/form-data",
+              },
+          })
+          .then((response) => {
+              $$profileImage.forEach(($$profileImage) => {
+                  $$profileImage.src = response.data;
+              });
+          })
+          .catch((error) => {
+              alert("프로필 이미지 변경 중 오류가 발생했습니다.");
+          });
+  }
+});
