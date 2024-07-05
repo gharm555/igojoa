@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class UserPointsQueryDto {
 	private String userId;
 	private String yearMonth;
+	private String yearMonthDay;
 }

@@ -7,11 +7,12 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itwill.igojoa.dto.points.UserLoggedDto;
-import com.itwill.igojoa.dto.points.UserMonthlyPointsDto;
+import com.itwill.igojoa.dto.points.UserPointsDto;
 import com.itwill.igojoa.dto.points.UserPointsQueryDto;
 import com.itwill.igojoa.dto.users.UserFavoritePlacesDto;
 import com.itwill.igojoa.dto.users.UserFavoriteReviewsDto;
@@ -19,7 +20,6 @@ import com.itwill.igojoa.dto.users.UserRelatedInfoDto;
 import com.itwill.igojoa.dto.users.UserSearchDto;
 import com.itwill.igojoa.dto.users.UserVerifiedPlacesDto;
 import com.itwill.igojoa.dto.users.UserWrittenReviewsDto;
-import com.itwill.igojoa.service.PlaceService;
 import com.itwill.igojoa.service.PointsService;
 import com.itwill.igojoa.service.UsersService;
 
@@ -38,12 +38,7 @@ public class UsersRestController {
 
 	@GetMapping("/allInfo")
 	public ResponseEntity<Map<String, Object>> getAllUserRelatedInfo(@ModelAttribute UserSearchDto userSearchDto) {
-		String userId = (String) session.getAttribute("userId");
-
-//		userId = "sangwontest2"; // 테스트 코드
-		
-		log.debug("userId = {}", userId);
-		userSearchDto.setUserId(userId);
+		userSearchDto.setUserId(getUserId(session));
 
 		List<UserRelatedInfoDto> userRelatedInfoDto = usersService.getUserRelatedInfo(userSearchDto);
 		List<UserFavoritePlacesDto> userFavoritePlacesDto = usersService.getUserFavoritePlaces(userSearchDto);
@@ -63,13 +58,8 @@ public class UsersRestController {
 
 	@GetMapping("/favoritePlaces")
 	public ResponseEntity<List<UserFavoritePlacesDto>> getUserFavoritePlaces(@ModelAttribute UserSearchDto userSearchDto) {
-		String userId = (String) session.getAttribute("userId");
-
-//		userId = "sangwontest2"; // 테스트 코드
-		
-		userSearchDto.setUserId(userId);
-
-		handleSearchKeyword(userSearchDto, userId);
+		userSearchDto.setUserId(getUserId(session));
+		handleSearchKeyword(userSearchDto, getUserId(session));
 
 		List<UserFavoritePlacesDto> getUserFavoritePlaces = usersService.getUserFavoritePlaces(userSearchDto);
 
@@ -78,13 +68,8 @@ public class UsersRestController {
 
 	@GetMapping("/favoriteReviews")
 	public ResponseEntity<List<UserFavoriteReviewsDto>> getUserFavoriteReviews(@ModelAttribute UserSearchDto userSearchDto) {
-		String userId = (String) session.getAttribute("userId");
-
-//		userId = "sangwontest2"; // 테스트 코드
-		
-		userSearchDto.setUserId(userId);
-
-		handleSearchKeyword(userSearchDto, userId);
+		userSearchDto.setUserId(getUserId(session));
+		handleSearchKeyword(userSearchDto, getUserId(session));
 
 		List<UserFavoriteReviewsDto> getUserFavoriteReviews = usersService.getUserFavoriteReviews(userSearchDto);
 
@@ -93,12 +78,8 @@ public class UsersRestController {
 	
 	@GetMapping("/writtenReviews")
 	public ResponseEntity<List<UserWrittenReviewsDto>> getUserWrittenReviews(@ModelAttribute UserSearchDto userSearchDto) {
-		String userId = (String) session.getAttribute("userId");
-		
-//		userId = "sangwontest2"; // 테스트 코드
-		
-		userSearchDto.setUserId(userId);
-		handleSearchKeyword(userSearchDto, userId);
+		userSearchDto.setUserId(getUserId(session));
+		handleSearchKeyword(userSearchDto, getUserId(session));
 		
 		List<UserWrittenReviewsDto> getUserWrittenReviewsDto = usersService.getUserWrittenReviews(userSearchDto);
 		
@@ -107,12 +88,8 @@ public class UsersRestController {
 	
 	@GetMapping("/verifiedPlaces")
 	public ResponseEntity<List<UserVerifiedPlacesDto>> getUserVerifiedPlaces(@ModelAttribute UserSearchDto userSearchDto) {
-		String userId = (String) session.getAttribute("userId");
-		
-//		userId = "sangwontest2"; // 테스트 코드
-		
-		userSearchDto.setUserId(userId);
-		handleSearchKeyword(userSearchDto, userId);
+		userSearchDto.setUserId(getUserId(session));
+		handleSearchKeyword(userSearchDto, getUserId(session));
 		
 		List<UserVerifiedPlacesDto> getUserVerifiedPlacesDto = usersService.getUserVerifiedPlaces(userSearchDto);
 		
@@ -121,12 +98,8 @@ public class UsersRestController {
 	
 	@GetMapping("/relatedInfo")
 	public ResponseEntity<List<UserRelatedInfoDto>> getUserRelatedInfo(@ModelAttribute UserSearchDto userSearchDto) {
-		String userId = (String) session.getAttribute("userId");
-		
-//		userId = "sangwontest2"; // 테스트 코드
-		
-		userSearchDto.setUserId(userId);
-		handleSearchKeyword(userSearchDto, userId);
+		userSearchDto.setUserId(getUserId(session));
+		handleSearchKeyword(userSearchDto, getUserId(session));
 		
 		List<UserRelatedInfoDto> getAllUserRelatedInfoDto = usersService.getUserRelatedInfo(userSearchDto);
 		
@@ -135,11 +108,7 @@ public class UsersRestController {
 	
 	@GetMapping("/userLogged")
 	public ResponseEntity<List<UserLoggedDto>> hasUserLogged(@ModelAttribute UserPointsQueryDto userPointsQueryDto) {
-		String userId = (String) session.getAttribute("userId");
-		
-//		userId = "sangwontest2"; // 테스트 코드
-		
-		userPointsQueryDto.setUserId(userId);
+		userPointsQueryDto.setUserId(getUserId(session));
 		
 		List<UserLoggedDto> hasUserLogged = pointsService.hasUserLogged(userPointsQueryDto);
 		
@@ -147,16 +116,33 @@ public class UsersRestController {
 	}
 	
 	@GetMapping("/pointsStats")
-	public ResponseEntity<UserMonthlyPointsDto> totalPointsGainedLost(@ModelAttribute UserPointsQueryDto userPointsQueryDto) {
-		String userId = (String) session.getAttribute("userId");
+	public ResponseEntity<UserPointsDto> totalPointsGainedLost(@ModelAttribute UserPointsQueryDto userPointsQueryDto) {
+		userPointsQueryDto.setUserId(getUserId(session));
 		
-//		userId = "sangwontest2"; // 테스트 코드
-		
-		userPointsQueryDto.setUserId(userId);
-		
-		UserMonthlyPointsDto totalPointsGainedLost = pointsService.totalPointsGainedLost(userPointsQueryDto);
+		UserPointsDto totalPointsGainedLost = pointsService.totalPointsGainedLost(userPointsQueryDto);
 		
 		return ResponseEntity.ok(totalPointsGainedLost);
+	}
+	
+	@GetMapping("/pointsLogs")
+	public ResponseEntity<List<UserLoggedDto>> dailyPointsLogs(@ModelAttribute UserPointsQueryDto userPointsQueryDto) {
+		userPointsQueryDto.setUserId(getUserId(session));
+		
+		List<UserLoggedDto> dailyPointsLogs = pointsService.dailyPointsLogs(userPointsQueryDto);
+		
+		return ResponseEntity.ok(dailyPointsLogs);
+		
+	}
+	
+	/**
+	 * session에서 유저아이디 가져오기
+	 * @param session
+	 * @return 세션에 저장된 userId
+	 */
+	private String getUserId(HttpSession session) {
+		String userId = (String) session.getAttribute("userId");
+		
+		return userId;
 	}
 	
 	/**

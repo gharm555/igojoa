@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.itwill.igojoa.dto.points.UserLoggedDto;
-import com.itwill.igojoa.dto.points.UserMonthlyPointsDto;
+import com.itwill.igojoa.dto.points.UserPointsDto;
 import com.itwill.igojoa.dto.points.UserPointsQueryDto;
 import com.itwill.igojoa.entity.Points;
 import com.itwill.igojoa.repository.PointsDao;
@@ -94,7 +94,12 @@ public class PointsService {
 	}
 	
 	// 유저가 월별 몇 점을 얻고 잃었는지 체크
-	public UserMonthlyPointsDto totalPointsGainedLost(UserPointsQueryDto userPointsQueryDto) {
+	public UserPointsDto totalPointsGainedLost(UserPointsQueryDto userPointsQueryDto) {
 		return pointsDao.totalPointsGainedLost(userPointsQueryDto);
+	}
+	
+	// 유저가 해당 일에 했던 포인트 로그 가져오기
+	public List<UserLoggedDto> dailyPointsLogs(UserPointsQueryDto userPointsQueryDto) {
+		return pointsDao.dailyPointsLogs(userPointsQueryDto);
 	}
 }

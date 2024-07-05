@@ -64,8 +64,8 @@
 			type="com.itwill.igojoa.dto.points.UserPointsQueryDto" />
 		<typeAlias alias="UserLoggedDto"
 			type="com.itwill.igojoa.dto.points.UserLoggedDto" />
-		<typeAlias alias="UserMonthlyPointsDto"
-			type="com.itwill.igojoa.dto.points.UserMonthlyPointsDto" />
+		<typeAlias alias="UserPointsDto"
+			type="com.itwill.igojoa.dto.points.UserPointsDto" />
 
 	</typeAliases>
 </configuration>

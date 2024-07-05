@@ -58,17 +58,37 @@
 			AND DATE_FORMAT(pointsGetLoseTime, '%Y.%m') = #{yearMonth}  
   </select>
   
-  <!-- 유저가 월별 몇점을 얻고 잃었는지 체크 -->
-  <select id="totalPointsGainedLost" resultType="UserMonthlyPointsDto" parameterType="UserPointsQueryDto">
-  	<![CDATA[
+  <!-- 유저가 월별(혹은 일별) 몇 점을 얻고 잃었는지 체크 -->
+  <select id="totalPointsGainedLost" resultType="UserPointsDto" parameterType="UserPointsQueryDto">
   		SELECT
-  			IFNULL(SUM(CASE WHEN points > 0 THEN points ELSE 0 END), 0) AS totalPointsGained,
-  			IFNULL(SUM(CASE WHEN points < 0 THEN points ELSE 0 END), 0) AS totalPointsLost
+  			<![CDATA[
+  				IFNULL(SUM(CASE WHEN points > 0 THEN points ELSE 0 END), 0) AS totalPointsGained,
+  				IFNULL(SUM(CASE WHEN points < 0 THEN points ELSE 0 END), 0) AS totalPointsLost
+  			]]>
   		FROM
   			pointsLogs
   		WHERE
   			userId = #{userId}
-  			AND DATE_FORMAT(pointsGetLoseTime, '%Y.%m') = #{yearMonth}
-  	]]>
+  			<choose>
+  				<when test="yearMonth != null and yearMonth != ''">
+  					AND DATE_FORMAT(pointsGetLoseTime, '%Y.%m') = #{yearMonth}
+  				</when>
+  				<when test="yearMonthDay != null and yearMonthDay != ''">
+  					AND DATE_FORMAT(pointsGetLoseTime, '%Y.%m.%d') = #{yearMonthDay}
+  				</when>
+  			</choose>
+  		ORDER BY
+  			pointsGetLoseTime DESC
+  </select>
+  
+  <!-- 유저가 해당 일에 했던 포인트와 관련된 로그 -->
+  <select id="dailyPointsLogs" resultType="UserLoggedDto" parameterType="UserPointsQueryDto">
+  	SELECT
+  		userActivity, pointsGetLoseTime, points
+  	FROM
+  		pointsLogs
+  	WHERE
+  		userId = #{userId}
+  		AND DATE_FORMAT(pointsGetLoseTime, '%Y.%m.%d') = #{yearMonthDay}
   </select>
 </mapper>
