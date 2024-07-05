@@ -66,6 +66,10 @@ public class S3Service {
             return newUser;
         }
     }
+    
+    // TODO S3에서 이미지 삭제하는 메서드(private)
+    
+    // TODO 이미지 삭제하는 메서드 실행 후, user의 profileName과 profileUrl을 새로운 것으로 set하는 메서드(public)
 
     public String getUserProfileDefaultImageUrl() {
         return amazonS3.getUrl(bucketName, "default.jpg").toString();
