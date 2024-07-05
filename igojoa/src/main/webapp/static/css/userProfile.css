@@ -337,9 +337,10 @@ h2 {
 }
 
 #pointHistoryTable {
-    background-color: white;
-    border-radius: var(--border-radius);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  justify-items: center;
 }
 
 #earnedPoints,
@@ -549,6 +550,12 @@ h2 {
     padding: 20px;
 }
 
+.fc .fc-toolbar {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
 .fc-toolbar-title {
     font-size: 1.8em;
     font-weight: 700;
@@ -582,7 +589,8 @@ h2 {
 }
 
 .fc-day-today {
-    background-color: #e6f2ff !important;
+  background-color: var(--primary-color) !important;
+  color: white !important;
 }
 
 .fc-daygrid-day-number {
@@ -605,6 +613,55 @@ h2 {
 .fc-event-negative {
     background-color: #dc3545;
     border-color: #dc3545;
+}
+
+.selected-date {
+  background-color: #e6f2ff !important;
+  font-weight: bold !important;
+}
+.fc-event {
+  cursor: pointer;
+}
+
+.fc-event-main {
+  padding: 2px 4px;
+}
+
+.selected-date .fc-daygrid-day-number {
+  color: white !important;
+}
+
+.fc-day-today .fc-daygrid-day-number {
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.attendance-mark {
+  position: relative;
+}
+
+.attendance-mark::after {
+  content: '\f058'; /* FontAwesome check-circle icon */
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #28a745;
+  font-size: 1.2em;
+  z-index: 1;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* 반응형 스타일 */
