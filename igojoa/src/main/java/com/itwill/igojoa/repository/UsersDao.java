@@ -49,5 +49,7 @@ public interface UsersDao {
 	List<UserWrittenReviewsDto> getUserWrittenReviews(UserSearchDto userSearchDto);
 
 	List<UserVerifiedPlacesDto> getUserVerifiedPlaces(UserSearchDto userSearchDto);
+	
+	void updateProfileImage(Users user);
 
 }

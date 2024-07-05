@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UsersServiceTest {
     @Autowired
     private UsersService usersService;
-
+    
     // @Test
     public void create() {
         Users user = Users.builder().userId("asdhjzxcnbaus").password("test").email("zxcx").phoneNumber("as")
