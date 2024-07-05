@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserMonthlyPointsDto {
+public class UserPointsDto {
 	private int totalPointsGained;
 	private int totalPointsLost;
 }

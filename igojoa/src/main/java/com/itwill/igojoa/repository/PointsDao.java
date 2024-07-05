@@ -1,7 +1,7 @@
 package com.itwill.igojoa.repository;
 
 import com.itwill.igojoa.dto.points.UserLoggedDto;
-import com.itwill.igojoa.dto.points.UserMonthlyPointsDto;
+import com.itwill.igojoa.dto.points.UserPointsDto;
 import com.itwill.igojoa.dto.points.UserPointsQueryDto;
 import com.itwill.igojoa.entity.Points;
 import java.time.LocalDateTime;
@@ -37,6 +37,9 @@ public interface PointsDao {
     // 유저가 출석했는지 여부를 체크
     List<UserLoggedDto> hasUserLogged(UserPointsQueryDto userPointsQueryDto);
     
-    // 유저가 월별 몇 점을 얻고 잃었는지 체크
-    UserMonthlyPointsDto totalPointsGainedLost(UserPointsQueryDto userPointsQueryDto);
+    // 유저가 해당 월(혹은 일)에 몇 점을 얻고 잃었는지 체크
+    UserPointsDto totalPointsGainedLost(UserPointsQueryDto userPointsQueryDto);
+    
+    // 유저가 해당 일에 했던 포인트 로그 가져오기
+    List<UserLoggedDto> dailyPointsLogs(UserPointsQueryDto userPointsQueryDto);
 }

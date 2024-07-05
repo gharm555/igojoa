@@ -11,4 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserLoggedDto {
 	private String loginDate;
+	private String userActivity;
+	private String pointsGetLoseTime;
+	private int points;
 }
