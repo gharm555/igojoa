@@ -9,8 +9,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>아이고조아</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
-
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -31,6 +31,8 @@
     <link rel="stylesheet" href="${imageGalleryCss}" />
     <c:url var="lottoCss" value="/css/lotto.css" />
     <link rel="stylesheet" href="${lottoCss}" />
+    
+
 </head>
 
 <body>
@@ -107,12 +109,12 @@
     </div>
 
     <div class="d-flex justify-content-center mb-5">
-        <div class="btn-group" role="group">
-            <button class="btn btn-outline-secondary" id="iScore" type="button">난이도</button>
-            <button class="btn btn-outline-secondary" id="placeVerified" type="button">방문횟수</button>
-            <button class="btn btn-outline-secondary" id="userFavorite" type="button">좋아요</button>
-            <button class="btn btn-outline-secondary" id="reviewCnt" type="button">댓글수</button>
-        </div>
+<div class="btn-group" role="group">
+    <button class="btn btn-outline-secondary" id="iScore" type="button" data-sortIscore="1">난이도</button>
+    <button class="btn btn-outline-secondary" id="placeVerified" type="button" data-sortPlaceVerified="1">방문횟수</button>
+    <button class="btn btn-outline-secondary" id="userFavorite" type="button" data-sortUserFavorite="1">좋아요</button>
+    <button class="btn btn-outline-secondary" id="reviewCnt" type="button" data-sortReviewCnt="1">댓글수</button>
+</div>
     </div>
 
    <div class="container-fluid main-container" id="container">
@@ -129,8 +131,8 @@
                             data-user-favorite="${place.userFavorite}"></i>
                         </div>
                         <div class="main-badges mt-3">
-                            <span class="badge">${place.highestBadge}</span>
-                            <span class="badge">${place.secondHighestBadge}</span>
+                      <span class="badge"><i class="bi bi-1-circle"></i> ${place.highestBadge}</span>
+                        <span class="badge"><i class="bi bi-2-circle"></i> ${place.secondHighestBadge}</span>
                             <span class="badge difficulty ${place.IScore}">난이도: ${place.IScore}</span>
                         </div>
                     </div>
@@ -149,7 +151,8 @@
                                 <span class="username">${place.nickName}</span>
                             </div>
                             <div class="post-info">
-                                <span class="date"><i class="bi bi-calendar3"></i> ${place.modifiedAt}</span>
+                                <fmt:parseDate value="${ place.modifiedAt }" pattern="yyyy-MM-dd" var="parsedDateTime" type="both" />
+                                <span class="date"><i class="bi bi-calendar3"></i> <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" /></span>
                                 <span class="likes"><i class="bi bi-heart-fill"></i> ${place.likeCount}</span>
                             </div>
                         </div>
@@ -161,9 +164,9 @@
             </div>
         </c:forEach>
     </div>
-    <div class="text-center">
-        <button class="btn btn-secondary mt-3" id="btnPlus">더보기</button>
-    </div>
+<div class="text-center d-flex justify-content-center w-100">
+    <button class="btn btn-secondary mt-3" id="btnPlus">더보기</button>
+</div>
 </div>
 </section>
 
@@ -200,9 +203,9 @@
                     </div>
 
                     <div class="gallery-btns">
-                        <div class="gallery-btn prev"></div>
+                        <div class="gallery-btn prev"><i class="bi bi-caret-left-square-fill"></i></div>
                         <div id="location-name"></div>
-                        <div class="gallery-btn next"></div>
+                        <div class="gallery-btn next"><i class="bi bi-caret-right-square-fill"></i></div>
                     </div>
                 </div>
             </div>
@@ -271,6 +274,7 @@
         </section>
         <hr class="my-5"/>
         <button id="scrollToTopBtn" title="Go to top">↑</button>
+         <button onclick="toggleYellowMode()"><p class="fs-1">Yellow 모드 전환</p></button>
     </main>
 
 <footer class="p-footer p-footer--dark">
@@ -335,6 +339,19 @@
     <script>
         const LoginUserId = '${userId}';
         const points = '${points}';
+        
+        
+
+        function toggleYellowMode() {
+            var body = document.querySelector('body');
+            if(body.dataset.theme === 'yellow') {
+                body.removeAttribute('data-theme');
+                window.location.reload();
+            } else {
+                body.dataset.theme = 'yellow';
+            }
+        }
+
     </script>
 
 </body>

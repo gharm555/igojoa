@@ -67,28 +67,9 @@
   justify-content: center;
 }
 
-.gallery-btns .gallery-btn {
-  position: relative;
-  width: 30px;
-  height: 30px;
-  border: 2px solid black;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  background-color: var(--main-bg-color);
-}
 
-.gallery-btns .gallery-btn::before {
-  content: "";
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  border-top: 3px solid black;
-  border-right: 3px solid black;
-  transform: rotate(45deg) translate(-2.5px, 2.5px);
-}
+
+
 
 .gallery-btns .gallery-btn.prev::before {
   transform: rotate(225deg) translate(-2.5px, 2.5px);

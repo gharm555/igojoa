@@ -16,6 +16,11 @@ body {
   min-height: 100vh;
 }
 
+body[data-theme='yellow'] {
+    color: yellow ;
+    background-color: yellow;
+}
+
 main {
   position: relative;
   margin-top: 134px;
@@ -25,11 +30,19 @@ main {
   align-items: center;
   flex-direction: column;
 }
+.text-center.d-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 #btnPlus {
-  background-color: var(--primary-color);
-  color: white;
+    background-color: var(--primary-color);
+    color: white;
+    margin: 0 auto;
+    display: inline-block;
 }
+
 
 .btn-group .btn {
   background-color: var(--link-color);
