@@ -35,7 +35,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 src="${ userInfo.userProfileUrl }"
                 alt="프로필 이미지"
                 id="profileImage"
-                class="rounded-circle profile-img"
+                class="rounded-circle profile-img profileImage"
                 style="cursor: pointer; width: 150px; height: 150px; object-fit: cover"
               />
               <div class="icon-text text-center">

@@ -84,7 +84,7 @@
   <!-- 유저가 해당 일에 했던 포인트와 관련된 로그 -->
   <select id="dailyPointsLogs" resultType="UserLoggedDto" parameterType="UserPointsQueryDto">
   	SELECT
-  		userActivity, pointsGetLoseTime, points
+  		userActivity, DATE_FORMAT(pointsGetLoseTime, '%Y.%m.%d') AS pointsGetLoseTime, points
   	FROM
   		pointsLogs
   	WHERE
