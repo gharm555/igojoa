@@ -369,30 +369,30 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 
 
           let pd = {
-          	    placeName: "<c:out value='${pd.placeName}' />",
-          	    firstUrl: "<c:out value='${pd.firstUrl}' />",
-          	    secondUrl: "<c:out value='${pd.secondUrl}' />",
-          	    thirdUrl: "<c:out value='${pd.thirdUrl}' />",
-          	    address: "<c:out value='${pd.address}' />",
-          	    placeDescription: "<c:out value='${pd.placeDescription}' />",
-          	    placeLatitude: Number("<c:out value='${pd.placeLatitude}' />") || null,
-          	    placeLongitude: Number("<c:out value='${pd.placeLongitude}' />") || null,
-          	    operatingHours: "<c:out value='${pd.operatingHours}' />",
-          	    totalParkingAvailable: Number("<c:out value='${pd.totalParkingAvailable}' />") || 0,
-          	    totalView: Number("<c:out value='${pd.totalView}' />") || 0,
-          	    totalNightView: Number("<c:out value='${pd.totalNightView}' />") || 0,
-          	    totalFreeEntry: Number("<c:out value='${pd.totalFreeEntry}' />") || 0,
-          	    totalEasyTransport: Number("<c:out value='${pd.totalEasyTransport}' />") || 0,
-          	    avgIScore: Number("<c:out value='${pd.avgIScore}' />") || 0,
-          	    review: "<c:out value='${pd.review}' />",
-          	    parkingAvailable: Boolean("<c:out value='${pd.parkingAvailable}' />"),
-          	    view: Boolean("<c:out value='${pd.view}' />"),
-          	    nightView: Boolean("<c:out value='${pd.nightView}' />"),
-          	    freeEntry: Boolean("<c:out value='${pd.freeEntry}' />"),
-          	    easyTransport: Boolean("<c:out value='${pd.easyTransport}' />"),
-          	    iScore: Number("<c:out value='${pd.IScore}' />") || 0,
-          	    userFavorite:  Number("<c:out value='${pd.userFavorite}' />") || 0
-          	};
+                placeName: "<c:out value='${pd.placeName}' />",
+                firstUrl: "<c:out value='${pd.firstUrl}' />",
+                secondUrl: "<c:out value='${pd.secondUrl}' />",
+                thirdUrl: "<c:out value='${pd.thirdUrl}' />",
+                address: "<c:out value='${pd.address}' />",
+                placeDescription: "<c:out value='${pd.placeDescription}' />",
+                placeLatitude: Number("<c:out value='${pd.placeLatitude}' />") || null,
+                placeLongitude: Number("<c:out value='${pd.placeLongitude}' />") || null,
+                operatingHours: "<c:out value='${pd.operatingHours}' />",
+                totalParkingAvailable: Number("<c:out value='${pd.totalParkingAvailable}' />") || 0,
+                totalView: Number("<c:out value='${pd.totalView}' />") || 0,
+                totalNightView: Number("<c:out value='${pd.totalNightView}' />") || 0,
+                totalFreeEntry: Number("<c:out value='${pd.totalFreeEntry}' />") || 0,
+                totalEasyTransport: Number("<c:out value='${pd.totalEasyTransport}' />") || 0,
+                avgIScore: Number("<c:out value='${pd.avgIScore}' />") || 0,
+                review: "<c:out value='${pd.review}' />",
+                parkingAvailable: Boolean("<c:out value='${pd.parkingAvailable}' />"),
+                view: Boolean("<c:out value='${pd.view}' />"),
+                nightView: Boolean("<c:out value='${pd.nightView}' />"),
+                freeEntry: Boolean("<c:out value='${pd.freeEntry}' />"),
+                easyTransport: Boolean("<c:out value='${pd.easyTransport}' />"),
+                iScore: Number("<c:out value='${pd.IScore}' />") || 0,
+                userFavorite:  Number("<c:out value='${pd.userFavorite}' />") || 0
+            };
     </script>
 
     <c:url var="navbarJsUrl" value="/js/navbar.js" />
@@ -400,11 +400,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <c:url var="darkMode" value="/js/dark_mode.js" />
     <script src="${navbarJsUrl}"></script>
     <script src="${postDetailJsUrl}"></script>
-    
     <script src="${darkMode}"></script>
     <script>
-      const LoginUserId = "${userNickname}";
-      
+      const LoginUserId = "${userId}";
     </script>
   </body>
 </html>
