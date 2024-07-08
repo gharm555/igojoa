@@ -696,6 +696,7 @@ function initializePointTab() {
   fetchAttendanceData(currentMonth).then(() => {
     initializeCalendar();
     updatePointHistoryForDate(selectedDate);
+    updatePointSummaryForMonth(currentMonth); // 이 줄이 추가되었습니다
   });
 }
 
