@@ -63,8 +63,7 @@ public class UsersRestController {
 	}
 
 	@GetMapping("/favoritePlaces")
-	public ResponseEntity<List<UserFavoritePlacesDto>> getUserFavoritePlaces(
-			@ModelAttribute UserSearchDto userSearchDto) {
+	public ResponseEntity<List<UserFavoritePlacesDto>> getUserFavoritePlaces(@ModelAttribute UserSearchDto userSearchDto) {
 		userSearchDto.setUserId(getUserIdFromSession(session));
 		handleSearchKeyword(userSearchDto, getUserIdFromSession(session));
 
@@ -74,8 +73,7 @@ public class UsersRestController {
 	}
 
 	@GetMapping("/favoriteReviews")
-	public ResponseEntity<List<UserFavoriteReviewsDto>> getUserFavoriteReviews(
-			@ModelAttribute UserSearchDto userSearchDto) {
+	public ResponseEntity<List<UserFavoriteReviewsDto>> getUserFavoriteReviews(@ModelAttribute UserSearchDto userSearchDto) {
 		userSearchDto.setUserId(getUserIdFromSession(session));
 		handleSearchKeyword(userSearchDto, getUserIdFromSession(session));
 
@@ -85,8 +83,7 @@ public class UsersRestController {
 	}
 
 	@GetMapping("/writtenReviews")
-	public ResponseEntity<List<UserWrittenReviewsDto>> getUserWrittenReviews(
-			@ModelAttribute UserSearchDto userSearchDto) {
+	public ResponseEntity<List<UserWrittenReviewsDto>> getUserWrittenReviews(@ModelAttribute UserSearchDto userSearchDto) {
 		userSearchDto.setUserId(getUserIdFromSession(session));
 		handleSearchKeyword(userSearchDto, getUserIdFromSession(session));
 
@@ -96,8 +93,7 @@ public class UsersRestController {
 	}
 
 	@GetMapping("/verifiedPlaces")
-	public ResponseEntity<List<UserVerifiedPlacesDto>> getUserVerifiedPlaces(
-			@ModelAttribute UserSearchDto userSearchDto) {
+	public ResponseEntity<List<UserVerifiedPlacesDto>> getUserVerifiedPlaces(@ModelAttribute UserSearchDto userSearchDto) {
 		userSearchDto.setUserId(getUserIdFromSession(session));
 		handleSearchKeyword(userSearchDto, getUserIdFromSession(session));
 
@@ -119,7 +115,6 @@ public class UsersRestController {
 	@GetMapping("/userLogged")
 	public ResponseEntity<List<UserLoggedDto>> hasUserLogged(@ModelAttribute UserPointsQueryDto userPointsQueryDto) {
 		userPointsQueryDto.setUserId(getUserIdFromSession(session));
-
 		List<UserLoggedDto> hasUserLogged = pointsService.hasUserLogged(userPointsQueryDto);
 
 		return ResponseEntity.ok(hasUserLogged);
@@ -137,7 +132,6 @@ public class UsersRestController {
 	@GetMapping("/pointsLogs")
 	public ResponseEntity<List<UserLoggedDto>> dailyPointsLogs(@ModelAttribute UserPointsQueryDto userPointsQueryDto) {
 		userPointsQueryDto.setUserId(getUserIdFromSession(session));
-//		userPointsQueryDto.setUserId("sangwontest2"); // 테스트코드
 
 		List<UserLoggedDto> dailyPointsLogs = pointsService.dailyPointsLogs(userPointsQueryDto);
 
@@ -145,18 +139,6 @@ public class UsersRestController {
 
 	}
 
-//	@PutMapping("/profileImage")
-//	public ResponseEntity<String> updateProfileImage(@RequestBody MultipartFile newImage) {
-//		try {
-//			Users user = usersService.selectByUserId(getUserIdFromSession(session));
-//			s3Service.updateProfileImage(newImage, user);
-//			return ResponseEntity.ok("변경성공");
-//		} catch (Exception e) {
-//			// 예외 발생 시 변경 실패 메시지 반환
-//			return ResponseEntity.ok("변경실패" + e.getMessage());
-//		}
-//	}
-	
 	@PutMapping("/profileImage")
 	public ResponseEntity<String> updateProfileImage(@RequestBody MultipartFile newImage) {
 		try {
@@ -204,13 +186,22 @@ public class UsersRestController {
 	 * @param userId
 	 */
 	private void handleSearchKeyword(UserSearchDto userSearchDto, String userId) {
-		String searchKeyword = userSearchDto.getSearchKeyword();
-		if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
-			userSearchDto.setSearchKeyword("");
-		} else {
-			userSearchDto.setUserId(userId);
-			session.setAttribute("searchKeyword", searchKeyword);
-			userSearchDto.setSearchKeyword(searchKeyword);
-		}
+	    // searchKeyword에 공백 및 특수문자도 검색할 수 있게 정규표현식으로 filtering
+	    String searchKeyword = userSearchDto.getSearchKeyword();
+	    if (searchKeyword == null) {
+	        searchKeyword = "";
+	    } else {
+	        searchKeyword = searchKeyword.replaceAll("[^\\wㄱ-힣.]", "");
+	    }
+	    log.debug("키워드 = {}", searchKeyword);
+	    
+	    if (searchKeyword.trim().isEmpty()) {
+	        userSearchDto.setSearchKeyword("");
+	    } else {
+	        userSearchDto.setUserId(getUserIdFromSession(session));
+	        session.setAttribute("searchKeyword", searchKeyword);
+	        userSearchDto.setSearchKeyword(searchKeyword);
+	    }
 	}
+
 }
