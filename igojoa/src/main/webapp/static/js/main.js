@@ -31,10 +31,19 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   $searchButton.addEventListener("click", () => {
+
+ 
+  
     startRowValue = 0; // 검색 시 시작 행을 0으로 초기화
     $cardContainer.innerHTML = ""; // 기존 카드 제거
     fetchPlaces(itemsPerPage * 2, true); // 검색 시 6개 로드
   });
+  $searchKeyword.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) { // Enter 키 확인
+        event.preventDefault();
+        $searchButton.click(); // 검색 버튼 클릭 동작 수행
+    }
+});
 
   function fetchPlaces(
     rowCnt,
@@ -45,10 +54,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedProvince = $provinceSelect.value || "";
     const addressCategory = provinceMap[selectedProvince] || "";
     const searchKeyword = $searchKeyword.value.trim() || "";
+	
+	const regex = /^\s*$/;
 
+// searchKeyword가 공백 문자열인 경우 빈 문자열로 설정
+if (regex.test(searchKeyword)) {
+    searchKeyword = "";
+}
     console.log(
       `Fetching places: startRowValue=${startRowValue}, rowCnt=${rowCnt}, addressCategory=${addressCategory}, searchKeyword=${searchKeyword}`
     );
+    
 
     axios
       .get("./search", {
@@ -88,11 +104,12 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
 
-        if ($newPlaces.length < rowCnt) {
-          $moreButton.style.display = "none";
-        } else {
-          $moreButton.style.display = "block";
-        }
+       	if ($newPlaces.length >= rowCnt) {
+        	$moreButton.style.display = "block";
+      } else {
+        $moreButton.style.display = "none";
+      }
+
 
         startRowValue += $newPlaces.length; // 다음 시작 행 업데이트
       })
@@ -109,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
         $moreButton.style.display = "none";
       });
   }
-
+	
   $moreButton.addEventListener("click", () => {
     const hiddenCards = document.querySelectorAll(".extra-card.d-none");
     if (hiddenCards.length > 0) {
@@ -123,6 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function createCard(place) {
     console.log(`Creating card for place:`, place);
+    
     const $newCard = document.createElement("div");
     $newCard.classList.add("col-lg-4", "col-md-6", "mb-3", "card-item");
     $newCard.innerHTML = `
@@ -141,9 +159,8 @@ document.addEventListener("DOMContentLoaded", () => {
                          data-user-favorite="${place.userFavorite}"></i>
                   </div>
                   <div class="main-badges mt-3">
-						<span class="badge"><i class="bi bi-1-circle"></i>${place.highestBadge}</span>
-						<span class="badge"><i class="bi bi-2-circle"></i>${
-              place.secondHighestBadge
+						<span class="badge"><i class="bi bi-fire" id="fire"></i> ${ place.highestBadge}</span>
+						<span class="badge"><i class="bi bi-fire" id="fire"></i> ${ place.secondHighestBadge
             }</span>
                       <span class="badge difficulty ${place.iscore}">난이도: ${
       place.iscore
@@ -423,3 +440,4 @@ function toggleBanner() {
   // 페이지 로드 시 즉시 세션 체크
   checkSession();
 }
+
