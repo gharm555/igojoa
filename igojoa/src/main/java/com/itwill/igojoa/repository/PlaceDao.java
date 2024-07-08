@@ -22,4 +22,6 @@ public interface PlaceDao {
 	PlaceDetailDto selectPlaceDetail(PlacesFavoriteDto placesFavoriteDto);
 
 	List<PlaceBestListDto> selectPlaceNameAndImageUrl();
+
+	List<String> searchSuggestions(PlaceSearchDto placeSearchDto);
 }

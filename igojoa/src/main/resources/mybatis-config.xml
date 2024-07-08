@@ -66,6 +66,8 @@
 			type="com.itwill.igojoa.dto.points.UserLoggedDto" />
 		<typeAlias alias="UserPointsDto"
 			type="com.itwill.igojoa.dto.points.UserPointsDto" />
+		<!-- <typeAlias alias="ReviewLikeDto"
+			type="com.itwill.igojoa.dto.review.ReviewLikeDto" /> -->
 
 	</typeAliases>
 </configuration>

@@ -48,7 +48,7 @@
 .gallery-box span img {
   position: absolute;
   top: 0;
-  left: 0;
+  left: -8px;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -67,28 +67,9 @@
   justify-content: center;
 }
 
-.gallery-btns .gallery-btn {
-  position: relative;
-  width: 30px;
-  height: 30px;
-  border: 2px solid black;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  background-color: var(--main-bg-color);
-}
 
-.gallery-btns .gallery-btn::before {
-  content: "";
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  border-top: 3px solid black;
-  border-right: 3px solid black;
-  transform: rotate(45deg) translate(-2.5px, 2.5px);
-}
+
+
 
 .gallery-btns .gallery-btn.prev::before {
   transform: rotate(225deg) translate(-2.5px, 2.5px);
@@ -160,6 +141,10 @@
 
 /* 아이폰 12 해상도에 맞춘 반응형 디자인 */
 @media (max-width: 390px) {
+  #image-gallery-section {
+    padding: 10px 5%;
+    min-height: 550px;
+  }
   .gallery-box {
     width: 150px;
     height: 200px;
@@ -169,15 +154,16 @@
 
   .gallery-btns {
     margin-top: 100px;
+    align-items: inherit;
   }
 
   .gallery-btns .gallery-btn {
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
   }
 
   #location-name {
-    font-size: 0.9rem;
+    font-size: 1.5rem;
   }
 
   .gallery-body {

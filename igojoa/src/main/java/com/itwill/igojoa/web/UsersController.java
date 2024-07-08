@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +49,7 @@ public class UsersController {
 	private final PointsService pointsService;
 	private final PlaceVerifiedService placeVerifiedService;
 	private final UsersService usersService;
+	private static final Map<String, Long> userLastLoginTime = new ConcurrentHashMap<>();
 
 	@GetMapping("/loginRegister")
 	public String registerForm(Model model, HttpSession session) {
@@ -96,6 +98,10 @@ public class UsersController {
 			Users user = userService.selectByIdAndPassword(userLoginDto.toEntity());
 			if (user != null) {
 				session.setAttribute("userId", user.getUserId());
+				Long loginTime = System.currentTimeMillis();
+				userLastLoginTime.put(user.getUserId(), loginTime);
+				session.setAttribute("loginTime", loginTime);
+
 				boolean pointsAdded = pointsService.addLoginPoints(user.getUserId());
 				Map<String, Object> response = new HashMap<>();
 				response.put("success", true);
@@ -111,10 +117,31 @@ public class UsersController {
 		}
 	}
 
+	@GetMapping("/checkSession")
+	@ResponseBody
+	public ResponseEntity<?> checkSession(HttpSession session) {
+		String userId = (String) session.getAttribute("userId");
+		if (userId != null) {
+			Long lastLoginTime = userLastLoginTime.get(userId);
+			Long sessionLoginTime = (Long) session.getAttribute("loginTime");
+			if (lastLoginTime != null && sessionLoginTime != null && lastLoginTime > sessionLoginTime) {
+				session.removeAttribute("userId");
+				session.removeAttribute("loginTime");
+				return ResponseEntity.ok(Map.of("success", false, "message", "다른 곳에서 로그인되어 로그아웃됩니다."));
+			}
+		}
+		return ResponseEntity.ok(Map.of("success", true, "message", "세션 유효"));
+	}
+
 	@GetMapping("/logout")
 	public ResponseEntity<String> logout(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
 		if (session != null) {
+			String userId = (String) session.getAttribute("userId");
+			if (userId != null) {
+				userLastLoginTime.remove(userId);
+				log.info("User {} logged out", userId);
+			}
 			session.removeAttribute("userId");
 		}
 		// 메인페이지로 이동

@@ -21,9 +21,11 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <c:url var="cssResetUrl" value="/css/cssReset.css" />
     <c:url var="postDetailCssUrl" value="/css/postDetail.css" />
     <c:url var="navbarCssUrl" value="/css/navbar.css" />
+    <c:url var="darkmode" value="/css/dark_mode.css"/>
     <link rel="stylesheet" href="${cssResetUrl}" />
     <link rel="stylesheet" href="${postDetailCssUrl}" />
     <link rel="stylesheet" href="${navbarCssUrl}" />
+    <link rel="stylesheet" href="${darkmode}">
   </head>
   <body>
     <header>
@@ -284,7 +286,17 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   rows="4"
                   placeholder="리뷰를 작성해주세요"
                 >${ pd.review }</textarea>
-                <button type="submit" class="btn btn-primary">작성완료</button>
+                  <div id="reviewButtonsContainer">
+  <c:choose>
+    <c:when test="${empty pd.review}">
+      <button id="createReviewBtn" type="button" class="btn btn-primary">작성완료</button>
+    </c:when>
+    <c:otherwise>
+      <button id="updateReviewBtn" type="button" class="btn btn-warning">수정하기</button>
+      <button id="deleteReviewBtn" type="button" class="btn btn-danger">삭제하기</button>
+    </c:otherwise>
+  </c:choose>
+</div>
               </form>
             </div>
           </div>
@@ -300,26 +312,26 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              최신순
+              좋아요 많은순
             </button>
             <ul class="dropdown-menu" aria-labelledby="sortDropdownButton">
               <li>
-                <button class="dropdown-item active" data-sort="newest">
+                <button class="dropdown-item1 active" data-sort="modifiedAtDESC">
                   최신순
                 </button>
               </li>
               <li>
-                <button class="dropdown-item" data-sort="oldest">
+                <button class="dropdown-item1" data-sort="modifiedAtASC">
                   오래된순
                 </button>
               </li>
               <li>
-                <button class="dropdown-item" data-sort="most-liked">
+                <button class="dropdown-item1" data-sort="cntLikeDESC">
                   좋아요 많은순
                 </button>
               </li>
               <li>
-                <button class="dropdown-item" data-sort="least-liked">
+                <button class="dropdown-item1" data-sort="cntLikeASC">
                   좋아요 적은순
                 </button>
               </li>
@@ -359,36 +371,39 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 
 
           let pd = {
-          	    placeName: "<c:out value='${pd.placeName}' />",
-          	    firstUrl: "<c:out value='${pd.firstUrl}' />",
-          	    secondUrl: "<c:out value='${pd.secondUrl}' />",
-          	    thirdUrl: "<c:out value='${pd.thirdUrl}' />",
-          	    address: "<c:out value='${pd.address}' />",
-          	    placeDescription: "<c:out value='${pd.placeDescription}' />",
-          	    placeLatitude: Number("<c:out value='${pd.placeLatitude}' />") || null,
-          	    placeLongitude: Number("<c:out value='${pd.placeLongitude}' />") || null,
-          	    operatingHours: "<c:out value='${pd.operatingHours}' />",
-          	    totalParkingAvailable: Number("<c:out value='${pd.totalParkingAvailable}' />") || 0,
-          	    totalView: Number("<c:out value='${pd.totalView}' />") || 0,
-          	    totalNightView: Number("<c:out value='${pd.totalNightView}' />") || 0,
-          	    totalFreeEntry: Number("<c:out value='${pd.totalFreeEntry}' />") || 0,
-          	    totalEasyTransport: Number("<c:out value='${pd.totalEasyTransport}' />") || 0,
-          	    avgIScore: Number("<c:out value='${pd.avgIScore}' />") || 0,
-          	    review: "<c:out value='${pd.review}' />",
-          	    parkingAvailable: Boolean("<c:out value='${pd.parkingAvailable}' />"),
-          	    view: Boolean("<c:out value='${pd.view}' />"),
-          	    nightView: Boolean("<c:out value='${pd.nightView}' />"),
-          	    freeEntry: Boolean("<c:out value='${pd.freeEntry}' />"),
-          	    easyTransport: Boolean("<c:out value='${pd.easyTransport}' />"),
-          	    iScore: Number("<c:out value='${pd.IScore}' />") || 0,
-          	    userFavorite:  Number("<c:out value='${pd.userFavorite}' />") || 0
-          	};
+                placeName: "<c:out value='${pd.placeName}' />",
+                firstUrl: "<c:out value='${pd.firstUrl}' />",
+                secondUrl: "<c:out value='${pd.secondUrl}' />",
+                thirdUrl: "<c:out value='${pd.thirdUrl}' />",
+                address: "<c:out value='${pd.address}' />",
+                placeDescription: "<c:out value='${pd.placeDescription}' />",
+                placeLatitude: Number("<c:out value='${pd.placeLatitude}' />") || null,
+                placeLongitude: Number("<c:out value='${pd.placeLongitude}' />") || null,
+                operatingHours: "<c:out value='${pd.operatingHours}' />",
+                totalParkingAvailable: Number("<c:out value='${pd.totalParkingAvailable}' />") || 0,
+                totalView: Number("<c:out value='${pd.totalView}' />") || 0,
+                totalNightView: Number("<c:out value='${pd.totalNightView}' />") || 0,
+                totalFreeEntry: Number("<c:out value='${pd.totalFreeEntry}' />") || 0,
+                totalEasyTransport: Number("<c:out value='${pd.totalEasyTransport}' />") || 0,
+                avgIScore: Number("<c:out value='${pd.avgIScore}' />") || 0,
+                review: "<c:out value='${pd.review}' />",
+                parkingAvailable: Boolean("<c:out value='${pd.parkingAvailable}' />"),
+                view: Boolean("<c:out value='${pd.view}' />"),
+                nightView: Boolean("<c:out value='${pd.nightView}' />"),
+                freeEntry: Boolean("<c:out value='${pd.freeEntry}' />"),
+                easyTransport: Boolean("<c:out value='${pd.easyTransport}' />"),
+                iScore: Number("<c:out value='${pd.IScore}' />") || 0,
+                userFavorite:  Number("<c:out value='${pd.userFavorite}' />") || 0
+            };
     </script>
 
     <c:url var="navbarJsUrl" value="/js/navbar.js" />
     <c:url var="postDetailJsUrl" value="/js/postDetail.js" />
+    <c:url var="darkMode" value="/js/dark_mode.js" />
     <script src="${navbarJsUrl}"></script>
     <script src="${postDetailJsUrl}"></script>
+     <script src="${darkMode}"></script>
+    
     <script>
       const LoginUserId = "${userId}";
     </script>

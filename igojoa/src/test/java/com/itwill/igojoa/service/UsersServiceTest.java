@@ -27,40 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/application-context.xml" })
 public class UsersServiceTest {
-    @Autowired
-    private UsersService usersService;
-    
-    // @Test
-    public void create() {
-        Users user = Users.builder().userId("asdhjzxcnbaus").password("test").email("zxcx").phoneNumber("as")
-                .nickName("sssss")
-                .build();
-        int result = usersService.create(user);
-        log.info("result: {}", result);
-    }
+	@Autowired
+	private UsersService usersService;
 
-//    @Test
-    public void selectByUserId() {
-        Users user = usersService.selectByUserId("asd");
-        log.info("user: {}", user);
-    }
-    
-//    @Test
-    public void getAllUserRelatedInfo() {
-    	UserSearchDto userSearchDto = UserSearchDto.builder().userId("sangwontest2").build();
-    	List<UserRelatedInfoDto> userRelatedInfoDto = usersService.getUserRelatedInfo(userSearchDto);
-		List<UserFavoritePlacesDto> userFavoritePlacesDto = usersService.getUserFavoritePlaces(userSearchDto);
-		List<UserFavoriteReviewsDto> userFavoriteReviewsDto = usersService.getUserFavoriteReviews(userSearchDto);
-		List<UserWrittenReviewsDto> userWrittenReviewsDto = usersService.getUserWrittenReviews(userSearchDto);
-		
-		Map<String, Object> result = new HashMap<>();
-		result.put("userRelatedInfo", userRelatedInfoDto);
-		result.put("userFavoritePlaces", userFavoritePlacesDto);
-		result.put("userFavoriteReviews", userFavoriteReviewsDto);
-		result.put("userWrittenReviews", userWrittenReviewsDto);
-    	
-    	log.info("가져온정보 = {}", userRelatedInfoDto);
-    }
-    
-    
 }
