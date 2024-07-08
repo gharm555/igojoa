@@ -25,7 +25,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <link rel="stylesheet" href="${cssResetUrl}" />
     <link rel="stylesheet" href="${postDetailCssUrl}" />
     <link rel="stylesheet" href="${navbarCssUrl}" />
-     <link rel="stylesheet" href="${darkmode}">
+    <link rel="stylesheet" href="${darkmode}">
   </head>
   <body>
     <header>
@@ -35,7 +35,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
       <c:set var="pd" value="${PlaceDetailDto}" />
       <c:set var="place" value="${placesInfo}" />
       <div class="container">
-        <div class="row justify-content-center" id="mabAndImage">
+        <div class="row justify-content-center mb-5">
           <div class="col-lg-6 mb-4">
             <div id="map" class="rounded shadow"></div>
           </div>
@@ -119,7 +119,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           </div>
         </div>
 
-        <div class="row" id="detailsInfo">
+        <div class="row mb-5">
           <!-- 첫 번째 섹션  -->
           <div class="col-lg-8">
             <section>
@@ -286,15 +286,17 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   rows="4"
                   placeholder="리뷰를 작성해주세요"
                 >${ pd.review }</textarea>
-                  <c:choose>
-                    <c:when test="${empty pd.review}">
-                      <button id="createReviewBtn" type="button" class="btn btn-primary">작성완료</button>
-                    </c:when>
-                   <c:otherwise>
-                      <button id="updateReviewBtn" type="button" class="btn btn-warning">수정하기</button>
-                      <button id="deleteReviewBtn" type="button" class="btn btn-danger">삭제하기</button>
-                    </c:otherwise>
-                  </c:choose>
+                  <div id="reviewButtonsContainer">
+  <c:choose>
+    <c:when test="${empty pd.review}">
+      <button id="createReviewBtn" type="button" class="btn btn-primary">작성완료</button>
+    </c:when>
+    <c:otherwise>
+      <button id="updateReviewBtn" type="button" class="btn btn-warning">수정하기</button>
+      <button id="deleteReviewBtn" type="button" class="btn btn-danger">삭제하기</button>
+    </c:otherwise>
+  </c:choose>
+</div>
               </form>
             </div>
           </div>
@@ -310,26 +312,26 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              최신순
+              좋아요 많은순
             </button>
             <ul class="dropdown-menu" aria-labelledby="sortDropdownButton">
               <li>
-                <button class="dropdown-item active" data-sort="newest">
+                <button class="dropdown-item1 active" data-sort="modifiedAtDESC">
                   최신순
                 </button>
               </li>
               <li>
-                <button class="dropdown-item" data-sort="oldest">
+                <button class="dropdown-item1" data-sort="modifiedAtASC">
                   오래된순
                 </button>
               </li>
               <li>
-                <button class="dropdown-item" data-sort="most-liked">
+                <button class="dropdown-item1" data-sort="cntLikeDESC">
                   좋아요 많은순
                 </button>
               </li>
               <li>
-                <button class="dropdown-item" data-sort="least-liked">
+                <button class="dropdown-item1" data-sort="cntLikeASC">
                   좋아요 적은순
                 </button>
               </li>
@@ -400,7 +402,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <c:url var="darkMode" value="/js/dark_mode.js" />
     <script src="${navbarJsUrl}"></script>
     <script src="${postDetailJsUrl}"></script>
-    <script src="${darkMode}"></script>
+     <script src="${darkMode}"></script>
+    
     <script>
       const LoginUserId = "${userId}";
     </script>

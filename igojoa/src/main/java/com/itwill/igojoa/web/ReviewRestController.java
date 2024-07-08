@@ -67,6 +67,7 @@ public class ReviewRestController {
 	public ResponseEntity<?> updateReview(@PathVariable String placeName, @RequestBody ReviewDto reviewDto) {
 		log.debug("\n\n" + reviewDto.toString() + "\n\n");
 		String userId = (String) session.getAttribute("userId");
+
 		if (userId != null) {
 			int sessionCheck = usersService.sessionTorF(userId);
 			if (sessionCheck == 0) {
@@ -92,6 +93,7 @@ public class ReviewRestController {
 	@DeleteMapping("/deleteReview")
 	public ResponseEntity<?> deleteReview(@PathVariable String placeName) {
 		String userId = (String) session.getAttribute("userId");
+
 		if (userId != null) {
 			int sessionCheck = usersService.sessionTorF(userId);
 			if (sessionCheck == 0) {
@@ -129,13 +131,14 @@ public class ReviewRestController {
 	@PutMapping("/clickReviewLike")
 	public ResponseEntity<Integer> clickReviewLike(@PathVariable String placeName, @RequestBody String userId) {
 		String likeUserId = (String) session.getAttribute("userId");
+
 		if (likeUserId == null) {
 			return ResponseEntity.ok(0);
 		}
 		ReviewLikeDto reviewLikeDto = ReviewLikeDto.builder().userId(userId).placeName(placeName).likeUserId(likeUserId)
 				.build();
 		int res = reviewService.clickReviewLike(reviewLikeDto);
-
+		
 		return ResponseEntity.ok(res);
 	}
 
@@ -143,6 +146,7 @@ public class ReviewRestController {
 	public ResponseEntity<Integer> deleteReviewLike(@PathVariable String placeName,
 			@RequestParam("userId") String userId) {
 		String likeUserId = (String) session.getAttribute("userId");
+
 		if (likeUserId == null) {
 			return ResponseEntity.ok(0);
 		}
