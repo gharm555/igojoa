@@ -20,7 +20,7 @@
         </c:if>
         <c:if test="${userId != null}">
           <div class="userProfile" id="profileBtn">
-            <img src="${userProfileUrl}" alt="프로필 사진"/>
+            <img class="profileImage" src="${userProfileUrl}" alt="프로필 사진"/>
             <div class="dropdown-menu">
               <a class="dropdown-item" id="goUserProfileBtn">마이페이지</a>
               <a class="dropdown-item" id="locationVerifyBtn">위치인증</a>

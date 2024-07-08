@@ -32,16 +32,16 @@
 			type="com.itwill.igojoa.dto.users.UsersLoginDto" />
 		<typeAlias alias="UsersInfoDto"
 			type="com.itwill.igojoa.dto.users.UsersInfoDto" />
-		<!-- 삭제? >>>> -->
 		<typeAlias alias="UserFavoritePlacesDto"
 			type="com.itwill.igojoa.dto.users.UserFavoritePlacesDto" />
 		<typeAlias alias="UserFavoriteReviewsDto"
 			type="com.itwill.igojoa.dto.users.UserFavoriteReviewsDto" />
 		<typeAlias alias="UserWrittenReviewsDto"
 			type="com.itwill.igojoa.dto.users.UserWrittenReviewsDto" />
-		<!-- <<<< 삭제? -->
 		<typeAlias alias="UserRelatedInfoDto"
 			type="com.itwill.igojoa.dto.users.UserRelatedInfoDto" />
+		<typeAlias alias="UserVerifiedPlacesDto"
+			type="com.itwill.igojoa.dto.users.UserVerifiedPlacesDto" />
 		<typeAlias alias="UserSearchDto"
 			type="com.itwill.igojoa.dto.users.UserSearchDto" />
 		<typeAlias alias="PlaceListDto"
@@ -60,6 +60,12 @@
 			type="com.itwill.igojoa.dto.place.PlaceBestListDto" />
 		<typeAlias alias="ReviewSelectDto"
 			type="com.itwill.igojoa.dto.review.ReviewSelectDto" />
+		<typeAlias alias="UserPointsQueryDto"
+			type="com.itwill.igojoa.dto.points.UserPointsQueryDto" />
+		<typeAlias alias="UserLoggedDto"
+			type="com.itwill.igojoa.dto.points.UserLoggedDto" />
+		<typeAlias alias="UserPointsDto"
+			type="com.itwill.igojoa.dto.points.UserPointsDto" />
 		<!-- <typeAlias alias="ReviewLikeDto"
 			type="com.itwill.igojoa.dto.review.ReviewLikeDto" /> -->
 

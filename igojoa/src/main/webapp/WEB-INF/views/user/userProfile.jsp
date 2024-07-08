@@ -11,6 +11,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <c:url var="cssResetCss" value="/css/cssReset.css" />
     <link rel="stylesheet" href="${cssResetCss}" />
@@ -18,7 +19,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <link rel="stylesheet" href="${userProfileCss}" />
     <c:url var="navbarCss" value="/css/navbar.css" />
     <link rel="stylesheet" href="${navbarCss}" />
-
+    
     <title>내정보</title>
   </head>
   <body>
@@ -35,7 +36,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 src="${ userInfo.userProfileUrl }"
                 alt="프로필 이미지"
                 id="profileImage"
-                class="rounded-circle profile-img"
+                class="rounded-circle profile-img profileImage"
                 style="cursor: pointer; width: 150px; height: 150px; object-fit: cover"
               />
               <div class="icon-text text-center">
@@ -130,8 +131,28 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     회원탈퇴
                   </button>
                 </div>
+                <!-- TODO 시작 -->
+                <div class="containerImageChange" style="display: flex; height: 25%;">
+                  <div class="profile-photo imageInImageChangeContainer">
+                    <img
+                    src="${ userInfo.userProfileUrl }"
+                    alt="프로필 이미지"
+                    id="profileImage"
+                    class="rounded-circle profile-img profileImage forMoveToCenter"
+                    style="cursor: pointer; width: 150px; height: 150px; object-fit: cover"
+                  />
+                  </div>
+                  <div class="info infoInImageChangeContainer">
+                      <p style="opacity: 0.8;">98x98픽셀 이상, 10MB 이하의 사진이 권장됩니다. PNG 또는 GIF(애니메이션 GIF 제외) 파일을 사용하세요. 사진이 Igojoa 커뮤니티 가이드를 준수해야 합니다.</p>
+                      <div class="buttons">
+                          <button class="btn btn-warning" id="imageChange">변경</button>
+                          <button class="btn btn-danger" id="imageDelete">삭제</button>
+                      </div>
+                  </div>
+                </div>  
+                <!-- TODO 끗 -->
                 <form id="editProfileForm">
-                  <div class="mb-3">
+                  <div class="mb-3 mt-3">
                     <label for="nickName" class="form-label">사용자 닉네임</label>
                     <input
                       type="text"
@@ -214,35 +235,34 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
               <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel" tabindex="0">
                 <h2 class="mb-4">내활동내역</h2>
                 <div class="search-container">
-                  <select id="province-select address" class="form-select" aria-label="도/광역시 선택">
-                    <option selected>도/광역시</option>
-                    <option value="gyeonggi">경기도</option>
-                    <option value="gangwon">강원도</option>
-                    <option value="jeollabuk">전라북도</option>
-                    <option value="jeollanam">전라남도</option>
-                    <option value="gyeongsangbuk">경상북도</option>
-                    <option value="gyeongsangnam">경상남도</option>
-                    <option value="chungcheongbuk">충청북도</option>
-                    <option value="chungcheongnam">충청남도</option>
-                    <option value="seoul">서울시</option>
-                    <option value="busan">부산시</option>
-                    <option value="daegu">대구시</option>
-                    <option value="incheon">인천시</option>
-                    <option value="gwangju">광주시</option>
-                    <option value="daejeon">대전시</option>
-                    <option value="ulsan">울산시</option>
-                    <option value="jeju">제주도</option>
+                  <select id="address-select" class="form-select" aria-label="도/광역시 선택">
+                    <option selected value="">전체</option>
+                    <option value="경기도">경기도</option>
+                    <option value="강원도">강원도</option>
+                    <option value="전라북도">전라북도</option>
+                    <option value="전라남도">전라남도</option>
+                    <option value="경상북도">경상북도</option>
+                    <option value="경상남도">경상남도</option>
+                    <option value="충청북도">충청북도</option>
+                    <option value="충청남도">충청남도</option>
+                    <option value="서울시">서울시</option>
+                    <option value="부산시">부산시</option>
+                    <option value="대구시">대구시</option>
+                    <option value="인천시">인천시</option>
+                    <option value="광주시">광주시</option>
+                    <option value="대전시">대전시</option>
+                    <option value="울산시">울산시</option>
+                    <option value="제주도">제주도</option>
                   </select>
-                  <input type="text" placeholder="검색어를 입력하세요..." id="search-input"/>
+                  <input type="text" placeholder="검색어를 입력하세요..." id="search-input" />
                   <button type="submit" id="userActivitySearchBtn">검색</button>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
                   <input type="text" id="date-range" placeholder="" />
-
                   <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                       <button
-                        class="nav-link active"
+                        class="nav-link active d-flex"
                         id="nav-total-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#nav-total"
@@ -251,10 +271,10 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-total"
                         aria-selected="true"
                       >
-                        전체 내역
+                        전체 내역  <p><i class="fa-solid fa-sort"></i></p>
                       </button>
                       <button
-                        class="nav-link"
+                        class="nav-link d-flex"
                         id="nav-favoritePlace-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#nav-favoritePlace"
@@ -263,10 +283,10 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-favoritePlace"
                         aria-selected="false"
                       >
-                        좋아요한 게시물
+                        좋아요한 게시물  <p><i class="fa-solid fa-sort"></i></p>
                       </button>
                       <button
-                        class="nav-link"
+                        class="nav-link d-flex"
                         id="nav-likedReview-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#nav-likedReview"
@@ -275,10 +295,10 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-likedReview"
                         aria-selected="false"
                       >
-                        좋아요한 리뷰
+                        좋아요한 리뷰  <p><i class="fa-solid fa-sort"></i></p>
                       </button>
                       <button
-                        class="nav-link"
+                        class="nav-link d-flex"
                         id="nav-writtenReview-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#nav-writtenReview"
@@ -287,10 +307,10 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-writtenReview"
                         aria-selected="false"
                       >
-                        작성한 리뷰
+                        작성한 리뷰  <p><i class="fa-solid fa-sort"></i></p>
                       </button>
                       <button
-                        class="nav-link"
+                        class="nav-link d-flex"
                         id="nav-verifiedPlace-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#nav-verifiedPlace"
@@ -299,7 +319,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-verifiedPlace"
                         aria-selected="false"
                       >
-                        위치인증 장소
+                        위치인증 장소  <p><i class="fa-solid fa-sort ml-2"></i></p>
                       </button>
                     </div>
                   </nav>
@@ -313,23 +333,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     tabindex="0"
                   >
                     <ul class="list-group" id="totalList">
-                      <c:forEach items="${userFavoritePlaces}" var="favoritePlaces">
-                        <li class="list-group-item d-flex align-items-center">
-                          <img
-                            src="${favoritePlaces.firstUrl}"
-                            alt="게시물 썸네일"
-                            class="rounded-circle me-3"
-                            width="50"
-                            height="50"
-                          />
-                          <div>
-                            <p class="mb-0">
-                              ${favoritePlaces.address} ${favoritePlaces.placeName} 게시물에 좋아요를 눌렀습니다.
-                            </p>
-                            <small class="text-muted">${favoritePlaces.createdTime}</small>
-                          </div>
-                        </li>
-                      </c:forEach>
+                      
                     </ul>
                   </div>
                   <div
@@ -340,23 +344,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     tabindex="0"
                   >
                     <ul class="list-group" id="favoritePlaceList">
-                      <c:forEach items="${userFavoritePlaces}" var="favoritePlaces">
-                        <li class="list-group-item d-flex align-items-center">
-                          <img
-                            src="${favoritePlaces.firstUrl}"
-                            alt="게시물 썸네일"
-                            class="rounded-circle me-3"
-                            width="50"
-                            height="50"
-                          />
-                          <div>
-                            <p class="mb-0">
-                              ${favoritePlaces.address} ${favoritePlaces.placeName} 게시물에 좋아요를 눌렀습니다.
-                            </p>
-                            <small class="text-muted">${favoritePlaces.createdTime}</small>
-                          </div>
-                        </li>
-                      </c:forEach>
+                      
                     </ul>
                   </div>
                   <div
@@ -367,24 +355,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     tabindex="0"
                   >
                     <ul class="list-group" id="likedReviewList">
-                      <c:forEach items="${userFavoriteReviews.firstUrl}" var="favoriteReviews">
-                        <li class="list-group-item d-flex align-items-center">
-                          <img
-                            src="${favoriteReviews.firstUrl}"
-                            alt="게시물 썸네일"
-                            class="rounded-circle me-3"
-                            width="50"
-                            height="50"
-                          />
-                          <div>
-                            <p class="mb-0">
-                              ${favoriteReviews.placeName}에 ${favoriteReviews.userNickName}님의 리뷰
-                              ${favoriteReviews.review}에 좋아요를 눌렀습니다.
-                            </p>
-                            <small class="text-muted">${favoriteReviews.createdTime}</small>
-                          </div>
-                        </li>
-                      </c:forEach>
+                      
                     </ul>
                   </div>
                   <div
@@ -395,21 +366,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     tabindex="0"
                   >
                     <ul class="list-group" id="writtenReviewList">
-                      <c:forEach items="${userWrittenReviews}" var="writtenReviews">
-                        <li class="list-group-item d-flex align-items-center">
-                          <img
-                            src="${writtenReviews.firstUrl}"
-                            alt="프로필"
-                            class="rounded-circle me-3"
-                            width="50"
-                            height="50"
-                          />
-                          <div>
-                            <p class="mb-0">서울시 관악구 야경 게시물에 리뷰를 등록.</p>
-                            <small class="text-muted">2024.06.20 14:30</small>
-                          </div>
-                        </li>
-                      </c:forEach>
+                      
                     </ul>
                   </div>
                   <div
@@ -420,21 +377,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     tabindex="0"
                   >
                     <ul class="list-group" id="verifiedPlaceList">
-                      <c:forEach items="${userVerifiedPlaces}" var="verifiedPlaces">
-                        <li class="list-group-item d-flex align-items-center">
-                          <img
-                            src="https://placehold.co/50x50"
-                            alt="게시물 썸네일"
-                            class="rounded-circle me-3"
-                            width="50"
-                            height="50"
-                          />
-                          <div>
-                            <p class="mb-0">아이티윌 에서 위치인증을 하였습니다.</p>
-                            <small class="text-muted">2024.06.25 18:30</small>
-                          </div>
-                        </li>
-                      </c:forEach>
+                      
                     </ul>
                   </div>
                 </div>

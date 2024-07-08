@@ -6,6 +6,7 @@ import com.itwill.igojoa.dto.users.UserFavoritePlacesDto;
 import com.itwill.igojoa.dto.users.UserFavoriteReviewsDto;
 import com.itwill.igojoa.dto.users.UserRelatedInfoDto;
 import com.itwill.igojoa.dto.users.UserSearchDto;
+import com.itwill.igojoa.dto.users.UserVerifiedPlacesDto;
 import com.itwill.igojoa.dto.users.UserWrittenReviewsDto;
 import com.itwill.igojoa.dto.users.UsersInfoDto;
 import com.itwill.igojoa.entity.Users;
@@ -36,16 +37,19 @@ public interface UsersDao {
 	boolean checkPhoneNumber(String phoneNumber);
 
 	int deleteUser(String userId);
-	
+
 	boolean updateUsers(Users user);
-	
+
+	List<UserRelatedInfoDto> getUserRelatedInfo(UserSearchDto userSearchDto);
+
 	List<UserFavoritePlacesDto> getUserFavoritePlaces(UserSearchDto userSearchDto);
-	
-	List<UserFavoritePlacesDto> searchUserFavoritePlaces(UserSearchDto userSearchDto);
-	
+
 	List<UserFavoriteReviewsDto> getUserFavoriteReviews(UserSearchDto userSearchDto);
-	
+
 	List<UserWrittenReviewsDto> getUserWrittenReviews(UserSearchDto userSearchDto);
+
+	List<UserVerifiedPlacesDto> getUserVerifiedPlaces(UserSearchDto userSearchDto);
 	
-	List<UserRelatedInfoDto> getAllUserRelatedInfo(UserSearchDto userSearchDto);
+	void updateProfileImage(Users user);
+
 }

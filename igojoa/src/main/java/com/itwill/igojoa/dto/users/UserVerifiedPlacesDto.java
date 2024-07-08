@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserFavoriteReviewsDto {
-	private String placeName;
-	private String review;
-	private String createdAt;
-	private String reviewAuthor;
+public class UserVerifiedPlacesDto {
 	private String firstUrl;
+	private String placeName;
+	private String createdAt;
+	private String address;
 }

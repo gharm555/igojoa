@@ -77,7 +77,7 @@ public class UsersController {
 			log.info("파일 업로드 시작: {}", userRegisterDto.getFile().getOriginalFilename());
 			user = s3Service.uploadImage(userRegisterDto.getFile(), user);
 			log.info("파일 업로드 완료. URL: {}", user.getUserProfileUrl());
-
+			
 			userService.create(user);
 			return ResponseEntity.ok("회원가입 성공");
 		} catch (Exception e) {
@@ -247,57 +247,6 @@ public class UsersController {
 					.body(Map.of("success", false, "message", "업데이트를 수행할 수 없습니다."));
 		}
 	}
-
-	// @GetMapping("/allUserRelatedInfo")
-	// public ResponseEntity<List<UserRelatedInfoDto>>
-	// getAllUserRelatedInfo(HttpSession session, Model model) {
-	// String userId = (String) session.getAttribute("userId");
-	// List<UserRelatedInfoDto> allUserRelatedInfo =
-	// userService.getAllUserRelatedInfo(userId);
-	//
-	// return ResponseEntity.ok(allUserRelatedInfo);
-	// }
-
-	// @GetMapping("/userFavoritePlaces")
-	// public ResponseEntity<UserFavoritePlacesDto> userFavoritePlaces(HttpSession
-	// session, Model model) {
-	// String userId = (String) session.getAttribute("userId");
-	//
-	// UserFavoritePlacesDto userFavoritePlacesDto =
-	// userService.getUserFavoritePlaces(userId);
-	//
-	// model.addAttribute("userFavoritePlaces", userFavoritePlacesDto);
-	//
-	// return ResponseEntity.ok(userFavoritePlacesDto);
-	// }
-	//
-	// @GetMapping("/userFavoriteReviews")
-	// public ResponseEntity<UserFavoriteReviewsDto> userFavoriteReviews(HttpSession
-	// session, Model model) {
-	// String userId = (String) session.getAttribute("userId");
-	//
-	// UserFavoriteReviewsDto userFavoriteReviewsDto =
-	// userService.getUserFavoriteReviews(userId);
-	//
-	// model.addAttribute("userFavoriteReviews", userFavoriteReviewsDto);
-	//
-	// return ResponseEntity.ok(userFavoriteReviewsDto);
-	// }
-	//
-	// @GetMapping("/userWrittenReviews")
-	// public ResponseEntity<UserWrittenReviewsDto> userWrittenReviews(HttpSession
-	// session, Model model) {
-	// String userId = (String) session.getAttribute("userId");
-	//
-	// UserWrittenReviewsDto userWrittenReviewsDto =
-	// userService.getUserWrittenReviews(userId);
-	//
-	// model.addAttribute("userWrittenReviews", userWrittenReviewsDto);
-	//
-	// return ResponseEntity.ok(userWrittenReviewsDto);
-	// }
-
-	// @GetMapping("/userVerifiedPlaces")
 
 	@GetMapping("/getPoints")
 	public ResponseEntity<?> getPoints(HttpSession session) {
