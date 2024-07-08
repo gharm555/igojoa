@@ -200,6 +200,14 @@ main {
   padding: 15px 20px 15px 20px;
 }
 
+#province-select {
+  width: 13%;
+}
+#search-keyword {
+  width: 60%;
+}
+
+
 .main-search-bar select {
   background-color: #f8f9fa;
   border-right: 1px solid #ced4da;
