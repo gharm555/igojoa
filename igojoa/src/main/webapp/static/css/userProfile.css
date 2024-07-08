@@ -292,6 +292,10 @@ h2 {
     margin-bottom: 0;
 }
 
+.sort-icon {
+    margin-left: 5px;
+}
+
 /* 포인트 내역 탭 스타일 */
 #v-pills-messages {
     height: 100%;
@@ -716,6 +720,7 @@ h2 {
     font-size: 1.2em;
     z-index: 1;
 }
+
 
 
 @keyframes pulse {

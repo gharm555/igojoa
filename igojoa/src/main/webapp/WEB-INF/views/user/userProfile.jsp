@@ -271,7 +271,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-total"
                         aria-selected="true"
                       >
-                        전체 내역  <p><i class="fa-solid fa-sort"></i></p>
+                        전체 내역  <p><i class="sort-icon fa-solid fa-sort"></i></p>
                       </button>
                       <button
                         class="nav-link d-flex"
@@ -283,7 +283,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-favoritePlace"
                         aria-selected="false"
                       >
-                        좋아요한 게시물  <p><i class="fa-solid fa-sort"></i></p>
+                        좋아요한 게시물  <p><i class="sort-icon fa-solid fa-sort"></i></p>
                       </button>
                       <button
                         class="nav-link d-flex"
@@ -295,7 +295,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-likedReview"
                         aria-selected="false"
                       >
-                        좋아요한 리뷰  <p><i class="fa-solid fa-sort"></i></p>
+                        좋아요한 리뷰  <p><i class="sort-icon fa-solid fa-sort"></i></p>
                       </button>
                       <button
                         class="nav-link d-flex"
@@ -307,7 +307,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-writtenReview"
                         aria-selected="false"
                       >
-                        작성한 리뷰  <p><i class="fa-solid fa-sort"></i></p>
+                        작성한 리뷰  <p><i class="sort-icon fa-solid fa-sort"></i></p>
                       </button>
                       <button
                         class="nav-link d-flex"
@@ -319,7 +319,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-verifiedPlace"
                         aria-selected="false"
                       >
-                        위치인증 장소  <p><i class="fa-solid fa-sort ml-2"></i></p>
+                        위치인증 장소  <p><i class="sort-icon fa-solid fa-sort ml-2"></i></p>
                       </button>
                     </div>
                   </nav>
