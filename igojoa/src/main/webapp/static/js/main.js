@@ -53,12 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const addressCategory = provinceMap[selectedProvince] || "";
     const searchKeyword = $searchKeyword.value.trim() || "";
 
-    const regex = /^\s*$/;
-
-    // searchKeyword가 공백 문자열인 경우 빈 문자열로 설정
-    if (regex.test(searchKeyword)) {
-      searchKeyword = "";
-    }
     console.log(
       `Fetching places: startRowValue=${startRowValue}, rowCnt=${rowCnt}, addressCategory=${addressCategory}, searchKeyword=${searchKeyword}`
     );
@@ -259,7 +253,8 @@ document.addEventListener("click", function (event) {
 
     console.log("클릭된 장소 이름:", $placeName); // 디버깅용 로그
 
-    if ($placeName) {
+    if ($placeName) {		
+	
       $heartIcon.classList.toggle("bi-heart");
       $heartIcon.classList.toggle("bi-heart-fill");
       $heartIcon.classList.toggle("red-color");
@@ -272,8 +267,9 @@ document.addEventListener("click", function (event) {
       if (heartClickable === 1) {
         console.log("하트 클릭됨:", $placeName);
         const uri = "./clickHeart";
-        if (LoginUserId !== null) {
-          window.location.href = `${contextPath}/user/loginRegister`;
+        
+       if (LoginUserId !== null) {
+         window.location.href = `${contextPath}/user/loginRegister`;
         }
         axios
           .put(uri, $placeName)

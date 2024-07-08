@@ -170,6 +170,12 @@ main {
   justify-content: center; /* 화면 가운데 정렬 */
   align-items: center; /* 수직 가운데 정렬 */
 }
+#province-select{
+  width: 13%;
+}
+#search-keyword{
+  width:60%;
+}
 
 #main-section {
   min-height: 800px;
@@ -192,9 +198,6 @@ main {
 .main-search-bar button {
   border: none;
   padding: 15px 20px 15px 20px;
-}
-.main-search-bar {
-  width: 100%;
 }
 
 .main-search-bar select {
