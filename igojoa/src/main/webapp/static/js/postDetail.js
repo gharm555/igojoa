@@ -4,9 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // (2)이모지 리스트 생성
   createEmojiList();
-  
-  
-   ////// (3)상세페이지 좋아요 버튼 ////////
+
+  ////// (3)상세페이지 좋아요 버튼 ////////
   const $heartIcon = document.querySelector("#favoriteHeart");
 
   function updateHeartIcon() {
@@ -67,14 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
   });
-  
-  
-  
-  
-  
-  
-  
-  
+
   /** (4)로그인한 유저의 리뷰 가지고 오기 */
   // 모든 체크박스 레이블을 선택합니다.
   const labels = document.querySelectorAll(
@@ -153,15 +145,6 @@ document.addEventListener("DOMContentLoaded", function () {
     $iscoreBedge.textContent = "난이도: ";
   }
 
- 
-
- 
-  
-
-  
-
- 
-
   /** 리뷰 수정하기 */
 
   // TODO: 수정하기 버튼 만들기
@@ -200,42 +183,40 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- /* 이모지 리스트 생성 */
-  function createEmojiList() {
-    console.log("Creating Emoji List");
-    console.log("emojiData:", emojiData); // 디버깅: emojiData 출력
+/* 이모지 리스트 생성 */
+function createEmojiList() {
+  console.log("Creating Emoji List");
+  console.log("emojiData:", emojiData); // 디버깅: emojiData 출력
 
-    const $listContainer = document.querySelector("#emojiList");
-    if (!$listContainer) {
-      console.error("#emojiList element not found");
-      return;
-    }
+  const $listContainer = document.querySelector("#emojiList");
+  if (!$listContainer) {
+    console.error("#emojiList element not found");
+    return;
+  }
 
-    // count를 숫자로 변환하고 최대값 찾기
-    const maxCount = Math.max(
-      ...emojiData.map((item) => {
-        const count = parseInt(item.count) || 0;
-        console.log(`${item.key} count:`, count); // 디버깅: 각 항목의 count 출력
-        return count;
-      })
-    );
-
-    console.log("maxCount:", maxCount); // 디버깅: maxCount 출력
-
-    $listContainer.innerHTML = ""; // 기존 내용 초기화
-
-    emojiData.forEach((item) => {
-      const emojiItem = document.createElement("div");
-      emojiItem.className = "emoji-item";
-
-      // count를 숫자로 변환
+  // count를 숫자로 변환하고 최대값 찾기
+  const maxCount = Math.max(
+    ...emojiData.map((item) => {
       const count = parseInt(item.count) || 0;
-      const ratio = maxCount > 0 ? (count / maxCount) * 100 : 0;
+      console.log(`${item.key} count:`, count); // 디버깅: 각 항목의 count 출력
+      return count;
+    })
+  );
 
-      emojiItem.innerHTML = `
+  console.log("maxCount:", maxCount); // 디버깅: maxCount 출력
+
+  $listContainer.innerHTML = ""; // 기존 내용 초기화
+
+  emojiData.forEach((item) => {
+    const emojiItem = document.createElement("div");
+    emojiItem.className = "emoji-item";
+
+    // count를 숫자로 변환
+    const count = parseInt(item.count) || 0;
+    const ratio = maxCount > 0 ? (count / maxCount) * 100 : 0;
+
+    emojiItem.innerHTML = `
             <div class="background-fill" style="width: ${ratio}%;"></div>
             <div class="emoji-content">
                 <span class="emoji">${item.emoji}</span>
@@ -243,82 +224,90 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
             <span class="count">${count}</span>
         `;
-      $listContainer.appendChild(emojiItem);
-    });
+    $listContainer.appendChild(emojiItem);
+  });
 
-    console.log("Emoji list created successfully");
-  }
+  console.log("Emoji list created successfully");
+}
 
+/* 카카오 지도 */
+function initializeKakaoMap() {
+  if (typeof mapData !== "undefined" && mapData.latitude && mapData.longitude) {
+    var latitude = parseFloat(mapData.latitude);
+    var longitude = parseFloat(mapData.longitude);
 
-
-
- /* 카카오 지도 */
-  function initializeKakaoMap() {
-    if (
-      typeof mapData !== "undefined" &&
-      mapData.latitude &&
-      mapData.longitude
-    ) {
-      var latitude = parseFloat(mapData.latitude);
-      var longitude = parseFloat(mapData.longitude);
-
-      if (!isNaN(latitude) && !isNaN(longitude)) {
-        if (typeof kakao !== "undefined" && kakao.maps) {
-          let $container = document.querySelector("#map");
-          if ($container) {
-            let kakaoMap = new kakao.maps.LatLng(latitude, longitude);
-            let options = {
-              center: kakaoMap,
-              level: 3,
-            };
-            console.log(kakaoMap);
-            let map = new kakao.maps.Map($container, options);
-            let markerPosition = kakaoMap;
-            let marker = new kakao.maps.Marker({
-              position: markerPosition,
-            });
-            marker.setMap(map);
-          } else {
-            console.error("Map container not found");
-          }
+    if (!isNaN(latitude) && !isNaN(longitude)) {
+      if (typeof kakao !== "undefined" && kakao.maps) {
+        let $container = document.querySelector("#map");
+        if ($container) {
+          let kakaoMap = new kakao.maps.LatLng(latitude, longitude);
+          let options = {
+            center: kakaoMap,
+            level: 3,
+          };
+          console.log(kakaoMap);
+          let map = new kakao.maps.Map($container, options);
+          let markerPosition = kakaoMap;
+          let marker = new kakao.maps.Marker({
+            position: markerPosition,
+          });
+          marker.setMap(map);
         } else {
-          console.error("Kakao maps API not loaded");
+          console.error("Map container not found");
         }
       } else {
-        console.error("Invalid latitude or longitude values");
+        console.error("Kakao maps API not loaded");
       }
     } else {
-      console.error("Map data is not defined or incomplete");
+      console.error("Invalid latitude or longitude values");
     }
+  } else {
+    console.error("Map data is not defined or incomplete");
   }
-  
-  
-  
-  
-  /*  -------- 위로가는 버튼 --------- */
-  //  버튼 요소 선택
-  const $scrollToTopBtn = document.querySelector("#scrollToTopBtn");
+}
 
-  // 스크롤 이벤트 리스너 추가
-  window.addEventListener("scroll", scrollFunction);
+/*  -------- 위로가는 버튼 --------- */
+//  버튼 요소 선택
+const $scrollToTopBtn = document.querySelector("#scrollToTopBtn");
 
-  function scrollFunction() {
-    // 페이지를 100px 이상 스크롤했을 때 버튼 표시
-    if (
-      document.body.scrollTop > 100 ||
-      document.documentElement.scrollTop > 100
-    ) {
-      $scrollToTopBtn.style.display = "block";
-    } else {
-      $scrollToTopBtn.style.display = "none";
-    }
+// 스크롤 이벤트 리스너 추가
+window.addEventListener("scroll", scrollFunction);
+
+function scrollFunction() {
+  // 페이지를 100px 이상 스크롤했을 때 버튼 표시
+  if (
+    document.body.scrollTop > 100 ||
+    document.documentElement.scrollTop > 100
+  ) {
+    $scrollToTopBtn.style.display = "block";
+  } else {
+    $scrollToTopBtn.style.display = "none";
   }
+}
 
-  // 버튼 클릭 이벤트 리스너 추가
-  $scrollToTopBtn.addEventListener("click", function () {
-    // 부드러운 스크롤 효과로 페이지 최상단으로 이동
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+// 버튼 클릭 이벤트 리스너 추가
+$scrollToTopBtn.addEventListener("click", function () {
+  // 부드러운 스크롤 효과로 페이지 최상단으로 이동
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
   });
+});
+function checkSession() {
+  axios
+    .get(`${contextPath}/user/checkSession`)
+    .then((response) => {
+      if (response.data.success === false) {
+        alert(response.data.message);
+        window.location.href = `${contextPath}/user/loginRegister`;
+      }
+    })
+    .catch((error) => {
+      console.error("Session check error:", error);
+    });
+}
+
+// 30초마다 세션 체크
+setInterval(checkSession, 30000);
+// 페이지 로드 시 즉시 세션 체크
+checkSession();

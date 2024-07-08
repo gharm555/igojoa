@@ -8,27 +8,34 @@
 }
 
 body {
-  padding: 20px;
+  padding: 0;
   background-color: var(--main-bg-color);
   color: var(--main-text-color);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 main {
   position: relative;
   margin-top: 134px;
-  transition: margin-top 0.3s ease;
+
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
+.text-center.d-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 #btnPlus {
   background-color: var(--primary-color);
   color: white;
+  margin: 0 auto;
 }
 
 .btn-group .btn {
@@ -80,7 +87,7 @@ main {
 
 .main-container {
   width: 100%;
-  max-width: 1200px;
+  overflow: hidden;
   margin-left: auto;
   margin-right: auto;
   padding: 0 20px;
@@ -143,7 +150,9 @@ main {
   cursor: pointer;
   transition: color 0.2s ease;
 }
-
+#fire::before {
+  color: red;
+}
 .main-custom-heart.main-bi-heart {
   color: #000;
 }
@@ -153,7 +162,7 @@ main {
 }
 
 .main-search-bar {
-  max-width: 600px;
+  width: 600px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: var(--border-radius);
   overflow: hidden;
@@ -162,8 +171,9 @@ main {
   align-items: center; /* 수직 가운데 정렬 */
 }
 
-section {
-  min-height: 800px; /* 모든 섹션의 최소 높이 설정 */
+#main-section {
+  min-height: 800px;
+  width: 100%;
 }
 
 body {
@@ -174,17 +184,20 @@ body {
 
 main {
   flex: 1;
-}
-
-.main-search-bar {
-  width: auto;
+  transition: margin-top 0.3s ease;
 }
 
 .main-search-bar select,
 .main-search-bar input,
 .main-search-bar button {
   border: none;
-  padding: 15px 20px;
+  padding: 15px 20px 15px 20px;
+}
+#province-select {
+  width: 13%;
+}
+#search-keyword {
+  width: 60%;
 }
 
 .main-search-bar select {
@@ -264,6 +277,12 @@ main {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+#container .text-center {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
 
 .footer-meta {
   display: flex;
@@ -320,8 +339,8 @@ a .main-card-footer .bi-heart-fill {
 
 footer {
   font-family: var(--main-font);
-  background-color: var(--main-text-color);
-  color: var(--main-text-color);
+  background-color: black;
+  color: white;
 }
 
 footer a {
@@ -338,7 +357,50 @@ footer .text-center {
   padding: 1rem 0;
   background-color: var(--main-bg-color);
 }
+/* 푸터  */
+.p-footer__inner {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
 
+.p-footer__site-group-list {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.p-footer__site-group {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.p-footer__site-group-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.p-footer__site-group-item {
+  margin-bottom: 5px;
+}
+
+.p-footer__copyright {
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  background-color: black;
+}
+
+@media (max-width: 768px) {
+  .p-footer__site-group-list {
+    flex-direction: column;
+  }
+
+  .p-footer__site-group {
+    margin-bottom: 20px;
+  }
+}
 .main-custom-heart.red-color {
   color: #dc3545;
 }
@@ -389,31 +451,42 @@ footer .text-center {
 /* 배너 스타일 */
 .banner-container {
   position: fixed;
-  top: 134px; /* 네비게이션 바 + 토글 버튼 높이 */
+  top: 127px; /* 네비게이션 바 + 토글 버튼 높이 */
   left: 0;
   width: 100%;
-  height: 0;
+  height: 600px;
   overflow: hidden;
-  transition: height 0.3s ease;
+  transition: height 0.3s ease-out;
   z-index: 900;
 }
 
-.banner-container.open {
-  height: 400px; /* 배너 높이 증가 */
-}
-
 .banner-content {
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+/*다크모드*/
 
-@media (max-width: 390px) and (max-device-width: 390px) {
+.banner-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 390px) {
   html,
   body {
+    margin: 0;
+    padding: 0;
     overflow-x: hidden;
     width: 100%;
+  }
+  .banner-container {
+    height: 300px;
+  }
+  #main-section {
+    width: 155%;
+    min-height: 400px;
   }
   .main-card-body img {
     height: 100px;
@@ -437,30 +510,46 @@ footer .text-center {
   .main-custom-heart {
     font-size: 20px;
   }
-
+  .main-search-bar {
+    width: 60%;
+  }
   .main-search-bar select,
   .main-search-bar input,
   .main-search-bar button {
-    padding: 10px 15px;
+    padding: 12px 10px 12px 10px;
     font-size: 14px;
   }
 
+  #search-keyword {
+    width: 33%;
+  }
   .main-card-header h1 {
     font-size: 1.2rem;
   }
-
+  .main-card-footer {
+    padding: 0;
+    padding-top: 5%;
+  }
   .main-card-footer h3,
   .main-card-footer h5 {
     font-size: 0.9rem;
   }
 
   .main-card-footer p {
-    font-size: 0.8rem;
+    font-size: 1.1rem;
   }
 
   .username,
   .date,
   .likes {
     font-size: 0.8em;
+  }
+  footer {
+    background-color: black;
+    font-size: 12px;
+    color: white;
+  }
+  footer .container {
+    width: 100%;
   }
 }
