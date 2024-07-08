@@ -97,9 +97,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.addEventListener("click", handleDocumentClick);
-    window.addEventListener("scroll", closeBannerOnScroll, {
-      passive: true,
-    });
   }
 
   function toggleSideNav() {

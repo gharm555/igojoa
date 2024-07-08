@@ -352,7 +352,9 @@ function initializeBanner() {
   }
 
   // 배너 높이를 동적으로 계산
-  const bannerHeight = $bannerContainer.scrollHeight;
+  const bannerHeight = parseInt(
+    window.getComputedStyle($bannerContainer).height
+  );
   const bannerToggleContainerHeight = $bannerToggleContainer.offsetHeight;
 
   function updateBanner(isOpen) {

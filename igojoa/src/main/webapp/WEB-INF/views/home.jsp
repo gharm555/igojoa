@@ -55,10 +55,10 @@
           >
             <div class="carousel-inner">
               <div class="carousel-item active">
-                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png"  alt="..." />
+                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EC%97%AC%EB%A6%84+%EC%9D%B4%EB%B2%A4%ED%8A%B8.png"  alt="..." />
               </div>
               <div class="carousel-item">
-                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png"  alt="..." />
+                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B3%B5%EC%A7%80%EC%82%AC%ED%95%AD.png"  alt="..." />
               </div>
               <div class="carousel-item">
                 <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png"  alt="..." />
