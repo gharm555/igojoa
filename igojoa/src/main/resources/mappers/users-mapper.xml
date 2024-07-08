@@ -120,7 +120,7 @@
 		WHERE
         	placesFavorite.userId = #{userId}
         	<if test="searchKeyword != null and searchKeyword != ''">
-           	 	AND upper(places.placeName) LIKE upper('%${searchKeyword}%')
+           	 	AND upper(TRIM(REPLACE(places.placeName, ' ', ''))) LIKE upper('%${searchKeyword}%')
         	</if>
         	<if test="largeAddress != null and largeAddress != ''">
             	AND places.largeAddress = #{largeAddress}
@@ -155,7 +155,7 @@
 		WHERE
 			reviewLikes.likeUserId = #{userId}
 			<if test="searchKeyword != null and searchKeyword != ''">
-           	 	AND upper(reviews.review) LIKE upper('%${searchKeyword}%')
+           	 	AND upper(TRIM(REPLACE(reviews.review, ' ', ''))) LIKE upper('%${searchKeyword}%')
         	</if>
         	<if test="largeAddress != null and largeAddress != ''">
             	AND places.largeAddress = #{largeAddress}
@@ -191,7 +191,7 @@
 		WHERE
 			reviews.userId = '${ userId }'
 			<if test="searchKeyword != null and searchKeyword != ''">
-           	 	AND upper(reviews.review) LIKE upper('%${searchKeyword}%')
+           	 	AND upper(TRIM(REPLACE(reviews.review, ' ', ''))) LIKE upper('%${searchKeyword}%')
         	</if>
         	<if test="largeAddress != null and largeAddress != ''">
             	AND places.largeAddress = #{largeAddress}
@@ -226,7 +226,7 @@
 		WHERE
 			placeVerified.userId = #{userId}
 			<if test="searchKeyword != null and searchKeyword != ''">
-           	 	AND upper(placeVerified.placeName) LIKE upper('%${searchKeyword}%')
+           	 	AND upper(TRIM(REPLACE(placeVerified.placeName, ' ', ''))) LIKE upper('%${searchKeyword}%')
         	</if>
         	<if test="largeAddress != null and largeAddress != ''">
             	AND places.largeAddress = #{largeAddress}
@@ -268,7 +268,7 @@
     WHERE 
     	placesFavorite.userId = '${ userId }'
 			<if test="searchKeyword != null and searchKeyword != ''">
-           	 	AND upper(places.placeName) LIKE upper('%${searchKeyword}%')
+           	 	AND upper(TRIM(REPLACE(places.placeName, ' ', ''))) LIKE upper('%${searchKeyword}%')
         	</if>
         	<if test="largeAddress != null and largeAddress != ''">
             	AND places.largeAddress = #{largeAddress}
@@ -301,7 +301,7 @@
     WHERE 
     	reviewLikes.likeUserId = '${ userId }'
 			<if test="searchKeyword != null and searchKeyword != ''">
-           	 	AND upper(reviews.review) LIKE upper('%${searchKeyword}%')
+           	 	AND upper(TRIM(REPLACE(reviews.review, ' ', ''))) LIKE upper('%${searchKeyword}%')
         	</if>
         	<if test="largeAddress != null and largeAddress != ''">
             	AND places.largeAddress = #{largeAddress}
@@ -332,7 +332,7 @@
     WHERE 
     	reviews.userId = '${ userId }'
 			<if test="searchKeyword != null and searchKeyword != ''">
-           	 	AND upper(reviews.review) LIKE upper('%${searchKeyword}%')
+           	 	AND upper(TRIM(REPLACE(reviews.review, ' ', ''))) LIKE upper('%${searchKeyword}%')
         	</if>
         	<if test="largeAddress != null and largeAddress != ''">
             	AND places.largeAddress = #{largeAddress}
@@ -363,7 +363,7 @@
     WHERE 
     	placeVerified.userId = '${ userId }'
 			<if test="searchKeyword != null and searchKeyword != ''">
-           	 	AND upper(placeVerified.placeName) LIKE upper('%${searchKeyword}%')
+           	 	AND upper(TRIM(REPLACE(placeVerified.placeName, ' ', ''))) LIKE upper('%${searchKeyword}%')
         	</if>
         	<if test="largeAddress != null and largeAddress != ''">
             	AND places.largeAddress = #{largeAddress}

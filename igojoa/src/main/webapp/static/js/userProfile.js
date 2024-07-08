@@ -959,9 +959,11 @@ function formatYearMonth(date) {
 const $profileImage = document.querySelector("#profileImage");
 const $$profileImage = document.querySelectorAll(".profileImage");
 const $profileImageInput = document.querySelector("#profileImageInput");
+const $imageChangeBtn = document.querySelector("#imageChange");
+const $imageDeleteBtn = document.querySelector("#imageDelete");
 // <-------------- 유저 프로필 이미지 변경 변수
 
-// 유저 프로필 이미지 변경
+// 유저 프로필 이미지 변경 (좌측 이미지 직접 클릭)
 $profileImage.addEventListener("click", function () {
     $profileImageInput.click();
 });
@@ -988,4 +990,23 @@ $profileImageInput.addEventListener("change", function () {
                 alert("프로필 이미지 변경 중 오류가 발생했습니다.");
             });
     }
+});
+
+// 유저 프로필 이미지 변경 (내 정보수정에서 변경 버튼 클릭)
+$imageChangeBtn.addEventListener("click", function () {
+    $profileImageInput.click();
+});
+
+// 유저 프로필 기본설정으로 변경 (내 정보수정에서 삭제 버튼 클릭)
+$imageDeleteBtn.addEventListener("click", function () {
+    axios
+        .put(contextPath + "/defaultImage")
+        .then((response) => {
+            $$profileImage.forEach(($$profileImage) => {
+                $$profileImage.src = response.data;
+            });
+        })
+        .catch((error) => {
+            alert("프로필 이미지 변경 중 오류가 발생했습니다.");
+        });
 });

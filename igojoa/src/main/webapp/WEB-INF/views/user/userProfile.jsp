@@ -131,8 +131,28 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     회원탈퇴
                   </button>
                 </div>
+                <!-- TODO 시작 -->
+                <div class="containerImageChange" style="display: flex; height: 25%;">
+                  <div class="profile-photo imageInImageChangeContainer">
+                    <img
+                    src="${ userInfo.userProfileUrl }"
+                    alt="프로필 이미지"
+                    id="profileImage"
+                    class="rounded-circle profile-img profileImage forMoveToCenter"
+                    style="cursor: pointer; width: 150px; height: 150px; object-fit: cover"
+                  />
+                  </div>
+                  <div class="info infoInImageChangeContainer">
+                      <p style="opacity: 0.8;">98x98픽셀 이상, 10MB 이하의 사진이 권장됩니다. PNG 또는 GIF(애니메이션 GIF 제외) 파일을 사용하세요. 사진이 Igojoa 커뮤니티 가이드를 준수해야 합니다.</p>
+                      <div class="buttons">
+                          <button class="btn btn-warning" id="imageChange">변경</button>
+                          <button class="btn btn-danger" id="imageDelete">삭제</button>
+                      </div>
+                  </div>
+                </div>  
+                <!-- TODO 끗 -->
                 <form id="editProfileForm">
-                  <div class="mb-3">
+                  <div class="mb-3 mt-3">
                     <label for="nickName" class="form-label">사용자 닉네임</label>
                     <input
                       type="text"
