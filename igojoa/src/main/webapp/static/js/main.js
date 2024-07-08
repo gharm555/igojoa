@@ -4,9 +4,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const $searchKeyword = document.querySelector("#search-keyword");
   const $cardContainer = document.querySelector("#cardMain");
   const $moreButton = document.querySelector("#btnPlus");
+  const $sortButtons = document.querySelectorAll(".btn-group .btn");
 
-  let startRowValue = 10; // 처음 9개 로드했으므로 초기값을 10으로 설정
+  let startRowValue = 9; // 처음 9개 로드했으므로 초기값을 9으로 설정
   const itemsPerPage = 3; // 더보기 시 3개 아이템
+  let currentSortKey = "iScore";
+  let currentSortValue = 0;
 
   const provinceMap = {
     seoul: "서울시",
@@ -27,13 +30,25 @@ document.addEventListener("DOMContentLoaded", () => {
     jeju: "제주도",
   };
 
-  $searchButton.addEventListener("click", function () {
+  $searchButton.addEventListener("click", () => {
     startRowValue = 0; // 검색 시 시작 행을 0으로 초기화
     $cardContainer.innerHTML = ""; // 기존 카드 제거
-    fetchPlaces(itemsPerPage * 3, true); // 검색 시 9개 로드
+    fetchPlaces(itemsPerPage * 2, true); // 검색 시 6개 로드
+  });
+  $searchKeyword.addEventListener("keyup", function (event) {
+    if (event.keyCode === 13) {
+      // Enter 키 확인
+      event.preventDefault();
+      $searchButton.click(); // 검색 버튼 클릭 동작 수행
+    }
   });
 
-  function fetchPlaces(rowCnt, isSearch = false) {
+  function fetchPlaces(
+    rowCnt,
+    isSearch = false,
+    sortKey = currentSortKey,
+    sortValue = currentSortValue
+  ) {
     const selectedProvince = $provinceSelect.value || "";
     const addressCategory = provinceMap[selectedProvince] || "";
     const searchKeyword = $searchKeyword.value.trim() || "";
@@ -47,8 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
         params: {
           addressCategory: addressCategory,
           searchKeyword: searchKeyword,
-          sortKey: "userFavorite",
-          sortValue: 1,
+          sortKey: sortKey,
+          sortValue: sortValue,
           startRowValue: startRowValue,
           rowCnt: rowCnt,
         },
@@ -63,26 +78,27 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        // 새로운 카드를 추가
-        $newPlaces.forEach((place, index) => {
-          const $newCard = createCard(place);
-          if (!isSearch && index >= 3) {
-            $newCard.classList.add("d-none", "extra-card");
+        const existingPlaceNames = new Set();
+        document
+          .querySelectorAll(".card-item .main-card-title")
+          .forEach((title) => {
+            existingPlaceNames.add(title.textContent);
+          });
+
+        $newPlaces.forEach((place) => {
+          if (!existingPlaceNames.has(place.placeName)) {
+            console.log(`Place name: ${place.placeName}`);
+            const $newCard = createCard(place);
+            $cardContainer.appendChild($newCard);
+            console.log(`Card added for place: ${place.placeName}`);
+            existingPlaceNames.add(place.placeName); // 새로운 장소 이름을 추가
           }
-          $cardContainer.appendChild($newCard);
         });
 
-        if (!isSearch) {
-          const hiddenCards = document.querySelectorAll(".extra-card.d-none");
-          for (let i = 0; i < itemsPerPage && i < hiddenCards.length; i++) {
-            hiddenCards[i].classList.remove("d-none");
-          }
-        }
-
-        if ($newPlaces.length < rowCnt) {
-          $moreButton.style.display = "none";
-        } else {
+        if ($newPlaces.length >= rowCnt) {
           $moreButton.style.display = "block";
+        } else {
+          $moreButton.style.display = "none";
         }
 
         startRowValue += $newPlaces.length; // 다음 시작 행 업데이트
@@ -114,6 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function createCard(place) {
     console.log(`Creating card for place:`, place);
+
     const $newCard = document.createElement("div");
     $newCard.classList.add("col-lg-4", "col-md-6", "mb-3", "card-item");
     $newCard.innerHTML = `
@@ -132,8 +149,12 @@ document.addEventListener("DOMContentLoaded", () => {
                          data-user-favorite="${place.userFavorite}"></i>
                   </div>
                   <div class="main-badges mt-3">
-                      <span class="badge">${place.highestBadge}</span>
-                      <span class="badge">${place.secondHighestBadge}</span>
+						<span class="badge"><i class="bi bi-fire" id="fire"></i> ${
+              place.highestBadge
+            }</span>
+						<span class="badge"><i class="bi bi-fire" id="fire"></i> ${
+              place.secondHighestBadge
+            }</span>
                       <span class="badge difficulty ${place.iscore}">난이도: ${
       place.iscore
     }</span>
@@ -185,170 +206,230 @@ document.addEventListener("DOMContentLoaded", () => {
     const day = dateArray[2].toString().padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
-  document.addEventListener("click", function (event) {
-    if (event.target.classList.contains("main-custom-heart")) {
-      const heartIcon = event.target;
-      const placeName = heartIcon.getAttribute("data-place-name");
 
-      console.log("클릭된 장소 이름:", placeName); // 디버깅용 로그
+  $sortButtons.forEach((button) => {
+    button.addEventListener("click", function (event) {
+      const $sortButton = event.target;
+      let $iScore = $sortButton.getAttribute("data-sortIscore");
+      let $placeVerified = $sortButton.getAttribute("data-sortPlaceVerified");
+      let $userFavorite = $sortButton.getAttribute("data-sortUserFavorite");
+      let $reviewCnt = $sortButton.getAttribute("data-sortReviewCnt");
 
-      if (placeName) {
-        heartIcon.classList.toggle("bi-heart");
-        heartIcon.classList.toggle("bi-heart-fill");
-        heartIcon.classList.toggle("red-color");
+      // 클릭된 버튼의 정렬 방향을 토글
+      if ($iScore !== null) {
+        $iScore = $iScore === "1" ? "0" : "1";
+        $sortButton.setAttribute("data-sortIscore", $iScore);
+        currentSortKey = "iScore";
+        currentSortValue = parseInt($iScore);
+      } else if ($placeVerified !== null) {
+        $placeVerified = $placeVerified === "1" ? "0" : "1";
+        $sortButton.setAttribute("data-sortPlaceVerified", $placeVerified);
+        currentSortKey = "placeVerified";
+        currentSortValue = parseInt($placeVerified);
+      } else if ($userFavorite !== null) {
+        $userFavorite = $userFavorite === "1" ? "0" : "1";
+        $sortButton.setAttribute("data-sortUserFavorite", $userFavorite);
+        currentSortKey = "userFavorite";
+        currentSortValue = parseInt($userFavorite);
+      } else if ($reviewCnt !== null) {
+        $reviewCnt = $reviewCnt === "1" ? "0" : "1";
+        $sortButton.setAttribute("data-sortReviewCnt", $reviewCnt);
+        currentSortKey = "reviewCnt";
+        currentSortValue = parseInt($reviewCnt);
+      }
 
-        let heartClickable = heartIcon.classList.contains("bi-heart-fill")
-          ? 1
-          : 0;
-        heartIcon.setAttribute("data-user-favorite", heartClickable); // data-user-favorite 속성 업데이트
+      // 정렬 시 시작 행을 0으로 초기화
+      startRowValue = 0;
+      $cardContainer.innerHTML = "";
+      fetchPlaces(itemsPerPage * 2, true, currentSortKey, currentSortValue); // 정렬 시 6개 로드 // 정렬 시 6개 로드
+    });
+  });
+});
 
-        if (heartClickable === 1) {
-          console.log("하트 클릭됨:", placeName);
-          const uri = "./clickHeart";
+document.addEventListener("click", function (event) {
+  if (event.target.classList.contains("main-custom-heart")) {
+    const $heartIcon = event.target;
+    const $placeName = $heartIcon.getAttribute("data-place-name");
 
-          axios
-            .put(uri, placeName)
-            .then((response) => {
-              console.log("응답 데이터:", response.data);
-            })
-            .catch((error) => {
-              console.error("에러 데이터:", error);
-            });
-        } else {
-          console.log("하트 취소됨:", placeName);
-          const uri = `./deleteHeart/${placeName}`;
-          console.log("삭제 URI:", uri);
+    console.log("클릭된 장소 이름:", $placeName); // 디버깅용 로그
 
-          axios
-            .delete(uri)
-            .then((response) => {
-              console.log("응답 데이터:", response.data);
-            })
-            .catch((error) => {
-              console.error("에러 데이터:", error);
-            });
+    if ($placeName) {		
+	
+      $heartIcon.classList.toggle("bi-heart");
+      $heartIcon.classList.toggle("bi-heart-fill");
+      $heartIcon.classList.toggle("red-color");
+
+      let heartClickable = $heartIcon.classList.contains("bi-heart-fill")
+        ? 1
+        : 0;
+      $heartIcon.setAttribute("data-user-favorite", heartClickable); // data-user-favorite 속성 업데이트
+
+      if (heartClickable === 1) {
+        console.log("하트 클릭됨:", $placeName);
+        const uri = "./clickHeart";
+        
+       if (LoginUserId !== null) {
+         window.location.href = `${contextPath}/user/loginRegister`;
         }
+        axios
+          .put(uri, $placeName)
+          .then((response) => {
+            console.log("응답 데이터:", response.data);
+          })
+          .catch((error) => {
+            console.error("에러 데이터:", error);
+          });
       } else {
-        console.error("placeName이 null입니다.");
+        console.log("하트 취소됨:", $placeName);
+        const uri = `./deleteHeart/${$placeName}`;
+        console.log("삭제 URI:", uri);
+
+        axios
+          .delete(uri)
+          .then((response) => {
+            console.log("응답 데이터:", response.data);
+          })
+          .catch((error) => {
+            console.error("에러 데이터:", error);
+          });
       }
-    }
-  });
-
-  // 스크롤 탑 버튼
-  const $scrollToTopBtn = document.querySelector("#scrollToTopBtn");
-  if ($scrollToTopBtn) {
-    window.addEventListener("scroll", scrollFunction);
-
-    function scrollFunction() {
-      if (
-        document.body.scrollTop > 100 ||
-        document.documentElement.scrollTop > 100
-      ) {
-        $scrollToTopBtn.style.display = "block";
-      } else {
-        $scrollToTopBtn.style.display = "none";
-      }
-    }
-
-    $scrollToTopBtn.addEventListener("click", function () {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
-
-  // 카드 컨테이너에 이벤트 리스너 추가 (이벤트 위임)
-  const cardContainer = document.querySelector(".row.text-center"); // 카드들을 포함하는 컨테이너의 선택자를 적절히 수정하세요
-
-  if (cardContainer) {
-    cardContainer.addEventListener("click", function (event) {
-      const card = event.target.closest(".go-to-details");
-      if (card) {
-        const heartIcon = event.target.closest(".main-custom-heart");
-        if (heartIcon) {
-          return;
-        } else {
-          const placeName = card.getAttribute("data-place-name");
-          if (placeName) {
-            window.location.href = `${contextPath}/place/details/${placeName}`;
-          }
-        }
-      }
-    });
-  }
-  // 배너 버튼
-  const $bannerToggle = document.querySelector("#banner-toggle");
-  $bannerToggle.addEventListener("click", toggleBanner);
-  function toggleBanner() {
-    const $bannerContainer = document.querySelector(".banner-container");
-    const $bannerToggle = document.querySelector(".banner-toggle");
-    const $main = document.querySelector("main"); // main 요소 선택
-
-    const isOpen = $bannerContainer.classList.toggle("open");
-
-    if (isOpen) {
-      const bannerHeight = $bannerContainer.scrollHeight;
-      $main.style.marginTop = `${134 + bannerHeight}px`;
-      $bannerToggle.innerHTML = '<i class="fas fa-chevron-up"></i> ';
     } else {
-      $main.style.marginTop = "134px"; // 기본 네비게이션 바와 토글 버튼 높이
-      $bannerToggle.innerHTML = '<i class="fas fa-chevron-down"></i> ';
-    }
-    window.addEventListener("scroll", closeBannerOnScroll, { passive: true });
-  }
-
-  // 문서 전체 클릭 이벤트 리스너 추가
-  document.addEventListener("click", function (event) {
-    const $userProfile = document.querySelector(".userProfile");
-    const $dropdownMenu = document.querySelector(".dropdown-menu");
-    if (!$userProfile.contains(event.target)) {
-      $dropdownMenu.classList.remove("show");
-      $userProfile.classList.remove("show");
-    }
-  });
-
-  // 페이지 로드 시 배너 상태 초기화
-  document.addEventListener("DOMContentLoaded", function () {
-    const bannerToggle = document.querySelector(".banner-toggle");
-    bannerToggle.innerHTML = '<i class="fas fa-chevron-down"></i> ';
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    const goToTopButton = document.getElementById("goToTop");
-
-    goToTopButton.addEventListener("click", function (e) {
-      e.preventDefault(); // 기본 링크 동작 방지
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth", // 부드러운 스크롤 효과
-      });
-    });
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    window.scrollTo(0, 0);
-  });
-
-  // 메인 위치 원상태로
-  function updateMainMargin() {
-    const $bannerContainer = document.querySelector(".banner-container");
-    const $main = document.querySelector("main"); // main 요소 선택
-
-    if ($bannerContainer.classList.contains("open")) {
-      const bannerHeight = $bannerContainer.scrollHeight;
-      $main.style.marginTop = `${134 + bannerHeight}px`;
-    } else {
-      $main.style.marginTop = "134px"; // 기본 네비게이션 바와 토글 버튼 높이
-    }
-  }
-  //  스크롤 시 배너 접힘
-  function closeBannerOnScroll() {
-    const $bannerContainer = document.querySelector(".banner-container");
-    const $bannerToggle = document.querySelector(".banner-toggle");
-
-    if ($bannerContainer.classList.contains("open")) {
-      $bannerContainer.classList.remove("open");
-      $bannerToggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
-      setTimeout(updateMainMargin, 300); // CSS transition 시간과 일치시킴
-      $bannerToggle.innerHTML = '<i class="fas fa-chevron-down"></i> ';
+      console.error("placeName이 null입니다.");
     }
   }
 });
+
+// 스크롤 탑 버튼
+const $scrollToTopBtn = document.querySelector("#scrollToTopBtn");
+if ($scrollToTopBtn) {
+  window.addEventListener("scroll", scrollFunction);
+
+  function scrollFunction() {
+    if (
+      document.body.scrollTop > 100 ||
+      document.documentElement.scrollTop > 100
+    ) {
+      $scrollToTopBtn.style.display = "block";
+    } else {
+      $scrollToTopBtn.style.display = "none";
+    }
+  }
+
+  $scrollToTopBtn.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+
+// 카드 컨테이너에 이벤트 리스너 추가 (이벤트 위임)
+const cardContainer = document.querySelector(".row.text-center"); // 카드들을 포함하는 컨테이너의 선택자를 적절히 수정하세요
+
+if (cardContainer) {
+  cardContainer.addEventListener("click", function (event) {
+    const card = event.target.closest(".go-to-details");
+    if (card) {
+      const heartIcon = event.target.closest(".main-custom-heart");
+      if (heartIcon) {
+        return;
+      } else {
+        const placeName = card.getAttribute("data-place-name");
+        if (placeName) {
+          window.location.href = `${contextPath}/place/details/${placeName}`;
+        }
+      }
+    }
+  });
+}
+
+function initializeBanner() {
+  const $bannerToggle = document.querySelector("#banner-toggle");
+  const $bannerContainer = document.querySelector(".banner-container");
+  const $bannerToggleContainer = document.querySelector(
+    ".banner-toggle-container"
+  );
+  const $main = document.querySelector("main");
+  const $navbar = document.querySelector("nav");
+
+  // 필요한 요소들이 모두 존재하는지 확인
+  if (
+    !$bannerToggle ||
+    !$bannerContainer ||
+    !$bannerToggleContainer ||
+    !$main ||
+    !$navbar
+  ) {
+    console.error(
+      "Banner initialization failed: One or more required elements not found."
+    );
+    return;
+  }
+
+  // 배너 높이를 동적으로 계산
+  const bannerHeight = parseInt(
+    window.getComputedStyle($bannerContainer).height
+  );
+  const bannerToggleContainerHeight = $bannerToggleContainer.offsetHeight;
+
+  function updateBanner(isOpen) {
+    const navbarHeight = $navbar.offsetHeight;
+    if (isOpen) {
+      $main.style.marginTop = `${
+        navbarHeight + bannerHeight + bannerToggleContainerHeight
+      }px`;
+      $bannerContainer.style.height = `${bannerHeight}px`;
+    } else {
+      $main.style.marginTop = `${navbarHeight + bannerToggleContainerHeight}px`;
+      $bannerContainer.style.height = "0px";
+    }
+
+    $bannerToggle.innerHTML = isOpen
+      ? '<i class="fas fa-chevron-up"></i>'
+      : '<i class="fas fa-chevron-down"></i>';
+
+    $bannerContainer.classList.toggle("open", isOpen);
+  }
+
+  function toggleBanner() {
+    const isOpen = !$bannerContainer.classList.contains("open");
+    updateBanner(isOpen);
+  }
+
+  function closeBannerOnScroll() {
+    if ($bannerContainer.classList.contains("open")) {
+      updateBanner(false);
+    }
+  }
+
+  $bannerToggle.addEventListener("click", toggleBanner);
+  window.addEventListener("scroll", closeBannerOnScroll, { passive: true });
+
+  // 초기 상태 설정
+  updateBanner(false);
+
+  function closeBannerOnScroll() {
+    if ($bannerContainer.classList.contains("open")) {
+      updateBanner(false);
+    }
+  }
+  window.addEventListener("scroll", closeBannerOnScroll, { passive: true });
+}
+
+// DOMContentLoaded 이벤트 리스너에서 initializeBanner 함수 호출
+document.addEventListener("DOMContentLoaded", initializeBanner);
+
+function checkSession() {
+  axios
+    .get(`${contextPath}/user/checkSession`)
+    .then((response) => {
+      if (response.data.success === false) {
+        alert(response.data.message);
+        window.location.href = `${contextPath}/user/loginRegister`;
+      }
+    })
+    .catch((error) => {
+      console.error("Session check error:", error);
+    });
+}
+// 30초마다 세션 체크
+setInterval(checkSession, 30000);
+// 페이지 로드 시 즉시 세션 체크
+checkSession();

@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ReviewListDto {
-	private String placeName;
-	private String userId;
+	private String nickName;
 	private String review;
 	private LocalDateTime modifiedAt;
 	private Integer parkingAvailable;
@@ -22,5 +21,7 @@ public class ReviewListDto {
 	private Integer freeEntry;
 	private Integer easyTransport;
 	private Integer iScore;
+	private Integer cntLike;
+	private Integer myLike;
 	private String userProfileUrl;
 }

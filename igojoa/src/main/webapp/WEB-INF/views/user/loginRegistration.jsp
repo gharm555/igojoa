@@ -182,7 +182,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
                 style="display: none"
               ></div>
 
-              <div class="d-flex align-items-baseline">
+              <div class="d-flex align-items-baseline" id="phone-input">
                 <input
                   type="text"
                   class="form-control"
@@ -190,7 +190,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
                   id="phone1"
                   name="phone1"
                   maxlength="3"
-                  style="width: 80px; margin-right: 5px"
                   oninput="validateInput('phone', this.value)"
                 />
                 <span>-</span>
@@ -201,7 +200,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
                   id="phone2"
                   name="phone2"
                   maxlength="4"
-                  style="width: 100px; margin-left: 5px; margin-right: 5px"
                   oninput="validateInput('phone', this.value)"
                 />
                 <span>-</span>
@@ -212,7 +210,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
                   id="phone3"
                   name="phone3"
                   maxlength="4"
-                  style="width: 100px; margin-left: 5px"
                   oninput="validateInput('phone', this.value)"
                 />
               </div>
