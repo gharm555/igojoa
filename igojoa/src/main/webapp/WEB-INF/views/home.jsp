@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="${loginRegistrationCss}" />
     <c:url var="mainCss" value="/css/main.css" />
     <link rel="stylesheet" href="${mainCss}" />
+    <c:url var="darkmode" value="/css/dark_mode.css"/>
+     <link rel="stylesheet" href="${darkmode}">
     <c:url var="faqCss" value="/css/faq.css" />
     <link rel="stylesheet" href="${faqCss}" />
     <c:url var="imageGalleryCss" value="/css/image_gallery.css" />
@@ -131,8 +133,8 @@
                             data-user-favorite="${place.userFavorite}"></i>
                         </div>
                         <div class="main-badges mt-3">
-                      <span class="badge"><i class="bi bi-1-circle"></i> ${place.highestBadge}</span>
-                        <span class="badge"><i class="bi bi-2-circle"></i> ${place.secondHighestBadge}</span>
+                      <span class="badge"><i class="bi bi-fire" id="fire" ></i> ${place.highestBadge}</span>
+                        <span class="badge"><i class="bi bi-fire" id="fire"></i> ${place.secondHighestBadge}</span>
                             <span class="badge difficulty ${place.IScore}">난이도: ${place.IScore}</span>
                         </div>
                     </div>
@@ -165,7 +167,7 @@
         </c:forEach>
     </div>
 <div class="text-center d-flex justify-content-center w-100">
-    <button class="btn btn-secondary mt-3" id="btnPlus">더보기</button>
+    <button class="btn " id="btnPlus">더보기</button>
 </div>
 </div>
 </section>
@@ -274,7 +276,7 @@
         </section>
         <hr class="my-5"/>
         <button id="scrollToTopBtn" title="Go to top">↑</button>
-         <button onclick="toggleYellowMode()"><p class="fs-1">Yellow 모드 전환</p></button>
+
     </main>
 
 <footer class="p-footer p-footer--dark">
@@ -331,6 +333,8 @@
     <script src="${navbarJs}"></script>
     <c:url var="mainJs" value="/js/main.js" />
     <script src="${mainJs}"></script>
+    <c:url var="darkMode" value="/js/dark_mode.js" />
+    <script src="${darkMode}"></script>
     <c:url var="imageGalleryJs" value="/js/image_gallery.js" />
     <script src="${imageGalleryJs}"></script>
     <c:url var="lottoJs" value="/js/lotto.js" />
@@ -339,19 +343,6 @@
     <script>
         const LoginUserId = '${userId}';
         const points = '${points}';
-        
-        
-
-        function toggleYellowMode() {
-            var body = document.querySelector('body');
-            if(body.dataset.theme === 'yellow') {
-                body.removeAttribute('data-theme');
-                window.location.reload();
-            } else {
-                body.dataset.theme = 'yellow';
-            }
-        }
-
     </script>
 
 </body>

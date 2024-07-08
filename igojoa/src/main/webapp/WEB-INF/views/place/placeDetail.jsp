@@ -21,9 +21,11 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <c:url var="cssResetUrl" value="/css/cssReset.css" />
     <c:url var="postDetailCssUrl" value="/css/postDetail.css" />
     <c:url var="navbarCssUrl" value="/css/navbar.css" />
+    <c:url var="darkmode" value="/css/dark_mode.css"/>
     <link rel="stylesheet" href="${cssResetUrl}" />
     <link rel="stylesheet" href="${postDetailCssUrl}" />
     <link rel="stylesheet" href="${navbarCssUrl}" />
+     <link rel="stylesheet" href="${darkmode}">
   </head>
   <body>
     <header>
@@ -33,7 +35,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
       <c:set var="pd" value="${PlaceDetailDto}" />
       <c:set var="place" value="${placesInfo}" />
       <div class="container">
-        <div class="row justify-content-center mb-5">
+        <div class="row justify-content-center" id="mabAndImage">
           <div class="col-lg-6 mb-4">
             <div id="map" class="rounded shadow"></div>
           </div>
@@ -117,7 +119,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           </div>
         </div>
 
-        <div class="row mb-5">
+        <div class="row" id="detailsInfo">
           <!-- 첫 번째 섹션  -->
           <div class="col-lg-8">
             <section>
@@ -284,7 +286,15 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   rows="4"
                   placeholder="리뷰를 작성해주세요"
                 >${ pd.review }</textarea>
-                <button type="submit" class="btn btn-primary">작성완료</button>
+                  <c:choose>
+                    <c:when test="${empty pd.review}">
+                      <button id="createReviewBtn" type="button" class="btn btn-primary">작성완료</button>
+                    </c:when>
+                   <c:otherwise>
+                      <button id="updateReviewBtn" type="button" class="btn btn-warning">수정하기</button>
+                      <button id="deleteReviewBtn" type="button" class="btn btn-danger">삭제하기</button>
+                    </c:otherwise>
+                  </c:choose>
               </form>
             </div>
           </div>
@@ -387,10 +397,14 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 
     <c:url var="navbarJsUrl" value="/js/navbar.js" />
     <c:url var="postDetailJsUrl" value="/js/postDetail.js" />
+    <c:url var="darkMode" value="/js/dark_mode.js" />
     <script src="${navbarJsUrl}"></script>
     <script src="${postDetailJsUrl}"></script>
+    
+    <script src="${darkMode}"></script>
     <script>
-      const LoginUserId = "${userId}";
+      const LoginUserId = "${userNickname}";
+      
     </script>
   </body>
 </html>
