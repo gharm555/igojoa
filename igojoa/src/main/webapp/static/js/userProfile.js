@@ -425,7 +425,7 @@ tabs.forEach((tab) => {
       // 다른 탭으로 변경한 경우
       currentTab = tab;
       sortOrder[tab] = 'desc'; // 기본 정렬은 내림차순
-      startRowValue = 0;
+      resetStartRow();
     }
     displayActivityInfo(activityData);
   });
