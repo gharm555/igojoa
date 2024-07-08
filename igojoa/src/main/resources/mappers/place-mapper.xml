@@ -59,7 +59,7 @@
 		<if test='addressCategory != ""'>
 			p.largeAddress = '${addressCategory}' and
 		</if>
-		p.placeName LIKE '%${searchKeyword}%'
+		UPPER(TRIM(REPLACE(p.placeName, ' ', ''))) LIKE UPPER('%${searchKeyword}%')
 		GROUP BY
 		p.placeName
 		<if test='sortKey.equals("iScore") and sortValue == 1'>
@@ -209,91 +209,120 @@
 		LIMIT 8
 	</select>
 
-	<select id="searchFirstInitial" resultType="String">
+	<select id="searchSuggestions" resultType="String">
 		<bind name="addressCategory" value="addressCategory" />
 		<bind name="searchKeyword" value="searchKeyword" />
-		<![CDATA[
 		select
 		placeName
 		from
 		places p
-		<if test='searchKeyword.equals("ㄱ")'>
-			placeName rlike '^(ㄱ)'
-			or (placeName >= '가' and placeName <
-			'나')
-		</if>
-		<if test='searchKeyword.equals("ㄴ")'>
-			placeName rlike '^(ㄴ)'
-			or (placeName >= '나' and placeName <
-			'다')
-		</if>
-		<if test='searchKeyword.equals("ㄷ")'>
-			placeName rlike '^(ㄷ)'
-			or (placeName >= '다' and placeName <
-			'라')
-		</if>
-		<if test='searchKeyword.equals("ㄹ")'>
-			placeName rlike '^(ㄹ)'
-			or (placeName >= '라' and placeName <
-			'마')
-		</if>
-		<if test='searchKeyword.equals("ㅁ")'>
-			placeName rlike '^(ㅁ)'
-			or (placeName >= '마' and placeName <
-			'바')
-		</if>
-		<if test='searchKeyword.equals("ㅂ")'>
-			placeName rlike '^(ㅂ)'
-			or (placeName >= '바' and placeName <
-			'사')
-		</if>
-		<if test='searchKeyword.equals("ㅅ")'>
-			placeName rlike '^(ㅅ)'
-			or (placeName >= '사' and placeName <
-			'아')
-		</if>
-		<if test='searchKeyword.equals("ㅇ")'>
-			placeName rlike '^(ㅇ)'
-			or (placeName >= '아' and placeName <
-			'자')
-		</if>
-		<if test='searchKeyword.equals("ㅈ")'>
-			placeName rlike '^(ㅈ)'
-			or (placeName >= '자' and placeName <
-			'차')
-		</if>
-		<if test='searchKeyword.equals("ㅊ")'>
-			placeName rlike '^(ㅊ)'
-			or (placeName >= '차' and placeName <
-			'카')
-		</if>
-		<if test='searchKeyword.equals("ㅋ")'>
-			placeName rlike '^(ㅋ)'
-			or (placeName >= '카' and placeName <
-			'타')
-		</if>
-		<if test='searchKeyword.equals("ㅌ")'>
-			placeName rlike '^(ㅌ)'
-			or (placeName >= '타' and placeName <
-			'파')
-		</if>
-		<if test='searchKeyword.equals("ㅍ")'>
-			placeName rlike '^(ㅍ)'
-			or (placeName >= '파' and placeName <
-			'하')
-		</if>
-		<if test='searchKeyword.equals("ㅎ")'>
-			placeName RLIKE '^(ㅎ)'
-			or (placeName >= '하' and placeName
-			<=
-			'힣')
-		</if>
-		placeName LIKE '${searchKeyword}%'
-		<if test='addressCategory != ""'>
-			AND largeAddress = '${addressCategory}'
-		</if>
+		<where>
+			<choose>
+				<when test='searchKeyword.equals("ㄱ")'>
+                <![CDATA[
+                placeName rlike '^(ㄱ)'
+                or (placeName >= '가' and placeName <
+                '나')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㄴ")'>
+                <![CDATA[
+                placeName rlike '^(ㄴ)'
+                or (placeName >= '나' and placeName <
+                '다')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㄷ")'>
+                <![CDATA[
+                placeName rlike '^(ㄷ)'
+                or (placeName >= '다' and placeName <
+                '라')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㄹ")'>
+                <![CDATA[
+                placeName rlike '^(ㄹ)'
+                or (placeName >= '라' and placeName <
+                '마')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅁ")'>
+                <![CDATA[
+                placeName rlike '^(ㅁ)'
+                or (placeName >= '마' and placeName <
+                '바')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅂ")'>
+                <![CDATA[
+                placeName rlike '^(ㅂ)'
+                or (placeName >= '바' and placeName <
+                '사')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅅ")'>
+                <![CDATA[
+                placeName rlike '^(ㅅ)'
+                or (placeName >= '사' and placeName <
+                '아')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅇ")'>
+                <![CDATA[
+                placeName rlike '^(ㅇ)'
+                or (placeName >= '아' and placeName <
+                '자')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅈ")'>
+                <![CDATA[
+                placeName rlike '^(ㅈ)'
+                or (placeName >= '자' and placeName <
+                '차')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅊ")'>
+                <![CDATA[
+                placeName rlike '^(ㅊ)'
+                or (placeName >= '차' and placeName <
+                '카')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅋ")'>
+                <![CDATA[
+                placeName rlike '^(ㅋ)'
+                or (placeName >= '카' and placeName <
+                '타')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅌ")'>
+                <![CDATA[
+                placeName rlike '^(ㅌ)'
+                or (placeName >= '타' and placeName <
+                '파')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅍ")'>
+                <![CDATA[
+                placeName rlike '^(ㅍ)'
+                or (placeName >= '파' and placeName <
+                '하')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅎ")'>
+                <![CDATA[
+                placeName RLIKE '^(ㅎ)'
+                or (placeName >= '하' and placeName <=
+                '힣')
+                ]]>
+				</when>
+				<otherwise>UPPER(TRIM(REPLACE(placeName, ' ', ''))) LIKE UPPER('${searchKeyword}%')</otherwise>
+			</choose>
+			<if test='addressCategory != ""'>
+				AND largeAddress = '${addressCategory}'
+			</if>
+		</where>
 		order by
 		placeName
-        ]]>
 	</select>
 </mapper>

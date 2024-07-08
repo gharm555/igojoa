@@ -23,5 +23,5 @@ public interface PlaceDao {
 
 	List<PlaceBestListDto> selectPlaceNameAndImageUrl();
 
-	List<String> searchFirstInitial(PlaceSearchDto placeSearchDto);
+	List<String> searchSuggestions(PlaceSearchDto placeSearchDto);
 }

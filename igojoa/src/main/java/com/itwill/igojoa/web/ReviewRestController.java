@@ -142,7 +142,6 @@ public class ReviewRestController {
 	@DeleteMapping("/deleteReviewLike")
 	public ResponseEntity<Integer> deleteReviewLike(@PathVariable String placeName,
 			@RequestParam("userId") String userId) {
-		log.debug("\n\n" + placeName + "\n\n");
 		String likeUserId = (String) session.getAttribute("userId");
 		if (likeUserId == null) {
 			return ResponseEntity.ok(0);

@@ -27,7 +27,7 @@ public class PlaceService {
 	@Transactional
 	public List<PlaceListDto> selectPlaceList(PlaceSearchDto placeSearchDto) {
 		log.debug("selectPlaceList()");
-
+		placeSearchDto.setSearchKeyword(placeSearchDto.getSearchKeyword().replaceAll("[^\\wㄱ-힣.]", ""));
 		Optional<List<PlaceListDto>> optionalPlaceListDto = Optional
 				.ofNullable(placeDao.selectPlaceList(placeSearchDto));
 		List<PlaceListDto> placeListDtos;
@@ -96,14 +96,17 @@ public class PlaceService {
 	}
 
 	@Transactional
-	public List<String> searchFirstInitial(PlaceSearchDto placeSearchDto) {
-		List<String> res = placeDao.searchFirstInitial(placeSearchDto);
-		
+	public List<String> searchSuggestions(PlaceSearchDto placeSearchDto) {
+		if (placeSearchDto.getAddressCategory() == null) {
+			placeSearchDto.setAddressCategory("");
+		}
+		placeSearchDto.setSearchKeyword(placeSearchDto.getSearchKeyword().replaceAll("[^\\wㄱ-힣.]", ""));
+		List<String> res = placeDao.searchSuggestions(placeSearchDto);
+
 		return res;
 	}
 
 	public List<PlaceBestListDto> selectPlaceNameAndImageUrl() {
 		return placeDao.selectPlaceNameAndImageUrl();
 	}
-
 }

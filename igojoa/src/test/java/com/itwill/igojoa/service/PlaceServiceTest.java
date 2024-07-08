@@ -46,9 +46,16 @@ public class PlaceServiceTest {
 	}
 
 	@Test
-	public void searchFirstInitialTest() {
-		PlaceSearchDto placeSearchDto = PlaceSearchDto.builder().addressCategory("").searchKeyword("ㄱ").build();
-		List<String> res = placeService.searchFirstInitial(placeSearchDto);
+	public void searchSuggestionsTest() {
+		System.out.println("\n\n" + "searchFirstInitialTest()" + "\n\n");
+		PlaceSearchDto placeSearchDto = PlaceSearchDto.builder().addressCategory("").searchKeyword("팔공산갓").build();
+		System.out.println("\n\n" + placeSearchDto.toString() + "\n\n");
+		placeSearchDto.setSearchKeyword(placeSearchDto.getSearchKeyword().replaceAll("[^\\wㄱ-힣.]", ""));
+		
+		System.out.println("???" + placeSearchDto.getSearchKeyword());
+		
+		
+		List<String> res = placeService.searchSuggestions(placeSearchDto);
 		System.out.println("\n\n\n\n\n");
 		for (String string : res) {
 			System.out.println(string);
