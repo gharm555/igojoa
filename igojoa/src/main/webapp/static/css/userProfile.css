@@ -717,6 +717,7 @@ h2 {
     z-index: 1;
 }
 
+
 @keyframes pulse {
     0% {
         transform: scale(1);

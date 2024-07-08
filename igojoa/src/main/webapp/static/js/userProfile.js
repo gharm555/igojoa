@@ -380,10 +380,17 @@ $phone3Input.addEventListener("input", checkForChanges);
 $newPasswordInput.addEventListener("input", checkForChanges);
 $confirmPasswordInput.addEventListener("input", checkForChanges);
 
+// 유저 프로필 이미지 변경 변수 -------->
+const $profileImage = document.querySelector("#profileImage");
+const $$profileImage = document.querySelectorAll(".profileImage");
+const $profileImageInput = document.querySelector("#profileImageInput");
+const $imageChangeBtn = document.querySelector("#imageChange");
+const $imageDeleteBtn = document.querySelector("#imageDelete");
+// <-------------- 유저 프로필 이미지 변경 변수
+
 // 초기 상태에서는 버튼 비활성화
 $updateBtn.disabled = true;
 
-/* 유저 활동 내역 */
 const $userActivityTab = document.querySelector("#v-pills-disabled-tab");
 const $addressSelect = document.querySelector("#address-select");
 const $searchInput = document.querySelector("#search-input");
@@ -398,9 +405,11 @@ const tabs = [
 ];
 
 let startRowValue = 0;
-const rowCnt = 10;
+const rowCnt = 5;
 let activityData = {};
 let currentTab = "total";
+let moreDataAvailable = true;
+
 let sortOrder = {
     total: "desc",
     favoritePlace: "desc",
@@ -411,6 +420,7 @@ let sortOrder = {
 
 $userActivityTab.addEventListener("click", () => {
     resetActivityTab();
+    startRowValue = 0;
     readData();
 });
 
@@ -424,6 +434,7 @@ tabs.forEach((tab) => {
             // 다른 탭으로 변경한 경우
             currentTab = tab;
             sortOrder[tab] = "desc"; // 기본 정렬은 내림차순
+            resetStartRow();
         }
         displayActivityInfo(activityData);
     });
@@ -432,8 +443,13 @@ tabs.forEach((tab) => {
 // 기존 코드 상단에 추가
 let sessionKeyword = "";
 
-// 데이터 가져오기
-function readData() {
+// 전체내역 가져오기
+function readData(isLoadMore = false) {
+    if (!moreDataAvailable) {
+        console.log("더 이상 불러올 데이터가 없습니다.");
+        return;
+    }
+
     let searchKeyword =
         sessionStorage.getItem("searchKeyword") || $searchInput.value;
 
@@ -444,8 +460,8 @@ function readData() {
                 largeAddress: $addressSelect.value,
                 calendarMin: startDate,
                 calendarMax: endDate,
-                startRowValue: 0,
-                rowCnt: 15,
+                startRowValue: isLoadMore ? startRowValue : 0,
+                rowCnt: rowCnt,
             },
         })
         .then((response) => {
@@ -456,19 +472,47 @@ function readData() {
                     response.data.sessionSearchKeyword
                 );
             }
-            activityData = response.data;
-            displayActivityInfo(activityData);
+
+            if (isLoadMore) {
+                const additionalDataLength =
+                    response.data.userRelatedInfo.length +
+                    response.data.userFavoritePlaces.length +
+                    response.data.userFavoriteReviews.length +
+                    response.data.userWrittenReviews.length +
+                    response.data.userVerifiedPlaces.length;
+
+                if (additionalDataLength < rowCnt) {
+                    moreDataAvailable = false;
+                    console.log("더 이상 불러올 데이터가 없습니다.");
+                }
+                appendActivityInfo(response.data);
+            } else {
+                activityData = response.data;
+                displayActivityInfo(activityData);
+            }
         })
         .catch((error) => {
             console.error("Error fetching user related info:", error);
         });
 }
 
+// 스크롤시 추가 데이터 가져오기
+function readMoreData() {
+    startRowValue += rowCnt;
+    readData(true);
+}
+
 // 검색 버튼
 $searchBtn.addEventListener("click", () => {
     sessionStorage.setItem("searchKeyword", $searchInput.value);
+    resetStartRow();
+    moreDataAvailable = true;
     readData();
 });
+
+function resetStartRow() {
+    startRowValue = 0;
+}
 
 function displayActivityInfo(data) {
     const $userRelatedInfoList = document.querySelector("#totalList");
@@ -608,6 +652,68 @@ function displayVerifiedPlaces(places, $list) {
     });
 }
 
+function appendActivityInfo(data) {
+    appendTotalInfo(data.userRelatedInfo || []);
+    appendFavoritePlaces(data.userFavoritePlaces || []);
+    appendLikedReviews(data.userFavoriteReviews || []);
+    appendWrittenReviews(data.userWrittenReviews || []);
+    appendVerifiedPlaces(data.userVerifiedPlaces || []);
+}
+
+function appendTotalInfo(info) {
+    const $list = document.querySelector("#totalList");
+    appendInfo(info, $list);
+}
+
+function appendFavoritePlaces(places) {
+    const $list = document.querySelector("#favoritePlaceList");
+    appendInfo(places, $list);
+}
+
+function appendLikedReviews(reviews) {
+    const $list = document.querySelector("#likedReviewList");
+    appendInfo(reviews, $list);
+}
+
+function appendWrittenReviews(reviews) {
+    const $list = document.querySelector("#writtenReviewList");
+    appendInfo(reviews, $list);
+}
+
+function appendVerifiedPlaces(places) {
+    const $list = document.querySelector("#verifiedPlaceList");
+    appendInfo(places, $list);
+}
+
+function appendInfo(items, $list) {
+    items.forEach((item) => {
+        let content = "";
+        switch (item.type) {
+            case "favorite_places":
+                content = `${item.address} ${item.placeName} 게시물에 좋아요를 눌렀습니다.`;
+                break;
+            case "liked_reviews":
+                content = `${item.placeName}에 ${item.reviewAuthor}님 리뷰 ${item.review}에 좋아요를 눌렀습니다.`;
+                break;
+            case "written_reviews":
+                content = `${item.address} ${item.placeName}에 "${item.review}" 리뷰를 남겼습니다.`;
+                break;
+            case "verified_places":
+                content = `${item.address} ${item.placeName} 위치인증을 했습니다.`;
+                break;
+        }
+        $list.innerHTML += `
+      <li class="list-group-item d-flex align-items-center">
+        <img src="${item.firstUrl}" alt="썸네일" class="rounded-circle me-3" width="50" height="50" />
+        <div>
+          <p class="mb-0">${content}</p>
+          <small class="text-muted">${item.createdAt}</small>
+        </div>
+      </li>
+    `;
+    });
+}
+
 function resetSortOrder() {
     sortOrder = {
         total: "desc",
@@ -653,6 +759,7 @@ function resetActivityTab() {
     startDate = "";
     endDate = "";
     document.querySelector("#date-range").value = "";
+    moreDataAvailable = true;
 
     // 전체 탭 활성화
     document.querySelector("#nav-total-tab").click();
@@ -730,23 +837,46 @@ datePicker = flatpickr("#date-range", {
         });
         wrapper.appendChild(clearButton);
         // '기간설정' 버튼
-        const setDateButton = document.createElement("button");
-        setDateButton.innerHTML = "기간설정";
-        setDateButton.className =
-            "flatpickr-button flatpickr-set custom-set-period-btn";
-        setDateButton.addEventListener("click", function () {
-            console.log("기간설정 눌렀을때 시작날짜: " + startDate);
-            console.log("기간설정 눌렀을때 끝날짜: " + endDate);
-            // instance.close();
-            if (startDate && endDate) {
-                instance.element.value = `${startDate} - ${endDate}`;
-            } else if (startDate) {
-                instance.element.value = `${startDate}`;
-            }
-        });
-        wrapper.appendChild(setDateButton);
     },
 });
+
+const activityTabs = document.querySelectorAll(".list-group");
+activityTabs.forEach((tab) => {
+    tab.addEventListener("scroll", function () {
+        if (this.id !== getListIdFromTab(currentTab)) return;
+
+        const { scrollTop, scrollHeight, clientHeight } = this;
+
+        // 스크롤의 전체 높이
+        const totalScrollHeight = scrollHeight - clientHeight;
+
+        // 현재 스크롤 위치의 비율(0 ~ 1)
+        const scrollRatio = scrollTop / totalScrollHeight;
+
+        // 스크롤이 80% 이상 내려갔을때
+        if (scrollRatio > 0.8) {
+            readMoreData(currentTab);
+        }
+    });
+});
+
+function getListIdFromTab(tab) {
+    switch (tab) {
+        case "total":
+            return "totalList";
+        case "favoritePlace":
+            return "favoritePlaceList";
+        case "likedReview":
+            return "likedReviewList";
+        case "writtenReview":
+            return "writtenReviewList";
+        case "verifiedPlace":
+            return "verifiedPlaceList";
+        default:
+            console.error("Unknown tab:", tab);
+            return "";
+    }
+}
 
 let calendar;
 let currentMonth;
@@ -767,6 +897,7 @@ function initializePointTab() {
     fetchAttendanceData(currentMonth).then(() => {
         initializeCalendar();
         updatePointHistoryForDate(selectedDate);
+        updatePointSummaryForMonth(currentMonth); // 이 줄이 추가되었습니다
     });
 }
 
@@ -792,6 +923,71 @@ function initializeCalendar() {
         console.error("Calendar element not found");
         return;
     }
+
+    if (calendar) {
+        calendar.destroy();
+    }
+
+    calendar = new FullCalendar.Calendar($calendarEl, {
+        initialView: "dayGridMonth",
+        headerToolbar: {
+            left: "prev,next",
+            center: "title",
+            right: "today",
+        },
+        buttonText: {
+            today: "오늘",
+        },
+        locale: "ko",
+        dayCellContent: function (arg) {
+            let html = arg.dayNumberText;
+            if (isAttendanceDay(arg.date)) {
+                html += '<i class="fas fa-check-circle attendance-icon"></i>';
+            }
+            return { html: html };
+        },
+        dateClick: function (info) {
+            selectedDate = info.date;
+            updatePointHistoryForDate(selectedDate);
+            highlightSelectedDate(info.dayEl, info.date);
+        },
+        datesSet: function (info) {
+            currentMonth = info.view.currentStart;
+            fetchAttendanceData(currentMonth).then(() => {
+                calendar.render();
+                updatePointSummaryForMonth(currentMonth);
+
+                // 테이블 초기화 및 메시지 표시
+                const $table = document.querySelector(
+                    "#pointHistoryTable tbody"
+                );
+                $table.innerHTML =
+                    '<tr><td colspan="3" class="text-center">선택된 날짜의 내역이 없습니다.</td></tr>';
+
+                // 선택된 날짜 초기화
+                selectedDate = null;
+                if (previousSelectedCell) {
+                    previousSelectedCell.style.backgroundColor = "";
+                    previousSelectedCell.style.fontWeight = "normal";
+                    previousSelectedCell = null;
+                }
+            });
+        },
+        dayCellDidMount: function (info) {
+            const today = new Date();
+            if (info.date.toDateString() === today.toDateString()) {
+                info.el.style.backgroundColor = "#4a86e8";
+                info.el.style.color = "white";
+                info.el.style.fontWeight = "bold";
+            }
+            if (
+                selectedDate &&
+                info.date.toDateString() === selectedDate.toDateString()
+            ) {
+                highlightSelectedDate(info.el, info.date);
+            }
+        },
+    });
 
     if (calendar) {
         calendar.destroy();
@@ -923,6 +1119,18 @@ function updatePointSummaryForMonth(date) {
         });
 }
 
+// function updatePointSummaryForDay(date) {
+//   const yearMonthDay = formatDate(date);
+//   axios
+//     .get(contextPath + '/pointsStats', {
+//       params: {yearMonthDay: yearMonthDay},
+//     })
+//     .then(function (response) {
+//       const {totalPointGained, totalPointsLost} = response.data;
+
+//     })
+// }
+
 function updatePointHistoryTable(history) {
     const $table = document.querySelector("#pointHistoryTable tbody");
     $table.innerHTML = "";
@@ -954,14 +1162,6 @@ function formatYearMonth(date) {
     const month = String(date.getMonth() + 1).padStart(2, "0");
     return `${year}.${month}`;
 }
-
-// 유저 프로필 이미지 변경 변수 -------->
-const $profileImage = document.querySelector("#profileImage");
-const $$profileImage = document.querySelectorAll(".profileImage");
-const $profileImageInput = document.querySelector("#profileImageInput");
-const $imageChangeBtn = document.querySelector("#imageChange");
-const $imageDeleteBtn = document.querySelector("#imageDelete");
-// <-------------- 유저 프로필 이미지 변경 변수
 
 // 유저 프로필 이미지 변경 (좌측 이미지 직접 클릭)
 $profileImage.addEventListener("click", function () {

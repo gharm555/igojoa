@@ -262,7 +262,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                       <button
-                        class="nav-link active"
+                        class="nav-link active d-flex"
                         id="nav-total-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#nav-total"
@@ -271,10 +271,10 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-total"
                         aria-selected="true"
                       >
-                        전체 내역
+                        전체 내역  <p><i class="fa-solid fa-sort"></i></p>
                       </button>
                       <button
-                        class="nav-link"
+                        class="nav-link d-flex"
                         id="nav-favoritePlace-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#nav-favoritePlace"
@@ -283,10 +283,10 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-favoritePlace"
                         aria-selected="false"
                       >
-                        좋아요한 게시물
+                        좋아요한 게시물  <p><i class="fa-solid fa-sort"></i></p>
                       </button>
                       <button
-                        class="nav-link"
+                        class="nav-link d-flex"
                         id="nav-likedReview-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#nav-likedReview"
@@ -295,10 +295,10 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-likedReview"
                         aria-selected="false"
                       >
-                        좋아요한 리뷰
+                        좋아요한 리뷰  <p><i class="fa-solid fa-sort"></i></p>
                       </button>
                       <button
-                        class="nav-link"
+                        class="nav-link d-flex"
                         id="nav-writtenReview-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#nav-writtenReview"
@@ -307,10 +307,10 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-writtenReview"
                         aria-selected="false"
                       >
-                        작성한 리뷰
+                        작성한 리뷰  <p><i class="fa-solid fa-sort"></i></p>
                       </button>
                       <button
-                        class="nav-link"
+                        class="nav-link d-flex"
                         id="nav-verifiedPlace-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#nav-verifiedPlace"
@@ -319,7 +319,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-verifiedPlace"
                         aria-selected="false"
                       >
-                        위치인증 장소
+                        위치인증 장소  <p><i class="fa-solid fa-sort ml-2"></i></p>
                       </button>
                     </div>
                   </nav>
@@ -334,7 +334,6 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   >
                     <ul class="list-group" id="totalList">
                       
-                      
                     </ul>
                   </div>
                   <div
@@ -345,23 +344,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     tabindex="0"
                   >
                     <ul class="list-group" id="favoritePlaceList">
-                      <c:forEach items="${userFavoritePlaces}" var="favoritePlaces">
-                        <li class="list-group-item d-flex align-items-center">
-                          <img
-                            src="${favoritePlaces.firstUrl}"
-                            alt="게시물 썸네일"
-                            class="rounded-circle me-3"
-                            width="50"
-                            height="50"
-                          />
-                          <div>
-                            <p class="mb-0">
-                            
-                            </p>
-                            <small class="text-muted"></small>
-                          </div>
-                        </li>
-                      </c:forEach>
+                      
                     </ul>
                   </div>
                   <div
@@ -372,23 +355,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     tabindex="0"
                   >
                     <ul class="list-group" id="likedReviewList">
-                      <c:forEach items="${userFavoriteReviews.firstUrl}" var="favoriteReviews">
-                        <li class="list-group-item d-flex align-items-center">
-                          <img
-                            src="${favoriteReviews.firstUrl}"
-                            alt="게시물 썸네일"
-                            class="rounded-circle me-3"
-                            width="50"
-                            height="50"
-                          />
-                          <div>
-                            <p class="mb-0">
-                              
-                            </p>
-                            <small class="text-muted"></small>
-                          </div>
-                        </li>
-                      </c:forEach>
+                      
                     </ul>
                   </div>
                   <div
@@ -399,21 +366,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     tabindex="0"
                   >
                     <ul class="list-group" id="writtenReviewList">
-                      <c:forEach items="${userWrittenReviews}" var="writtenReviews">
-                        <li class="list-group-item d-flex align-items-center">
-                          <img
-                            src="${writtenReviews.firstUrl}"
-                            alt="프로필"
-                            class="rounded-circle me-3"
-                            width="50"
-                            height="50"
-                          />
-                          <div>
-                            <p class="mb-0"></p>
-                            <small class="text-muted"></small>
-                          </div>
-                        </li>
-                      </c:forEach>
+                      
                     </ul>
                   </div>
                   <div
@@ -424,21 +377,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     tabindex="0"
                   >
                     <ul class="list-group" id="verifiedPlaceList">
-                      <c:forEach items="${userVerifiedPlaces}" var="verifiedPlaces">
-                        <li class="list-group-item d-flex align-items-center">
-                          <img
-                            src="https://placehold.co/50x50"
-                            alt="게시물 썸네일"
-                            class="rounded-circle me-3"
-                            width="50"
-                            height="50"
-                          />
-                          <div>
-                            <p class="mb-0"></p>
-                            <small class="text-muted">/small>
-                          </div>
-                        </li>
-                      </c:forEach>
+                      
                     </ul>
                   </div>
                 </div>
