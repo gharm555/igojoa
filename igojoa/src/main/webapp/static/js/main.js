@@ -53,12 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const addressCategory = provinceMap[selectedProvince] || "";
     const searchKeyword = $searchKeyword.value.trim() || "";
 
-    const regex = /^\s*$/;
-
-    // searchKeyword가 공백 문자열인 경우 빈 문자열로 설정
-    if (regex.test(searchKeyword)) {
-      searchKeyword = "";
-    }
     console.log(
       `Fetching places: startRowValue=${startRowValue}, rowCnt=${rowCnt}, addressCategory=${addressCategory}, searchKeyword=${searchKeyword}`
     );

@@ -193,8 +193,11 @@ main {
   border: none;
   padding: 15px 20px 15px 20px;
 }
-.main-search-bar {
-  width: 100%;
+#province-select {
+  width: 13%;
+}
+#search-keyword {
+  width: 60%;
 }
 
 .main-search-bar select {
