@@ -124,7 +124,7 @@
 	<!-- 유저가 좋아한 장소 정보들 검색결과 가져오기 -->
 	<select id="searchUserFavoritePlaces" resultType="UserFavoritePlacesDto" parameterType="UserSearchDto">
 		<bind name="userId" value="userId" />
-		<bind name="searchKeyword" value="'%' + keyword + '%'" />
+		<bind name="searchKeyword" value="'%' + searchKeyword + '%'" />
 		SELECT
 			places.placeName,
 			CONCAT(places.largeAddress, ' ',
