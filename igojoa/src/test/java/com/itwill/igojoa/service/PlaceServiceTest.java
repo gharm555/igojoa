@@ -54,7 +54,6 @@ public class PlaceServiceTest {
 		
 		System.out.println("???" + placeSearchDto.getSearchKeyword());
 		
-		
 		List<String> res = placeService.searchSuggestions(placeSearchDto);
 		System.out.println("\n\n\n\n\n");
 		for (String string : res) {
