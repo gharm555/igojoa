@@ -102,4 +102,5 @@ public class PlaceRestController {
 		
 		return ResponseEntity.ok(res);
 	}
+	
 }
