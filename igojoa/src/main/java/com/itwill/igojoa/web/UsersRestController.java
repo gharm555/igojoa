@@ -63,8 +63,7 @@ public class UsersRestController {
 	}
 
 	@GetMapping("/favoritePlaces")
-	public ResponseEntity<List<UserFavoritePlacesDto>> getUserFavoritePlaces(
-			@ModelAttribute UserSearchDto userSearchDto) {
+	public ResponseEntity<List<UserFavoritePlacesDto>> getUserFavoritePlaces(@ModelAttribute UserSearchDto userSearchDto) {
 		userSearchDto.setUserId(getUserIdFromSession(session));
 		handleSearchKeyword(userSearchDto, getUserIdFromSession(session));
 
@@ -74,8 +73,7 @@ public class UsersRestController {
 	}
 
 	@GetMapping("/favoriteReviews")
-	public ResponseEntity<List<UserFavoriteReviewsDto>> getUserFavoriteReviews(
-			@ModelAttribute UserSearchDto userSearchDto) {
+	public ResponseEntity<List<UserFavoriteReviewsDto>> getUserFavoriteReviews(@ModelAttribute UserSearchDto userSearchDto) {
 		userSearchDto.setUserId(getUserIdFromSession(session));
 		handleSearchKeyword(userSearchDto, getUserIdFromSession(session));
 
@@ -85,8 +83,7 @@ public class UsersRestController {
 	}
 
 	@GetMapping("/writtenReviews")
-	public ResponseEntity<List<UserWrittenReviewsDto>> getUserWrittenReviews(
-			@ModelAttribute UserSearchDto userSearchDto) {
+	public ResponseEntity<List<UserWrittenReviewsDto>> getUserWrittenReviews(@ModelAttribute UserSearchDto userSearchDto) {
 		userSearchDto.setUserId(getUserIdFromSession(session));
 		handleSearchKeyword(userSearchDto, getUserIdFromSession(session));
 
@@ -96,8 +93,7 @@ public class UsersRestController {
 	}
 
 	@GetMapping("/verifiedPlaces")
-	public ResponseEntity<List<UserVerifiedPlacesDto>> getUserVerifiedPlaces(
-			@ModelAttribute UserSearchDto userSearchDto) {
+	public ResponseEntity<List<UserVerifiedPlacesDto>> getUserVerifiedPlaces(@ModelAttribute UserSearchDto userSearchDto) {
 		userSearchDto.setUserId(getUserIdFromSession(session));
 		handleSearchKeyword(userSearchDto, getUserIdFromSession(session));
 
