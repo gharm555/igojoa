@@ -107,6 +107,19 @@ h2 {
   color: white;
 }
 
+.dropdown-item1 {
+  cursor: pointer;
+}
+
+.dropdown-item1:nth-child(3) {
+  pointer-events: none;
+}
+
+.dropdown-item1:hover {
+  text-decoration: none;
+  background-color: var(--primary-color);
+}
+
 /* 뱃지 카운팅 */
 
 #emojiList {

@@ -145,7 +145,7 @@ public class ReviewRestController {
 		return ResponseEntity.ok(res);
 	}
 
-	@PostMapping("/deleteReviewLike")
+	@DeleteMapping("/deleteReviewLike")
 	public ResponseEntity<Integer> deleteReviewLike(@PathVariable String placeName,
 			@RequestParam("userId") String userId) {
 		log.debug("\n\n" + placeName + "\n\n");

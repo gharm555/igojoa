@@ -310,26 +310,26 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              최신순
+              좋아요 많은순
             </button>
             <ul class="dropdown-menu" aria-labelledby="sortDropdownButton">
               <li>
-                <button class="dropdown-item active" data-sort="newest">
+                <button class="dropdown-item1 active" data-sort="modifiedAtDESC">
                   최신순
                 </button>
               </li>
               <li>
-                <button class="dropdown-item" data-sort="oldest">
+                <button class="dropdown-item1" data-sort="modifiedAtASC">
                   오래된순
                 </button>
               </li>
               <li>
-                <button class="dropdown-item" data-sort="most-liked">
+                <button class="dropdown-item1" data-sort="cntLikeDESC">
                   좋아요 많은순
                 </button>
               </li>
               <li>
-                <button class="dropdown-item" data-sort="least-liked">
+                <button class="dropdown-item1" data-sort="cntLikeASC">
                   좋아요 적은순
                 </button>
               </li>
@@ -400,7 +400,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <script src="${navbarJsUrl}"></script>
     <script src="${postDetailJsUrl}"></script>
     <script>
-      const LoginUserId = "${userNickname}";
+      const LoginUserId = "${userId}";
     </script>
   </body>
 </html>
