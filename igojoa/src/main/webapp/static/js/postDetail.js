@@ -781,4 +781,6 @@ function resetReviewForm() {
   radioButtons.forEach((radio) => {
     radio.checked = false;
   });
+
 }
+

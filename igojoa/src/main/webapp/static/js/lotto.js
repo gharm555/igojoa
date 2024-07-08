@@ -6,7 +6,8 @@ const $bonus = document.querySelector("#bonus");
 const $playButton = document.querySelector("#playButton");
 const $resetNumbersButton = document.querySelector("#resetNumbersButton");
 const $numberInputs = document.querySelectorAll(".number-input");
-const $points = document.querySelector("#points");
+const $points = document.querySelectorAll("#points");
+const $pointsText = document.querySelectorAll(".points");
 const $rank = document.querySelector("#rank");
 
 const $modal = document.querySelector("#resultModal");
@@ -114,32 +115,9 @@ function setInitialNumbers() {
 
 $resetNumbersButton.addEventListener("click", resetNumbers);
 $playButton.addEventListener("click", playLotto);
-// 당첨 순위를 계산하는 함수
-function getRank(winBalls, bonusBall, userNumbersArray) {
-  const matchedNumbers = winBalls.filter((number) =>
-    userNumbersArray.includes(number)
-  ).length;
-  const isBonusMatched = userNumbersArray.includes(bonusBall);
-
-  if (matchedNumbers === 6)
-    return { rank: "1등", prize: "한남더힐 아파트", matchedNumbers };
-  if (matchedNumbers === 5 && isBonusMatched)
-    return { rank: "2등", prize: "포르쉐", matchedNumbers };
-  if (matchedNumbers === 5) return { rank: "3등", prize: "책", matchedNumbers };
-  if (matchedNumbers === 4)
-    return { rank: "4등", prize: "스타벅스 아메리카노", matchedNumbers };
-  if (matchedNumbers === 3)
-    return { rank: "5등", prize: "마이쮸", matchedNumbers };
-  if (matchedNumbers === 2)
-    return { rank: "6등", prize: "청포도 사탕", matchedNumbers };
-
-  return { rank: "꽝", prize: "다음 기회에", matchedNumbers };
-}
 
 // 로또 게임을 실행하는 함수
 function playLotto() {
-  console.log("playLotto 함수 호출됨");
-  console.log(LoginUserId);
   if (LoginUserId == null || LoginUserId == "" || LoginUserId == undefined) {
     alert("로그인 해주세요.");
     window.location.href = contextPath + "/user/loginRegister";
@@ -193,15 +171,15 @@ function playLotto() {
       showBall(winBalls[i], $result);
     }, (i + 1) * 1000);
   }
-  const result = getRank(winBalls, bonus, Array.from(userNumbers));
   console.log(LoginUserId);
-  console.log(result.rank);
   axios
     .post(
       contextPath + "/game",
       {
         userId: LoginUserId,
-        rank: result.rank,
+        lottoNum: Array.from(winBalls),
+        userNum: Array.from(userNumbers),
+        bonusBall: bonus,
       },
       {
         headers: {
@@ -211,19 +189,21 @@ function playLotto() {
     )
     .then((response) => {
       console.log("Success:", response.data);
-      $points.textContent = "남은 포인트: " + response.data;
+      getPoints();
+      setTimeout(() => {
+        showBall(bonus, $bonus);
+        $rank.textContent = `결과: ${response.data.rank}`;
+        showModal(response.data);
+
+        isGameInProgress = false;
+        $playButton.disabled = false;
+      }, 7000);
     })
     .catch((error) => {
-      console.error("Error:", error);
+      alert(error.response.data);
+      isGameInProgress = false;
+      $playButton.disabled = false;
     });
-  setTimeout(() => {
-    showBall(bonus, $bonus);
-    $rank.textContent = `결과: ${result.rank}`;
-    showModal(result);
-
-    isGameInProgress = false;
-    $playButton.disabled = false;
-  }, 7000);
 }
 
 // 모달 창을 표시하는 함수
@@ -231,14 +211,12 @@ function showModal(result) {
   console.log("모달 창 표시");
   const sortedUserNumbers = Array.from(userNumbers).sort((a, b) => a - b);
   const message = `
-                <strong>당첨번호:</strong> ${winBalls.join(", ")}<br><br>
-                <strong>보너스 번호:</strong> ${bonus}<br><br>
-                <strong>내 번호:</strong> ${sortedUserNumbers.join(
-                  ", "
-                )}<br><br>
-                <strong>맞춘 개수:</strong> ${result.matchedNumbers}<br><br>
+                <strong>당첨번호:</strong> ${result.lottoNum.join(", ")}<br><br>
+                <strong>보너스 번호:</strong> ${result.bonusBall}<br><br>
+                <strong>내 번호:</strong> ${result.userNum.join(", ")}<br><br>
+                <strong>맞춘 개수:</strong> ${result.matchCount}<br><br>
                 <strong>결과:</strong> ${result.rank}<br><br>
-                <strong>상품:</strong> ${result.prize}<br><br>
+                <strong>상품:</strong> ${result.productName}<br><br>
             `;
   $modalMessage.innerHTML = message;
   $modal.style.display = "block";
@@ -262,3 +240,20 @@ document.addEventListener("DOMContentLoaded", () => {
   setInitialNumbers();
   updatePlayButtonState();
 });
+function getPoints() {
+  axios.get(contextPath + "/user/getPoints").then((res) => {
+    if (res.data.success) {
+      let points = res.data.points.toString();
+      let cumulativePoint = res.data.cumulativePoint.toString();
+      points = points.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      cumulativePoint = cumulativePoint.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      const $points = document.querySelectorAll(".points");
+      $points.forEach(($point) => {
+        $point.innerHTML = points;
+      });
+    } else {
+      alert(res.data.message);
+      window.location.href = contextPath + "/user/loginRegister";
+    }
+  });
+}

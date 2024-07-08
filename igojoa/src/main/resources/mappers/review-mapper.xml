@@ -177,18 +177,18 @@
 		<bind name="placeName" value="placeName" />
 		<bind name="likeUserId" value="likeUserId" />
 		INSERT
-        INTO
-        reviewLikes (userId,
-        placeName,
-        likeUserId)
-        SELECT
-        u.userId,
-        '${placeName}',
-        '${likeUserId}'
-        FROM
-        users u
-        WHERE
-        u.nickName = '${userId}'
+		INTO
+		reviewLikes (userId,
+		placeName,
+		likeUserId)
+		SELECT
+		u.userId,
+		'${placeName}',
+		'${likeUserId}'
+		FROM
+		users u
+		WHERE
+		u.nickName = '${userId}'
 	</insert>
 
 	<delete id="deleteReviewLike">
@@ -196,18 +196,20 @@
 		<bind name="placeName" value="placeName" />
 		<bind name="likeUserId" value="likeUserId" />
 		DELETE
-FROM
-        reviewLikes
-WHERE
-    userId = (
-    SELECT
-        userId
-    from
-        users
-    WHERE
-        nickName = '${userId}')
-    AND placeName =
-        '${placeName}'
-    AND likeUserId = '${likeUserId}'
+		FROM
+		reviewLikes
+		WHERE
+		userId =(
+		SELECT
+		userId
+		from
+		users
+		WHERE
+		nickName
+		= '${userId}')
+		AND placeName =
+		'${placeName}'
+		AND likeUserId =
+		'${likeUserId}'
 	</delete>
 </mapper>

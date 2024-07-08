@@ -209,3 +209,12 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: #3a5a8a;
 }
+@media (max-width: 390px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+
+
+

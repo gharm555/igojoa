@@ -77,27 +77,27 @@ public class UsersService {
 	public int deleteUser(String userId) {
 		return userDao.deleteUser(userId);
 	}
-	
+
 	public boolean updateUsers(Users user) {
 		return userDao.updateUsers(user);
 	}
-	
+
 	public List<UserFavoritePlacesDto> getUserFavoritePlaces(UserSearchDto userSearchDto) {
 		return userDao.getUserFavoritePlaces(userSearchDto);
 	}
-	
+
 	public List<UserFavoritePlacesDto> searchUserFavoritePlaces(UserSearchDto userSearchDto) {
 		return userDao.searchUserFavoritePlaces(userSearchDto);
 	}
-	
+
 	public List<UserFavoriteReviewsDto> getUserFavoriteReviews(UserSearchDto userSearchDto) {
 		return userDao.getUserFavoriteReviews(userSearchDto);
 	}
-	
+
 	public List<UserWrittenReviewsDto> getUserWrittenReviews(UserSearchDto userSearchDto) {
 		return userDao.getUserWrittenReviews(userSearchDto);
 	}
-	
+
 	public List<UserRelatedInfoDto> getAllUserRelatedInfo(UserSearchDto userSearchDto) {
 		return userDao.getAllUserRelatedInfo(userSearchDto);
 	}

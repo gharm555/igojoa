@@ -95,4 +95,12 @@ public class PlaceRestController {
 			return ResponseEntity.badRequest().body(0);
 		}
 	}
+	
+	@GetMapping("/searchSuggestions")
+	public ResponseEntity<List<String>> searchSuggestions(@ModelAttribute PlaceSearchDto placeSearchDto) {
+		List<String> res = placeService.searchSuggestions(placeSearchDto);
+		
+		return ResponseEntity.ok(res);
+	}
+	
 }
