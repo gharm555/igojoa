@@ -1,4 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  if (LoginUserId === '') {
+    $sortButtons.forEach(button => {
+      if (button.getAttribute("data-sortUserFavorite") !== null) {
+        button.style.display = "none";
+      }
+    });
+  }
+	});
+	
+	
   const $searchButton = document.querySelector("#search-button");
   const $provinceSelect = document.querySelector("#province-select");
   const $searchKeyword = document.querySelector("#search-keyword");
@@ -6,8 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const $moreButton = document.querySelector("#btnPlus");
   const $sortButtons = document.querySelectorAll(".btn-group .btn");
 
-  let startRowValue = 9; // 처음 9개 로드했으므로 초기값을 9으로 설정
-  const itemsPerPage = 3; // 더보기 시 3개 아이템
+  let startRowValue = 0; // 처음 0으로 설정
+  const initialItemsPerPage = 9; // 처음 로드할 아이템 수
+  const itemsPerPage = 6; // 더보기 시 로드할 아이템 수
   let currentSortKey = "iScore";
   let currentSortValue = 0;
 
@@ -30,11 +42,27 @@ document.addEventListener("DOMContentLoaded", () => {
     jeju: "제주도",
   };
 
+  // 초기 로드 시 9개의 항목 불러오기
+  fetchPlaces(initialItemsPerPage, true);
+
   $searchButton.addEventListener("click", () => {
+
     startRowValue = 0; // 검색 시 시작 행을 0으로 초기화
     $cardContainer.innerHTML = ""; // 기존 카드 제거
-    fetchPlaces(itemsPerPage * 2, true); // 검색 시 6개 로드
+    fetchPlaces(initialItemsPerPage, true); // 검색 시 9개 로드
   });
+  
+$moreButton.addEventListener("click", () => {
+  const hiddenCards = document.querySelectorAll(".extra-card.d-none");
+  if (hiddenCards.length > 0) {
+	fetchPlaces(3);
+    for (let i = 0; i < 3 && i < hiddenCards.length; i++) {
+      hiddenCards[i].classList.remove("d-none");
+    }
+  } else {
+    fetchPlaces(3); // 3개의 새로운 카드 로드
+  }
+});
   $searchKeyword.addEventListener("keyup", function (event) {
     if (event.keyCode === 13) {
       // Enter 키 확인
@@ -43,31 +71,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  function fetchPlaces(
-    rowCnt,
-    isSearch = false,
-    sortKey = currentSortKey,
-    sortValue = currentSortValue
-  ) {
+  function fetchPlaces(rowCnt, isInitialLoad = false, sortKey = currentSortKey, sortValue = currentSortValue) {
     const selectedProvince = $provinceSelect.value || "";
     const addressCategory = provinceMap[selectedProvince] || "";
     const searchKeyword = $searchKeyword.value.trim() || "";
 
-    console.log(
-      `Fetching places: startRowValue=${startRowValue}, rowCnt=${rowCnt}, addressCategory=${addressCategory}, searchKeyword=${searchKeyword}`
-    );
+    console.log(`Fetching places: startRowValue=${startRowValue}, rowCnt=${rowCnt}, addressCategory=${addressCategory}, searchKeyword=${searchKeyword}`);
 
-    axios
-      .get("./search", {
-        params: {
-          addressCategory: addressCategory,
-          searchKeyword: searchKeyword,
-          sortKey: sortKey,
-          sortValue: sortValue,
-          startRowValue: startRowValue,
-          rowCnt: rowCnt,
-        },
-      })
+    axios.get("./search", {
+      params: {
+        addressCategory: addressCategory,
+        searchKeyword: searchKeyword,
+        sortKey: sortKey,
+        sortValue: sortValue,
+        startRowValue: startRowValue,
+        rowCnt: rowCnt,
+      },
+    })
       .then((response) => {
         const $newPlaces = response.data;
         console.log(`Fetched places:`, $newPlaces);
@@ -79,124 +99,85 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const existingPlaceNames = new Set();
-        document
-          .querySelectorAll(".card-item .main-card-title")
-          .forEach((title) => {
-            existingPlaceNames.add(title.textContent);
-          });
+        document.querySelectorAll(".card-item .main-card-title").forEach((title) => {
+          existingPlaceNames.add(title.textContent);
+        });
 
-        $newPlaces.forEach((place) => {
+        $newPlaces.forEach((place, index) => {
           if (!existingPlaceNames.has(place.placeName)) {
             console.log(`Place name: ${place.placeName}`);
-            const $newCard = createCard(place);
+            const $newCard = createCard(place, startRowValue + index);
             $cardContainer.appendChild($newCard);
             console.log(`Card added for place: ${place.placeName}`);
             existingPlaceNames.add(place.placeName); // 새로운 장소 이름을 추가
           }
         });
 
-        if ($newPlaces.length >= rowCnt) {
-          $moreButton.style.display = "block";
-        } else {
-          $moreButton.style.display = "none";
-        }
-
+		
+				if ($newPlaces.length >= rowCnt || document.querySelectorAll(".extra-card.d-none").length > 0) {
+				  $moreButton.style.display = "block";
+				} else {
+				  $moreButton.style.display = "none";
+				}
         startRowValue += $newPlaces.length; // 다음 시작 행 업데이트
       })
       .catch((error) => {
         console.error("Error fetching places:", error);
         if (startRowValue === 0) {
-          $cardContainer.innerHTML =
-            "<p>검색 중 오류가 발생했습니다. 다시 시도해 주세요.</p>";
+          $cardContainer.innerHTML = "<p>검색 중 오류가 발생했습니다. 다시 시도해 주세요.</p>";
         } else {
-          alert(
-            "데이터를 불러오는 중 오류가 발생했습니다. 다시 시도해 주세요."
-          );
+          alert("데이터를 불러오는 중 오류가 발생했습니다. 다시 시도해 주세요.");
         }
         $moreButton.style.display = "none";
       });
   }
 
-  $moreButton.addEventListener("click", () => {
-    const hiddenCards = document.querySelectorAll(".extra-card.d-none");
-    if (hiddenCards.length > 0) {
-      for (let i = 0; i < itemsPerPage && i < hiddenCards.length; i++) {
-        hiddenCards[i].classList.remove("d-none");
-      }
-    } else {
-      fetchPlaces(itemsPerPage);
-    }
-  });
-
-  function createCard(place) {
+  function createCard(place, index) {
     console.log(`Creating card for place:`, place);
 
     const $newCard = document.createElement("div");
     $newCard.classList.add("col-lg-4", "col-md-6", "mb-3", "card-item");
+    if (index >= 6) {
+      $newCard.classList.add("d-none", "extra-card");
+    }
     $newCard.innerHTML = `
-          <div class="main-card go-to-details" data-place-name="${
-            place.placeName
-          }">
-              <div class="main-card-header bg-transparent">
-                  <div class="d-flex justify-content-between align-items-center">
-                      <h1 class="main-card-title">${place.placeName}</h1>
-                      <i class="bi ${
-                        place.userFavorite == 1
-                          ? "bi-heart-fill red-color"
-                          : "bi-heart"
-                      } main-custom-heart"
-                         data-place-name="${place.placeName}"
-                         data-user-favorite="${place.userFavorite}"></i>
-                  </div>
-                  <div class="main-badges mt-3">
-						<span class="badge"><i class="bi bi-fire" id="fire"></i> ${
-              place.highestBadge
-            }</span>
-						<span class="badge"><i class="bi bi-fire" id="fire"></i> ${
-              place.secondHighestBadge
-            }</span>
-                      <span class="badge difficulty ${place.iscore}">난이도: ${
-      place.iscore
-    }</span>
-                  </div>
-              </div>
-              <div class="d-flex justify-content-between my-3 mx-3">
-                  <h3>${place.address}</h3>
-                  <h4>누적방문수: ${place.placeVerified}</h4>
-              </div>
-              <div class="main-card-body">
-                  <img src="${place.firstUrl}" alt="${
-      place.placeName
-    }" class="img-fluid mb-2" />
-                  <img src="${place.secondUrl}" alt="${
-      place.placeName
-    }" class="img-fluid mb-2" />
-                  <img src="${place.thirdUrl}" alt="${
-      place.placeName
-    }" class="img-fluid mb-2" />
-              </div>
-              <div class="main-card-footer bg-transparent">
-                  <div class="footer-meta">
-                      <div class="user-info">
-                          <span class="username">${place.nickName}</span>
-                      </div>
-                      <div class="post-info">
-                          <span class="date"><i class="bi bi-calendar3"></i> ${formatDate(
-                            place.modifiedAt
-                          )}</span>
-                          <span class="likes"><i class="bi bi-heart-fill"></i> ${
-                            place.likeCount
-                          }</span>
-                      </div>
-                  </div>
-                  <div class="comment-section">
-                      <p class="comment-text"><i class="bi bi-chat-left-quote"></i> ${
-                        place.review
-                      }</p>
-                  </div>
-              </div>
+      <div class="main-card go-to-details" data-place-name="${place.placeName}">
+        <div class="main-card-header bg-transparent">
+          <div class="d-flex justify-content-between align-items-center">
+            <h1 class="main-card-title">${place.placeName}</h1>
+            <i class="bi ${place.userFavorite == 1 ? "bi-heart-fill red-color" : "bi-heart"} main-custom-heart" data-place-name="${place.placeName}" data-user-favorite="${place.userFavorite}"></i>
           </div>
-      `;
+          <div class="main-badges mt-3">
+            <span class="badge"><i class="bi bi-fire" id="fire"></i> ${place.highestBadge}</span>
+            <span class="badge"><i class="bi bi-fire" id="fire"></i> ${place.secondHighestBadge}</span>
+            <span class="badge difficulty ${place.iscore}">아이난이도: ${place.iscore}</span>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between my-3 mx-3">
+          <h3>${place.address}</h3>
+          <h4>누적방문수: ${place.placeVerified}</h4>
+        </div>
+        <div class="main-card-body">
+          <img src="${place.firstUrl}" alt="${place.placeName}" class="img-fluid mb-2" />
+          <img src="${place.secondUrl}" alt="${place.placeName}" class="img-fluid mb-2" />
+          <img src="${place.thirdUrl}" alt="${place.placeName}" class="img-fluid mb-2" />
+        </div>
+        <div class="main-card-footer bg-transparent">
+          <div class="footer-meta">
+            <div class="user-info">
+              <span class="username">${place.nickName}</span>
+            </div>
+            <div class="post-info">
+              <span class="date"><i class="bi bi-calendar3"></i> ${formatDate(place.modifiedAt)}</span>
+              <span class="likes"><i class="bi bi-heart-fill"></i> ${place.likeCount}</span>
+            </div>
+          </div>
+          <div class="comment-section">
+            <p class="comment-text"><i class="bi bi-chat-left-quote"></i> ${place.review}</p>
+          </div>
+        </div>
+      </div>
+    `;
     return $newCard;
   }
 
@@ -241,63 +222,153 @@ document.addEventListener("DOMContentLoaded", () => {
       // 정렬 시 시작 행을 0으로 초기화
       startRowValue = 0;
       $cardContainer.innerHTML = "";
-      fetchPlaces(itemsPerPage * 2, true, currentSortKey, currentSortValue); // 정렬 시 6개 로드 // 정렬 시 6개 로드
+      fetchPlaces(initialItemsPerPage, true, currentSortKey, currentSortValue); // 정렬 시 처음 9개 로드
     });
   });
-});
 
-document.addEventListener("click", function (event) {
-  if (event.target.classList.contains("main-custom-heart")) {
-    const $heartIcon = event.target;
-    const $placeName = $heartIcon.getAttribute("data-place-name");
 
-    console.log("클릭된 장소 이름:", $placeName); // 디버깅용 로그
 
-    if ($placeName) {		
-	
-      $heartIcon.classList.toggle("bi-heart");
-      $heartIcon.classList.toggle("bi-heart-fill");
-      $heartIcon.classList.toggle("red-color");
 
-      let heartClickable = $heartIcon.classList.contains("bi-heart-fill")
-        ? 1
-        : 0;
-      $heartIcon.setAttribute("data-user-favorite", heartClickable); // data-user-favorite 속성 업데이트
+document.addEventListener("click", function(event) {
+   if (event.target.classList.contains("main-custom-heart")) {
+      const $heartIcon = event.target;
+      const $placeName = $heartIcon.getAttribute("data-place-name");
 
-      if (heartClickable === 1) {
-        console.log("하트 클릭됨:", $placeName);
-        const uri = "./clickHeart";
-        
-       if (LoginUserId !== null) {
-         window.location.href = `${contextPath}/user/loginRegister`;
-        }
-        axios
-          .put(uri, $placeName)
-          .then((response) => {
-            console.log("응답 데이터:", response.data);
-          })
-          .catch((error) => {
-            console.error("에러 데이터:", error);
-          });
+      console.log("클릭된 장소 이름:", $placeName); // 디버깅용 로그
+
+      if ($placeName) {
+
+         $heartIcon.classList.toggle("bi-heart");
+         $heartIcon.classList.toggle("bi-heart-fill");
+         $heartIcon.classList.toggle("red-color");
+
+         let heartClickable = $heartIcon.classList.contains("bi-heart-fill")
+            ? 1
+            : 0;
+         $heartIcon.setAttribute("data-user-favorite", heartClickable); // data-user-favorite 속성 업데이트
+
+         if (LoginUserId === 'null' || LoginUserId === '') {
+            window.location.href = `${contextPath}/user/loginRegister`;
+            return; // 로그인 페이지로 리다이렉트 후 함수 종료
+         }
+         if (heartClickable === 1) {
+            console.log("하트 클릭됨:", $placeName);
+            const uri = "./clickHeart";
+
+            axios
+               .put(uri, $placeName)
+               .then((response) => {
+                  console.log("응답 데이터:", response.data);
+               })
+               .catch((error) => {
+                  console.error("에러 데이터:", error);
+               });
+         } else {
+            console.log("하트 취소됨:", $placeName);
+            const uri = `./deleteHeart/${$placeName}`;
+            console.log("삭제 URI:", uri);
+
+            axios
+               .delete(uri)
+               .then((response) => {
+                  console.log("응답 데이터:", response.data);
+               })
+               .catch((error) => {
+                  console.error("에러 데이터:", error);
+               });
+         }
       } else {
-        console.log("하트 취소됨:", $placeName);
-        const uri = `./deleteHeart/${$placeName}`;
-        console.log("삭제 URI:", uri);
-
-        axios
-          .delete(uri)
-          .then((response) => {
-            console.log("응답 데이터:", response.data);
-          })
-          .catch((error) => {
-            console.error("에러 데이터:", error);
-          });
+         console.error("placeName이 null입니다.");
       }
-    } else {
-      console.error("placeName이 null입니다.");
-    }
-  }
+   }
 });
+
+const $searchBox = document.querySelector("#search-keyword");
+const $suggestions = document.querySelector("#suggestions");
+const $provinceSelects = document.querySelector("#province-select");
+
+const provinceMaps = {
+    seoul: "서울시",
+    gyeonggi: "경기도",
+    gangwon: "강원도",
+    jeollabuk: "전라북도",
+    jeollanam: "전라남도",
+    gyeongsangbuk: "경상북도",
+    gyeongsangnam: "경상남도",
+    chungcheongbuk: "충청북도",
+    chungcheongnam: "충청남도",
+    busan: "부산시",
+    daegu: "대구시",
+    incheon: "인천시",
+    gwangju: "광주시",
+    daejeon: "대전시",
+    ulsan: "울산시",
+    jeju: "제주도",
+};
+
+$searchBox.addEventListener("input", function() {
+    const query = $searchBox.value.trim();
+    const selectedProvince = $provinceSelects.value || "";
+    const addressCategory = provinceMaps[selectedProvince] || "";
+
+    if (query.length > 0) {
+        axios.get('./searchSuggestions', {
+            params: { 
+                searchKeyword: query,
+                addressCategory: addressCategory
+            }
+        })
+        .then(response => {
+            const data = response.data;
+            $suggestions.innerHTML = "";
+            if (data.length > 0) {
+                data.forEach(item => {
+                    const li = document.createElement("li");
+                    li.textContent = item;
+                    li.classList.add("list-group-item", "list-group-item-action");
+                    $suggestions.appendChild(li);
+                });
+                $suggestions.style.display = "block";
+            } else {
+                const li = document.createElement("li");
+                li.textContent = "검색결과가 없습니다";
+                li.classList.add("list-group-item");
+                $suggestions.appendChild(li);
+                $suggestions.style.display = "block";
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching suggestions:", error);
+        });
+    } else {
+        $suggestions.innerHTML = "";
+        $suggestions.style.display = "none";
+    }
+});
+
+$suggestions.addEventListener("click", function(event) {
+    if (event.target.tagName === "LI") {
+        $searchBox.value = event.target.textContent;
+        $suggestions.style.display = "none";
+    }
+});
+
+// 검색창 외부 클릭 시 추천 검색어 숨기기
+document.addEventListener("click", function(event) {
+    if (!event.target.closest('.search-container')) {
+        $suggestions.style.display = "none";
+    }
+});
+
+// 검색창 내부 클릭 시 추천 검색어 보이기 (단, 검색어가 있을 때만)
+$searchBox.addEventListener("focus", function(event) {
+    if ($suggestions.innerHTML.trim().length > 0) {
+        $suggestions.style.display = "block";
+    }
+});
+
+
+
 
 // 스크롤 탑 버튼
 const $scrollToTopBtn = document.querySelector("#scrollToTopBtn");
