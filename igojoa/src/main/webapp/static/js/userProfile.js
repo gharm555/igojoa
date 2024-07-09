@@ -599,10 +599,6 @@ function displayActivityInfo(data, tab) {
       </li>
     `;
   });
-
-  if (!hasMoreData && currentPage > 0) {
-    container.innerHTML += '<li class="list-group-item">더 이상 표시할 데이터가 없습니다.</li>';
-  }
 }
 
 // 전체 탭의 내용을 생성하는 함수
@@ -623,22 +619,22 @@ function getTotalContent(item) {
 
 // 좋아요한 명소 내용을 생성하는 함수
 function getFavoritePlaceContent(item) {
-  return `${item.address} ${item.placeName} 게시물에 좋아요를 눌렀습니다.`;
+  return `${item.address} <a href="${contextPath}/place/details/${item.placeName}">${item.placeName}</a> 명소에 좋아요를 눌렀습니다.</a>`;
 }
 
 // 좋아요한 리뷰 내용을 생성하는 함수
 function getLikedReviewContent(item) {
-  return `${item.placeName}에 ${item.reviewAuthor}님 리뷰 "${item.review}"에 좋아요를 눌렀습니다.`;
+  return `<a href="${contextPath}/place/details/${item.placeName}">${item.placeName}</a>에 ${item.reviewAuthor}님 댓글 "${item.review}"에 좋아요를 눌렀습니다.`;
 }
 
 // 작성한 리뷰 내용을 생성하는 함수
 function getWrittenReviewContent(item) {
-  return `${item.address} ${item.placeName}에 "${item.review}" 리뷰를 남겼습니다.`;
+  return `${item.address} <a href="${contextPath}/place/details/${item.placeName}">${item.placeName}</a>에 "${item.review}" 댓글을 남겼습니다.`;
 }
 
 // 위치인증한 장소 내용을 생성하는 함수
 function getVerifiedPlaceContent(item) {
-  return `${item.address} ${item.placeName} 위치인증을 했습니다.`;
+  return `${item.address} <a href="${contextPath}/place/details/${item.placeName}">${item.placeName}</a>${item.placeName} 명소에 위치인증을 했습니다.`;
 }
 
 // 데이터를 정렬하고 표시하는 함수
@@ -713,29 +709,27 @@ document.addEventListener('DOMContentLoaded', () => {
   resetAndLoadData();
 });
 
-// 포인트 내역 관련 전역 변수
 let calendar;
 let currentMonth;
 let selectedDate;
 let previousSelectedCell;
 let attendanceDates = []; // 출석 날짜를 저장할 배열
+let dailyPointsData = {};
 
-// 포인트 탭 이벤트 리스너 설정
 const $userPointTab = document.querySelector('#v-pills-messages-tab');
 $userPointTab.addEventListener('click', initializePointTab);
 
-// 포인트 탭 초기화 함수
 function initializePointTab() {
   selectedDate = new Date();
   currentMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
   fetchAttendanceData(currentMonth).then(() => {
     initializeCalendar();
     updatePointHistoryForDate(selectedDate);
-    updatePointSummaryForMonth(currentMonth);
+    updatePointSummaryForMonth(currentMonth); // 이 줄이 추가되었습니다
+    updatePointSummaryForDay(selectedDate);
   });
 }
 
-// 출석 데이터 가져오기
 function fetchAttendanceData(date) {
   const yearMonth = formatYearMonth(date);
   return axios
@@ -750,18 +744,12 @@ function fetchAttendanceData(date) {
     });
 }
 
-// 캘린더 초기화 함수
 function initializeCalendar() {
   const $calendarEl = document.getElementById('calendar');
   if (!$calendarEl) {
     console.error('Calendar element not found');
     return;
   }
-
-  if (calendar) {
-    calendar.destroy();
-  }
-
   calendar = new FullCalendar.Calendar($calendarEl, {
     initialView: 'dayGridMonth',
     headerToolbar: {
@@ -769,10 +757,15 @@ function initializeCalendar() {
       center: 'title',
       right: 'today',
     },
+    titleFormat: function (date) {
+      year = date.date.year;
+      month = date.date.month + 1;
+
+      return year + '년 ' + month + '월';
+    },
     buttonText: {
       today: '오늘',
     },
-    locale: 'ko',
     dayCellContent: function (arg) {
       let html = arg.dayNumberText;
       if (isAttendanceDay(arg.date)) {
@@ -780,11 +773,25 @@ function initializeCalendar() {
       }
       return { html: html };
     },
+
     dateClick: function (info) {
       selectedDate = info.date;
       updatePointHistoryForDate(selectedDate);
       highlightSelectedDate(info.dayEl, info.date);
+      updatePointSummaryForDay(selectedDate);
     },
+
+    dayCellClassNames: function (arg) {
+      if (arg.date.getDay() === 0) {
+        // 일요일
+        return ['sunday'];
+      } else if (arg.date.getDay() === 6) {
+        // 토요일
+        return ['saturday'];
+      }
+      return [];
+    },
+
     datesSet: function (info) {
       currentMonth = info.view.currentStart;
       fetchAttendanceData(currentMonth).then(() => {
@@ -820,49 +827,6 @@ function initializeCalendar() {
   if (calendar) {
     calendar.destroy();
   }
-
-  calendar = new FullCalendar.Calendar($calendarEl, {
-    initialView: 'dayGridMonth',
-    headerToolbar: {
-      left: 'prev,next',
-      center: 'title',
-      right: 'today',
-    },
-    buttonText: {
-      today: '오늘',
-    },
-    locale: 'ko',
-    dayCellContent: function (arg) {
-      let html = arg.dayNumberText;
-      if (isAttendanceDay(arg.date)) {
-        html += '<i class="fas fa-check-circle attendance-icon"></i>';
-      }
-      return { html: html };
-    },
-    dateClick: function (info) {
-      selectedDate = info.date;
-      updatePointHistoryForDate(selectedDate);
-      highlightSelectedDate(info.dayEl, info.date);
-    },
-    datesSet: function (info) {
-      currentMonth = info.view.currentStart;
-      fetchAttendanceData(currentMonth).then(() => {
-        calendar.render();
-        updatePointSummaryForMonth(currentMonth);
-      });
-    },
-    dayCellDidMount: function (info) {
-      const today = new Date();
-      if (info.date.toDateString() === today.toDateString()) {
-        info.el.style.backgroundColor = '#4a86e8';
-        info.el.style.color = 'white';
-        info.el.style.fontWeight = 'bold';
-      }
-      if (selectedDate && info.date.toDateString() === selectedDate.toDateString()) {
-        highlightSelectedDate(info.el, info.date);
-      }
-    },
-  });
 
   calendar.render();
 
@@ -913,6 +877,7 @@ function updatePointHistoryForDate(date) {
     })
     .then(function (response) {
       updatePointHistoryTable(response.data);
+      updatePointSummaryForDay(date);
       if (calendar) {
         calendar.render();
       }
@@ -931,72 +896,32 @@ function updatePointSummaryForMonth(date) {
     .then(function (response) {
       const { totalPointsGained, totalPointsLost } = response.data;
       console.log(response.data);
-      document.querySelector('#earnedPoints').textContent = totalPointsGained;
-      document.querySelector('#spentPoints').textContent = Math.abs(totalPointsLost);
+      document.querySelector('#monthlyEarnedPoints').textContent = totalPointsGained;
+      document.querySelector('#monthlySpentPoints').textContent = Math.abs(totalPointsLost);
     })
     .catch(function (error) {
       console.error('Error updating points display:', error);
     });
 }
 
-  const newSelectedCell = cellEl || calendar.getDate(date).dayEl;
-
-  const today = new Date();
-  const isToday = date.toDateString() === today.toDateString();
-
-function updatePointHistoryTable(history) {
-  const $table = document.querySelector('#pointHistoryTable tbody');
-  $table.innerHTML = '';
-
-  if (history.length === 0) {
-    $table.innerHTML = '<tr><td colspan="3" class="text-center">선택된 날짜의 내역이 없습니다.</td></tr>';
-  } else {
-    history.forEach(function (item) {
-      const row = $table.insertRow();
-      row.insertCell(0).textContent = formatDate(new Date(item.pointsGetLoseTime));
-      row.insertCell(1).textContent = item.userActivity;
-      row.insertCell(2).textContent = item.points;
-    });
-  }
-}
-
-// 특정 날짜의 포인트 내역 업데이트 함수
-function updatePointHistoryForDate(date) {
-  const formattedDate = formatDate(date);
-  axios
-    .get(contextPath + '/pointsLogs', {
-      params: { yearMonthDay: formattedDate },
-    })
-    .then(function (response) {
-      updatePointHistoryTable(response.data);
-      if (calendar) {
-        calendar.render();
-      }
-    })
-    .catch(function (error) {
-      console.error('Error updating point history for date:', error);
-    });
-}
-
-// 특정 월의 포인트 요약 업데이트 함수
-function updatePointSummaryForMonth(date) {
-  const yearMonth = formatYearMonth(date);
+function updatePointSummaryForDay(date) {
+  const yearMonthDay = formatDate(date);
   axios
     .get(contextPath + '/pointsStats', {
-      params: { yearMonth: yearMonth },
+      params: { yearMonthDay: yearMonthDay },
     })
     .then(function (response) {
       const { totalPointsGained, totalPointsLost } = response.data;
       console.log(response.data);
-      document.querySelector('#earnedPoints').textContent = totalPointsGained;
-      document.querySelector('#spentPoints').textContent = Math.abs(totalPointsLost);
-    })
-    .catch(function (error) {
-      console.error('Error updating points display:', error);
+      document.querySelector('#dailyEarnedPoints').textContent = totalPointsGained;
+      document.querySelector('#dailySpentPoints').textContent = Math.abs(totalPointsLost);
+      
+      // 테이블에 일별 요약 추가
+      const $table = document.querySelector('#pointHistoryTable tbody');
+      addDailySummaryToTable($table);
     });
 }
 
-// 포인트 내역 테이블 업데이트 함수
 function updatePointHistoryTable(history) {
   const $table = document.querySelector('#pointHistoryTable tbody');
   $table.innerHTML = '';
@@ -1011,9 +936,32 @@ function updatePointHistoryTable(history) {
       row.insertCell(2).textContent = item.points;
     });
   }
+
+  // 일별 포인트 요약 추가
+  addDailySummaryToTable($table);
 }
 
-// 날짜 포맷팅 함수 (YYYY.MM.DD)
+function addDailySummaryToTable($table) {
+  const dailyEarnedPoints = document.querySelector('#dailyEarnedPoints');
+  const dailySpentPoints = document.querySelector('#dailySpentPoints');
+
+  if (dailyEarnedPoints && dailySpentPoints) {
+    const summaryRow1 = $table.insertRow();
+    summaryRow1.insertCell(0).textContent = '';
+    summaryRow1.insertCell(1).textContent = '선택한 날짜 얻은 포인트';
+    summaryRow1.insertCell(2).textContent = dailyEarnedPoints.textContent;
+
+    const summaryRow2 = $table.insertRow();
+    summaryRow2.insertCell(0).textContent = '';
+    summaryRow2.insertCell(1).textContent = '선택한 날짜 소비한 포인트';
+    summaryRow2.insertCell(2).textContent = dailySpentPoints.textContent;
+
+    // 요약 행 스타일 적용
+    summaryRow1.classList.add('summary-row');
+    summaryRow2.classList.add('summary-row');
+  }
+}
+
 function formatDate(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -1021,42 +969,11 @@ function formatDate(date) {
   return `${year}.${month}.${day}`;
 }
 
-// 년월 포맷팅 함수 (YYYY.MM)
 function formatYearMonth(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   return `${year}.${month}`;
 }
-
-// 유저 프로필 이미지 변경 (좌측 이미지 직접 클릭)
-$profileImage.addEventListener('click', function () {
-  $profileImageInput.click();
-});
-
-$profileImageInput.addEventListener('change', function () {
-  const file = event.target.files[0];
-  if (file) {
-    const formData = new FormData();
-    formData.append('newImage', file);
-
-    // 서버로 put 요청 보내기
-    axios
-      .put(contextPath + '/profileImage', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((response) => {
-        $$profileImage.forEach(($$profileImage) => {
-          $$profileImage.src = response.data;
-        });
-      })
-      .catch((error) => {
-        alert('프로필 이미지 변경 중 오류가 발생했습니다.');
-      });
-  }
-});
-
 // 유저 프로필 이미지 변경 (내 정보수정에서 변경 버튼 클릭)
 $imageChangeBtn.addEventListener('click', function () {
   $profileImageInput.click();
