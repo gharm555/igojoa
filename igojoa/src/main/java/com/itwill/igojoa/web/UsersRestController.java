@@ -45,7 +45,8 @@ public class UsersRestController {
 	@GetMapping("/allInfo")
 	public ResponseEntity<Map<String, Object>> getAllUserRelatedInfo(@ModelAttribute UserSearchDto userSearchDto) {
 		userSearchDto.setUserId(getUserIdFromSession(session));
-
+		handleSearchKeyword(userSearchDto, getUserIdFromSession(session));
+		
 		List<UserRelatedInfoDto> userRelatedInfoDto = usersService.getUserRelatedInfo(userSearchDto);
 		List<UserFavoritePlacesDto> userFavoritePlacesDto = usersService.getUserFavoritePlaces(userSearchDto);
 		List<UserFavoriteReviewsDto> userFavoriteReviewsDto = usersService.getUserFavoriteReviews(userSearchDto);

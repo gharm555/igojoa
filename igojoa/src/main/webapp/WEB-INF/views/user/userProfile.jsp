@@ -11,7 +11,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
     <c:url var="cssResetCss" value="/css/cssReset.css" />
     <link rel="stylesheet" href="${cssResetCss}" />
@@ -19,13 +19,11 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <link rel="stylesheet" href="${userProfileCss}" />
     <c:url var="navbarCss" value="/css/navbar.css" />
     <link rel="stylesheet" href="${navbarCss}" />
-    
+
     <title>내정보</title>
   </head>
   <body>
-    <header>
-      <%@ include file="../header.jspf" %>
-    </header>
+    <header><%@ include file="../header.jspf" %></header>
     <main style="margin-top: 120px">
       <div class="container p-0">
         <div class="row g-0 h-100">
@@ -112,13 +110,15 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     <h5 class="card-title mb-0 mt-3">포인트 현황</h5>
                     <p class="card-text" id="currentsPoints">
                       현재 포인트:<span class="points">
-                      <fmt:formatNumber value="${userInfo.currentsPoints}" type="number" groupingUsed="true" /></span>
+                        <fmt:formatNumber value="${userInfo.currentsPoints}" type="number" groupingUsed="true"
+                      /></span>
                       P
                     </p>
 
                     <p class="card-text" id="cumulativePoint">
                       누적 포인트:<span class="cumulativePoints">
-                      <fmt:formatNumber value="${userInfo.cumulativePoint}" type="number" groupingUsed="true" /></span>
+                        <fmt:formatNumber value="${userInfo.cumulativePoint}" type="number" groupingUsed="true"
+                      /></span>
                       P
                     </p>
                   </div>
@@ -132,24 +132,27 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   </button>
                 </div>
                 <!-- TODO 시작 -->
-                <div class="containerImageChange" style="display: flex; height: 25%;">
+                <div class="containerImageChange" style="display: flex; height: 25%">
                   <div class="profile-photo imageInImageChangeContainer">
                     <img
-                    src="${ userInfo.userProfileUrl }"
-                    alt="프로필 이미지"
-                    id="profileImage"
-                    class="rounded-circle profile-img profileImage forMoveToCenter"
-                    style="cursor: pointer; width: 150px; height: 150px; object-fit: cover"
-                  />
+                      src="${ userInfo.userProfileUrl }"
+                      alt="프로필 이미지"
+                      id="profileImage"
+                      class="rounded-circle profile-img profileImage forMoveToCenter"
+                      style="cursor: pointer; width: 150px; height: 150px; object-fit: cover"
+                    />
                   </div>
                   <div class="info infoInImageChangeContainer">
-                      <p style="opacity: 0.8;">98x98픽셀 이상, 10MB 이하의 사진이 권장됩니다. PNG 또는 GIF(애니메이션 GIF 제외) 파일을 사용하세요. 사진이 Igojoa 커뮤니티 가이드를 준수해야 합니다.</p>
-                      <div class="buttons">
-                          <button class="btn btn-warning" id="imageChange">변경</button>
-                          <button class="btn btn-danger" id="imageDelete">삭제</button>
-                      </div>
+                    <p style="opacity: 0.8">
+                      98x98픽셀 이상, 10MB 이하의 사진이 권장됩니다. PNG 또는 GIF(애니메이션 GIF 제외) 파일을
+                      사용하세요. 사진이 Igojoa 커뮤니티 가이드를 준수해야 합니다.
+                    </p>
+                    <div class="buttons">
+                      <button class="btn btn-warning" id="imageChange">변경</button>
+                      <button class="btn btn-danger" id="imageDelete">삭제</button>
+                    </div>
                   </div>
-                </div>  
+                </div>
                 <!-- TODO 끗 -->
                 <form id="editProfileForm">
                   <div class="mb-3 mt-3">
@@ -271,7 +274,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-total"
                         aria-selected="true"
                       >
-                        전체 내역  <p><i class="fa-solid fa-sort"></i></p>
+                        전체 내역
+                        <p><i class="sort-icon fa-solid fa-sort"></i></p>
                       </button>
                       <button
                         class="nav-link d-flex"
@@ -283,7 +287,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-favoritePlace"
                         aria-selected="false"
                       >
-                        좋아요한 게시물  <p><i class="fa-solid fa-sort"></i></p>
+                        좋아요한 게시물
+                        <p><i class="sort-icon fa-solid fa-sort"></i></p>
                       </button>
                       <button
                         class="nav-link d-flex"
@@ -295,7 +300,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-likedReview"
                         aria-selected="false"
                       >
-                        좋아요한 리뷰  <p><i class="fa-solid fa-sort"></i></p>
+                        좋아요한 리뷰
+                        <p><i class="sort-icon fa-solid fa-sort"></i></p>
                       </button>
                       <button
                         class="nav-link d-flex"
@@ -307,7 +313,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-writtenReview"
                         aria-selected="false"
                       >
-                        작성한 리뷰  <p><i class="fa-solid fa-sort"></i></p>
+                        작성한 리뷰
+                        <p><i class="sort-icon fa-solid fa-sort"></i></p>
                       </button>
                       <button
                         class="nav-link d-flex"
@@ -319,7 +326,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         aria-controls="nav-verifiedPlace"
                         aria-selected="false"
                       >
-                        위치인증 장소  <p><i class="fa-solid fa-sort ml-2"></i></p>
+                        위치인증 장소
+                        <p><i class="sort-icon fa-solid fa-sort ml-2"></i></p>
                       </button>
                     </div>
                   </nav>
@@ -332,9 +340,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     aria-labelledby="nav-total-tab"
                     tabindex="0"
                   >
-                    <ul class="list-group" id="totalList">
-                      
-                    </ul>
+                    <ul class="list-group" id="totalList"></ul>
                   </div>
                   <div
                     class="tab-pane fade"
@@ -343,9 +349,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     aria-labelledby="nav-favoritePlace-tab"
                     tabindex="0"
                   >
-                    <ul class="list-group" id="favoritePlaceList">
-                      
-                    </ul>
+                    <ul class="list-group" id="favoritePlaceList"></ul>
                   </div>
                   <div
                     class="tab-pane fade"
@@ -354,9 +358,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     aria-labelledby="nav-likdedReview-tab"
                     tabindex="0"
                   >
-                    <ul class="list-group" id="likedReviewList">
-                      
-                    </ul>
+                    <ul class="list-group" id="likedReviewList"></ul>
                   </div>
                   <div
                     class="tab-pane fade"
@@ -365,9 +367,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     aria-labelledby="nav-writtenReview-tab"
                     tabindex="0"
                   >
-                    <ul class="list-group" id="writtenReviewList">
-                      
-                    </ul>
+                    <ul class="list-group" id="writtenReviewList"></ul>
                   </div>
                   <div
                     class="tab-pane fade"
@@ -376,9 +376,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     aria-labelledby="nav-verifiedPlace-tab"
                     tabindex="0"
                   >
-                    <ul class="list-group" id="verifiedPlaceList">
-                      
-                    </ul>
+                    <ul class="list-group" id="verifiedPlaceList"></ul>
                   </div>
                 </div>
               </div>
@@ -389,11 +387,18 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     <div id="calendar"></div>
                   </div>
                   <div class="col-md-5">
-                    <div class="point-summary mb-3">
-                      <div>
-                        <span class="me-3">얻은 포인트: <span id="earnedPoints" class="text-success">0</span></span>
+                    <div class="point-summary mb-3 row">
+                      <div class="col-md-6 monthly-summary">
+                        <h5>월별 포인트 요약</h5>
+                        <div>
+                          <span class="me-3"
+                            >얻은 포인트: <span id="monthlyEarnedPoints" class="text-success">0</span></span
+                          >
+                        </div>
+                        <div>
+                          <span>소비 포인트: <span id="monthlySpentPoints" class="text-danger">0</span></span>
+                        </div>
                       </div>
-                      <span>소비 포인트: <span id="spentPoints" class="text-danger">0</span></span>
                     </div>
                     <div class="table-responsive">
                       <table class="table table-striped" id="pointHistoryTable">
@@ -467,6 +472,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <script src="${navbarJs}"></script>
     <c:url var="userProfileJs" value="/js/userProfile.js" />
     <script src="${userProfileJs}"></script>
-    <script> LoginUserId = "${UserId}" </script>
+    <script>
+      LoginUserId = '${UserId}';
+    </script>
   </body>
 </html>
