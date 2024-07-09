@@ -1188,8 +1188,8 @@ $imageDeleteBtn.addEventListener("click", function () {
 });
 
 // 회원 탈퇴
-const withdrawalBtn = document.querySelector("#withdrawal");
-withdrawalBtn.addEventListener("click", function () {
+const $withdrawalBtn = document.querySelector("#withdrawal");
+$withdrawalBtn.addEventListener("click", function () {
   if (confirm("정말 탈퇴하시겠습니까?")) {
     axios.delete(contextPath + "/user/deleteUser").then((response) => {
       alert(response.data);
