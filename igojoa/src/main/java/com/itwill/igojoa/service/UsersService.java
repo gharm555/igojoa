@@ -12,7 +12,10 @@ import com.itwill.igojoa.dto.users.UserVerifiedPlacesDto;
 import com.itwill.igojoa.dto.users.UserWrittenReviewsDto;
 import com.itwill.igojoa.dto.users.UsersInfoDto;
 import com.itwill.igojoa.entity.Users;
+import com.itwill.igojoa.repository.PlaceDao;
+import com.itwill.igojoa.repository.PlaceVerifiedDao;
 import com.itwill.igojoa.repository.PointsDao;
+import com.itwill.igojoa.repository.ReviewDao;
 import com.itwill.igojoa.repository.UsersDao;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 public class UsersService {
 	private final UsersDao userDao;
 	private final PointsDao pointsDao;
+	private final PlaceVerifiedDao placeVerifiedDao;
+	private final ReviewDao reviewDao;
+	private final PlaceDao placeDao;
 
 	public int sessionTorF(String userId) {
 		return userDao.sessionTorF(userId);
@@ -76,6 +82,12 @@ public class UsersService {
 	}
 
 	public int deleteUser(String userId) {
+		pointsDao.deletePoints(userId);
+		pointsDao.deletePointsLog(userId);
+		placeVerifiedDao.deletePlaceVerified(userId);
+		reviewDao.deleteAllReview(userId);
+		reviewDao.deleteAllReviewLike(userId);
+		placeDao.deleteAllPlaceFavorite(userId);
 		return userDao.deleteUser(userId);
 	}
 
@@ -86,21 +98,18 @@ public class UsersService {
 	public List<UserRelatedInfoDto> getUserRelatedInfo(UserSearchDto userSearchDto) {
 		return userDao.getUserRelatedInfo(userSearchDto);
 	}
-	
+
 	public List<UserFavoritePlacesDto> getUserFavoritePlaces(UserSearchDto userSearchDto) {
 		return userDao.getUserFavoritePlaces(userSearchDto);
 	}
-
 
 	public List<UserFavoriteReviewsDto> getUserFavoriteReviews(UserSearchDto userSearchDto) {
 		return userDao.getUserFavoriteReviews(userSearchDto);
 	}
 
-
 	public List<UserWrittenReviewsDto> getUserWrittenReviews(UserSearchDto userSearchDto) {
 		return userDao.getUserWrittenReviews(userSearchDto);
 	}
-	
 
 	public List<UserVerifiedPlacesDto> getUserVerifiedPlaces(UserSearchDto userSearchDto) {
 		return userDao.getUserVerifiedPlaces(userSearchDto);

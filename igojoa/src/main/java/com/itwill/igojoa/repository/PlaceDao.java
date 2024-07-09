@@ -24,4 +24,6 @@ public interface PlaceDao {
 	List<PlaceBestListDto> selectPlaceNameAndImageUrl();
 
 	List<String> searchSuggestions(PlaceSearchDto placeSearchDto);
+
+	int deleteAllPlaceFavorite(String userId);
 }

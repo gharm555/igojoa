@@ -565,7 +565,8 @@ function verifyUserForPasswordReset() {
     .catch((err) => {
       console.log(err);
       if (err.response && err.response.data) {
-        $findPasswordMessage.textContent = err.response.data;
+        $findPasswordMessage.textContent =
+          "오류가 발생했습니다. 다시 시도해주세요.";
       } else {
         $findPasswordMessage.textContent =
           "오류가 발생했습니다. 다시 시도해주세요.";
@@ -672,6 +673,8 @@ document.querySelectorAll("#loginForm input").forEach((input) => {
 document.addEventListener("DOMContentLoaded", function () {
   const signinForm = document.querySelector(".signinform");
   const signupForm = document.querySelector(".signupform");
+  const body = document.querySelector("body");
+
   function createSwitchFormButton(text, buttonText) {
     const container = document.createElement("div");
     container.classList.add("switch-form-container");
@@ -698,6 +701,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function toggleForm() {
     signinForm.classList.toggle("active");
     signupForm.classList.toggle("active");
+    clearText();
   }
 
   switchToSignup.addEventListener("click", toggleForm);
