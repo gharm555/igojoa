@@ -477,11 +477,6 @@ h2 {
 }
 
 @media (max-width: 390px) {
-  /* 테스트 */
-  .test{
-  padding: 0 !important;
-  }
-  
   .containerImageChange {
     flex-flow: column;
   }
@@ -533,16 +528,82 @@ h2 {
   }
 
   #calendarContainer {
-    height: 52vh;
+    height: 54.5vh;
   }
 
   #calendar {
     font-size: 0.9em;
     height: 100%;
   }
-  .pointTabContainer {
-    display: flex;
+
+  .attendance-icon {
+    margin-right: 15% !important;
+    margin-top: 34% !important;
   }
+  /* 요한 테스트 */
+  .profile-container {
+    margin-top: 70px !important;
+  }
+
+  .sidebar {
+    padding: 10px;
+    height: auto;
+    background-color: #f8f9fa;
+  }
+
+  .profile-summary {
+    display: none;
+  }
+
+  .nav-pills {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 20px;
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  .nav-pills .nav-link {
+    flex: 1;
+    margin: 0 2px;
+    padding: 8px 5px;
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    background-color: transparent;
+    color: #333;
+    border-radius: 15px;
+  }
+
+  .nav-pills .nav-link i {
+    font-size: 16px;
+    margin-right: 0;
+    margin-bottom: 3px;
+  }
+
+  .nav-pills .nav-link.active,
+  .nav-pills .nav-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+
+  .content {
+    padding: 15px;
+  }
+
+  #v-pills-tabContent {
+    margin-top: 15px;
+  }
+
+  h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
   
 }
 
@@ -885,7 +946,7 @@ h2 {
   }
 }
 
-/* 반응형 스타일 */
+/*반응형 스타일
 @media (max-width: 768px) {
   .fc-toolbar-title {
     font-size: 1.4em;
@@ -901,4 +962,4 @@ h2 {
   .daily-summary {
     margin-bottom: 15px;
   }
-}
+}*/

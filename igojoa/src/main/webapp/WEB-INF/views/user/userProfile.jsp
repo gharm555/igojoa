@@ -24,7 +24,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
   </head>
   <body>
     <header><%@ include file="../header.jspf" %></header>
-    <main style="margin-top: 120px">
+    <main class="profile-container" style="margin-top: 120px">
       <div class="container p-0">
         <div class="row g-0 h-100">
           <div class="col-md-3 sidebar">
@@ -42,48 +42,50 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 <span class="text" id="nickName">${ userInfo.nickName }</span>
               </div>
             </div>
-            <nav class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
-              <button
-                class="nav-link active"
-                id="v-pills-home-tab"
-                data-bs-toggle="pill"
-                data-bs-target="#v-pills-home"
-                type="button"
-                role="tab"
-              >
-                <i class="fas fa-user me-2"></i>내정보
-              </button>
-              <button
-                class="nav-link"
-                id="v-pills-profile-tab"
-                data-bs-toggle="pill"
-                data-bs-target="#v-pills-profile"
-                type="button"
-                role="tab"
-              >
-                <i class="fas fa-edit me-2"></i>내정보수정
-              </button>
-              <button
-                class="nav-link"
-                id="v-pills-disabled-tab"
-                data-bs-toggle="pill"
-                data-bs-target="#v-pills-disabled"
-                type="button"
-                role="tab"
-              >
-                <i class="fas fa-history me-2"></i>내활동내역
-              </button>
-              <button
-                class="nav-link"
-                id="v-pills-messages-tab"
-                data-bs-toggle="pill"
-                data-bs-target="#v-pills-messages"
-                type="button"
-                role="tab"
-              >
-                <i class="fas fa-coins me-2"></i>포인트내역
-              </button>
-            </nav>
+            <div class="sidebar">
+              <nav class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                <button
+                  class="nav-link active"
+                  id="v-pills-home-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#v-pills-home"
+                  type="button"
+                  role="tab"
+                >
+                  <i class="fas fa-user me-2"></i>내정보
+                </button>
+                <button
+                  class="nav-link"
+                  id="v-pills-profile-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#v-pills-profile"
+                  type="button"
+                  role="tab"
+                >
+                  <i class="fas fa-edit me-2"></i>내정보수정
+                </button>
+                <button
+                  class="nav-link"
+                  id="v-pills-disabled-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#v-pills-disabled"
+                  type="button"
+                  role="tab"
+                >
+                  <i class="fas fa-history me-2"></i>내활동내역
+                </button>
+                <button
+                  class="nav-link"
+                  id="v-pills-messages-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#v-pills-messages"
+                  type="button"
+                  role="tab"
+                >
+                  <i class="fas fa-coins me-2"></i>포인트내역
+                </button>
+              </nav>
+            </div>
           </div>
           <div class="col-md-9 content p-5">
             <div class="tab-content" id="v-pills-tabContent">
@@ -381,13 +383,13 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 </div>
               </div>
               <div>
-                <div class="tab-pane fade pointTabContainer" id="v-pills-messages" role="tabpanel" tabindex="0">
+                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" tabindex="0">
                   <h2 class="mb-4">포인트내역</h2>
                   <div class="row">
-                    <div class="col-md-7" id="calendarContainer">
+                    <div class="col-md-7 card" id="calendarContainer">
                       <div id="calendar"></div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-5 card">
                       <div class="point-summary mb-3 row">
                         <div class="col-md-6 monthly-summary">
                           <h5>월별 포인트 요약</h5>
