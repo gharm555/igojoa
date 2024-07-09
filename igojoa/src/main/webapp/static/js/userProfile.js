@@ -364,130 +364,172 @@ const $imageDeleteBtn = document.querySelector('#imageDelete');
 // 초기 상태에서는 버튼 비활성화
 $updateBtn.disabled = true;
 
-/* 유저 활동 내역 */
-// 탭
-// 전역 변수 선언
-let currentTab = 'total';
-let currentPage = 1;
-const itemsPerPage = 5; // 초기에 5개 항목 로드
-let isLoading = false;
+/* 유저활동내역 */
+// DOM 요소 선택
+const $userActivityTab = document.querySelector('#v-pills-disabled-tab');
+const $addressSelect = document.querySelector('#address-select');
+const $searchInput = document.querySelector('#search-input');
+const $searchBtn = document.querySelector('#userActivitySearchBtn');
+const $dateRange = document.querySelector('#date-range');
+const $tabContent = document.querySelector('#nav-tabContent');
+const tabs = ['total', 'favoritePlace', 'likedReview', 'writtenReview', 'verifiedPlace'];
 
-// 검색 관련 변수
-let $searchKeyword = document.querySelector('#search-input');
-let $selectedAddress = document.querySelector('#address-select');
+// 전역 변수 초기화
 let startDate = '';
 let endDate = '';
-const $searchBtn = document.querySelector('#userActivitySearchBtn');
+let datePicker;
+let currentTab = 'total';
+let currentPage = 0;
+const itemsPerPage = 5;
+let isLoading = false;
+let hasMoreData = true;
+let lastLoadedId = null;
+let sortOrder = 'desc'; // 초기 정렬 순서는 내림차순
+let currentData = []; // 현재 탭의 전체 데이터를 저장할 배열
 
-// 탭 요소들
-const $userActivityTab = document.querySelector('#userActivityTab');
-const $totalTab = document.querySelector('#nav-total-tab');
-const $favoritePlaceTab = document.querySelector('#nav-favoritePlace-tab');
-const $likedReviewTab = document.querySelector('#nav-likedReview-tab');
-const $writtenReviewTab = document.querySelector('#nav-writtenReview-tab');
-const $verifiedPlaceTab = document.querySelector('#nav-verifiedPlace-tab');
+// 내활동내역 탭 클릭 이벤트 리스너
+$userActivityTab.addEventListener('click', () => {
+  initializeUserActivity();
+});
 
-// 리스트 요소들
-const $totalList = document.querySelector('#totalList');
-const $favoritePlaceList = document.querySelector('#favoritePlaceList');
-const $likedReviewList = document.querySelector('#likedReviewList');
-const $writtenReviewList = document.querySelector('#writtenReviewList');
-const $verifiedPlaceList = document.querySelector('#verifiedPlaceList');
+// 내활동내역 초기화 함수
+function initializeUserActivity() {
+  // 상태 초기화
+  currentTab = 'total';
+  currentPage = 0;
+  hasMoreData = true;
+  lastLoadedId = null;
+  sortOrder = 'desc';
+  currentData = [];
+  startDate = '';
+  endDate = '';
 
-// 탭 클릭 이벤트 리스너 추가
-$totalTab.addEventListener('click', () => loadData('total'));
-$favoritePlaceTab.addEventListener('click', () => loadData('favoritePlace'));
-$likedReviewTab.addEventListener('click', () => loadData('likedReview'));
-$writtenReviewTab.addEventListener('click', () => loadData('writtenReview'));
-$verifiedPlaceTab.addEventListener('click', () => loadData('verifiedPlace'));
+  // 검색 입력 필드 초기화
+  $searchInput.value = '';
+  sessionStorage.removeItem('searchKeyword');
 
-// 검색 버튼 이벤트 리스너 추가
-$searchBtn.addEventListener('click', performSearch);
+  // 주소 선택 초기화
+  $addressSelect.selectedIndex = 0;
 
-// 검색 수행 함수
-function performSearch() {
-  currentPage = 1;
-  loadAllTabsData();
+  // 날짜 선택 초기화
+  datePicker.clear();
+
+  // 데이터 리셋 및 새로운 데이터 로드
+  resetAndLoadData();
 }
 
-// 모든 탭의 데이터를 로드하는 함수
-function loadAllTabsData() {
-  const tabs = ['total', 'favoritePlace', 'likedReview', 'writtenReview', 'verifiedPlace'];
-  tabs.forEach((tab) => loadData(tab, 1, true));
+// 각 탭에 이벤트 리스너 추가
+tabs.forEach((tab) => {
+  const $tabElement = document.querySelector(`#nav-${tab}-tab`);
+  $tabElement.addEventListener('click', () => {
+    if (currentTab === tab) {
+      // 현재 탭을 다시 클릭한 경우, 정렬 순서를 변경하고 데이터를 다시 정렬
+      sortOrder = sortOrder === 'desc' ? 'asc' : 'desc';
+      sortAndDisplayData();
+    } else {
+      // 새로운 탭으로 변경한 경우
+      currentTab = tab;
+      sortOrder = 'desc'; // 새 탭으로 변경 시 정렬 순서 초기화
+      resetAndLoadData();
+    }
+  });
+});
+
+// 검색 버튼 이벤트 리스너
+$searchBtn.addEventListener('click', () => {
+  sessionStorage.setItem('searchKeyword', $searchInput.value);
+  resetAndLoadData();
+});
+
+// 무한 스크롤 설정 함수
+function setupInfiniteScroll() {
+  const activityTabs = document.querySelectorAll('.list-group');
+
+  activityTabs.forEach((tab) => {
+    tab.addEventListener('scroll', function () {
+      if (this.id !== `${currentTab}List`) return;
+
+      const { scrollTop, scrollHeight, clientHeight } = this;
+      const scrollRatio = scrollTop / (scrollHeight - clientHeight);
+
+      // 스크롤이 80% 이상 내려갔고, 로딩 중이 아니며, 더 불러올 데이터가 있는 경우
+      if (scrollRatio > 0.8 && !isLoading && hasMoreData) {
+        console.log(`${currentTab} 탭에서 추가 데이터 로드 시작`);
+        loadMoreData();
+      }
+    });
+  });
 }
 
-// 데이터 로드 함수 수정
-function loadData(tab, page = 1, isNewSearch = false) {
-  currentTab = tab;
-  currentPage = page;
+// 데이터 초기화 및 새로 로드하는 함수
+function resetAndLoadData() {
+  currentPage = 0;
+  hasMoreData = true;
+  lastLoadedId = null;
+  currentData = []; // 데이터 초기화
+  const container = document.querySelector(`#${currentTab}List`);
+  container.innerHTML = '';
+  loadMoreData();
+}
 
-  const endpoint = getEndpoint(tab);
-  const params = {
-    startRowValue: (page - 1) * itemsPerPage,
-    rowCnt: itemsPerPage,
-    searchKeyword: $searchKeyword.value,
-    largeAddress: $selectedAddress.value,
-    calendarMin: startDate,
-    calendarMax: endDate,
-  };
+// 추가 데이터를 로드하는 함수
+function loadMoreData() {
+  if (isLoading || !hasMoreData) return;
+
+  isLoading = true;
+
+  let searchKeyword = sessionStorage.getItem('searchKeyword') || $searchInput.value;
+  let largeAddress = $addressSelect.value;
+  let endpoint = getEndpointFromTab(currentTab);
 
   axios
-    .get(contextPath + endpoint, { params })
-    .then((response) => {
-      console.log(`Server response for ${tab}:`, response);
-      const data = response.data;
-      console.log(`Data received for ${tab}:`, data);
-      if (tab === 'total') {
-        displayAllData(data, isNewSearch);
-      } else {
-        displayData(tab, data, isNewSearch);
-      }
+    .get(contextPath + endpoint, {
+      params: {
+        searchKeyword: searchKeyword,
+        largeAddress: largeAddress,
+        calendarMin: startDate,
+        calendarMax: endDate,
+        startRowValue: currentPage * itemsPerPage,
+        rowCnt: itemsPerPage,
+        lastLoadedId: lastLoadedId,
+      },
     })
-    .catch((error) => console.error(`Error loading ${tab} data:`, error));
+    .then((response) => {
+      console.log('Data fetched successfully:', response.data);
+      if (response.data.sessionSearchKeyword) {
+        sessionStorage.setItem('searchKeyword', response.data.sessionSearchKeyword);
+      }
+
+      let newData;
+      if (currentTab === 'total') {
+        newData = response.data.userRelatedInfo || [];
+      } else {
+        newData = response.data || [];
+      }
+
+      if (newData.length < itemsPerPage) {
+        hasMoreData = false;
+      }
+
+      currentData = currentData.concat(newData); // 새 데이터를 현재 데이터에 추가
+      sortAndDisplayData();
+
+      if (newData.length > 0) {
+        lastLoadedId = newData[newData.length - 1].id;
+        currentPage++;
+      }
+
+      isLoading = false;
+    })
+    .catch((error) => {
+      console.error('Error fetching user related info:', error);
+      isLoading = false;
+      displayActivityInfo([], currentTab); // 에러 발생 시 빈 배열 전달
+    });
 }
 
-// allInfo 데이터 표시 함수 수정
-function displayAllData(data, isNewSearch) {
-    if (isNewSearch) {
-      Object.keys(data).forEach(key => {
-        const listElement = getListElement(key.replace('user', '').toLowerCase());
-        listElement.innerHTML = '';
-      });
-    }
-    
-    Object.entries(data).forEach(([key, value]) => {
-      const tab = key.replace('user', '').toLowerCase();
-      displayData(tab, value, isNewSearch);
-    });
-  }
-
-// 데이터 표시 함수 수정
-function displayData(tab, data, isNewSearch) {
-    if (!Array.isArray(data)) {
-      console.error(`Received data for ${tab} is not an array:`, data);
-      return;
-    }
-  
-    const listElement = getListElement(tab);
-    if (isNewSearch) {
-      listElement.innerHTML = '';
-    }
-  
-    if (data.length === 0) {
-      listElement.innerHTML = '<li class="list-group-item">검색 결과가 없습니다.</li>';
-      return;
-    }
-  
-    data.forEach((item) => {
-      const li = document.createElement('li');
-      li.className = 'list-group-item';
-      li.innerHTML = createListItemContent(tab, item);
-      listElement.appendChild(li);
-    });
-  }
-
-// 엔드포인트 결정 함수
-function getEndpoint(tab) {
+// 탭에 따른 API 엔드포인트를 반환하는 함수
+function getEndpointFromTab(tab) {
   switch (tab) {
     case 'total':
       return '/allInfo';
@@ -504,122 +546,111 @@ function getEndpoint(tab) {
   }
 }
 
-// 데이터 표시 함수
-function displayData(tab, data) {
-  const listElement = getListElement(tab);
-  listElement.innerHTML = '';
-
-  data.forEach((item) => {
-    const li = document.createElement('li');
-    li.className = 'list-group-item';
-    li.innerHTML = createListItemContent(tab, item);
-    listElement.appendChild(li);
-  });
+// 탭에 따른 데이터 키를 반환하는 함수
+function getDataKeyFromTab(tab) {
+  const dataKeys = {
+    total: 'userRelatedInfo',
+    favoritePlace: 'userFavoritePlaces',
+    likedReview: 'userFavoriteReviews',
+    writtenReview: 'userWrittenReviews',
+    verifiedPlace: 'userVerifiedPlaces',
+  };
+  return dataKeys[tab] || '';
 }
 
-// 리스트 요소 가져오기
-function getListElement(tab) {
-  switch (tab) {
-    case 'total':
-      return $totalList;
-    case 'favoritePlace':
-      return $favoritePlaceList;
-    case 'likedReview':
-      return $likedReviewList;
-    case 'writtenReview':
-      return $writtenReviewList;
-    case 'verifiedPlace':
-      return $verifiedPlaceList;
-    default:
-      return $totalList;
+// 활동 정보를 화면에 표시하는 함수
+function displayActivityInfo(data, tab) {
+  const container = document.querySelector(`#${tab}List`);
+
+  if (data.length === 0 && currentPage === 0) {
+    container.innerHTML = '<li class="list-group-item">활동내역이 없습니다.</li>';
+    return;
+  }
+
+  container.innerHTML = ''; // 컨테이너 초기화
+
+  data.forEach((item) => {
+    let content = '';
+    switch (tab) {
+      case 'total':
+        content = getTotalContent(item);
+        break;
+      case 'favoritePlace':
+        content = getFavoritePlaceContent(item);
+        break;
+      case 'likedReview':
+        content = getLikedReviewContent(item);
+        break;
+      case 'writtenReview':
+        content = getWrittenReviewContent(item);
+        break;
+      case 'verifiedPlace':
+        content = getVerifiedPlaceContent(item);
+        break;
+    }
+
+    container.innerHTML += `
+      <li class="list-group-item d-flex align-items-center">
+        <img src="${item.firstUrl}" alt="썸네일" class="rounded-circle me-3" width="50" height="50" />
+        <div>
+          <p class="mb-0">${content}</p>
+          <small class="text-muted">${item.createdAt}</small>
+        </div>
+      </li>
+    `;
+  });
+
+  if (!hasMoreData && currentPage > 0) {
+    container.innerHTML += '<li class="list-group-item">더 이상 표시할 데이터가 없습니다.</li>';
   }
 }
 
-function createListItemContent(tab, item) {
-  switch (tab) {
-    case 'total':
-      let content = '';
-      switch (item.type) {
-        case 'favorite_places':
-          content = `${item.address} ${item.placeName} 게시물에 좋아요를 눌렀습니다.`;
-          break;
-        case 'liked_reviews':
-          content = `${item.placeName}에 ${item.reviewAuthor}님 리뷰 "${item.review}"에 좋아요를 눌렀습니다.`;
-          break;
-        case 'written_reviews':
-          content = `${item.address} ${item.placeName}에 "${item.review}" 리뷰를 남겼습니다.`;
-          break;
-        case 'verified_places':
-          content = `${item.address} ${item.placeName} 위치인증을 했습니다.`;
-          break;
-      }
-      return `
-          <div class="d-flex align-items-center">
-            <img src="${item.firstUrl}" alt="썸네일" class="rounded-circle me-3" width="50" height="50" />
-            <div>
-              <p class="mb-0">${content}</p>
-              <small class="text-muted">${item.createdAt}</small>
-            </div>
-          </div>
-        `;
-    case 'favoritePlace':
-      return `
-          <div class="d-flex align-items-center">
-            <img src="${item.firstUrl}" alt="썸네일" class="rounded-circle me-3" width="50" height="50" />
-            <div>
-              <p class="mb-0">${item.address} ${item.placeName} 게시물에 좋아요를 눌렀습니다.</p>
-              <small class="text-muted">${item.createdAt}</small>
-            </div>
-          </div>
-        `;
-    case 'likedReview':
-      return `
-          <div class="d-flex align-items-center">
-            <img src="${item.firstUrl}" alt="썸네일" class="rounded-circle me-3" width="50" height="50" />
-            <div>
-              <p class="mb-0">${item.placeName}에 ${item.reviewAuthor}님 리뷰 "${item.review}"에 좋아요를 눌렀습니다.</p>
-              <small class="text-muted">${item.createdAt}</small>
-            </div>
-          </div>
-        `;
-    case 'writtenReview':
-      return `
-          <div class="d-flex align-items-center">
-            <img src="${item.firstUrl}" alt="썸네일" class="rounded-circle me-3" width="50" height="50" />
-            <div>
-              <p class="mb-0">${item.address} ${item.placeName}에 "${item.review}" 리뷰를 남겼습니다.</p>
-              <small class="text-muted">${item.createdAt}</small>
-            </div>
-          </div>
-        `;
-    case 'verifiedPlace':
-      return `
-          <div class="d-flex align-items-center">
-            <img src="${item.firstUrl}" alt="썸네일" class="rounded-circle me-3" width="50" height="50" />
-            <div>
-              <p class="mb-0">${item.address} ${item.placeName} 위치인증을 했습니다.</p>
-              <small class="text-muted">${item.createdAt}</small>
-            </div>
-          </div>
-        `;
+// 전체 탭의 내용을 생성하는 함수
+function getTotalContent(item) {
+  switch (item.type) {
+    case 'favorite_places':
+      return getFavoritePlaceContent(item);
+    case 'liked_reviews':
+      return getLikedReviewContent(item);
+    case 'written_reviews':
+      return getWrittenReviewContent(item);
+    case 'verified_places':
+      return getVerifiedPlaceContent(item);
     default:
       return '';
   }
 }
 
-// 초기 데이터 로드
-loadData('total');
+// 좋아요한 명소 내용을 생성하는 함수
+function getFavoritePlaceContent(item) {
+  return `${item.address} ${item.placeName} 게시물에 좋아요를 눌렀습니다.`;
+}
 
-// 내 활동내역 기간설정
-// Flatpickr 스타일시트를 동적으로 로드
-const link = document.createElement('link');
-link.rel = 'stylesheet';
-link.href = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css';
-document.head.appendChild(link);
+// 좋아요한 리뷰 내용을 생성하는 함수
+function getLikedReviewContent(item) {
+  return `${item.placeName}에 ${item.reviewAuthor}님 리뷰 "${item.review}"에 좋아요를 눌렀습니다.`;
+}
 
-// 달력 날짜 변수
+// 작성한 리뷰 내용을 생성하는 함수
+function getWrittenReviewContent(item) {
+  return `${item.address} ${item.placeName}에 "${item.review}" 리뷰를 남겼습니다.`;
+}
 
-let datePicker;
+// 위치인증한 장소 내용을 생성하는 함수
+function getVerifiedPlaceContent(item) {
+  return `${item.address} ${item.placeName} 위치인증을 했습니다.`;
+}
+
+// 데이터를 정렬하고 표시하는 함수
+function sortAndDisplayData() {
+  const sortedData = [...currentData].sort((a, b) => {
+    const dateA = new Date(a.createdAt);
+    const dateB = new Date(b.createdAt);
+    return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
+  });
+
+  displayActivityInfo(sortedData, currentTab);
+}
 
 // Flatpickr 초기화
 flatpickr.localize(flatpickr.l10ns.ko);
@@ -629,35 +660,30 @@ datePicker = flatpickr('#date-range', {
   minDate: '2022-07-01',
   maxDate: 'today',
   disableMobile: 'true',
-  defaultDate: [], // 기본값을 빈 배열로 설정
+  defaultDate: [],
 
   onChange: function (selectedDates, dateStr, instance) {
-    console.log('Selected dates:', selectedDates); // 선택한 날짜를 콘솔에 출력
+    console.log('Selected dates:', selectedDates);
     if (selectedDates.length === 0) {
       instance.element.placeholder = '전체기간';
+      startDate = '';
+      endDate = '';
     } else if (selectedDates.length === 1) {
       startDate = formatDate(selectedDates[0]);
-      endDate = ''; // endDate를 빈 문자열로 설정
-      console.log('한개만 선택했을때 시작날짜' + startDate);
-      console.log('한개만 선택했을때 끝날짜' + endDate);
-      // 필요한 경우 여기서 처리할 작업을 추가
+      endDate = '';
     } else if (selectedDates.length === 2) {
       if (selectedDates[0].getTime() === selectedDates[1].getTime()) {
         startDate = formatDate(selectedDates[0]);
-        endDate = ''; // 같은 날짜일 때 endDate를 빈 문자열로 설정
-        console.log('같은 날짜 선택했을때 시작날짜: ' + startDate);
-        console.log('같은 날짜 선택했을때 끝날짜: ' + endDate);
+        endDate = '';
       } else {
         startDate = formatDate(selectedDates[0]);
         endDate = formatDate(selectedDates[1]);
-        console.log('두개 선택했을때 시작날짜: ' + startDate);
-        console.log('두개 선택했을때 끝날짜: ' + endDate);
       }
     }
+    resetAndLoadData();
   },
   onReady: function (selectedDates, dateStr, instance) {
-    instance.element.placeholder = '전체기간'; // 추가된 부분
-    // '전체기간' 버튼 추가
+    instance.element.placeholder = '전체기간';
     const wrapper = instance.calendarContainer;
     const clearButton = document.createElement('button');
     clearButton.innerHTML = '전체기간';
@@ -665,35 +691,51 @@ datePicker = flatpickr('#date-range', {
     clearButton.addEventListener('click', function () {
       startDate = '';
       endDate = '';
-      console.log('전체기간 눌렀을때 시작날짜' + startDate);
-      console.log('전체기간 눌렀을때 끝날짜' + endDate);
       instance.clear();
       instance.element.placeholder = '전체기간';
+      resetAndLoadData();
     });
     wrapper.appendChild(clearButton);
-    // '기간설정' 버튼
   },
 });
 
+// 날짜를 형식화하는 함수
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}.${month}.${day}`;
+}
+
+// 페이지 로드 시 실행되는 코드
+document.addEventListener('DOMContentLoaded', () => {
+  setupInfiniteScroll();
+  resetAndLoadData();
+});
+
+// 포인트 내역 관련 전역 변수
 let calendar;
 let currentMonth;
 let selectedDate;
 let previousSelectedCell;
 let attendanceDates = []; // 출석 날짜를 저장할 배열
 
+// 포인트 탭 이벤트 리스너 설정
 const $userPointTab = document.querySelector('#v-pills-messages-tab');
 $userPointTab.addEventListener('click', initializePointTab);
 
+// 포인트 탭 초기화 함수
 function initializePointTab() {
   selectedDate = new Date();
   currentMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
   fetchAttendanceData(currentMonth).then(() => {
     initializeCalendar();
     updatePointHistoryForDate(selectedDate);
-    updatePointSummaryForMonth(currentMonth); // 이 줄이 추가되었습니다
+    updatePointSummaryForMonth(currentMonth);
   });
 }
 
+// 출석 데이터 가져오기
 function fetchAttendanceData(date) {
   const yearMonth = formatYearMonth(date);
   return axios
@@ -708,6 +750,7 @@ function fetchAttendanceData(date) {
     });
 }
 
+// 캘린더 초기화 함수
 function initializeCalendar() {
   const $calendarEl = document.getElementById('calendar');
   if (!$calendarEl) {
@@ -896,17 +939,10 @@ function updatePointSummaryForMonth(date) {
     });
 }
 
-// function updatePointSummaryForDay(date) {
-//   const yearMonthDay = formatDate(date);
-//   axios
-//     .get(contextPath + '/pointsStats', {
-//       params: {yearMonthDay: yearMonthDay},
-//     })
-//     .then(function (response) {
-//       const {totalPointGained, totalPointsLost} = response.data;
+  const newSelectedCell = cellEl || calendar.getDate(date).dayEl;
 
-//     })
-// }
+  const today = new Date();
+  const isToday = date.toDateString() === today.toDateString();
 
 function updatePointHistoryTable(history) {
   const $table = document.querySelector('#pointHistoryTable tbody');
@@ -924,6 +960,60 @@ function updatePointHistoryTable(history) {
   }
 }
 
+// 특정 날짜의 포인트 내역 업데이트 함수
+function updatePointHistoryForDate(date) {
+  const formattedDate = formatDate(date);
+  axios
+    .get(contextPath + '/pointsLogs', {
+      params: { yearMonthDay: formattedDate },
+    })
+    .then(function (response) {
+      updatePointHistoryTable(response.data);
+      if (calendar) {
+        calendar.render();
+      }
+    })
+    .catch(function (error) {
+      console.error('Error updating point history for date:', error);
+    });
+}
+
+// 특정 월의 포인트 요약 업데이트 함수
+function updatePointSummaryForMonth(date) {
+  const yearMonth = formatYearMonth(date);
+  axios
+    .get(contextPath + '/pointsStats', {
+      params: { yearMonth: yearMonth },
+    })
+    .then(function (response) {
+      const { totalPointsGained, totalPointsLost } = response.data;
+      console.log(response.data);
+      document.querySelector('#earnedPoints').textContent = totalPointsGained;
+      document.querySelector('#spentPoints').textContent = Math.abs(totalPointsLost);
+    })
+    .catch(function (error) {
+      console.error('Error updating points display:', error);
+    });
+}
+
+// 포인트 내역 테이블 업데이트 함수
+function updatePointHistoryTable(history) {
+  const $table = document.querySelector('#pointHistoryTable tbody');
+  $table.innerHTML = '';
+
+  if (history.length === 0) {
+    $table.innerHTML = '<tr><td colspan="3" class="text-center">선택된 날짜의 내역이 없습니다.</td></tr>';
+  } else {
+    history.forEach(function (item) {
+      const row = $table.insertRow();
+      row.insertCell(0).textContent = formatDate(new Date(item.pointsGetLoseTime));
+      row.insertCell(1).textContent = item.userActivity;
+      row.insertCell(2).textContent = item.points;
+    });
+  }
+}
+
+// 날짜 포맷팅 함수 (YYYY.MM.DD)
 function formatDate(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -931,6 +1021,7 @@ function formatDate(date) {
   return `${year}.${month}.${day}`;
 }
 
+// 년월 포맷팅 함수 (YYYY.MM)
 function formatYearMonth(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
