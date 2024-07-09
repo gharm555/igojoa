@@ -260,7 +260,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   <input type="text" placeholder="검색어를 입력하세요..." id="search-input" />
                   <button type="submit" id="userActivitySearchBtn">검색</button>
                 </div>
-                <div class="d-flex justify-content-between align-items-center mt-3">
+                <div class="d-flex justify-content-between align-items-center mt-3" id="userActivityTabContainer">
                   <input type="text" id="date-range" placeholder="" />
                   <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -380,39 +380,41 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   </div>
                 </div>
               </div>
-              <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" tabindex="0">
-                <h2 class="mb-4">포인트내역</h2>
-                <div class="row">
-                  <div class="col-md-7">
-                    <div id="calendar"></div>
-                  </div>
-                  <div class="col-md-5">
-                    <div class="point-summary mb-3 row">
-                      <div class="col-md-6 monthly-summary">
-                        <h5>월별 포인트 요약</h5>
-                        <div>
-                          <span class="me-3"
-                            >얻은 포인트: <span id="monthlyEarnedPoints" class="text-success">0</span></span
-                          >
-                        </div>
-                        <div>
-                          <span>소비 포인트: <span id="monthlySpentPoints" class="text-danger">0</span></span>
+              <div>
+                <div class="tab-pane fade pointTabContainer" id="v-pills-messages" role="tabpanel" tabindex="0">
+                  <h2 class="mb-4">포인트내역</h2>
+                  <div class="row">
+                    <div class="col-md-7" id="calendarContainer">
+                      <div id="calendar"></div>
+                    </div>
+                    <div class="col-md-5">
+                      <div class="point-summary mb-3 row">
+                        <div class="col-md-6 monthly-summary">
+                          <h5>월별 포인트 요약</h5>
+                          <div>
+                            <span class="me-3"
+                              >얻은 포인트: <span id="monthlyEarnedPoints" class="text-success">0</span></span
+                            >
+                          </div>
+                          <div>
+                            <span>소비 포인트: <span id="monthlySpentPoints" class="text-danger">0</span></span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="table-responsive">
-                      <table class="table table-striped" id="pointHistoryTable">
-                        <thead>
-                          <tr class="text-center">
-                            <th>날짜</th>
-                            <th>내용</th>
-                            <th>포인트</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <!-- 포인트 내역이 여기에 동적으로 추가됩니다 -->
-                        </tbody>
-                      </table>
+                      <div class="table-responsive">
+                        <table class="table table-striped" id="pointHistoryTable">
+                          <thead>
+                            <tr class="text-center">
+                              <th>날짜</th>
+                              <th>내용</th>
+                              <th>포인트</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <!-- 포인트 내역이 여기에 동적으로 추가됩니다 -->
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>

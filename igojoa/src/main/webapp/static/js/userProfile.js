@@ -591,7 +591,7 @@ function displayActivityInfo(data, tab) {
 
     container.innerHTML += `
       <li class="list-group-item d-flex align-items-center">
-        <img src="${item.firstUrl}" alt="썸네일" class="rounded-circle me-3" width="50" height="50" />
+        <a href="${contextPath}/place/details/${item.placeName}"><img src="${item.firstUrl}" alt="썸네일" class="rounded-circle me-3" width="50" height="50" /></a>
         <div>
           <p class="mb-0">${content}</p>
           <small class="text-muted">${item.createdAt}</small>
@@ -634,7 +634,7 @@ function getWrittenReviewContent(item) {
 
 // 위치인증한 장소 내용을 생성하는 함수
 function getVerifiedPlaceContent(item) {
-  return `${item.address} <a href="${contextPath}/place/details/${item.placeName}">${item.placeName}</a>${item.placeName} 명소에 위치인증을 했습니다.`;
+  return `${item.address} <a href="${contextPath}/place/details/${item.placeName}">${item.placeName}</a> 명소에 위치인증을 했습니다.`;
 }
 
 // 데이터를 정렬하고 표시하는 함수
@@ -913,12 +913,19 @@ function updatePointSummaryForDay(date) {
     .then(function (response) {
       const { totalPointsGained, totalPointsLost } = response.data;
       console.log(response.data);
-      document.querySelector('#dailyEarnedPoints').textContent = totalPointsGained;
-      document.querySelector('#dailySpentPoints').textContent = Math.abs(totalPointsLost);
       
-      // 테이블에 일별 요약 추가
-      const $table = document.querySelector('#pointHistoryTable tbody');
-      addDailySummaryToTable($table);
+      const dailyEarnedPoints = document.querySelector('#dailyEarnedPoints');
+      const dailySpentPoints = document.querySelector('#dailySpentPoints');
+      
+      if (dailyEarnedPoints) {
+        dailyEarnedPoints.textContent = totalPointsGained || '0';
+        dailyEarnedPoints.style.color = totalPointsGained > 0 ? 'green' : 'black';
+      }
+      
+      if (dailySpentPoints) {
+        dailySpentPoints.textContent = Math.abs(totalPointsLost) || '0';
+        dailySpentPoints.style.color = totalPointsLost < 0 ? 'red' : 'black';
+      }
     });
 }
 
@@ -933,33 +940,38 @@ function updatePointHistoryTable(history) {
       const row = $table.insertRow();
       row.insertCell(0).textContent = formatDate(new Date(item.pointsGetLoseTime));
       row.insertCell(1).textContent = item.userActivity;
-      row.insertCell(2).textContent = item.points;
+      const pointsCell = row.insertCell(2);
+      pointsCell.textContent = item.points;
+      pointsCell.style.color = item.points >= 0 ? 'green' : 'red';
+      pointsCell.classList.add('points-column');  // 클래스 추가
     });
-  }
 
-  // 일별 포인트 요약 추가
-  addDailySummaryToTable($table);
+    // 내역이 있을 때만 일별 요약을 추가합니다.
+    addDailySummary($table);
+  }
 }
 
-function addDailySummaryToTable($table) {
-  const dailyEarnedPoints = document.querySelector('#dailyEarnedPoints');
-  const dailySpentPoints = document.querySelector('#dailySpentPoints');
+function addDailySummary($table) {
+  // 기존의 요약 행이 있다면 제거합니다.
+  const existingSummaryRows = $table.querySelectorAll('.summary-row');
+  existingSummaryRows.forEach(row => row.remove());
 
-  if (dailyEarnedPoints && dailySpentPoints) {
-    const summaryRow1 = $table.insertRow();
-    summaryRow1.insertCell(0).textContent = '';
-    summaryRow1.insertCell(1).textContent = '선택한 날짜 얻은 포인트';
-    summaryRow1.insertCell(2).textContent = dailyEarnedPoints.textContent;
+  // 새로운 요약 행을 추가합니다.
+  const summaryRow1 = $table.insertRow();
+  summaryRow1.classList.add('summary-row');
+  summaryRow1.insertCell(0).textContent = ''; // 첫 번째 열은 비워둡니다.
+  summaryRow1.insertCell(1).textContent = '얻은 포인트';
+  const earnedCell = summaryRow1.insertCell(2);
+  earnedCell.innerHTML = '<span id="dailyEarnedPoints" style="color: green;">-</span>';
+  earnedCell.classList.add('points-column');  // 클래스 추가
 
-    const summaryRow2 = $table.insertRow();
-    summaryRow2.insertCell(0).textContent = '';
-    summaryRow2.insertCell(1).textContent = '선택한 날짜 소비한 포인트';
-    summaryRow2.insertCell(2).textContent = dailySpentPoints.textContent;
-
-    // 요약 행 스타일 적용
-    summaryRow1.classList.add('summary-row');
-    summaryRow2.classList.add('summary-row');
-  }
+  const summaryRow2 = $table.insertRow();
+  summaryRow2.classList.add('summary-row');
+  summaryRow2.insertCell(0).textContent = ''; // 첫 번째 열은 비워둡니다.
+  summaryRow2.insertCell(1).textContent = '소비한 포인트';
+  const spentCell = summaryRow2.insertCell(2);
+  spentCell.innerHTML = '<span id="dailySpentPoints" style="color: red;">-</span>';
+  spentCell.classList.add('points-column');  // 클래스 추가
 }
 
 function formatDate(date) {
