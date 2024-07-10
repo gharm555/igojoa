@@ -1231,20 +1231,17 @@ function levelColor(level) {
 }
 
 function setLevel(level) {
-    // 레벨이 100이 넘으면 왕관으로 변경
-    if (level >= 100) {
-        $levelIcon.innerHTML = "👑";
-        $levelIcon.style.background = "none";
-        $levelIcon.style.fontSize = "30px"; // 크기 조절
-
-        // 추가적인 스타일링 (선택사항)
-        $levelIcon.style.display = "flex";
-        $levelIcon.style.justifyContent = "center";
-        $levelIcon.style.alignItems = "center";
-    } else {
-        $levelIcon.innerHTML = level;
-        $levelIcon.style.background = levelColor(level).bg;
-    }
+  // 레벨이 100이 넘으면 왕관으로 변경
+  if (level >= 100) {
+    $levelIcon.innerHTML = "👑";
+    $levelIcon.style.background = "none";
+    $levelIcon.style.fontSize = "30px"; // 크기 조절
+    $levelIcon.style.top = "-21px";
+    $levelIcon.style.position = "relative";
+  } else {
+    $levelIcon.innerHTML = level;
+    $levelIcon.style.background = levelColor(level).bg;
+  }
 }
 setLevel(getLevel());
 // ------------------------------------------------------ 수창 작업 끝
