@@ -124,7 +124,7 @@
     </div>
     <div class="d-flex justify-content-center mb-4">
 <div class="btn-group" role="group">
-    <button class="btn btn-outline-secondary" id="iScore" type="button" data-sortIscore="1">난이도</button>
+    <button class="btn btn-outline-secondary" id="iScore" type="button" data-sortIscore="1">아이난이도</button>
     <button class="btn btn-outline-secondary" id="placeVerified" type="button" data-sortPlaceVerified="1">방문횟수</button>
     <button class="btn btn-outline-secondary" id="userFavorite" type="button" data-sortUserFavorite="1">좋아요</button>
     <button class="btn btn-outline-secondary" id="reviewCnt" type="button" data-sortReviewCnt="1">리뷰수</button>

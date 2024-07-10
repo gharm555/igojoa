@@ -588,9 +588,6 @@ function checkSession() {
 		});
 }
 
-
-
-
 // 30초마다 세션 체크
 setInterval(checkSession, 30000);
 // 페이지 로드 시 즉시 세션 체크
