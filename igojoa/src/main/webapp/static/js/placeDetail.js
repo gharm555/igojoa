@@ -100,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
       case 3:
         difficulty = "아이난이도: 상";
+        color = "danger";
         break;
       default:
         console.log("올바르지 않은 IScore 값입니다:", avgiScore);

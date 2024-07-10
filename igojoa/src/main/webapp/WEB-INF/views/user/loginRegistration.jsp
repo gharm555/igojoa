@@ -5,7 +5,15 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login&Registration</title>
+    <title>아이고조아</title>
+     <c:url var="appleTouchIcon" value="/favicon/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="${ appleTouchIcon }">
+    <c:url var="favicon3232" value="/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="${ favicon3232 }">
+    <c:url var="favicon1616" value="/favicon/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="${ favicon1616 }">
+    <c:url var="webmanifest" value="/favicon/site.webmanifest" />
+    <link rel="manifest" href="${ webmanifest }">
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -18,12 +26,15 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
     <link rel="stylesheet" href="${navbarCss}" />
     <c:url var="loginRegistrationCss" value="/css/loginRegistration.css" />
     <link rel="stylesheet" href="${loginRegistrationCss}" />
+    
+    
+    
   </head>
   <body>
     <header>
       <%@ include file="../header.jspf" %>
     </header>
-    <main>
+    <main style="margin-bottom: 120px;">
       <div class="container">
         <div class="box signin">
           <h2>이미 계정이 있습니까?</h2>
@@ -230,6 +241,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
         </div>
       </div>
     </main>
+    <%@ include file="../footer.jspf"%>
 
     <!-- 아이디 찾기 모달 -->
     <div
