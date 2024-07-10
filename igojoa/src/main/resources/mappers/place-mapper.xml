@@ -325,4 +325,7 @@
 		order by
 		placeName
 	</select>
+	<delete id="deleteAllPlaceFavorite">
+		DELETE FROM placesFavorite WHERE userId = #{userId}
+	</delete>
 </mapper>

@@ -170,11 +170,11 @@ main {
   justify-content: center; /* 화면 가운데 정렬 */
   align-items: center; /* 수직 가운데 정렬 */
 }
-#province-select{
+#province-select {
   width: 13%;
 }
-#search-keyword{
-  width:60%;
+#search-keyword {
+  width: 60%;
 }
 
 #main-section {
@@ -206,7 +206,6 @@ main {
 #search-keyword {
   width: 60%;
 }
-
 
 .main-search-bar select {
   background-color: #f8f9fa;
@@ -397,7 +396,7 @@ footer .text-center {
   width: 100%;
   text-align: center;
   padding: 10px 0;
-  background-color: black;
+  background-color: rgb(150, 150, 150);
 }
 
 @media (max-width: 768px) {
