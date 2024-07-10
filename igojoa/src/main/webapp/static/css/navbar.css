@@ -52,7 +52,7 @@ header {
 }
 
 .container-sideNav {
-  justify-content: center;
+	justify-content: flex-start;
 }
 
 .container-logo {
@@ -60,7 +60,7 @@ header {
 }
 
 .container-user {
-  justify-content: center;
+	justify-content: flex-end;
 }
 
 .userProfile {
