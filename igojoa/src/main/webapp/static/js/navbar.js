@@ -164,7 +164,6 @@ document.addEventListener("DOMContentLoaded", function () {
         params: {
           latitude: latitude,
           longitude: longitude,
-          userId: LoginUserId,
         },
       })
       .then((res) => {

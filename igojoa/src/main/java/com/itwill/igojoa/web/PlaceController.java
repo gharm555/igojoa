@@ -35,7 +35,11 @@ public class PlaceController {
 	@Transactional
 	@PostMapping("/verifyLocation")
 	public ResponseEntity<String> verifyPlace(@RequestParam(name = "latitude") double latitude,
-			@RequestParam(name = "longitude") double longitude, @RequestParam(name = "userId") String userId) {
+			@RequestParam(name = "longitude") double longitude) {
+		String userId = (String) session.getAttribute("userId");
+		if (userId == null) {
+			return ResponseEntity.badRequest().body("로그인 해주세요");
+		}
 		String isVerified = placeVerifiedService.verifyUserLocation(latitude, longitude, userId);
 		if (isVerified.equals("위치 인증 성공")) {
 			pointsService.addPlaceVerifiedPoints(userId);

@@ -86,7 +86,7 @@
 	</update>
 
 	<update id="updateBestReviews">
-		UPDATE
+		<!-- UPDATE
 		bestReviews br
 		JOIN (
 		SELECT
@@ -144,7 +144,77 @@
 		br.userId = r.userId,
 		br.review = r.review,
 		br.modifiedAt = r.modifiedAt,
-		br.likeCount = r.likeCnt
+		br.likeCount = r.likeCnt -->
+		INSERT
+		    INTO
+		    bestReviews (placeName,
+		    userId,
+		    review,
+		    modifiedAt,
+		    likeCount)
+		SELECT
+		    r.placeName,
+		    r.userId,
+		    r.review,
+		    r.modifiedAt,
+		    r.likeCnt
+		FROM
+		    (
+		    SELECT
+		        rl.placeName,
+		        rl.userId,
+		        rl.likeCnt,
+		        r.review,
+		        r.modifiedAt
+		    FROM
+		        (
+		        SELECT
+		            rl.placeName,
+		            rl.userId,
+		            COUNT(rl.likeUserId) AS likeCnt
+		        FROM
+		            reviewLikes rl
+		        GROUP BY
+		            rl.placeName,
+		            rl.userId
+		    ) rl
+		    INNER JOIN (
+		        SELECT
+		            rlMax.placeName,
+		            MAX(rlMax.likeCnt) AS maxLike
+		        FROM
+		            (
+		            SELECT
+		                rl.placeName,
+		                rl.userId,
+		                COUNT(rl.likeUserId) AS likeCnt
+		            FROM
+		                reviewLikes rl
+		            GROUP BY
+		                rl.placeName,
+		                rl.userId
+		        ) rlMax
+		        GROUP BY
+		            rlMax.placeName
+		    ) rlMaxJoin
+		    ON
+		        rl.placeName = rlMaxJoin.placeName
+		        AND rl.likeCnt = rlMaxJoin.maxLike
+		    INNER JOIN reviews r
+		    ON
+		        r.placeName = rl.placeName
+		        AND r.userId = rl.userId
+		    GROUP BY
+		        rl.placeName
+		) r
+		ON
+		    DUPLICATE KEY
+		UPDATE
+		    placeName = r.placeName,
+		    userId = r.userId,
+		    review = r.review,
+		    modifiedAt = r.modifiedAt,
+		    likeCount = r.likeCnt
 	</update>
 
 	<update id="updateBestBadge">

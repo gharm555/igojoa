@@ -77,7 +77,7 @@ public class UsersController {
 			log.info("파일 업로드 시작: {}", userRegisterDto.getFile().getOriginalFilename());
 			user = s3Service.uploadImage(userRegisterDto.getFile(), user);
 			log.info("파일 업로드 완료. URL: {}", user.getUserProfileUrl());
-			
+
 			userService.create(user);
 			return ResponseEntity.ok("회원가입 성공");
 		} catch (Exception e) {
@@ -206,13 +206,13 @@ public class UsersController {
 		return ResponseEntity.ok(!isExist ? true : false);
 	}
 
+	@Transactional
 	@DeleteMapping("/deleteUser")
-	public ResponseEntity<String> deleteUser(@RequestParam(name = "userId") String userId, HttpServletRequest request) {
-		userService.deleteUser(userId);
-		pointsService.deletePoints(userId);
-		pointsService.deletePointsLog(userId);
-		placeVerifiedService.deletePlaceVerified(userId);
+	public ResponseEntity<String> deleteUser(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
+		String userId = (String) session.getAttribute("userId");
+		userService.deleteUser(userId);
+		placeVerifiedService.deletePlaceVerified(userId);
 		if (session != null) {
 			session.invalidate();
 		}

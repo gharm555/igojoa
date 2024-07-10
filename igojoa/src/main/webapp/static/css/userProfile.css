@@ -167,7 +167,7 @@ h2 {
 }
 
 .search-container select,
-.search-container input[type="text"],
+.search-container input[type='text'],
 .search-container button {
   padding: 10px;
   margin-right: 10px;
@@ -184,7 +184,7 @@ h2 {
   flex-shrink: 0;
 }
 
-.search-container input[type="text"] {
+.search-container input[type='text'] {
   flex-grow: 1;
   min-width: 200px;
 }
@@ -304,9 +304,8 @@ h2 {
   margin-bottom: 0;
 }
 
-/* 포인트 내역 탭 스타일 */
-#v-pills-messages {
-  height: 100%;
+.sort-icon {
+  margin-left: 5px;
 }
 
 #calendar {
@@ -341,11 +340,30 @@ h2 {
   padding: 2px 4px;
 }
 
+.fc-daygrid-day-top {
+  flex-direction: column;
+  align-items: center;
+}
+
 .point-summary {
+  font-size: 1em;
+  margin-top: 2px;
   background-color: #f8f9fa;
-  padding: 10px;
-  border-radius: var(--border-radius);
-  font-weight: bold;
+  padding: 3px 5px;
+  border-radius: 3px;
+}
+
+.point-summary.gained {
+  color: green;
+}
+
+.point-summary.lost {
+  color: red;
+}
+
+.attendance-icon {
+  font-size: 0.8em;
+  margin-left: 2px;
 }
 
 #pointHistoryTable {
@@ -359,7 +377,6 @@ h2 {
 #spentPoints {
   font-weight: bold;
 }
-
 .table-responsive {
   max-height: 400px;
   overflow-y: auto;
@@ -388,6 +405,25 @@ h2 {
 }
 
 /* 반응형 스타일 */
+@media (max-width: 1400px) {
+  .point-summary,
+  .table-responsive {
+    font-size: 0.9rem;
+  }
+
+  #calendar {
+    height: 116%;
+  }
+
+  h2 {
+    font-size: 26px;
+  }
+
+  .fc .fc-toolbar.fc-header-toolbar {
+    font-size: 0.9rem;
+  }
+}
+
 @media (max-width: 1200px) {
   .container {
     height: 95vh;
@@ -420,6 +456,15 @@ h2 {
 
   .row {
     flex-direction: column;
+    align-content: center;
+  }
+
+  .point-summary-container {
+    width: 516px;
+  }
+
+  .point-summary {
+    align-content: flex-start;
   }
 
   .sidebar,
@@ -433,6 +478,11 @@ h2 {
 
   .content {
     padding-top: 30px;
+  }
+
+  #calendar {
+    font-size: 0.9em;
+    height: 505px;
   }
 }
 
@@ -454,7 +504,7 @@ h2 {
   }
 
   .search-container select,
-  .search-container input[type="text"],
+  .search-container input[type='text'],
   .search-container button {
     width: 100%;
     margin-right: 0;
@@ -507,6 +557,104 @@ h2 {
 
   #updateBtn {
     width: 100%;
+  }
+
+  .fc .fc-toolbar {
+    flex-direction: column;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+
+  .fc .fc-button {
+    font-size: 0.9em;
+  }
+
+  #calendarContainer {
+    height: 54.5vh;
+  }
+
+  #calendar {
+    font-size: 0.9em;
+    height: 505px;
+  }
+
+  .attendance-icon {
+    margin-right: 22% !important;
+    margin-top: 30% !important;
+  }
+  /* 요한 테스트 */
+  .profile-container {
+    margin-top: 70px !important;
+  }
+
+  .sidebar {
+    padding: 10px;
+    height: auto;
+    background-color: #f8f9fa;
+  }
+
+  .profile-summary {
+    display: none;
+  }
+
+  .nav-pills {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 20px;
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-pills .nav-link {
+    flex: 1;
+    margin: 0 2px;
+    padding: 8px 5px;
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    background-color: transparent;
+    color: #333;
+    border-radius: 15px;
+  }
+
+  .nav-pills .nav-link i {
+    font-size: 16px;
+    margin-right: 0;
+    margin-bottom: 3px;
+  }
+
+  .nav-pills .nav-link.active,
+  .nav-pills .nav-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+
+  .content {
+    padding: 15px;
+  }
+
+  #v-pills-tabContent {
+    margin-top: 15px;
+  }
+
+  h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .userProfile-tabs-main {
+    padding: 1rem !important;
+  }
+
+  .userProfile-main {
+    margin-top: 68px !important;
   }
 }
 
@@ -615,8 +763,91 @@ h2 {
   background: #3a5a8a;
 }
 
+/* 포인트 내역 탭 스타일 */
+#v-pills-messages {
+  height: 100%;
+}
+
+#calendar {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+#calendar .fc-toolbar-title {
+  font-size: 1.2em;
+  padding: 0;
+}
+
+#calendar .fc-button {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+#calendar .fc-button:hover {
+  background-color: #3a5a8a;
+  border-color: #3a5a8a;
+}
+
+#calendar .fc-daygrid-day-number {
+  font-size: 0.9em;
+}
+
+#calendar .fc-event {
+  font-size: 0.8em;
+  padding: 2px 4px;
+}
+
+.point-summary {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.points-column {
+  text-align: center;
+}
+
+.monthly-summary,
+.daily-summary {
+  padding: 10px;
+}
+
+.monthly-summary h5,
+.daily-summary h5 {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.monthly-summary div,
+.daily-summary div {
+  margin-bottom: 5px;
+}
+
+#pointHistoryTable {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  justify-items: center;
+}
+
+#earnedPoints,
+#spentPoints {
+  font-weight: bold;
+}
+
+.table-responsive {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
 .fc {
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -674,6 +905,13 @@ h2 {
   font-size: 1em;
   font-weight: 600;
   color: var(--primary-color);
+  position: relative;
+  z-index: 1;
+}
+
+.fc-daygrid-day-top {
+  justify-content: flex-end;
+  padding-right: 25px; /* 날짜와 출석 체크 마크 사이의 간격 */
 }
 
 .fc-event {
@@ -713,22 +951,40 @@ h2 {
   font-weight: bold !important;
 }
 
-.attendance-mark {
-  position: relative;
-}
-
-.attendance-mark::after {
-  content: "\f058"; /* FontAwesome check-circle icon */
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
+.attendance-icon {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  color: #28a745;
+  top: 2px;
+  right: 2px;
   font-size: 1.2em;
-  z-index: 1;
+  color: #28a745;
+  background-color: white;
+  border-radius: 50%;
+  padding: 2px;
+  margin-right: 29%;
+  margin-top: 21%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
+/* 일요일 날짜 빨간색 */
+.fc-day-sun {
+  color: red;
+  text-decoration: none;
+}
+
+/* 토요일 날짜 파란색 */
+.fc-day-sat {
+  color: blue;
+  text-decoration: none;
+}
+
+.summary-row {
+  font-weight: bold;
+  background-color: #f8f9fa;
+}
+
+.summary-row td {
+  border-top: 2px solid #dee2e6;
+}
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -741,7 +997,7 @@ h2 {
   }
 }
 
-/* 반응형 스타일 */
+/*반응형 스타일
 @media (max-width: 768px) {
   .fc-toolbar-title {
     font-size: 1.4em;
@@ -751,3 +1007,10 @@ h2 {
     font-size: 1em;
   }
 }
+
+@media (max-width: 768px) {
+  .monthly-summary,
+  .daily-summary {
+    margin-bottom: 15px;
+  }
+}*/
