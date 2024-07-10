@@ -40,6 +40,7 @@
 <body>
 <header>
     <%@ include file="header.jspf"%>
+   
 <div class="banner-toggle-container">
         <button class="btn btn-outline-primary banner-toggle nav-btn" id="banner-toggle">
           <i class="fas fa-chevron-down"></i>
@@ -137,7 +138,7 @@
                         <div class="main-badges mt-3">
                       <span class="badge"><i class="bi bi-fire" id="fire" ></i> ${place.highestBadge}</span>
                         <span class="badge"><i class="bi bi-fire" id="fire"></i> ${place.secondHighestBadge}</span>
-                            <span class="badge difficulty ${place.IScore}"> 아이난이도: ${place.IScore}</span>
+                           <span class="badge difficulty-badge" data-iscore="${place.IScore}">아이난이도: ${place.IScore}</span>
                         </div>
                     </div>
                     <div class="d-flex justify-content-between my-3 mx-3">
@@ -343,8 +344,21 @@
     <script src="${lottoJs}"></script>
 
     <script>
-        const LoginUserId = '${userId}';
-        const points = '${points}';
+        //const LoginUserId = '${userId}';
+       // const points = '${points}';
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            const difficultyMap = {
+              "하": "bg-success",
+              "중": "bg-warning",
+              "상": "bg-danger"
+            };
+
+            document.querySelectorAll('.difficulty-badge').forEach(badge => {
+              const iScore = badge.dataset.iscore;
+              badge.classList.add(difficultyMap[iScore] || '');
+            });
+          });
     </script>
 
 </body>

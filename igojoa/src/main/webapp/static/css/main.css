@@ -152,7 +152,9 @@ main {
 .banner-toggle:hover {
   background-color: var(--link-hover-color);
 }
-
+.list-group-item.active {
+  background-color:  var(--link-hover-color);
+}
 .main-container {
   width: 100%;
   overflow: hidden;
@@ -163,7 +165,15 @@ main {
   flex-wrap: wrap;
   gap: 20px;
 }
+.bi-caret-right-square-fill::before {
+  font-size: 30px;
+  cursor: pointer;
+}
 
+.bi-caret-left-square-fill::before {
+  font-size: 30px;
+  cursor: pointer;
+}
 .main-card-body img {
   height: 150px;
   width: 30%;
@@ -201,16 +211,8 @@ main {
   background-color: var(--primary-color);
 }
 
-.badge.difficulty.easy {
-  background-color: #76c7c0; /* 민트색 */
-}
-
-.badge.difficulty.medium {
-  background-color: #f7b267; /* 주황색 */
-}
-
-.badge.difficulty.hard {
-  background-color: #ec7063; /* 짙은 빨강 */
+.bg-warning {
+  background-color: rgba(234, 106, 0, 0.87) !important;
 }
 
 .main-custom-heart {
@@ -601,7 +603,7 @@ footer .text-center {
     font-size: 0.9rem;
   }
   .main-card-footer p {
-    font-size: 1.1rem;
+    font-size: 0.8vrem;
   }
   .username, .date, .likes {
     font-size: 0.8em;
