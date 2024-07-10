@@ -118,11 +118,6 @@ $playButton.addEventListener("click", playLotto);
 
 // 로또 게임을 실행하는 함수
 function playLotto() {
-  if (LoginUserId == null || LoginUserId == "" || LoginUserId == undefined) {
-    alert("로그인 해주세요.");
-    window.location.href = contextPath + "/user/loginRegister";
-    return;
-  }
   if (isGameInProgress) {
     alert("이미 게임이 진행 중입니다.");
     return;
@@ -137,8 +132,12 @@ function playLotto() {
     alert("중복된 번호가 있습니다. 서로 다른 6개의 번호를 선택해주세요.");
     return;
   }
-  console.log(points);
-  if (points < costPerPlay || points == null) {
+  if (points == null || points == "") {
+    alert("로그인 해주세요");
+    window.location.href = contextPath + "/user/loginRegister";
+    return;
+  }
+  if (points < costPerPlay) {
     alert("포인트가 부족합니다!");
     return;
   }
@@ -171,12 +170,10 @@ function playLotto() {
       showBall(winBalls[i], $result);
     }, (i + 1) * 1000);
   }
-  console.log(LoginUserId);
   axios
     .post(
       contextPath + "/game",
       {
-        userId: LoginUserId,
         lottoNum: Array.from(winBalls),
         userNum: Array.from(userNumbers),
         bonusBall: bonus,

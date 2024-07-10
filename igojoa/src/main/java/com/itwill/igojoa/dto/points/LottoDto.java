@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class LottoDto {
-    private String userId;
     private List<Integer> lottoNum;
     private List<Integer> userNum;
     private int bonusBall;

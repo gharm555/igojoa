@@ -629,7 +629,7 @@ function displayActivityInfo(data, tab) {
 
         container.innerHTML += `
       <li class="list-group-item d-flex align-items-center">
-        <img src="${item.firstUrl}" alt="썸네일" class="rounded-circle me-3" width="50" height="50" />
+        <a href="${contextPath}/place/details/${item.placeName}"><img src="${item.firstUrl}" alt="썸네일" class="rounded-circle me-3" width="50" height="50" /></a>
         <div>
           <p class="mb-0">${content}</p>
           <small class="text-muted">${item.createdAt}</small>
@@ -672,7 +672,7 @@ function getWrittenReviewContent(item) {
 
 // 위치인증한 장소 내용을 생성하는 함수
 function getVerifiedPlaceContent(item) {
-    return `${item.address} <a href="${contextPath}/place/details/${item.placeName}">${item.placeName}</a>${item.placeName} 명소에 위치인증을 했습니다.`;
+    return `${item.address} <a href="${contextPath}/place/details/${item.placeName}">${item.placeName}</a> 명소에 위치인증을 했습니다.`;
 }
 
 // 데이터를 정렬하고 표시하는 함수
@@ -969,14 +969,23 @@ function updatePointSummaryForDay(date) {
         .then(function (response) {
             const { totalPointsGained, totalPointsLost } = response.data;
             console.log(response.data);
-            document.querySelector("#dailyEarnedPoints").textContent =
-                totalPointsGained;
-            document.querySelector("#dailySpentPoints").textContent =
-                Math.abs(totalPointsLost);
 
-            // 테이블에 일별 요약 추가
-            const $table = document.querySelector("#pointHistoryTable tbody");
-            addDailySummaryToTable($table);
+            const dailyEarnedPoints =
+                document.querySelector("#dailyEarnedPoints");
+            const dailySpentPoints =
+                document.querySelector("#dailySpentPoints");
+
+            if (dailyEarnedPoints) {
+                dailyEarnedPoints.textContent = totalPointsGained || "0";
+                dailyEarnedPoints.style.color =
+                    totalPointsGained > 0 ? "green" : "black";
+            }
+
+            if (dailySpentPoints) {
+                dailySpentPoints.textContent = Math.abs(totalPointsLost) || "0";
+                dailySpentPoints.style.color =
+                    totalPointsLost < 0 ? "red" : "black";
+            }
         });
 }
 
@@ -994,33 +1003,40 @@ function updatePointHistoryTable(history) {
                 new Date(item.pointsGetLoseTime)
             );
             row.insertCell(1).textContent = item.userActivity;
-            row.insertCell(2).textContent = item.points;
+            const pointsCell = row.insertCell(2);
+            pointsCell.textContent = item.points;
+            pointsCell.style.color = item.points >= 0 ? "green" : "red";
+            pointsCell.classList.add("points-column"); // 클래스 추가
         });
-    }
 
-    // 일별 포인트 요약 추가
-    addDailySummaryToTable($table);
+        // 내역이 있을 때만 일별 요약을 추가합니다.
+        addDailySummary($table);
+    }
 }
 
-function addDailySummaryToTable($table) {
-    const dailyEarnedPoints = document.querySelector("#dailyEarnedPoints");
-    const dailySpentPoints = document.querySelector("#dailySpentPoints");
+function addDailySummary($table) {
+    // 기존의 요약 행이 있다면 제거합니다.
+    const existingSummaryRows = $table.querySelectorAll(".summary-row");
+    existingSummaryRows.forEach((row) => row.remove());
 
-    if (dailyEarnedPoints && dailySpentPoints) {
-        const summaryRow1 = $table.insertRow();
-        summaryRow1.insertCell(0).textContent = "";
-        summaryRow1.insertCell(1).textContent = "선택한 날짜 얻은 포인트";
-        summaryRow1.insertCell(2).textContent = dailyEarnedPoints.textContent;
+    // 새로운 요약 행을 추가합니다.
+    const summaryRow1 = $table.insertRow();
+    summaryRow1.classList.add("summary-row");
+    summaryRow1.insertCell(0).textContent = ""; // 첫 번째 열은 비워둡니다.
+    summaryRow1.insertCell(1).textContent = "얻은 포인트";
+    const earnedCell = summaryRow1.insertCell(2);
+    earnedCell.innerHTML =
+        '<span id="dailyEarnedPoints" style="color: green;">-</span>';
+    earnedCell.classList.add("points-column"); // 클래스 추가
 
-        const summaryRow2 = $table.insertRow();
-        summaryRow2.insertCell(0).textContent = "";
-        summaryRow2.insertCell(1).textContent = "선택한 날짜 소비한 포인트";
-        summaryRow2.insertCell(2).textContent = dailySpentPoints.textContent;
-
-        // 요약 행 스타일 적용
-        summaryRow1.classList.add("summary-row");
-        summaryRow2.classList.add("summary-row");
-    }
+    const summaryRow2 = $table.insertRow();
+    summaryRow2.classList.add("summary-row");
+    summaryRow2.insertCell(0).textContent = ""; // 첫 번째 열은 비워둡니다.
+    summaryRow2.insertCell(1).textContent = "소비한 포인트";
+    const spentCell = summaryRow2.insertCell(2);
+    spentCell.innerHTML =
+        '<span id="dailySpentPoints" style="color: red;">-</span>';
+    spentCell.classList.add("points-column"); // 클래스 추가
 }
 
 function formatDate(date) {
@@ -1041,7 +1057,7 @@ $profileImage.addEventListener("click", function () {
     $profileImageInput.click();
 });
 
-$profileImageInput.addEventListener("change", function () {
+$profileImageInput.addEventListener("change", function (event) {
     const file = event.target.files[0];
     if (file) {
         const formData = new FormData();
@@ -1071,27 +1087,27 @@ $imageChangeBtn.addEventListener("click", function () {
 });
 
 $profileImageInput.addEventListener("change", function () {
-  const file = event.target.files[0];
-  if (file) {
-    const formData = new FormData();
-    formData.append("newImage", file);
+    const file = event.target.files[0];
+    if (file) {
+        const formData = new FormData();
+        formData.append("newImage", file);
 
-    // 서버로 put 요청 보내기
-    axios
-      .put(contextPath + "/profileImage", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        $$profileImage.forEach(($$profileImage) => {
-          $$profileImage.src = response.data;
-        });
-      })
-      .catch((error) => {
-        alert("프로필 이미지 변경 중 오류가 발생했습니다.");
-      });
-  }
+        // 서버로 put 요청 보내기
+        axios
+            .put(contextPath + "/profileImage", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
+            .then((response) => {
+                $$profileImage.forEach(($$profileImage) => {
+                    $$profileImage.src = response.data;
+                });
+            })
+            .catch((error) => {
+                alert("프로필 이미지 변경 중 오류가 발생했습니다.");
+            });
+    }
 });
 
 // 유저 프로필 기본설정으로 변경 (내 정보수정에서 삭제 버튼 클릭)
@@ -1172,3 +1188,63 @@ function checkWidth() {
 
 window.addEventListener("load", checkWidth);
 window.addEventListener("resize", checkWidth);
+// 회원 탈퇴
+const $withdrawalBtn = document.querySelector("#withdrawal");
+$withdrawalBtn.addEventListener("click", function () {
+    if (confirm("정말 탈퇴하시겠습니까?")) {
+        axios.delete(contextPath + "/user/deleteUser").then((response) => {
+            alert(response.data);
+            window.location.href = contextPath + "/";
+        });
+    } else {
+        alert("탈퇴 취소하셨습니다.");
+    }
+});
+
+//  ---------------------------------------------------- 수창 작업
+const $levelIcon = document.querySelector(".circular-icon");
+
+function getLevel() {
+    // 포인트를 레벨로 변환해서 반환
+    const pointsText = document
+        .querySelector(".cumulativePoints")
+        .textContent.replace(/,/g, "");
+    const points = parseInt(pointsText, 10);
+    const level = Math.floor(points / 1000) + 1;
+    return level;
+}
+function levelColor(level) {
+    // 레벨에 따른 색상변경
+
+    if (level >= 90)
+        return { bg: "linear-gradient(145deg, #FFD700, #FFA500, #FFD700)" }; // 금
+    if (level >= 80)
+        return { bg: "linear-gradient(145deg, #C0C0C0, #A9A9A9, #C0C0C0)" }; // 은
+    if (level >= 70) return { bg: "linear-gradient(145deg, #9400D3, #8A2BE2)" }; // 보
+    if (level >= 60) return { bg: "linear-gradient(145deg, #4B0082, #483D8B)" }; //남
+    if (level >= 50) return { bg: "linear-gradient(145deg, #0000FF, #1E90FF)" }; //파
+    if (level >= 40) return { bg: "linear-gradient(145deg, #00FF00, #32CD32)" }; //초
+    if (level >= 30) return { bg: "linear-gradient(145deg, #FFFF00, #FFD700)" }; //노
+    if (level >= 20) return { bg: "linear-gradient(145deg, #FF4500, #FF6347)" }; //주
+    if (level >= 10) return { bg: "linear-gradient(145deg, #FF0000, #DC143C)" }; //빨
+    return { bg: "linear-gradient(145deg, #8B4513, #A0522D)" }; //  1 - 9 까지 색상임(똥)
+}
+
+function setLevel(level) {
+    // 레벨이 100이 넘으면 왕관으로 변경
+    if (level >= 100) {
+        $levelIcon.innerHTML = "👑";
+        $levelIcon.style.background = "none";
+        $levelIcon.style.fontSize = "30px"; // 크기 조절
+
+        // 추가적인 스타일링 (선택사항)
+        $levelIcon.style.display = "flex";
+        $levelIcon.style.justifyContent = "center";
+        $levelIcon.style.alignItems = "center";
+    } else {
+        $levelIcon.innerHTML = level;
+        $levelIcon.style.background = levelColor(level).bg;
+    }
+}
+setLevel(getLevel());
+// ------------------------------------------------------ 수창 작업 끝

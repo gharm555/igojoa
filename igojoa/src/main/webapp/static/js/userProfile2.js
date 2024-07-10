@@ -50,6 +50,7 @@ $passwordShowBtn.addEventListener('click', function () {
       $confirmPasswordInput.value = '';
       $passwordFeedback.textContent = '';
       $confirmPasswordFeedback.textContent = '';
+      checkForChanges();
     }
   }
 });
@@ -143,6 +144,7 @@ document.querySelector('input#nickName').addEventListener('input', function () {
         $nickNameFeedback.textContent = '중복된 닉네임입니다.';
         $nickNameFeedback.style.color = 'red';
       }
+      checkForChanges();
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -180,6 +182,7 @@ document.querySelector('input#email').addEventListener('input', function () {
         $emailFeedback.textContent = '유효하지 않은 정보입니다.';
         $emailFeedback.style.color = 'red';
       }
+      checkForChanges();
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -212,6 +215,7 @@ document.querySelector('input#email').addEventListener('input', function () {
 
     // 전화번호 중복 체크 함수 호출
     checkPhoneNumber();
+    checkForChanges();
   });
 });
 
@@ -353,36 +357,9 @@ $confirmPasswordInput.addEventListener('input', checkForChanges);
 const $profileImage = document.querySelector('#profileImage');
 const $$profileImage = document.querySelectorAll('.profileImage');
 const $profileImageInput = document.querySelector('#profileImageInput');
+const $imageChangeBtn = document.querySelector('#imageChange');
+const $imageDeleteBtn = document.querySelector('#imageDelete');
 // <-------------- 유저 프로필 이미지 변경 변수
-
-// 유저 프로필 이미지 변경
-$profileImage.addEventListener('click', function () {
-  $profileImageInput.click();
-});
-
-$profileImageInput.addEventListener('change', function () {
-  const file = event.target.files[0];
-  if (file) {
-    const formData = new FormData();
-    formData.append('newImage', file);
-
-    // 서버로 put 요청 보내기
-    axios
-      .put(contextPath + '/profileImage', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((response) => {
-        $$profileImage.forEach(($$profileImage) => {
-          $$profileImage.src = response.data;
-        });
-      })
-      .catch((error) => {
-        alert('프로필 이미지 변경 중 오류가 발생했습니다.');
-      });
-  }
-});
 
 // 초기 상태에서는 버튼 비활성화
 $updateBtn.disabled = true;
@@ -391,66 +368,67 @@ const $userActivityTab = document.querySelector('#v-pills-disabled-tab');
 const $addressSelect = document.querySelector('#address-select');
 const $searchInput = document.querySelector('#search-input');
 const $searchBtn = document.querySelector('#userActivitySearchBtn');
+const $dateRange = document.querySelector('#date-range');
 const $tabContent = document.querySelector('#nav-tabContent');
 const tabs = ['total', 'favoritePlace', 'likedReview', 'writtenReview', 'verifiedPlace'];
 
-let startRowValue = 0;
-const rowCnt = 5;
-let activityData = {};
+let startDate = '';
+let endDate = '';
+let datePicker;
 let currentTab = 'total';
-let moreDataAvailable = true;
-
-let sortOrder = {
-  total: 'desc',
-  favoritePlace: 'desc',
-  likedReview: 'desc',
-  writtenReview: 'desc',
-  verifiedPlace: 'desc',
-};
 
 $userActivityTab.addEventListener('click', () => {
-  resetActivityTab();
-  startRowValue = 0;
-  readData();
+  currentTab = 'total';
+  readData(currentTab);
 });
 
+// 각 탭에 이벤트 리스너 추가
 tabs.forEach((tab) => {
-  document.querySelector(`#nav-${tab}-tab`).addEventListener('click', () => {
-    if (currentTab === tab) {
-      // 같은 탭을 다시 클릭한 경우, 정렬 순서를 변경
-      sortOrder[tab] = sortOrder[tab] === 'asc' ? 'desc' : 'asc';
-      sortData(tab);
-    } else {
-      // 다른 탭으로 변경한 경우
-      currentTab = tab;
-      sortOrder[tab] = 'desc'; // 기본 정렬은 내림차순
-      resetStartRow();
-    }
-    displayActivityInfo(activityData);
+  const $tabElement = document.querySelector(`#nav-${tab}-tab`);
+  $tabElement.addEventListener('click', () => {
+    currentTab = tab;
+    readData(currentTab);
   });
 });
 
-// 기존 코드 상단에 추가
-let sessionKeyword = '';
+// 검색 버튼 이벤트 리스너
+$searchBtn.addEventListener('click', () => {
+  sessionStorage.setItem('searchKeyword', $searchInput.value);
+  readData('total'); // 검색 시 항상 'total' 탭의 데이터를 가져옵니다.
+});
 
-// 전체내역 가져오기
-function readData(isLoadMore = false) {
-  if (!moreDataAvailable) {
-    console.log('더 이상 불러올 데이터가 없습니다.');
-    return;
+function readData(tab) {
+  let searchKeyword = sessionStorage.getItem('searchKeyword') || $searchInput.value;
+  let largeAddress = $addressSelect.value;
+  let [calendarMin, calendarMax] = $dateRange.value.split(' to ');
+
+  switch (tab) {
+    case 'total':
+      endpoint = '/allInfo';
+      break;
+    case 'favoritePlace':
+      endpoint = '/favoritePlaces';
+      break;
+    case 'likedReview':
+      endpoint = '/favoriteReviews';
+      break;
+    case 'writtenReview':
+      endpoint = '/writtenReviews';
+      break;
+    case 'verifiedPlace':
+      endpoint = '/verifiedPlaces';
+      break;
   }
 
-  let searchKeyword = sessionStorage.getItem('searchKeyword') || $searchInput.value;
-
   axios
-    .get(contextPath + '/allInfo', {
+    .get(contextPath + endpoint, {
       params: {
         searchKeyword: searchKeyword,
-        largeAddress: $addressSelect.value,
+        largeAddress: largeAddress,
         calendarMin: startDate,
         calendarMax: endDate,
-        startRowValue: isLoadMore ? startRowValue : 0,
-        rowCnt: rowCnt,
+        startRowValue: 0,
+        rowCnt: 15,
       },
     })
     .then((response) => {
@@ -458,70 +436,38 @@ function readData(isLoadMore = false) {
       if (response.data.sessionSearchKeyword) {
         sessionStorage.setItem('searchKeyword', response.data.sessionSearchKeyword);
       }
-
-      if (isLoadMore) {
-        const additionalDataLength = response.data.userRelatedInfo.length
-          + response.data.userFavoritePlaces.length
-          + response.data.userFavoriteReviews.length
-          + response.data.userWrittenReviews.length
-          + response.data.userVerifiedPlaces.length;
-          
-        if (additionalDataLength < rowCnt) {
-          moreDataAvailable = false;
-          console.log('더 이상 불러올 데이터가 없습니다.');
-        }
-        appendActivityInfo(response.data);
-      } else {
-        activityData = response.data;
-        displayActivityInfo(activityData);
-      }
+      displayActivityInfo(response.data, tab);
     })
     .catch((error) => {
       console.error('Error fetching user related info:', error);
     });
 }
 
-// 스크롤시 추가 데이터 가져오기
-function readMoreData() {
-  startRowValue += rowCnt;
-  readData(true);
+function displayActivityInfo(data, tab) {
+  switch (tab) {
+    case 'total':
+      displayTotalInfo(data.userRelatedInfo || [], document.querySelector('#totalList'));
+      displayFavoritePlaces(data.userFavoritePlaces || [], document.querySelector('#favoritePlaceList'));
+      displayLikedReviews(data.userFavoriteReviews || [], document.querySelector('#likedReviewList'));
+      displayWrittenReviews(data.userWrittenReviews || [], document.querySelector('#writtenReviewList'));
+      displayVerifiedPlaces(data.userVerifiedPlaces || [], document.querySelector('#verifiedPlaceList'));
+      break;
+    case 'favoritePlace':
+      displayFavoritePlaces(data || [], document.querySelector('#favoritePlaceList'));
+      break;
+    case 'likedReview':
+      displayLikedReviews(data || [], document.querySelector('#likedReviewList'));
+      break;
+    case 'writtenReview':
+      displayWrittenReviews(data || [], document.querySelector('#writtenReviewList'));
+      break;
+    case 'verifiedPlace':
+      displayVerifiedPlaces(data || [], document.querySelector('#verifiedPlaceList'));
+      break;
+  }
 }
 
-// 검색 버튼
-$searchBtn.addEventListener('click', () => {
-  sessionStorage.setItem('searchKeyword', $searchInput.value);
-  resetStartRow();
-  moreDataAvailable = true;
-  readData();
-});
-
-function resetStartRow() {
-  startRowValue = 0;
-}
-
-function displayActivityInfo(data) {
-  const $userRelatedInfoList = document.querySelector('#totalList');
-  const $userFavoritePlacesList = document.querySelector('#favoritePlaceList');
-  const $userFavoriteReviewsList = document.querySelector('#likedReviewList');
-  const $userWrittenReviewsList = document.querySelector('#writtenReviewList');
-  const $userVerifiedPlacesList = document.querySelector('#verifiedPlaceList');
-
-  // 전체 활동 내역
-  displayTotalInfo(data.userRelatedInfo || [], $userRelatedInfoList);
-
-  // 관심 장소
-  displayFavoritePlaces(data.userFavoritePlaces || [], $userFavoritePlacesList);
-
-  // 좋아요한 리뷰
-  displayLikedReviews(data.userFavoriteReviews || [], $userFavoriteReviewsList);
-
-  // 작성한 리뷰
-  displayWrittenReviews(data.userWrittenReviews || [], $userWrittenReviewsList);
-
-  // 인증한 장소
-  displayVerifiedPlaces(data.userVerifiedPlaces || [], $userVerifiedPlacesList);
-}
-
+// 전체 내역 그리기
 function displayTotalInfo(info, $list) {
   $list.innerHTML = info.length ? '' : '<li class="list-group-item">활동 내역이 없습니다.</li>';
   info.forEach((item) => {
@@ -552,6 +498,7 @@ function displayTotalInfo(info, $list) {
   });
 }
 
+// 좋아요한 명소 그리기
 function displayFavoritePlaces(places, $list) {
   $list.innerHTML = places.length ? '' : '<li class="list-group-item">활동 내역이 없습니다.</li>';
   places.forEach((place) => {
@@ -568,13 +515,13 @@ function displayFavoritePlaces(places, $list) {
 }
 
 function displayLikedReviews(reviews, $list) {
-  $list.innerHTML = reviews.length ? '' : '<li class="list-group-item">활동 내역이 없습니다.</li>';
+  $list.innerHTML = reviews.length ? '' : '<li class="list-group-item">좋아요한 리뷰가 없습니다.</li>';
   reviews.forEach((review) => {
     $list.innerHTML += `
       <li class="list-group-item d-flex align-items-center">
-        <img src="${review.firstUrl}" alt="게시물 썸네일" class="rounded-circle me-3" width="50" height="50" />
+        <img src="${review.firstUrl}" alt="프로필" class="rounded-circle me-3" width="50" height="50" />
         <div>
-          <p class="mb-0">${review.placeName}에 ${review.reviewAuthor}님 리뷰 '${review.review}'에 좋아요를 눌렀습니다.</p>
+          <p class="mb-0">${review.placeName}에 ${review.reviewAuthor}님 리뷰 "${review.review}"에 좋아요를 눌렀습니다.</p>
           <small class="text-muted">${review.createdAt}</small>
         </div>
       </li>
@@ -583,7 +530,7 @@ function displayLikedReviews(reviews, $list) {
 }
 
 function displayWrittenReviews(reviews, $list) {
-  $list.innerHTML = reviews.length ? '' : '<li class="list-group-item">활동 내역이 없습니다.</li>';
+  $list.innerHTML = reviews.length ? '' : '<li class="list-group-item">작성한 리뷰가 없습니다.</li>';
   reviews.forEach((review) => {
     $list.innerHTML += `
       <li class="list-group-item d-flex align-items-center">
@@ -598,11 +545,11 @@ function displayWrittenReviews(reviews, $list) {
 }
 
 function displayVerifiedPlaces(places, $list) {
-  $list.innerHTML = places.length ? '' : '<li class="list-group-item">활동 내역이 없습니다.</li>';
+  $list.innerHTML = places.length ? '' : '<li class="list-group-item">인증한 장소가 없습니다.</li>';
   places.forEach((place) => {
     $list.innerHTML += `
       <li class="list-group-item d-flex align-items-center">
-        <img src="${place.firstUrl}" alt="게시물 썸네일" class="rounded-circle me-3" width="50" height="50" />
+        <img src="${place.firstUrl}" alt="프로필" class="rounded-circle me-3" width="50" height="50" />
         <div>
           <p class="mb-0">${place.address} ${place.placeName} 위치인증을 했습니다.</p>
           <small class="text-muted">${place.createdAt}</small>
@@ -611,139 +558,6 @@ function displayVerifiedPlaces(places, $list) {
     `;
   });
 }
-
-function appendActivityInfo(data) {
-  appendTotalInfo(data.userRelatedInfo || []);
-  appendFavoritePlaces(data.userFavoritePlaces || []);
-  appendLikedReviews(data.userFavoriteReviews || []);
-  appendWrittenReviews(data.userWrittenReviews || []);
-  appendVerifiedPlaces(data.userVerifiedPlaces || []);
-}
-
-function appendTotalInfo(info) {
-  const $list = document.querySelector('#totalList');
-  appendInfo(info, $list);
-}
-
-function appendFavoritePlaces(places) {
-  const $list = document.querySelector('#favoritePlaceList');
-  appendInfo(places, $list);
-}
-
-function appendLikedReviews(reviews) {
-  const $list = document.querySelector('#likedReviewList');
-  appendInfo(reviews, $list);
-}
-
-function appendWrittenReviews(reviews) {
-  const $list = document.querySelector('#writtenReviewList');
-  appendInfo(reviews, $list);
-}
-
-function appendVerifiedPlaces(places) {
-  const $list = document.querySelector('#verifiedPlaceList');
-  appendInfo(places, $list);
-}
-
-function appendInfo(items, $list) {
-  items.forEach((item) => {
-    let content = '';
-    switch (item.type) {
-      case 'favorite_places':
-        content = `${item.address} ${item.placeName} 게시물에 좋아요를 눌렀습니다.`;
-        break;
-      case 'liked_reviews':
-        content = `${item.placeName}에 ${item.reviewAuthor}님 리뷰 ${item.review}에 좋아요를 눌렀습니다.`;
-        break;
-      case 'written_reviews':
-        content = `${item.address} ${item.placeName}에 "${item.review}" 리뷰를 남겼습니다.`;
-        break;
-      case 'verified_places':
-        content = `${item.address} ${item.placeName} 위치인증을 했습니다.`;
-        break;
-    }
-    $list.innerHTML += `
-      <li class="list-group-item d-flex align-items-center">
-        <img src="${item.firstUrl}" alt="썸네일" class="rounded-circle me-3" width="50" height="50" />
-        <div>
-          <p class="mb-0">${content}</p>
-          <small class="text-muted">${item.createdAt}</small>
-        </div>
-      </li>
-    `;
-  });
-}
-
-function resetSortOrder() {
-  sortOrder = {
-    total: 'desc',
-    favoritePlace: 'desc',
-    likedReview: 'desc',
-    writtenReview: 'desc',
-    verifiedPlace: 'desc',
-  };
-}
-
-function sortData(tab) {
-  const getDataForTab = (tab) => {
-    switch (tab) {
-      case 'total':
-        return activityData.userRelatedInfo;
-      case 'favoritePlace':
-        return activityData.userFavoritePlaces;
-      case 'likedReview':
-        return activityData.userFavoriteReviews;
-      case 'writtenReview':
-        return activityData.userWrittenReviews;
-      case 'verifiedPlace':
-        return activityData.userVerifiedPlaces;
-    }
-  };
-
-  const data = getDataForTab(tab);
-  if (data && Array.isArray(data)) {
-    data.sort((a, b) => {
-      const dateA = new Date(a.createdAt);
-      const dateB = new Date(b.createdAt);
-      return sortOrder[tab] === 'asc' ? dateA - dateB : dateB - dateA;
-    });
-  }
-}
-
-// 새로운 함수: 활동 내역 탭 초기화
-function resetActivityTab() {
-  currentTab = 'total';
-  $searchInput.value = '';
-  sessionStorage.removeItem('searchKeyword');
-  $addressSelect.value = '';
-  startDate = '';
-  endDate = '';
-  document.querySelector('#date-range').value = '';
-  moreDataAvailable = true;
-
-  // 전체 탭 활성화
-  document.querySelector('#nav-total-tab').click();
-
-  // 모든 탭의 정렬 순서를 초기화
-  Object.keys(sortOrder).forEach((key) => {
-    sortOrder[key] = 'desc';
-  });
-
-  // 데이터 재로드
-  readData();
-}
-
-// 내 활동내역 기간설정
-// Flatpickr 스타일시트를 동적으로 로드
-const link = document.createElement('link');
-link.rel = 'stylesheet';
-link.href = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css';
-document.head.appendChild(link);
-
-// 달력 날짜 변수
-let startDate = '';
-let endDate = '';
-let datePicker;
 
 // Flatpickr 초기화
 flatpickr.localize(flatpickr.l10ns.ko);
@@ -795,49 +609,17 @@ datePicker = flatpickr('#date-range', {
       instance.element.placeholder = '전체기간';
     });
     wrapper.appendChild(clearButton);
-    // '기간설정' 버튼
   },
 });
 
-
-const activityTabs = document.querySelectorAll('.list-group');
-activityTabs.forEach(tab => {
-  tab.addEventListener('scroll', function() {
-    if(this.id !== getListIdFromTab(currentTab)) return;
-    
-    const { scrollTop, scrollHeight, clientHeight } = this;
-
-    // 스크롤의 전체 높이
-    const totalScrollHeight = scrollHeight - clientHeight;
-
-    // 현재 스크롤 위치의 비율(0 ~ 1)
-    const scrollRatio = scrollTop / totalScrollHeight;
-
-    // 스크롤이 80% 이상 내려갔을때
-    if(scrollRatio > 0.8) {
-      readMoreData(currentTab);
-    }
-  });
-});
-
-function getListIdFromTab(tab) {
-  switch(tab) {
-    case 'total':
-      return 'totalList';
-    case 'favoritePlace':
-      return 'favoritePlaceList';
-    case 'likedReview':
-      return 'likedReviewList';
-    case 'writtenReview':
-      return 'writtenReviewList';
-    case 'verifiedPlace':
-      return 'verifiedPlaceList';
-    default:
-      console.error('Unknown tab:', tab);
-      return '';
-  }
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}.${month}.${day}`;
 }
 
+// 포인트 내역
 let calendar;
 let currentMonth;
 let selectedDate;
@@ -937,6 +719,112 @@ function initializeCalendar() {
     },
   });
 
+  if (calendar) {
+    calendar.destroy();
+  }
+}
+calendar = new FullCalendar.Calendar($calendarEl, {
+  initialView: 'dayGridMonth',
+  headerToolbar: {
+    left: 'prev,next',
+    center: 'title',
+    right: 'today',
+  },
+  buttonText: {
+    today: '오늘',
+  },
+  locale: 'ko',
+  dayCellContent: function (arg) {
+    let html = arg.dayNumberText;
+    if (isAttendanceDay(arg.date)) {
+      html += '<i class="fas fa-check-circle attendance-icon"></i>';
+    }
+    return { html: html };
+  },
+  dateClick: function (info) {
+    selectedDate = info.date;
+    updatePointHistoryForDate(selectedDate);
+    highlightSelectedDate(info.dayEl, info.date);
+  },
+  datesSet: function (info) {
+    currentMonth = info.view.currentStart;
+    fetchAttendanceData(currentMonth).then(() => {
+      calendar.render();
+      updatePointSummaryForMonth(currentMonth);
+    });
+  },
+  dayCellDidMount: function (info) {
+    const today = new Date();
+    if (info.date.toDateString() === today.toDateString()) {
+      info.el.style.backgroundColor = '#4a86e8';
+      info.el.style.color = 'white';
+      info.el.style.fontWeight = 'bold';
+    }
+    if (selectedDate && info.date.toDateString() === selectedDate.toDateString()) {
+      highlightSelectedDate(info.el, info.date);
+    }
+  },
+});
+
+calendar.render();
+
+const todayButton = document.querySelector('.fc-today-button');
+if (todayButton) {
+  todayButton.addEventListener('click', () => {
+    selectedDate = new Date();
+    currentMonth = calendar.view.currentStart;
+    updatePointHistoryForDate(selectedDate);
+    updatePointSummaryForMonth(currentMonth);
+    highlightSelectedDate(null, selectedDate);
+  });
+
+  if (calendar) {
+    calendar.destroy();
+  }
+
+  calendar = new FullCalendar.Calendar($calendarEl, {
+    initialView: 'dayGridMonth',
+    headerToolbar: {
+      left: 'prev,next',
+      center: 'title',
+      right: 'today',
+    },
+    buttonText: {
+      today: '오늘',
+    },
+    locale: 'ko',
+    dayCellContent: function (arg) {
+      let html = arg.dayNumberText;
+      if (isAttendanceDay(arg.date)) {
+        html += '<i class="fas fa-check-circle attendance-icon"></i>';
+      }
+      return { html: html };
+    },
+    dateClick: function (info) {
+      selectedDate = info.date;
+      updatePointHistoryForDate(selectedDate);
+      highlightSelectedDate(info.dayEl, info.date);
+    },
+    datesSet: function (info) {
+      currentMonth = info.view.currentStart;
+      fetchAttendanceData(currentMonth).then(() => {
+        calendar.render();
+        updatePointSummaryForMonth(currentMonth);
+      });
+    },
+    dayCellDidMount: function (info) {
+      const today = new Date();
+      if (info.date.toDateString() === today.toDateString()) {
+        info.el.style.backgroundColor = '#4a86e8';
+        info.el.style.color = 'white';
+        info.el.style.fontWeight = 'bold';
+      }
+      if (selectedDate && info.date.toDateString() === selectedDate.toDateString()) {
+        highlightSelectedDate(info.el, info.date);
+      }
+    },
+  });
+
   calendar.render();
 
   const todayButton = document.querySelector('.fc-today-button');
@@ -1020,10 +908,9 @@ function updatePointSummaryForMonth(date) {
 //     })
 //     .then(function (response) {
 //       const {totalPointGained, totalPointsLost} = response.data;
-      
+
 //     })
 // }
-
 
 function updatePointHistoryTable(history) {
   const $table = document.querySelector('#pointHistoryTable tbody');
@@ -1053,3 +940,51 @@ function formatYearMonth(date) {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   return `${year}.${month}`;
 }
+
+// 유저 프로필 이미지 변경 (좌측 이미지 직접 클릭)
+$profileImage.addEventListener('click', function () {
+  $profileImageInput.click();
+});
+
+$profileImageInput.addEventListener('change', function () {
+  const file = event.target.files[0];
+  if (file) {
+    const formData = new FormData();
+    formData.append('newImage', file);
+
+    // 서버로 put 요청 보내기
+    axios
+      .put(contextPath + '/profileImage', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response) => {
+        $$profileImage.forEach(($$profileImage) => {
+          $$profileImage.src = response.data;
+        });
+      })
+      .catch((error) => {
+        alert('프로필 이미지 변경 중 오류가 발생했습니다.');
+      });
+  }
+});
+
+// 유저 프로필 이미지 변경 (내 정보수정에서 변경 버튼 클릭)
+$imageChangeBtn.addEventListener('click', function () {
+  $profileImageInput.click();
+});
+
+// 유저 프로필 기본설정으로 변경 (내 정보수정에서 삭제 버튼 클릭)
+$imageDeleteBtn.addEventListener('click', function () {
+  axios
+    .put(contextPath + '/defaultImage')
+    .then((response) => {
+      $$profileImage.forEach(($$profileImage) => {
+        $$profileImage.src = response.data;
+      });
+    })
+    .catch((error) => {
+      alert('프로필 이미지 변경 중 오류가 발생했습니다.');
+    });
+});

@@ -29,10 +29,10 @@ h2 {
   border-radius: var(--border-radius);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
-#mabAndImage{
+#mabAndImage {
   margin-bottom: 20px;
 }
-#detailsInfo{
+#detailsInfo {
   margin-bottom: 40px;
 }
 
@@ -113,8 +113,40 @@ h2 {
   color: white;
 }
 
+.bg-warning {
+  background-color: rgba(234, 106, 0, 0.87) !important;
+}
+
+/* 드롭다운 버튼 스타일 */
+.dropdown-toggle {
+  background: linear-gradient(45deg, var(--primary-color), #6184b2);
+  border: none;
+  width: 9rem;
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  color: white;
+  border-radius: var(--border-radius);
+}
+
+.dropdown-toggle:hover,
+.dropdown-toggle:focus {
+  background: linear-gradient(45deg, #3a5a8a, var(--primary-color));
+  box-shadow: 0 4px 10px rgba(74, 111, 165, 0.3);
+}
+
+/* 드롭다운 메뉴 스타일 */
+.dropdown-menu {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0;
+  --bs-dropdown-min-width: 1rem;
+}
+
 .dropdown-item1 {
-  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--primary-color);
 }
 
 .dropdown-item1:nth-child(3) {
@@ -126,7 +158,33 @@ h2 {
   background-color: var(--primary-color);
 }
 
+.dropdown-item1:hover,
+.dropdown-item1:focus {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.dropdown-item1.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-outline-primary {
+  --bs-btn-active-bg: var(--primary-color) !important;
+  --bs-btn-color: var(--primary-color);
+  --bs-btn-border-color: var(--primary-color);
+}
+#createReview {
+  padding: 21px 35px 26px 35px;
+}
+
 /* 뱃지 카운팅 */
+.badge {
+  height: 26px;
+  font-weight: 500;
+  align-content: center;
+  font-size: 13px;
+}
 
 #emojiList {
   background-color: white;
@@ -155,6 +213,7 @@ h2 {
 }
 .text {
   font-size: 14px;
+  font-weight: 500;
 }
 .count {
   font-size: 14px;
@@ -168,6 +227,17 @@ h2 {
   height: 100%;
   background-color: #e0f2f1;
   z-index: 0;
+}
+
+.bg-primary {
+  --bs-bg-opacity: 1;
+  background-color: var(--primary-color) !important;
+}
+
+#favoriteHeart {
+  font-size: 25px;
+  margin-right: 7px;
+  cursor: pointer;
 }
 
 /* 위로 가는 버튼*/
@@ -186,7 +256,8 @@ h2 {
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  display: none; /* 초기에는 숨김 */
+  display: none;
+  padding-top: 10px;
   transition: opacity 0.3s;
 }
 
@@ -240,109 +311,114 @@ h2 {
   }
 }
 
-/* 애니메이션 효과 */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+@media (max-width: 390px) {
+  body {
+    font-size: 14px; /* 기본 글자 크기 줄이기 */
+    padding-top: 56px; /* 네비게이션 바 높이만큼 패딩 추가 */
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  h2 {
+    font-size: 1rem; /* 제목 글자 크기 줄이기 */
   }
-}
 
-.card,
-.media {
-  animation: fadeIn 0.5s ease-out;
-}
+  p {
+    font-size: 14px; /* 본문 글자 크기 줄이기 */
+  }
 
-  @media (max-width: 390px) {
-    body {
-      font-size: 14px; /* 기본 글자 크기 줄이기 */
-      padding-top: 56px; /* 네비게이션 바 높이만큼 패딩 추가 */
-    }
+  #map,
+  #carouselExampleIndicators {
+    height: 200px; /* 지도 및 캐러셀 높이 줄이기 */
+  }
 
-    h2 {
-      font-size: 1.0rem; /* 제목 글자 크기 줄이기 */
-    }
+  .card {
+    margin-bottom: 15px; /* 카드 간격 줄이기 */
+  }
 
-    p {
-      font-size: 14px; /* 본문 글자 크기 줄이기 */
-    }
+  .btn-primary,
+  .btn-outline-primary {
+    font-size: 10px; /* 버튼 글자 크기 줄이기 */
+    padding: 4px 4px; /* 버튼 패딩 줄이기 */
+  }
 
-    #map,
-    #carouselExampleIndicators {
-      height: 200px; /* 지도 및 캐러셀 높이 줄이기 */
-    }
+  .media {
+    padding: 15px; /* 미디어 요소 패딩 줄이기 */
+  }
 
-    .card {
-      margin-bottom: 15px; /* 카드 간격 줄이기 */
-    }
+  .media-content img {
+    width: 50px; /* 미디어 이미지 크기 줄이기 */
+    height: 50px; /* 미디어 이미지 크기 줄이기 */
+    margin-right: 15px; /* 이미지 오른쪽 마진 줄이기 */
+  }
 
-    .btn-primary,
-    .btn-outline-primary {
-      font-size: 10px; /* 버튼 글자 크기 줄이기 */
-      padding: 4px 4px; /* 버튼 패딩 줄이기 */
-    }
+  .carousel-item img {
+    height: 200px; /* 캐러셀 이미지 높이 줄이기 */
+  }
 
-    .media {
-      padding: 15px; /* 미디어 요소 패딩 줄이기 */
-    }
+  #scrollToTopBtn {
+    font-size: 16px; /* 버튼 글자 크기 줄이기 */
+    padding: 12px; /* 버튼 패딩 줄이기 */
+    width: 45px; /* 버튼 너비 줄이기 */
+    height: 45px; /* 버튼 높이 줄이기 */
+  }
 
-    .media-content img {
-      width: 50px; /* 미디어 이미지 크기 줄이기 */
-      height: 50px; /* 미디어 이미지 크기 줄이기 */
-      margin-right: 15px; /* 이미지 오른쪽 마진 줄이기 */
-    }
-
-    .carousel-item img {
-      height: 200px; /* 캐러셀 이미지 높이 줄이기 */
-    }
-
-    #scrollToTopBtn {
-      font-size: 16px; /* 버튼 글자 크기 줄이기 */
-      padding: 12px; /* 버튼 패딩 줄이기 */
-      width: 45px; /* 버튼 너비 줄이기 */
-      height: 45px; /* 버튼 높이 줄이기 */
-    }
-
-    #reviewText {
-      font-size: 10px; /* 리뷰 텍스트 글씨 크기 줄이기 */
-      height:200px;
-    }
+  #reviewText {
+    font-size: 12px; /* 리뷰 텍스트 글씨 크기 줄이기 */
+    height: 200px;
+  }
 
   .emoji-item {
-      font-size: 10px; /* 이모지 리스트 글씨 크기 줄이기 */
-      padding:3px;
-      margin:3px;
-    }
-    .emoji-item .emoji,
-    .emoji-item .text 
-    .emoji-item .count {  
+    font-size: 10px; /* 이모지 리스트 글씨 크기 줄이기 */
+    padding: 3px;
+    margin: 3px;
+  }
+  .emoji-item .emoji,
+  .emoji-item .text .emoji-item .count {
     font-size: 10px;
-     }
+  }
 
-    .container {
-      padding: 10px; /* 컨테이너 패딩 줄이기 */
+  .container {
+    padding: 10px; /* 컨테이너 패딩 줄이기 */
+  }
+
+  .card-body {
+    padding: 10px; /* 카드 안쪽 패딩 줄이기 */
+  }
+  #sortDropdownButton {
+    font-size: 10px;
+  }
+  #detailsInfo {
+    margin-bottom: 1px;
+  }
+  #mabAndImage {
+    margin-bottom: 1px;
+  }
+
+  @media (max-width: 390px) {
+    .dropdown-toggle,
+    .dropdown-item1 {
+      font-size: 12px;
+      padding: 8px 12px;
     }
 
-    .card-body {
-      padding: 10px; /* 카드 안쪽 패딩 줄이기 */
-    }
-     #sortDropdownButton{
-       font-size:10px;
-     }
-     #detailsInfo{
-      margin-bottom:1px;
-     }
-    #mabAndImage{
-    margin-bottom:1px;
-    }
     .dropdown-menu {
-    font-size: 10px;
-    height:130px;
+      min-width: 120px;
     }
+  }
+
+  /* 애니메이션 효과 */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .card,
+  .media {
+    animation: fadeIn 0.5s ease-out;
+  }
 }
-  
-  

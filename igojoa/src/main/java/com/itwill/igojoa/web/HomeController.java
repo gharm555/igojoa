@@ -54,7 +54,7 @@ public class HomeController {
 		final String addressCategory = ""; // 지역 카테고리
 		final String searchKeyword = ""; // 검색어
 		final String sortKey = "iScore"; // 정렬 기준
-		final Integer sortValue = 0; // 오름차순 내림차순 ( 1 || 0 )
+		final Integer sortValue = 1; // 오름차순 내림차순 ( 1 || 0 )
 		final Integer startRowValue = 0; // 시작할 행
 		final Integer rowCnt = 9; // 반환될 행의 갯수
 
@@ -74,8 +74,8 @@ public class HomeController {
 	public ResponseEntity<?> game(@RequestBody LottoDto lottoDto, HttpSession session) {
 		System.out.println("game");
 		System.out.println(lottoDto);
-		if (session.getAttribute("userId") != null && session.getAttribute("userId").equals(lottoDto.getUserId())) {
-
+		String userId = (String) session.getAttribute("userId");
+		if (userId != null) {
 			long matchCount = lottoDto.getLottoNum().stream().filter(lottoDto.getUserNum()::contains).count();
 			boolean isBonusMatched = lottoDto.getUserNum().contains(lottoDto.getBonusBall());
 			String rank = "";
@@ -122,14 +122,14 @@ public class HomeController {
 				matchCountString = "0개";
 			}
 
-			pointsService.subtractPoints(lottoDto.getUserId());
-			pointsService.insertPointLog(lottoDto.getUserId(), "뽑기", -150);
-			pointsService.insertPointLog(lottoDto.getUserId(), rank, 0);
-			return ResponseEntity.ok(Map.of("points", pointsService.selectPoints(lottoDto.getUserId()), "rank", rank,
+			pointsService.subtractPoints(userId);
+			pointsService.insertPointLog(userId, "뽑기", -150);
+			pointsService.insertPointLog(userId, rank, 0);
+			return ResponseEntity.ok(Map.of("points", pointsService.selectPoints(userId), "rank", rank,
 					"productName", productName, "matchCount", matchCountString, "lottoNum", lottoDto.getLottoNum(),
 					"userNum", lottoDto.getUserNum(), "bonusBall", lottoDto.getBonusBall()));
 		} else {
-			return ResponseEntity.badRequest().body("아이디 바꾸지마라");
+			return ResponseEntity.badRequest().body("로그인 해주세요");
 		}
 
 	}

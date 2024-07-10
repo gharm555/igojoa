@@ -6,6 +6,72 @@
     font-family: "Noto Sans KR", sans-serif;
     box-sizing: border-box;
 }
+.list-group {
+    width: 62%;
+    margin-left: 180px;
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-wrapper {
+    display: flex;
+    border: 2px solid var(--primary-color);
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+#province-select {
+    width: 20%;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #f8f9fa;
+    border-right: 1px solid #ced4da;
+}
+
+#search-keyword {
+    flex-grow: 1;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    outline: none;
+}
+
+#search-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+#suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+}
+
+#suggestions li {
+    cursor: pointer;
+}
+
+#suggestions li:hover {
+    background-color: #f1f1f1;
+}
 
 body {
     padding: 0;
@@ -20,12 +86,12 @@ body {
 main {
     position: relative;
     margin-top: 134px;
-
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
+
 .text-center.d-flex {
     display: flex;
     justify-content: center;
@@ -84,7 +150,9 @@ main {
 .banner-toggle:hover {
     background-color: var(--link-hover-color);
 }
-
+.list-group-item.active {
+    background-color: var(--link-hover-color);
+}
 .main-container {
     width: 100%;
     overflow: hidden;
@@ -95,7 +163,15 @@ main {
     flex-wrap: wrap;
     gap: 20px;
 }
+.bi-caret-right-square-fill::before {
+    font-size: 30px;
+    cursor: pointer;
+}
 
+.bi-caret-left-square-fill::before {
+    font-size: 30px;
+    cursor: pointer;
+}
 .main-card-body img {
     height: 150px;
     width: 30%;
@@ -133,16 +209,8 @@ main {
     background-color: var(--primary-color);
 }
 
-.badge.difficulty.easy {
-    background-color: #76c7c0; /* 민트색 */
-}
-
-.badge.difficulty.medium {
-    background-color: #f7b267; /* 주황색 */
-}
-
-.badge.difficulty.hard {
-    background-color: #ec7063; /* 짙은 빨강 */
+.bg-warning {
+    background-color: rgba(234, 106, 0, 0.87) !important;
 }
 
 .main-custom-heart {
@@ -150,9 +218,11 @@ main {
     cursor: pointer;
     transition: color 0.2s ease;
 }
+
 #fire::before {
     color: red;
 }
+
 .main-custom-heart.main-bi-heart {
     color: #000;
 }
@@ -170,9 +240,11 @@ main {
     justify-content: center; /* 화면 가운데 정렬 */
     align-items: center; /* 수직 가운데 정렬 */
 }
+
 #province-select {
-    width: 13%;
+    width: 30%;
 }
+
 #search-keyword {
     width: 60%;
 }
@@ -196,20 +268,11 @@ main {
 .main-search-bar select,
 .main-search-bar input,
 .main-search-bar button {
-    border: none;
     padding: 15px 20px 15px 20px;
-}
-
-#province-select {
-    width: 13%;
-}
-#search-keyword {
-    width: 60%;
 }
 
 .main-search-bar select {
     background-color: #f8f9fa;
-    border-right: 1px solid #ced4da;
 }
 
 .main-search-bar input:focus,
@@ -284,6 +347,7 @@ main {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
 #container .text-center {
     display: flex;
     justify-content: flex-start;
@@ -344,61 +408,6 @@ a .main-card-footer .bi-heart-fill {
     background-color: #e9ecef;
 }
 
-/* footer {
-    font-family: var(--main-font);
-    background-color: #f5f5f5;
-    color: white;
-}
-
-footer a {
-    color: var(--link-color);
-    text-decoration: none;
-}
-
-footer a:hover {
-    color: var(--link-hover-color);
-    text-decoration: underline;
-}
-
-footer .text-center {
-    padding: 1rem 0;
-    background-color: var(--main-bg-color);
-}
-푸터 
-.p-footer__inner {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-}
-
-.p-footer__site-group-list {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.p-footer__site-group {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.p-footer__site-group-title {
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.p-footer__site-group-item {
-    margin-bottom: 5px;
-}
-
-.p-footer__copyright {
-    width: 100%;
-    text-align: center;
-    padding: 10px 0;
-    background-color: #f5f5f5;
-} */
-
 @media (max-width: 768px) {
     .p-footer__site-group-list {
         flex-direction: column;
@@ -408,6 +417,7 @@ footer .text-center {
         margin-bottom: 20px;
     }
 }
+
 .main-custom-heart.red-color {
     color: #dc3545;
 }
@@ -473,7 +483,6 @@ footer .text-center {
     align-items: center;
 }
 /*다크모드*/
-
 .banner-container img {
     width: 100%;
     height: 100%;
@@ -498,35 +507,37 @@ footer .text-center {
     .main-card-body img {
         height: 100px;
     }
-
     .main-card {
         width: 70%;
         margin: 0 auto;
         padding: 10px;
     }
-
     .main-container {
         padding: 0 10px; /* 컨테이너의 패딩도 조정 */
     }
-
     .main-badge {
         font-size: 0.7rem;
         padding: 0.3em 0.5em;
     }
-
     .main-custom-heart {
         font-size: 20px;
     }
-    .main-search-bar {
+    .search-container {
         width: 60%;
     }
+    #province-select {
+        font-size: 12px;
+    }
+    #search-keyword {
+        font-size: 12px;
+    }
+
     .main-search-bar select,
     .main-search-bar input,
     .main-search-bar button {
         padding: 12px 10px 12px 10px;
         font-size: 14px;
     }
-
     #search-keyword {
         width: 33%;
     }
@@ -541,11 +552,9 @@ footer .text-center {
     .main-card-footer h5 {
         font-size: 0.9rem;
     }
-
     .main-card-footer p {
-        font-size: 1.1rem;
+        font-size: 0.8vrem;
     }
-
     .username,
     .date,
     .likes {
@@ -558,5 +567,12 @@ footer .text-center {
     }
     footer .container {
         width: 100%;
+    }
+    .list-group {
+        width: 54%;
+        margin-left: 95px;
+    }
+    #suggestions li {
+        font-size: 12px;
     }
 }

@@ -9,6 +9,37 @@ body[data-theme='dark'] *:not(input):not(textarea):not(select) {
   color: #ffffff !important;
 }
 
+body[data-theme='dark'] .search-container {
+  background-color: #191f28;
+}
+
+body[data-theme='dark'] .search-wrapper {
+  border-color: #333b4d;
+}
+
+body[data-theme='dark'] #province-select,
+body[data-theme='dark'] #search-keyword,
+body[data-theme='dark'] #search-button {
+  background-color: #2c3340;
+  color: #ffffff;
+  border: 2px solid #333b4d;
+}
+
+body[data-theme='dark'] #suggestions {
+  background-color: #2c3340;
+  color: #ffffff;
+  border: 1px solid #333b4d;
+}
+
+body[data-theme='dark'] #suggestions li {
+  background-color: #2c3340;
+  color: #ffffff;
+}
+
+body[data-theme='dark'] #suggestions li:hover {
+  background-color: #333b4d;
+  color: #ffffff;
+}
 /* 다크 모드 섹션 및 카드 스타일 */
 body[data-theme='dark'] section,
 body[data-theme='dark'] #main-section,
