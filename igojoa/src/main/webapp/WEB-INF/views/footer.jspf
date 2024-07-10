@@ -69,7 +69,7 @@
             Chatgpt</li>
         <c:url var="claude" value="/image/claude.png" />
         <li class="p-footer__site-group-item"><img src="${ claude }" />
-            claude</li>
+            Claude</li>
       </ul>
 
     </div>
