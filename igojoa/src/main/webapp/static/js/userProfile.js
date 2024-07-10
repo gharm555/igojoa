@@ -1129,7 +1129,7 @@ function checkWidth() {
         $navVerifiedPlaceTab,
     ];
 
-    if (window.innerWidth <= 390) {
+    if (window.innerWidth <= 390 || window.innerWidth <= 1400) {
         $navTabsInSmallWidth.forEach((navTabInSmallWidth) => {
             navTabInSmallWidth.classList.add("col-2");
             if (navTabInSmallWidth.id === "nav-total-tab") {

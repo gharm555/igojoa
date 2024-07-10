@@ -394,6 +394,17 @@ h2 {
 }
 
 /* 반응형 스타일 */
+@media (max-width: 1400px) {
+    #nav-tab {
+        justify-content: center;
+        font-size: x-large;
+        margin-top: 15px;
+    }
+    #v-pills-disabled .nav-tabs {
+        border-bottom: 1px solid lightgray;
+    }
+}
+
 @media (max-width: 1200px) {
     .container {
         height: 95vh;
@@ -503,6 +514,10 @@ h2 {
     }
     #v-pills-disabled .nav-tabs {
         border-bottom: 1px solid lightgray;
+    }
+    
+    #date-range {
+      width: 100%;
     }
 }
 
