@@ -22,10 +22,10 @@
 		ps.iScore ,
 		ps.review AS reviewCnt,
 		ps.placeVerified,
-		u.nickName ,
-		br.review ,
-		br.modifiedAt ,
-		br.likeCount ,
+		COALESCE(u.nickName, '아이고조아') AS nickName,
+        COALESCE(br.review, '베스트 리뷰가 없습니다.') AS review ,
+        COALESCE(br.modifiedAt, '2024-01-01 00:00:00') AS modifiedAt,
+        COALESCE(br.likeCount, 0) AS likeCount,
 		pi2.firstUrl ,
 		pi2.secondUrl ,
 		pi2.thirdUrl
@@ -63,11 +63,11 @@
 		GROUP BY
 		p.placeName
 		<if test='sortKey.equals("iScore") and sortValue == 1'>
-			ORDER BY ps.iScore DESC, userFavorite DESC ,
+			ORDER BY ps.iScore ASC, userFavorite DESC ,
 			ps.placeVerified DESC
 		</if>
 		<if test='sortKey.equals("iScore") and sortValue == 0'>
-			ORDER BY ps.iScore ASC, userFavorite DESC ,
+			ORDER BY ps.iScore DESC, userFavorite DESC ,
 			ps.placeVerified DESC
 		</if>
 		<if test='sortKey.equals("placeVerified") and sortValue == 1'>
@@ -79,11 +79,11 @@
 			ps.iScore DESC
 		</if>
 		<if test='sortKey.equals("userFavorite") and sortValue == 1'>
-			ORDER BY userFavorite DESC, ps.iScore DESC ,
+			ORDER BY userFavorite ASC, ps.iScore DESC ,
 			ps.placeVerified DESC
 		</if>
 		<if test='sortKey.equals("userFavorite") and sortValue == 0'>
-			ORDER BY userFavorite ASC, ps.iScore DESC ,
+			ORDER BY userFavorite DESC, ps.iScore DESC ,
 			ps.placeVerified DESC
 		</if>
 		<if test='sortKey.equals("reviewCnt") and sortValue == 1'>
@@ -325,4 +325,7 @@
 		order by
 		placeName
 	</select>
+	<delete id="deleteAllPlaceFavorite">
+		DELETE FROM placesFavorite WHERE userId = #{userId}
+	</delete>
 </mapper>

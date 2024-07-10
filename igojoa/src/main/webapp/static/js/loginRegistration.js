@@ -565,7 +565,8 @@ function verifyUserForPasswordReset() {
     .catch((err) => {
       console.log(err);
       if (err.response && err.response.data) {
-        $findPasswordMessage.textContent = err.response.data;
+        $findPasswordMessage.textContent =
+          "오류가 발생했습니다. 다시 시도해주세요.";
       } else {
         $findPasswordMessage.textContent =
           "오류가 발생했습니다. 다시 시도해주세요.";
@@ -668,10 +669,11 @@ document.querySelectorAll("#loginForm input").forEach((input) => {
     $loginCheckMessage.style.display = "none";
   });
 });
-// 반응형 테스트
+// 반응형 로그인창
 document.addEventListener("DOMContentLoaded", function () {
-  const signinForm = document.querySelector(".signinform");
-  const signupForm = document.querySelector(".signupform");
+  const $signinForm = document.querySelector(".signinform");
+  const $signupForm = document.querySelector(".signupform");
+
   function createSwitchFormButton(text, buttonText) {
     const container = document.createElement("div");
     container.classList.add("switch-form-container");
@@ -696,8 +698,9 @@ document.addEventListener("DOMContentLoaded", function () {
     createSwitchFormButton("계정이 이미 있으신가요?", "로그인");
 
   function toggleForm() {
-    signinForm.classList.toggle("active");
-    signupForm.classList.toggle("active");
+    $signinForm.classList.toggle("active");
+    $signupForm.classList.toggle("active");
+    clearText();
   }
 
   switchToSignup.addEventListener("click", toggleForm);
@@ -705,17 +708,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateFormLayout() {
     if (window.innerWidth <= 390) {
-      if (!signinForm.contains(signupContainer)) {
-        signinForm.appendChild(signupContainer);
-        signupForm.appendChild(signinContainer);
+      if (!$signinForm.contains(signupContainer)) {
+        $signinForm.appendChild(signupContainer);
+        $signupForm.appendChild(signinContainer);
       }
-      signinForm.classList.add("active");
-      signupForm.classList.remove("active");
+      $signinForm.classList.add("active");
+      $signupForm.classList.remove("active");
     } else {
       signupContainer.remove();
       signinContainer.remove();
-      signinForm.classList.remove("active");
-      signupForm.classList.remove("active");
+      $signinForm.classList.remove("active");
+      $signupForm.classList.remove("active");
     }
   }
 

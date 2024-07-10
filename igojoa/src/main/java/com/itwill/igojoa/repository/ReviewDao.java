@@ -20,4 +20,7 @@ public interface ReviewDao {
 
 	int deleteReviewLike(ReviewLikes reviewLikes);
 
+	int deleteAllReview(String userId);
+
+	int deleteAllReviewLike(String userId);
 }

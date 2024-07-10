@@ -983,11 +983,41 @@ function formatDate(date) {
 
 function formatYearMonth(date) {
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0");
   return `${year}.${month}`;
 }
+
+// 유저 프로필 이미지 변경 (좌측 이미지 직접 클릭)
+$profileImage.addEventListener("click", function () {
+  $profileImageInput.click();
+});
+
+$profileImageInput.addEventListener("change", function (event) {
+  const file = event.target.files[0];
+  if (file) {
+    const formData = new FormData();
+    formData.append("newImage", file);
+
+    // 서버로 put 요청 보내기
+    axios
+      .put(contextPath + "/profileImage", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        $$profileImage.forEach(($$profileImage) => {
+          $$profileImage.src = response.data;
+        });
+      })
+      .catch((error) => {
+        alert("프로필 이미지 변경 중 오류가 발생했습니다.");
+      });
+  }
+});
+
 // 유저 프로필 이미지 변경 (내 정보수정에서 변경 버튼 클릭)
-$imageChangeBtn.addEventListener('click', function () {
+$imageChangeBtn.addEventListener("click", function () {
   $profileImageInput.click();
 });
 
@@ -1001,6 +1031,19 @@ $imageDeleteBtn.addEventListener('click', function () {
       });
     })
     .catch((error) => {
-      alert('프로필 이미지 변경 중 오류가 발생했습니다.');
+      alert("프로필 이미지 변경 중 오류가 발생했습니다.");
     });
+});
+
+// 회원 탈퇴
+const $withdrawalBtn = document.querySelector("#withdrawal");
+$withdrawalBtn.addEventListener("click", function () {
+  if (confirm("정말 탈퇴하시겠습니까?")) {
+    axios.delete(contextPath + "/user/deleteUser").then((response) => {
+      alert(response.data);
+      window.location.href = contextPath + "/";
+    });
+  } else {
+    alert("탈퇴 취소하셨습니다.");
+  }
 });

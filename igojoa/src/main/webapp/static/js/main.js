@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let startRowValue = 9; // 처음 9개 로드했으므로 초기값을 9으로 설정
   const itemsPerPage = 3; // 더보기 시 3개 아이템
   let currentSortKey = "iScore";
-  let currentSortValue = 0;
+  let currentSortValue = 1;
 
   const provinceMap = {
     seoul: "서울시",
@@ -253,8 +253,7 @@ document.addEventListener("click", function (event) {
 
     console.log("클릭된 장소 이름:", $placeName); // 디버깅용 로그
 
-    if ($placeName) {		
-	
+    if ($placeName) {
       $heartIcon.classList.toggle("bi-heart");
       $heartIcon.classList.toggle("bi-heart-fill");
       $heartIcon.classList.toggle("red-color");
@@ -267,9 +266,9 @@ document.addEventListener("click", function (event) {
       if (heartClickable === 1) {
         console.log("하트 클릭됨:", $placeName);
         const uri = "./clickHeart";
-        
-       if (LoginUserId !== null) {
-         window.location.href = `${contextPath}/user/loginRegister`;
+
+        if (LoginUserId !== null) {
+          window.location.href = `${contextPath}/user/loginRegister`;
         }
         axios
           .put(uri, $placeName)

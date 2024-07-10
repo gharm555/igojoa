@@ -212,4 +212,12 @@
 		AND likeUserId =
 		'${likeUserId}'
 	</delete>
+
+	<delete id="deleteAllReview">
+		DELETE FROM reviews WHERE userId = #{userId}
+	</delete>
+
+	<delete id="deleteAllReviewLike">
+		DELETE FROM reviewLikes WHERE likeUserId = #{userId}
+	</delete>
 </mapper>
