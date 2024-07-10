@@ -91,13 +91,16 @@ document.addEventListener("DOMContentLoaded", function () {
     // iScore 값에 따라 난이도 설정
     switch (Number(avgiScore)) {
       case 1:
-        difficulty = "난이도: 하";
+        difficulty = "아이난이도: 하";
+        color = "success";
         break;
       case 2:
-        difficulty = "난이도: 중";
+        difficulty = "아이난이도: 중";
+        color = "warning";
         break;
       case 3:
-        difficulty = "난이도: 상";
+        difficulty = "아이난이도: 상";
+        color = "danger";
         break;
       default:
         console.log("올바르지 않은 IScore 값입니다:", avgiScore);
@@ -106,9 +109,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 난이도 텍스트 업데이트
     $iscoreBedge.textContent = difficulty;
+    $iscoreBedge.className = `badge bg-${color} ms-2`;
     console.log(`난이도가 "${difficulty}"(으)로 설정되었습니다.`);
   } else {
-    $iscoreBedge.textContent = "난이도: ";
+    $iscoreBedge.textContent = "아이난이도: ";
+    $iscoreBedge.className = "badge bg-secondary";
   }
 
   ///// ---------------- 리뷰의 좋아요 버튼 처리 ------------- /////////
@@ -153,7 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
           // 에러 처리
         });
     } else {
-      console.log("리뷰의 좋아요 삭제 실패 들어옴");
+      console.log("리뷰의 좋아요 삭제 실패에 들어옴");
 
       const formData = new URLSearchParams();
       formData.append("userId", userId);
@@ -174,7 +179,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 /////////////////////////////////////////////돔돔돔돔 끝끝끝끝//////////////////////////////////////////////////////////
-
 
 // ---------------- 작성, 수정, 삭제 버튼을 동적으로 변경하는 함수
 function updateReviewButtons() {
@@ -202,6 +206,7 @@ function updateReviewButtons() {
 
 console.log("이까지 왔다 2222222222222");
 /** --------------------  리뷰 작성하기 버튼 -------------------------- */
+const regex = /^\s*$/;
 function createReview() {
   review();
 
@@ -210,32 +215,40 @@ function createReview() {
 
   console.log("리뷰 보내는 주소: ", uri);
   const { reviewData } = review();
+  console.log("reviewData", reviewData);
+  console.log("reviewData.review", reviewData.review);
 
-  axios
-    .put(uri, reviewData)
-    .then((response) => {
-      console.log("Server response:", response.data);
-      if (response.data === 0) {
-        alert("방문 인증이 필요합니다.");
-      } else {
-        console.log("response.data이거다", response.data);
-        alert("리뷰가 성공적으로 등록되었습니다.");
-        pd.review = reviewData.review;
-        updateReviewButtons();
-        displayReviews(response.data);
-        sortDropdownButton.textContent = "최신순";
-      }
-    })
-    .catch((error) => {
-      console.error("Error submitting review:", error);
-      if (error.response) {
-        console.error("Server error response:", error.response.data);
-        alert(error.response.data);
-      } else {
-        alert("리뷰 등록에 실패했습니다.");
-      }
-    });
+  if (regex.test(reviewData.review)) {
+    alert("리뷰 내용을 작성해주세요.");
+    return;
+  } else {
+    axios
+      .put(uri, reviewData)
+      .then((response) => {
+        console.log("Server response:", response.data);
+        if (response.data === 0) {
+          alert("방문 인증이 필요합니다.");
+        } else {
+          console.log("response.data이거다", response.data);
+          alert("리뷰가 성공적으로 등록되었습니다.");
+          pd.review = reviewData.review;
+          updateReviewButtons();
+          displayReviews(response.data);
+          sortDropdownButton.textContent = "최신순";
+        }
+      })
+      .catch((error) => {
+        console.error("Error submitting review:", error);
+        if (error.response) {
+          console.error("Server error response:", error.response.data);
+          alert(error.response.data);
+        } else {
+          alert("리뷰 등록에 실패했습니다.");
+        }
+      });
+  }
 }
+
 /** --------------- 리뷰 수정하기 버튼 ------------------------ */
 
 function updateReview() {
@@ -248,28 +261,33 @@ function updateReview() {
   console.log("리뷰 보내는 주소: ", uri);
   const { reviewData } = review();
 
-  axios
-    .put(uri, reviewData)
-    .then((response) => {
-      console.log("Server response:", response.data);
-      if (response.data === 0) {
-        alert("방문 인증이 필요합니다.");
-      } else {
-        alert("리뷰가 성공적으로 수정되었습니다.");
-        pd.review = reviewData.review;
-        displayReviews(response.data);
-        sortDropdownButton.textContent = "최신순";
-      }
-    })
-    .catch((error) => {
-      console.error("Error updating review:", error);
-      if (error.response) {
-        console.error("Server error response:", error.response.data);
-        alert(error.response.data);
-      } else {
-        alert("리뷰 수정에 실패했습니다.");
-      }
-    });
+  if (regex.test(reviewData.review)) {
+    alert("리뷰 내용을 작성해주세요.");
+    return;
+  } else {
+    axios
+      .put(uri, reviewData)
+      .then((response) => {
+        console.log("Server response:", response.data);
+        if (response.data === 0) {
+          alert("방문 인증이 필요합니다.");
+        } else {
+          alert("리뷰가 성공적으로 수정되었습니다.");
+          pd.review = reviewData.review;
+          displayReviews(response.data);
+          sortDropdownButton.textContent = "최신순";
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating review:", error);
+        if (error.response) {
+          console.error("Server error response:", error.response.data);
+          alert(error.response.data);
+        } else {
+          alert("리뷰 수정에 실패했습니다.");
+        }
+      });
+  }
 }
 
 /** --------------- 리뷰삭제 버튼 -----------------------------*/
@@ -401,9 +419,9 @@ function createReviewCard(review) {
   ];
 
   const difficultyMap = {
-    1: "하",
-    2: "중",
-    3: "상",
+    1: { text: "하", color: "success" },
+    2: { text: "중", color: "warning" },
+    3: { text: "상", color: "danger" },
   };
 
   const badgeHtml = badges
@@ -415,11 +433,12 @@ function createReviewCard(review) {
     .join("");
 
   const difficultyBadge = review.iscore
-    ? `<span class="badge bg-secondary me-1">난이도: ${
-        difficultyMap[review.iscore] || review.iscore
+    ? `<span class="badge bg-${
+        difficultyMap[review.iscore]?.color || "secondary"
+      } bg-gradient me-1">아이난이도: ${
+        difficultyMap[review.iscore]?.text || review.iscore
       }</span>`
-    : `<h1>${review.iscore} 난이도 값은 이거다</h1>`;
-
+    : "";
   const formattedDate = formatDate(review.modifiedAt);
 
   return `
@@ -447,7 +466,7 @@ function createReviewCard(review) {
             <h5 id="nickName"class="card-title mb-0">${review.nickName}</h5>
             <small class="text-muted" style="font-size: 0.75rem;">${formattedDate}</small>
           </div>
-          <p class="card-text mb-0" style="font-size: 0.875rem;">${
+          <p class="card-text mb-0" style="font-size: 0.95rem; font-weight: 500;">${
             review.review
           }</p>
         </div>
@@ -468,6 +487,11 @@ function createEmojiList() {
     return;
   }
 
+  // h2 요소 다음에 새로운 컨테이너 추가
+  const $emojiContainer = document.createElement("div");
+  $emojiContainer.className = "emoji-container";
+  $listContainer.appendChild($emojiContainer);
+
   // count를 숫자로 변환하고 최대값 찾기
   const maxCount = Math.max(
     ...emojiData.map((item) => {
@@ -479,7 +503,7 @@ function createEmojiList() {
 
   console.log("maxCount:", maxCount); // 디버깅: maxCount 출력
 
-  $listContainer.innerHTML = ""; // 기존 내용 초기화
+  // $listContainer.innerHTML = ""; // 기존 내용 초기화
 
   emojiData.forEach((item) => {
     const emojiItem = document.createElement("div");
@@ -490,14 +514,14 @@ function createEmojiList() {
     const ratio = maxCount > 0 ? (count / maxCount) * 100 : 0;
 
     emojiItem.innerHTML = `
-            <div class="background-fill" style="width: ${ratio}%;"></div>
-            <div class="emoji-content">
-                <span class="emoji">${item.emoji}</span>
-                <span class="text">${item.text}</span>
-            </div>
-            <span class="count">${count}</span>
-        `;
-    $listContainer.appendChild(emojiItem);
+      <div class="background-fill" style="width: ${ratio}%;"></div>
+      <div class="emoji-content">
+        <span class="emoji">${item.emoji}</span>
+        <span class="text">${item.text}</span>
+      </div>
+      <span class="count">${count}</span>
+    `;
+    $emojiContainer.appendChild(emojiItem);
   });
 
   console.log("Emoji list created successfully");
@@ -775,12 +799,4 @@ function resetReviewForm() {
   checkboxes.forEach((checkbox) => {
     checkbox.checked = false;
   });
-
-  // 라디오 버튼 초기화 (선택 해제)
-  const radioButtons = document.querySelectorAll('input[name="difficulty"]');
-  radioButtons.forEach((radio) => {
-    radio.checked = false;
-  });
-
 }
-

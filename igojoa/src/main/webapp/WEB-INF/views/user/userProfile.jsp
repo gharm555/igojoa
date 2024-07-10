@@ -36,11 +36,19 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
         <c:url var="navbarCss" value="/css/navbar.css" />
         <link rel="stylesheet" href="${navbarCss}" />
 
-        <title>내정보</title>
+        <title>아이고조아</title>
+     <c:url var="appleTouchIcon" value="/favicon/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="${ appleTouchIcon }">
+    <c:url var="favicon3232" value="/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="${ favicon3232 }">
+    <c:url var="favicon1616" value="/favicon/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="${ favicon1616 }">
+    <c:url var="webmanifest" value="/favicon/site.webmanifest" />
+    <link rel="manifest" href="${ webmanifest }">
     </head>
     <body>
         <header><%@ include file="../header.jspf" %></header>
-        <main style="margin-top: 120px" class="userProfile-main">
+        <main style="margin-top: 120px; margin-bottom: 90px;" class="userProfile-main">
             <div class="container p-0">
                 <div class="row g-0 h-100">
                     <div class="col-md-3 sidebar">
@@ -666,7 +674,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                                     <div class="col-md-7">
                                         <div id="calendar"></div>
                                     </div>
-                                    <div class="col-md-5 point-summary-container">
+                                    <div
+                                        class="col-md-5 point-summary-container"
+                                    >
                                         <div class="point-summary mb-3 row">
                                             <div
                                                 class="col-md-6 monthly-summary"
@@ -719,6 +729,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 </div>
             </div>
         </main>
+        <%@ include file="../footer.jspf"%>
 
         <div
             class="modal fade"
@@ -761,49 +772,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 </div>
             </div>
         </div>
-        <div
-            class="modal fade"
-            id="withdrawalModal"
-            tabindex="-1"
-            aria-labelledby="withdrawalModalLabel"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="withdrawalModalLabel">
-                            회원 탈퇴 확인
-                        </h5>
-                        <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                        ></button>
-                    </div>
-                    <div class="modal-body">
-                        정말로 회원 탈퇴를 진행하시겠습니까? 이 작업은 되돌릴 수
-                        없습니다.
-                    </div>
-                    <div class="modal-footer">
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal"
-                        >
-                            취소
-                        </button>
-                        <button
-                            type="button"
-                            class="btn btn-danger"
-                            id="confirmWithdrawal"
-                        >
-                            탈퇴 확인
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js"></script>
@@ -813,8 +782,5 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
         <script src="${navbarJs}"></script>
         <c:url var="userProfileJs" value="/js/userProfile.js" />
         <script src="${userProfileJs}"></script>
-        <script>
-            LoginUserId = "${UserId}";
-        </script>
     </body>
 </html>

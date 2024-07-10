@@ -7,7 +7,15 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>상세보기</title>
+    <title>아이고조아</title>
+     <c:url var="appleTouchIcon" value="/favicon/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="${ appleTouchIcon }">
+    <c:url var="favicon3232" value="/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="${ favicon3232 }">
+    <c:url var="favicon1616" value="/favicon/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="${ favicon1616 }">
+    <c:url var="webmanifest" value="/favicon/site.webmanifest" />
+    <link rel="manifest" href="${ webmanifest }">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -131,7 +139,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                       <span
                         id="iscoreBedge"
                         class="badge bg-secondary ms-2"
-                        style="font-size: 11px"
+                        style="font-size: 13px;"
+                        
                       >${ pd.avgIScore } </span>
                     </h2>
                     <i id="favoriteHeart" class="bi-heart" style="color: red;" data-favorite="${pd.userFavorite}"></i>
@@ -164,9 +173,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           <!-- 두 번째 섹션 (오른쪽에 배치) -->
           <div class="col-lg-4">
             <section>
-              <div id="emojiList" class="card shadow-sm">
-                <div class="card-body">
-                  <!-- 이모지 리스트 내용 -->
+             <div class="card shadow-sm">
+               <div id="emojiList" class="card-body">
+                  <h3>이런 점이 좋았어요</h3>
                 </div>
               </div>
             </section>
@@ -178,7 +187,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
             <div class="card-header bg-primary text-white">
               <h2 class="mb-0" style="color: white">리뷰 작성하기</h2>
             </div>
-            <div class="card-body">
+            <div id="createReview" class="card-body">
+            <h3 class="mb-0">이런 점이 좋았어요</h3>
               <form id="reviewForm">
                 <div
                   class="btn-group mb-3"
@@ -241,6 +251,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     >교통원활</label
                   >
                 </div>
+                <h3 class="mb-0">아이난이도</h3>
                 <div
                   class="btn-group mb-3"
                   role="group"
@@ -306,7 +317,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           리뷰 목록
           <div class="dropdown">
             <button
-              class="btn btn-secondary dropdown-toggle"
+              class="btn dropdown-toggle"
               type="button"
               id="sortDropdownButton"
               data-bs-toggle="dropdown"
@@ -316,22 +327,22 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
             </button>
             <ul class="dropdown-menu" aria-labelledby="sortDropdownButton">
               <li>
-                <button class="dropdown-item1 active" data-sort="modifiedAtDESC">
+                <button class="btn dropdown-item1 active" data-sort="modifiedAtDESC">
                   최신순
                 </button>
               </li>
               <li>
-                <button class="dropdown-item1" data-sort="modifiedAtASC">
+                <button class="btn dropdown-item1" data-sort="modifiedAtASC">
                   오래된순
                 </button>
               </li>
               <li>
-                <button class="dropdown-item1" data-sort="cntLikeDESC">
+                <button class="btn dropdown-item1" data-sort="cntLikeDESC">
                   좋아요 많은순
                 </button>
               </li>
               <li>
-                <button class="dropdown-item1" data-sort="cntLikeASC">
+                <button class="btn dropdown-item1" data-sort="cntLikeASC">
                   좋아요 적은순
                 </button>
               </li>
@@ -346,6 +357,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
       <!--위로 가는 버튼 -->
       <button id="scrollToTopBtn" title="Go to top">↑</button>
     </main>
+    <%@ include file="../footer.jspf"%>
 
     <script
       type="text/javascript"
@@ -398,14 +410,11 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     </script>
 
     <c:url var="navbarJsUrl" value="/js/navbar.js" />
-    <c:url var="postDetailJsUrl" value="/js/postDetail.js" />
+    <c:url var="placeDetailJsUrl" value="/js/placeDetail.js" />
     <c:url var="darkMode" value="/js/dark_mode.js" />
     <script src="${navbarJsUrl}"></script>
-    <script src="${postDetailJsUrl}"></script>
+    <script src="${placeDetailJsUrl}"></script>
      <script src="${darkMode}"></script>
     
-    <script>
-      const LoginUserId = "${userId}";
-    </script>
   </body>
 </html>

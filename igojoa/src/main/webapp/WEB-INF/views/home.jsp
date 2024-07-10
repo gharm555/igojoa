@@ -47,7 +47,7 @@
 </head>
 
 <body>
-<header>
+  <header>
     <%@ include file="header.jspf"%>
    
 <div class="banner-toggle-container">
@@ -291,56 +291,9 @@
 
     </main>
 
-<footer class="p-footer p-footer--dark">
-    <div class="p-footer__inner">
-        <div class="p-footer__site-group-list">
-            <ul class="p-footer__site-group">
-                <li>
-                    <div class="p-footer__site-group-title">회사 정보</div>
-                </li>
-                <li class="p-footer__site-group-item"><a href="">회사 소개</a></li>
-                <li class="p-footer__site-group-item"><a href="">이용약관</a></li>
-                <li class="p-footer__site-group-item"><a href="">개인정보처리방침</a></li>
-                <li class="p-footer__site-group-item"><a href="">고객센터</a></li>
-            </ul>
-            <ul class="p-footer__site-group">
-                <li>
-                    <div class="p-footer__site-group-title">추천 기능</div>
-                </li>
-                <li class="p-footer__site-group-item"><a href="">인기 명소</a></li>
-                <li class="p-footer__site-group-item"><a href="">새로운 장소</a></li>
-                <li class="p-footer__site-group-item"><a href="">이벤트</a></li>
-                <li class="p-footer__site-group-item"><a href="">여행 팁</a></li>
-            </ul>
-            <ul class="p-footer__site-group">
-                <li>
-                    <div class="p-footer__site-group-title">커뮤니티</div>
-                </li>
-                <li class="p-footer__site-group-item"><a href="">여행 후기</a></li>
-                <li class="p-footer__site-group-item"><a href="">Q&A</a></li>
-                <li class="p-footer__site-group-item"><a href="">모임</a></li>
-                <li class="p-footer__site-group-item"><a href="">공지사항</a></li>
-            </ul>
-            <ul class="p-footer__site-group">
-                <li>
-                    <div class="p-footer__site-group-title">팔로우하기</div>
-                </li>
-                <li class="p-footer__site-group-item"><a href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i> Facebook</a></li>
-                <li class="p-footer__site-group-item"><a href="#!" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a></li>
-                <li class="p-footer__site-group-item"><a href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a></li>
-                <li class="p-footer__site-group-item"><a href="#!" aria-label="YouTube"><i class="fab fa-youtube"></i> YouTube</a></li>
-            </ul>
-        
-        </div>
-         
-    </div>
-   <div class="text-center p-3" style="background-color: black">
-            © 2024 아이고좋아. All rights reserved.
-        </div>
-</footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<%@ include file="footer.jspf"%>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <c:url var="navbarJs" value="/js/navbar.js" />
     <script src="${navbarJs}"></script>
     <c:url var="mainJs" value="/js/main.js" />
@@ -367,8 +320,14 @@
               badge.classList.add(difficultyMap[iScore] || '');
             });
           });
-    </script>
+        
 
+        const points ="${points}";
+        
+
+    </script>
+  
+    
 
 </body>
 
