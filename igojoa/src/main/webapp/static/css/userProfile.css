@@ -252,15 +252,27 @@ h2 {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: #330e1f;
+  background: red;
   color: white;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: initial;
   font-size: 14px;
   font-weight: bold;
   margin-right: 10px;
   flex-shrink: 0;
+}
+
+.crown-icon {
+  background: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.crown-icon::before {
+  content: "👑";
+  font-size: 30px;
 }
 
 /* 리스트 스크롤바 */

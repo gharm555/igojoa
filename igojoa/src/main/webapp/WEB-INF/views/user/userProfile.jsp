@@ -761,49 +761,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 </div>
             </div>
         </div>
-        <div
-            class="modal fade"
-            id="withdrawalModal"
-            tabindex="-1"
-            aria-labelledby="withdrawalModalLabel"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="withdrawalModalLabel">
-                            회원 탈퇴 확인
-                        </h5>
-                        <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                        ></button>
-                    </div>
-                    <div class="modal-body">
-                        정말로 회원 탈퇴를 진행하시겠습니까? 이 작업은 되돌릴 수
-                        없습니다.
-                    </div>
-                    <div class="modal-footer">
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal"
-                        >
-                            취소
-                        </button>
-                        <button
-                            type="button"
-                            class="btn btn-danger"
-                            id="confirmWithdrawal"
-                        >
-                            탈퇴 확인
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js"></script>
@@ -813,8 +771,5 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
         <script src="${navbarJs}"></script>
         <c:url var="userProfileJs" value="/js/userProfile.js" />
         <script src="${userProfileJs}"></script>
-        <script>
-            LoginUserId = "${UserId}";
-        </script>
     </body>
 </html>

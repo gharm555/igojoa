@@ -1047,3 +1047,51 @@ $withdrawalBtn.addEventListener("click", function () {
     alert("탈퇴 취소하셨습니다.");
   }
 });
+
+//  ---------------------------------------------------- 수창 작업
+const $levelIcon = document.querySelector(".circular-icon");
+
+function getLevel() {
+  // 포인트를 레벨로 변환해서 반환
+  const pointsText = document
+    .querySelector(".cumulativePoints")
+    .textContent.replace(/,/g, "");
+  const points = parseInt(pointsText, 10);
+  const level = Math.floor(points / 1000) + 1;
+  return level;
+}
+function levelColor(level) {
+  // 레벨에 따른 색상변경
+
+  if (level >= 90)
+    return { bg: "linear-gradient(145deg, #FFD700, #FFA500, #FFD700)" }; // 금
+  if (level >= 80)
+    return { bg: "linear-gradient(145deg, #C0C0C0, #A9A9A9, #C0C0C0)" }; // 은
+  if (level >= 70) return { bg: "linear-gradient(145deg, #9400D3, #8A2BE2)" }; // 보
+  if (level >= 60) return { bg: "linear-gradient(145deg, #4B0082, #483D8B)" }; //남
+  if (level >= 50) return { bg: "linear-gradient(145deg, #0000FF, #1E90FF)" }; //파
+  if (level >= 40) return { bg: "linear-gradient(145deg, #00FF00, #32CD32)" }; //초
+  if (level >= 30) return { bg: "linear-gradient(145deg, #FFFF00, #FFD700)" }; //노
+  if (level >= 20) return { bg: "linear-gradient(145deg, #FF4500, #FF6347)" }; //주
+  if (level >= 10) return { bg: "linear-gradient(145deg, #FF0000, #DC143C)" }; //빨
+  return { bg: "linear-gradient(145deg, #8B4513, #A0522D)" }; //  1 - 9 까지 색상임(똥)
+}
+
+function setLevel(level) {
+  // 레벨이 100이 넘으면 왕관으로 변경
+  if (level >= 100) {
+    $levelIcon.innerHTML = "👑";
+    $levelIcon.style.background = "none";
+    $levelIcon.style.fontSize = "30px"; // 크기 조절
+
+    // 추가적인 스타일링 (선택사항)
+    $levelIcon.style.display = "flex";
+    $levelIcon.style.justifyContent = "center";
+    $levelIcon.style.alignItems = "center";
+  } else {
+    $levelIcon.innerHTML = level;
+    $levelIcon.style.background = levelColor(level).bg;
+  }
+}
+setLevel(getLevel());
+// ------------------------------------------------------ 수창 작업 끝
