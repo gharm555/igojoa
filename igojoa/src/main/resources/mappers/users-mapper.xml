@@ -147,11 +147,13 @@
 			reviews.review,
 			DATE_FORMAT(reviews.createdAt, '%Y.%m.%d %H:%i') AS createdAt,
 			placeImages.firstUrl,
-			reviewLikes.userId AS reviewAuthor
+			<!-- TODO userId가 아니라 userId의 nickName을 주어야 함 -->
+			users.nickName AS reviewAuthor
 		FROM places
 			JOIN reviews ON places.placeName = reviews.placeName
 			JOIN reviewLikes ON reviews.placeName = reviewLikes.placeName AND reviews.userId = reviewLikes.userId
 			JOIN placeImages ON places.placeName = placeImages.placeName
+			JOIN users ON reviewLikes.userId = users.userId
 		WHERE
 			reviewLikes.likeUserId = #{userId}
 			<if test="searchKeyword != null and searchKeyword != ''">
@@ -291,12 +293,13 @@
         placeImages.firstUrl, 
         DATE_FORMAT(reviewLikes.createdTime, '%Y.%m.%d %H:%i') AS createdAt,
         reviews.review,
-        reviewLikes.userId AS reviewAuthor
+        <!-- TODO userId가 아니라 userId의 nickName을 주어야 함 -->
+        users.nickName AS reviewAuthor
     FROM 
     	places
     		JOIN reviews ON places.placeName = reviews.placeName
     		JOIN reviewLikes ON reviews.placeName = reviewLikes.placeName AND reviews.userId = reviewLikes.userId
-    		JOIN users ON reviewLikes.likeUserId = users.userId
+    		JOIN users ON reviewLikes.likeUserId = users.userId AND reviewLikes.userId = users.userId
     		JOIN placeImages ON places.placeName = placeImages.placeName
     WHERE 
     	reviewLikes.likeUserId = '${ userId }'

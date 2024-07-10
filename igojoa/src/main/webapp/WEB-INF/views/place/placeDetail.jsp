@@ -7,7 +7,15 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>상세보기</title>
+    <title>아이고조아</title>
+     <c:url var="appleTouchIcon" value="/favicon/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="${ appleTouchIcon }">
+    <c:url var="favicon3232" value="/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="${ favicon3232 }">
+    <c:url var="favicon1616" value="/favicon/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="${ favicon1616 }">
+    <c:url var="webmanifest" value="/favicon/site.webmanifest" />
+    <link rel="manifest" href="${ webmanifest }">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -349,6 +357,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
       <!--위로 가는 버튼 -->
       <button id="scrollToTopBtn" title="Go to top">↑</button>
     </main>
+    <%@ include file="../footer.jspf"%>
 
     <script
       type="text/javascript"
@@ -401,10 +410,10 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     </script>
 
     <c:url var="navbarJsUrl" value="/js/navbar.js" />
-    <c:url var="postDetailJsUrl" value="/js/postDetail.js" />
+    <c:url var="placeDetailJsUrl" value="/js/placeDetail.js" />
     <c:url var="darkMode" value="/js/dark_mode.js" />
     <script src="${navbarJsUrl}"></script>
-    <script src="${postDetailJsUrl}"></script>
+    <script src="${placeDetailJsUrl}"></script>
      <script src="${darkMode}"></script>
     
   </body>
