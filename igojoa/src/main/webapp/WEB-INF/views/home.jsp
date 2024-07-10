@@ -18,7 +18,9 @@
     <c:url var="webmanifest" value="/favicon/site.webmanifest" />
     <link rel="manifest" href="${ webmanifest }">
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -48,6 +50,7 @@
 <body>
 <header>
     <%@ include file="header.jspf"%>
+   
 <div class="banner-toggle-container">
         <button class="btn btn-outline-primary banner-toggle nav-btn" id="banner-toggle">
           <i class="fas fa-chevron-down"></i>
@@ -91,39 +94,41 @@
     <!-- Main Section -->
     <section id="main-section">
     <div class="d-flex justify-content-center my-5" id="search-bar">
-        <div class="input-group main-search-bar">
-            <select id="province-select" class="form-select" aria-label="도/광역시 선택">
-                <option selected value="">전체</option>
-                <option value="seoul">서울시</option>
-                <option value="gyeonggi">경기도</option>
-                <option value="gangwon">강원도</option>
-                <option value="jeollabuk">전라북도</option>
-                <option value="jeollanam">전라남도</option>
-                <option value="gyeongsangbuk">경상북도</option>
-                <option value="gyeongsangnam">경상남도</option>
-                <option value="chungcheongbuk">충청북도</option>
-                <option value="chungcheongnam">충청남도</option>
-                <option value="busan">부산시</option>
-                <option value="daegu">대구시</option>
-                <option value="incheon">인천시</option>
-                <option value="gwangju">광주시</option>
-                <option value="daejeon">대전시</option>
-                <option value="ulsan">울산시</option>
-                <option value="jeju">제주도</option>
-            </select>
-            <input type="text" id="search-keyword" class="form-control" placeholder="검색어를 입력하세요" aria-label="검색"/>
-            <button class="btn btn-secondary" id="search-button" type="button">
-                <i class="bi bi-search"></i> 검색
-            </button>
-        </div>
+        <div class="search-container">
+          <div class="search-wrapper">
+              <select id="province-select" class="form-select">
+                  <option value="">지역 선택</option>
+                  <option value="seoul">서울시</option>
+                  <option value="gyeonggi">경기도</option>
+                  <option value="gangwon">강원도</option>
+                  <option value="jeollabuk">전라북도</option>
+                  <option value="jeollanam">전라남도</option>
+                  <option value="gyeongsangbuk">경상북도</option>
+                  <option value="gyeongsangnam">경상남도</option>
+                  <option value="chungcheongbuk">충청북도</option>
+                  <option value="chungcheongnam">충청남도</option>
+                  <option value="busan">부산시</option>
+                  <option value="daegu">대구시</option>
+                  <option value="incheon">인천시</option>
+                  <option value="gwangju">광주시</option>
+                  <option value="daejeon">대전시</option>
+                  <option value="ulsan">울산시</option>
+                  <option value="jeju">제주도</option>
+              </select>
+            <input type="text" id="search-keyword" class="form-control" placeholder="검색어를 입력하세요" aria-label="검색" autocomplete="off"/>
+              <button  id="search-button" type="button">
+                <i class="bi bi-search"></i>
+             </button>
+          </div>
+        <ul id="suggestions" class="list-group"></ul>
+      </div>
     </div>
-
-    <div class="d-flex justify-content-center mb-5">
+    <div class="d-flex justify-content-center mb-4">
 <div class="btn-group" role="group">
     <button class="btn btn-outline-secondary" id="iScore" type="button" data-sortIscore="1">난이도</button>
     <button class="btn btn-outline-secondary" id="placeVerified" type="button" data-sortPlaceVerified="1">방문횟수</button>
     <button class="btn btn-outline-secondary" id="userFavorite" type="button" data-sortUserFavorite="1">좋아요</button>
-    <button class="btn btn-outline-secondary" id="reviewCnt" type="button" data-sortReviewCnt="1">댓글수</button>
+    <button class="btn btn-outline-secondary" id="reviewCnt" type="button" data-sortReviewCnt="1">리뷰수</button>
 </div>
     </div>
 
@@ -143,7 +148,7 @@
                         <div class="main-badges mt-3">
                       <span class="badge"><i class="bi bi-fire" id="fire" ></i> ${place.highestBadge}</span>
                         <span class="badge"><i class="bi bi-fire" id="fire"></i> ${place.secondHighestBadge}</span>
-                            <span class="badge difficulty ${place.IScore}">난이도: ${place.IScore}</span>
+                           <span class="badge difficulty-badge" data-iscore="${place.IScore}">아이난이도: ${place.IScore}</span>
                         </div>
                     </div>
                     <div class="d-flex justify-content-between my-3 mx-3">
@@ -347,6 +352,25 @@
     <script src="${imageGalleryJs}"></script>
     <c:url var="lottoJs" value="/js/lotto.js" />
     <script src="${lottoJs}"></script>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const difficultyMap = {
+              "하": "bg-success",
+              "중": "bg-warning",
+              "상": "bg-danger"
+            };
+
+            document.querySelectorAll('.difficulty-badge').forEach(badge => {
+              const iScore = badge.dataset.iscore;
+              badge.classList.add(difficultyMap[iScore] || '');
+            });
+          });
+    </script>
+
+
 </body>
 
 </html>
