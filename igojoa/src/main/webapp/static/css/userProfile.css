@@ -263,17 +263,7 @@ h2 {
   flex-shrink: 0;
 }
 
-.crown-icon {
-  background: none !important;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-}
 
-.crown-icon::before {
-  content: "👑";
-  font-size: 30px;
-}
 
 /* 리스트 스크롤바 */
 .list-group {
