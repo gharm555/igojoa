@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+
   function updateButtonVisibility(isLoggedIn) {
     const $sortButtons = document.querySelectorAll(".btn-group .btn[data-sortUserFavorite]");
     $sortButtons.forEach((button) => {
@@ -11,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
   function checkLoginStatus() {
     const loginButton = document.querySelector("#loginBtn");
     const profileButton = document.querySelector("#profileBtn");
@@ -51,7 +51,7 @@ let startRowValue = 0; // 처음 0으로 설정
 const initialItemsPerPage = 9; // 처음 로드할 아이템 수
 const itemsPerPage = 6; // 더보기 시 로드할 아이템 수
 let currentSortKey = "iScore";
-let currentSortValue = 0;
+let currentSortValue = 1;
 
 const provinceMap = {
 	seoul: "서울시",
