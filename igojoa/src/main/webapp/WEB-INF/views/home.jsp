@@ -339,12 +339,6 @@
     <script src="${imageGalleryJs}"></script>
     <c:url var="lottoJs" value="/js/lotto.js" />
     <script src="${lottoJs}"></script>
-
-    <script>
-        const LoginUserId = '${userId}';
-        const points = '${points}';
-    </script>
-
 </body>
 
 </html>
