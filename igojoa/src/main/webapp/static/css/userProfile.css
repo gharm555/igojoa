@@ -252,7 +252,7 @@ h2 {
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background: red;
+    /* background: red; */
     color: white;
     display: flex;
     justify-content: center;
@@ -262,8 +262,6 @@ h2 {
     margin-right: 10px;
     flex-shrink: 0;
 }
-
-
 
 /* 리스트 스크롤바 */
 .list-group {
@@ -401,13 +399,13 @@ h2 {
 
 /* 내정보수정에서 사진 가운데로 보내는 설정 */
 .imageInImageChangeContainer {
-  align-self: center;
+    align-self: center;
 }
 
 /* 내정보수정을 포함한 모든 컨테이너에서 스크롤 보여주기 */
 .userProfile-tabs-main {
-  overflow-y: scroll;
-  height: 100%;
+    overflow-y: scroll;
+    height: 100%;
 }
 
 /* 반응형 스타일 */
@@ -538,16 +536,15 @@ h2 {
 
 @media (max-width: 390px) {
     #dateAndTabContainer {
-      flex-flow: column;
+        flex-flow: column;
     }
-  
+
     .containerImageChange {
         flex-flow: column;
     }
 
-    .infoInImageChangeContainer {
-        padding-top: 0;
-        padding-left: 0;
+    .buttons {
+        text-align-last: center;
     }
 
     .buttons {
@@ -664,17 +661,14 @@ h2 {
         margin-bottom: 15px;
     }
 
-    .userProfile-tabs-main {
-        padding: 1rem !important;
-    }
-
     .userProfile-main {
         margin-top: 68px !important;
     }
-    
+
     /* 상원 추가 */
-    .dateRangeWithNavs, .dateRange {
-      width: 100% !important; 
+    .dateRangeWithNavs,
+    .dateRange {
+        width: 100% !important;
     }
 }
 

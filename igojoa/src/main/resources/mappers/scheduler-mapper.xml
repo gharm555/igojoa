@@ -216,6 +216,14 @@
 		    modifiedAt = r.modifiedAt,
 		    likeCount = r.likeCnt
 	</update>
+	
+	<delete id="deleteSynchronizeReviews">
+	DELETE FROM bestReviews
+	WHERE (placeName, userId) NOT IN (
+	SELECT placeName, userId
+	FROM reviews
+	)
+	</delete>
 
 	<update id="updateBestBadge">
 		UPDATE placesStats ps

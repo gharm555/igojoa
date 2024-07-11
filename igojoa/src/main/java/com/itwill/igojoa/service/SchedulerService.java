@@ -34,4 +34,11 @@ public class SchedulerService {
 		schedulerDao.updatePlaceStats();
 		log.debug("베스트 뱃지 데이터 집계 종료");
 	}
+	
+	@Transactional
+	public void deleteSynchronizeReviews() {
+		log.debug("삭제된 리뷰 추적 후 최적화 시작");
+		schedulerDao.deleteSynchronizeReviews();
+		log.debug("삭제된 리뷰 추적 후 최적화 종료");
+	}
 }

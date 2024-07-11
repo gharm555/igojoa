@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ReviewListDto {
+	private Integer level;
 	private String nickName;
 	private String review;
 	private LocalDateTime modifiedAt;
