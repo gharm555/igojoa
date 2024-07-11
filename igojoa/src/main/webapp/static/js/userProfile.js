@@ -369,7 +369,16 @@ function checkForChanges() {
         isValid &&
         (isPasswordValid || (newPassword === "" && confirmPassword === ""))
     );
+    
+	if ($updateBtn.disabled === false) {
+		$updateBtn.classList.remove("btn-outline-success");
+		$updateBtn.classList.add("btn-success");
+	} else {
+		$updateBtn.classList.remove("btn-success");
+		$updateBtn.classList.add("btn-outline-success");
+	}
 }
+
 
 // 각 입력 필드에 이벤트 리스너 추가
 $nickName.addEventListener("input", checkForChanges);
