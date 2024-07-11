@@ -20,6 +20,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <c:url var="darkModeCss" value="/css/dark_mode.css" />
+    <link rel="stylesheet" href="${darkModeCss}">
     <c:url var="cssResetCss" value="/css/cssReset.css" />
     <link rel="stylesheet" href="${cssResetCss}" />
     <c:url var="navbarCss" value="/css/navbar.css" />
@@ -417,6 +419,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <c:url var="navbarJs" value="/js/navbar.js" />
     <script src="${navbarJs}"></script>
+    <c:url var="darkModeJs" value="/js/dark_mode.js" />
+    <script src="${darkModeJs}"></script>
     <c:url var="loginRegistrationJs" value="/js/loginRegistration.js" />
     <script src="${loginRegistrationJs}"></script>
     <script>

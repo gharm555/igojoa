@@ -9,7 +9,9 @@ function toggleDarkMode() {
     document.querySelector(".footer"),
   ];
 
-  const isDarkMode = elements.some((element) => element && element.getAttribute("data-theme") === "dark");
+  const isDarkMode = elements.some(
+    (element) => element && element.getAttribute("data-theme") === "dark"
+  );
 
   elements.forEach((element) => {
     if (element) {
