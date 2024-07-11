@@ -243,7 +243,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
         </div>
       </div>
     </main>
-    <%@ include file="../footer.jspf"%>
 
     <!-- 아이디 찾기 모달 -->
     <div

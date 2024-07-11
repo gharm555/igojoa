@@ -48,7 +48,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     </head>
     <body>
         <header><%@ include file="../header.jspf" %></header>
-        <main style="margin-top: 120px; margin-bottom: 90px;" class="userProfile-main">
+        <main style="margin-top: 120px; margin-bottom: 15%;" class="userProfile-main">
             <div class="container p-0">
                 <div class="row g-0 h-100">
                     <div class="col-md-3 sidebar">
@@ -433,7 +433,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                                     <div>
                                         <button
                                             type="submit"
-                                            class="btn btn-primary"
+                                            class="btn btn-outline-success"
                                             id="updateBtn"
                                         >
                                             정보 수정
@@ -505,8 +505,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                                         type="text"
                                         id="date-range"
                                         placeholder=""
+                                        class="dateRange"
                                     />
-                                    <nav>
+                                    <nav class="dateRangeWithNavs">
                                         <div
                                             class="nav nav-tabs"
                                             id="nav-tab"

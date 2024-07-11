@@ -342,7 +342,22 @@ function checkForChanges() {
 
   // "정보 수정" 버튼 활성화 또는 비활성화
   $updateBtn.disabled = !(isChanged && isValid && (isPasswordValid || (newPassword === "" && confirmPassword === "")));
+    // "정보 수정" 버튼 활성화 또는 비활성화
+    $updateBtn.disabled = !(
+        isChanged &&
+        isValid &&
+        (isPasswordValid || (newPassword === "" && confirmPassword === ""))
+    );
+    
+	if ($updateBtn.disabled === false) {
+		$updateBtn.classList.remove("btn-outline-success");
+		$updateBtn.classList.add("btn-success");
+	} else {
+		$updateBtn.classList.remove("btn-success");
+		$updateBtn.classList.add("btn-outline-success");
+	}
 }
+
 
 // 각 입력 필드에 이벤트 리스너 추가
 $nickName.addEventListener("input", checkForChanges);
@@ -1135,39 +1150,70 @@ $withdrawalBtn.addEventListener("click", function () {
 const $levelIcon = document.querySelector(".circular-icon");
 
 function getLevel() {
-  // 포인트를 레벨로 변환해서 반환
-  const pointsText = document.querySelector(".cumulativePoints").textContent.replace(/,/g, "");
-  const points = parseInt(pointsText, 10);
-  const level = Math.floor(points / 1000) + 1;
-  return level;
+    const pointsText = document
+        .querySelector(".cumulativePoints")
+        .textContent.replace(/,/g, "");
+    const points = parseInt(pointsText, 10);
+    const level = Math.floor(points / 1000) + 1;
+    return level;
 }
-function levelColor(level) {
-  // 레벨에 따른 색상변경
 
-  if (level >= 90) return { bg: "linear-gradient(145deg, #FFD700, #FFA500, #FFD700)" }; // 금
-  if (level >= 80) return { bg: "linear-gradient(145deg, #C0C0C0, #A9A9A9, #C0C0C0)" }; // 은
-  if (level >= 70) return { bg: "linear-gradient(145deg, #9400D3, #8A2BE2)" }; // 보
-  if (level >= 60) return { bg: "linear-gradient(145deg, #4B0082, #483D8B)" }; //남
-  if (level >= 50) return { bg: "linear-gradient(145deg, #0000FF, #1E90FF)" }; //파
-  if (level >= 40) return { bg: "linear-gradient(145deg, #00FF00, #32CD32)" }; //초
-  if (level >= 30) return { bg: "linear-gradient(145deg, #FFFF00, #FFD700)" }; //노
-  if (level >= 20) return { bg: "linear-gradient(145deg, #FF4500, #FF6347)" }; //주
-  if (level >= 10) return { bg: "linear-gradient(145deg, #FF0000, #DC143C)" }; //빨
-  return { bg: "linear-gradient(145deg, #8B4513, #A0522D)" }; //  1 - 9 까지 색상임(똥)
+function levelColor(level) {
+    if (level >= 90) {
+        return {
+            bg: "linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff)",
+            animation: "rainbow 5s linear infinite, sparkle 2s linear infinite"
+        };
+    }
+    if (level >= 80)
+        return { bg: "linear-gradient(145deg, #C0C0C0, #A9A9A9, #C0C0C0)" }; // 은
+    if (level >= 70) return { bg: "linear-gradient(145deg, #9400D3, #8A2BE2)" }; // 보
+    if (level >= 60) return { bg: "linear-gradient(145deg, #4B0082, #483D8B)" }; //남
+    if (level >= 50) return { bg: "linear-gradient(145deg, #0000FF, #1E90FF)" }; //파
+    if (level >= 40) return { bg: "linear-gradient(145deg, #00FF00, #32CD32)" }; //초
+    if (level >= 30) return { bg: "linear-gradient(145deg, #FFFF00, #FFD700)" }; //노
+    if (level >= 20) return { bg: "linear-gradient(145deg, #FF4500, #FF6347)" }; //주
+    if (level >= 10) return { bg: "linear-gradient(145deg, #FF0000, #DC143C)" }; //빨
+    return { bg: "linear-gradient(145deg, #8B4513, #A0522D)" }; //  1 - 9 까지 색상
 }
 
 function setLevel(level) {
-  // 레벨이 100이 넘으면 왕관으로 변경
   if (level >= 100) {
     $levelIcon.innerHTML = "👑";
     $levelIcon.style.background = "none";
-    $levelIcon.style.fontSize = "30px"; // 크기 조절
+    $levelIcon.style.fontSize = "30px";
     $levelIcon.style.top = "-21px";
     $levelIcon.style.position = "relative";
+    $levelIcon.style.animation = 'sparkle 1.5s infinite';
+    $levelIcon.style.filter = 'drop-shadow(0 0 2px gold)';
   } else {
     $levelIcon.innerHTML = level;
-    $levelIcon.style.background = levelColor(level).bg;
+    const colorStyle = levelColor(level);
+    $levelIcon.style.background = colorStyle.bg;
+    if (level >= 90) {
+      $levelIcon.style.animation = colorStyle.animation;
+      $levelIcon.style.backgroundSize = "300% 300%";
+    } else {
+      $levelIcon.style.animation = "none";
+      $levelIcon.style.backgroundSize = "100% 100%";
+    }
   }
 }
+
+// 필요한 CSS 애니메이션 추가
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes rainbow {
+    0% { background-position: 0% 50% }
+    50% { background-position: 100% 50% }
+    100% { background-position: 0% 50% }
+  }
+  @keyframes sparkle {
+    0% { filter: brightness(100%) }
+    50% { filter: brightness(150%) }
+    100% { filter: brightness(100%) }
+  }
+`;
+document.head.appendChild(style);
 setLevel(getLevel());
 // ------------------------------------------------------ 수창 작업 끝
