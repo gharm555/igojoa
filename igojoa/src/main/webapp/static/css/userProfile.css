@@ -1075,6 +1075,46 @@ h2 {
 .summary-row td {
   border-top: 2px solid #dee2e6;
 }
+
+/* 내 활동내역 텍스트 스타일*/
+.badge {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 4px 8px;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.writtenReview {
+  font-style: italic;
+  color: #333;
+  background-color: #f0f8ff; /* 약간 더 진한 배경색 */
+  border-left: 4px solid var(--primary-color);
+  padding: 10px 15px;
+  margin: 10px 0;
+  border-radius: 0 4px 4px 0;
+  position: relative;
+}
+
+.likedReview {
+  font-style: italic;
+  color: #333;
+  background-color: #f8f9fa;
+  border-left: 4px solid var(--primary-color);
+  padding: 10px 15px;
+  margin: 10px 0;
+  border-radius: 0 4px 4px 0;
+  position: relative;
+}
+
+.nametag {
+  font-weight: 600;
+  color: #0056b3;
+}
+/* 내 활동내역 스타일 끝*/
+
 @keyframes pulse {
   0% {
     transform: scale(1);
