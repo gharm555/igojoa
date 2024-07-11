@@ -17,6 +17,7 @@ public class PlaceListDto {
 	private String highestBadge;
 	private String secondHighestBadge;
 	private String iScore;
+	private Integer level;
 	private Integer placeVerified;
 	private String nickName;
 	private String review;
