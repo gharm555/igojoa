@@ -27,11 +27,11 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
     <c:url var="cssResetUrl" value="/css/cssReset.css" />
-    <c:url var="postDetailCssUrl" value="/css/postDetail.css" />
+    <c:url var="placeDetailCssUrl" value="/css/placeDetail.css" />
     <c:url var="navbarCssUrl" value="/css/navbar.css" />
     <c:url var="darkmode" value="/css/dark_mode.css"/>
     <link rel="stylesheet" href="${cssResetUrl}" />
-    <link rel="stylesheet" href="${postDetailCssUrl}" />
+    <link rel="stylesheet" href="${placeDetailCssUrl}" />
     <link rel="stylesheet" href="${navbarCssUrl}" />
     <link rel="stylesheet" href="${darkmode}">
   </head>
@@ -39,7 +39,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <header>
       <%@ include file="../header.jspf" %>
     </header>
-    <main>
+    <main style="margin-bottom: 20%;">
       <c:set var="pd" value="${PlaceDetailDto}" />
       <c:set var="place" value="${placesInfo}" />
       <div class="container">

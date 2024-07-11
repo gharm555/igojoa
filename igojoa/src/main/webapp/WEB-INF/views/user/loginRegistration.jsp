@@ -80,14 +80,16 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
               />
               <div class="find">
                 <a
-                  class="text-decoration-underline"
+                  type="button"
+                  class="btnIdPw"
                   data-bs-toggle="modal"
                   data-bs-target="#findUserIdModal"
                   >아이디를 잊으셨나요?</a
                 >
                 <span> | </span>
                 <a
-                  class="text-decoration-underline"
+                  type="button"
+                  class="btnIdPw"
                   data-bs-toggle="modal"
                   data-bs-target="#findPasswordModal"
                   >비밀번호를 잊으셨나요?</a
@@ -243,7 +245,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
         </div>
       </div>
     </main>
-    <%@ include file="../footer.jspf"%>
 
     <!-- 아이디 찾기 모달 -->
     <div
