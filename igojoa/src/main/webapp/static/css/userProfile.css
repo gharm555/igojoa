@@ -965,22 +965,13 @@ h2 {
     transition: color 0.3s ease;
 }
 
-.fc-button-primary:hover {
-    color: #007bff !important;
-}
-
 .fc-today-button {
-    background-color: #007bff !important;
-    border-color: #007bff !important;
+    background-color: var(--primary-color) !important;
+    border:none;
     color: white !important;
     font-weight: 600;
     padding: 6px 12px;
     border-radius: 20px;
-}
-
-.fc-today-button:hover {
-    background-color: #0056b3 !important;
-    border-color: #0056b3 !important;
 }
 
 .fc-day-today {
@@ -1102,3 +1093,13 @@ h2 {
     margin-bottom: 15px;
   }
 }*/
+
+#updateBtn {
+  background-color: var(--primary-color);
+  border: none;
+}
+
+#updateBtn:hover {
+  background-color: var(--secondary-color);
+  border: none;
+}
