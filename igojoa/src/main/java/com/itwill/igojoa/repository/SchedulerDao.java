@@ -6,4 +6,6 @@ public interface SchedulerDao {
 	void updateBestReviews();
 	
 	void updateBestBadge();
+	
+	void deleteSynchronizeReviews();
 }
