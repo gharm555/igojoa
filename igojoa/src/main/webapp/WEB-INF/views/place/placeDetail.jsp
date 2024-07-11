@@ -39,7 +39,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <header>
       <%@ include file="../header.jspf" %>
     </header>
-    <main>
+    <main style="margin-bottom: 20%;">
       <c:set var="pd" value="${PlaceDetailDto}" />
       <c:set var="place" value="${placesInfo}" />
       <div class="container">

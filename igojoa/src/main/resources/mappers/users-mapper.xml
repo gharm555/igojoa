@@ -145,7 +145,7 @@
 		SELECT
 			places.placeName,
 			reviews.review,
-			DATE_FORMAT(reviews.createdAt, '%Y.%m.%d %H:%i') AS createdAt,
+			DATE_FORMAT(reviewLikes.createdTime, '%Y.%m.%d %H:%i') AS createdAt,
 			placeImages.firstUrl,
 			<!-- TODO userId가 아니라 userId의 nickName을 주어야 함 -->
 			users.nickName AS reviewAuthor
@@ -294,12 +294,13 @@
         DATE_FORMAT(reviewLikes.createdTime, '%Y.%m.%d %H:%i') AS createdAt,
         reviews.review,
         <!-- TODO userId가 아니라 userId의 nickName을 주어야 함 -->
-        users.nickName AS reviewAuthor
+        reviewAuthor.nickName AS reviewAuthor
     FROM 
     	places
     		JOIN reviews ON places.placeName = reviews.placeName
     		JOIN reviewLikes ON reviews.placeName = reviewLikes.placeName AND reviews.userId = reviewLikes.userId
-    		JOIN users ON reviewLikes.likeUserId = users.userId AND reviewLikes.userId = users.userId
+    		JOIN users AS likeUser ON reviewLikes.likeUserId = likeUser.userId
+    		JOIN users AS reviewAuthor ON reviews.userId = reviewAuthor.userId
     		JOIN placeImages ON places.placeName = placeImages.placeName
     WHERE 
     	reviewLikes.likeUserId = '${ userId }'

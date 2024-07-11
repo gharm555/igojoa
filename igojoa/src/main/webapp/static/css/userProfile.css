@@ -399,6 +399,17 @@ h2 {
     padding-left: 30px;
 }
 
+/* 내정보수정에서 사진 가운데로 보내는 설정 */
+.imageInImageChangeContainer {
+  align-self: center;
+}
+
+/* 내정보수정을 포함한 모든 컨테이너에서 스크롤 보여주기 */
+.userProfile-tabs-main {
+  overflow-y: scroll;
+  height: 100%;
+}
+
 /* 반응형 스타일 */
 @media (max-width: 1400px) {
     #nav-tab {
@@ -539,10 +550,6 @@ h2 {
         padding-left: 0;
     }
 
-    .forMoveToCenter {
-        margin-left: 75px;
-    }
-
     .buttons {
         text-align-last: center;
     }
@@ -663,6 +670,11 @@ h2 {
 
     .userProfile-main {
         margin-top: 68px !important;
+    }
+    
+    /* 상원 추가 */
+    .dateRangeWithNavs, .dateRange {
+      width: 100% !important; 
     }
 }
 
