@@ -1080,31 +1080,3 @@ h2 {
     transform: scale(1);
   }
 }
-
-/*반응형 스타일
-@media (max-width: 768px) {
-  .fc-toolbar-title {
-    font-size: 1.4em;
-  }
-
-  .fc-button-primary {
-    font-size: 1em;
-  }
-}
-
-@media (max-width: 768px) {
-  .monthly-summary,
-  .daily-summary {
-    margin-bottom: 15px;
-  }
-}*/
-
-#updateBtn {
-  background-color: var(--primary-color);
-  border: none;
-}
-
-#updateBtn:hover {
-  background-color: var(--secondary-color);
-  border: none;
-}
