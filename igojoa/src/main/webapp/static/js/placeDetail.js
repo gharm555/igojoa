@@ -139,9 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("isCurrentlyLiked:", isCurrentlyLiked);
     // API 호출
     const uri = isCurrentlyLiked
-      ? `${contextPath}/${encodeURIComponent(
-          placeName
-        )}/deleteReviewLike?userId=` + userId
+      ? `${contextPath}/${encodeURIComponent(placeName)}/deleteReviewLike?userId=` + userId
       : `${contextPath}/${encodeURIComponent(placeName)}/clickReviewLike`;
     if (!isCurrentlyLiked) {
       axios
@@ -188,19 +186,13 @@ function updateReviewButtons() {
         <button id="updateReviewBtn" type="button" class="btn btn-warning">수정하기</button>
         <button id="deleteReviewBtn" type="button" class="btn btn-danger">삭제하기</button>
       `;
-    document
-      .querySelector("#updateReviewBtn")
-      .addEventListener("click", updateReview);
-    document
-      .querySelector("#deleteReviewBtn")
-      .addEventListener("click", deleteReview);
+    document.querySelector("#updateReviewBtn").addEventListener("click", updateReview);
+    document.querySelector("#deleteReviewBtn").addEventListener("click", deleteReview);
   } else {
     $container.innerHTML = `
         <button id="createReviewBtn" type="button" class="btn btn-primary">작성완료</button>
       `;
-    document
-      .querySelector("#createReviewBtn")
-      .addEventListener("click", createReview);
+    document.querySelector("#createReviewBtn").addEventListener("click", createReview);
   }
 }
 
@@ -315,9 +307,7 @@ function deleteReview() {
 //리뷰작성 폼에 있는 값을 만드는 객체 (재사용성을 위해서 따로 만들었음)
 function review() {
   console.log("리뷰작성 버튼 실행실행");
-  const selectedRadio = document.querySelector(
-    'input[name="difficulty"]:checked'
-  );
+  const selectedRadio = document.querySelector('input[name="difficulty"]:checked');
   let difficulty;
 
   console.log(`리뷰작성 버튼2 selectedRadio 실행실행`);
@@ -365,9 +355,7 @@ function showAllReview() {
     return;
   }
 
-  const uri = `${contextPath}/${encodeURIComponent(
-    placeName
-  )}/selectDefaultReview`;
+  const uri = `${contextPath}/${encodeURIComponent(placeName)}/selectDefaultReview`;
   console.log("모든 리뷰 가져오기 URI:", uri);
 
   axios
@@ -425,17 +413,11 @@ function createReviewCard(review) {
   };
 
   const badgeHtml = badges
-    .map((badge) =>
-      review[badge.name]
-        ? `<span class="badge bg-primary me-1">${badge.text}</span>`
-        : ""
-    )
+    .map((badge) => (review[badge.name] ? `<span class="badge bg-primary me-1">${badge.text}</span>` : ""))
     .join("");
 
   const difficultyBadge = review.iscore
-    ? `<span class="badge bg-${
-        difficultyMap[review.iscore]?.color || "secondary"
-      } bg-gradient me-1">아이난이도: ${
+    ? `<span class="badge bg-${difficultyMap[review.iscore]?.color || "secondary"} bg-gradient me-1">아이난이도: ${
         difficultyMap[review.iscore]?.text || review.iscore
       }</span>`
     : "";
@@ -449,9 +431,7 @@ function createReviewCard(review) {
           ${badgeHtml}
           ${difficultyBadge}
         </div>
-      <button class="btn btn-outline-primary btn-sm like-btn p-1" data-review-id="${
-        review.nickName
-      }">
+      <button class="btn btn-outline-primary btn-sm like-btn p-1" data-review-id="${review.nickName}">
 <i class="bi bi-heart${review.myLike ? "-fill" : ""}"></i>
 <span class="like-count">${review.cntLike || 0}</span>
 </button>
@@ -466,9 +446,7 @@ function createReviewCard(review) {
             <h5 id="nickName"class="card-title mb-0">${review.nickName}</h5>
             <small class="text-muted" style="font-size: 0.75rem;">${formattedDate}</small>
           </div>
-          <p class="card-text mb-0" style="font-size: 0.95rem; font-weight: 500;">${
-            review.review
-          }</p>
+          <p class="card-text mb-0" style="font-size: 0.95rem; font-weight: 500;">${review.review}</p>
         </div>
       </div>
     </div>
@@ -573,10 +551,7 @@ window.addEventListener("scroll", scrollFunction);
 
 function scrollFunction() {
   // 페이지를 100px 이상 스크롤했을 때 버튼 표시
-  if (
-    document.body.scrollTop > 100 ||
-    document.documentElement.scrollTop > 100
-  ) {
+  if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
     $scrollToTopBtn.style.display = "block";
   } else {
     $scrollToTopBtn.style.display = "none";
@@ -604,19 +579,15 @@ function formatDate(dateArray) {
 
   const pad = (num) => num.toString().padStart(2, "0");
 
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
-    date.getDate()
-  )} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(
-    date.getSeconds()
-  )}`;
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(
+    date.getMinutes()
+  )}:${pad(date.getSeconds())}`;
 }
 
 /** ------------------ (5)로그인한 유저가 작성한 리뷰 가지고 오기 ------------------- */
 // 모든 체크박스 레이블을 선택합니다.
 function showUserReview() {
-  const $labels = document.querySelectorAll(
-    '.btn-group[aria-label="Basic checkbox toggle button group"] label'
-  );
+  const $labels = document.querySelectorAll('.btn-group[aria-label="Basic checkbox toggle button group"] label');
 
   // 각 레이블에 대해 반복합니다.
   $labels.forEach((label) => {
@@ -735,10 +706,7 @@ let sortObject1 = {
 
 // 스크롤 이벤트 리스너 추가
 window.addEventListener("scroll", () => {
-  if (
-    window.innerHeight + window.scrollY >= document.body.offsetHeight - 50 &&
-    !isLoading
-  ) {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50 && !isLoading) {
     loadMoreReviews();
   }
 });
@@ -748,8 +716,7 @@ function loadMoreReviews() {
   isLoading = true;
 
   // 정렬 객체 업데이트
-  sortObject.startRowValue =
-    initialItemCount + (currentPage - 1) * additionalItemCount;
+  sortObject.startRowValue = initialItemCount + (currentPage - 1) * additionalItemCount;
   sortObject.rowCnt = additionalItemCount;
 
   const placeName = pd.placeName;
@@ -778,9 +745,7 @@ function loadMoreReviews() {
 
 function appendReviews(newReviews) {
   const $reviewListSection = document.querySelector("#reviewList");
-  const newReviewsHtml = newReviews
-    .map((review) => createReviewCard(review))
-    .join("");
+  const newReviewsHtml = newReviews.map((review) => createReviewCard(review)).join("");
   $reviewListSection.insertAdjacentHTML("beforeend", newReviewsHtml);
 }
 
