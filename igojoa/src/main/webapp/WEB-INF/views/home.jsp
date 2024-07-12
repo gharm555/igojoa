@@ -237,15 +237,15 @@
                             <button class="accordion-button ${status.index == 0 ? '' : 'collapsed'}" type="button" 
                                     data-bs-toggle="collapse" data-bs-target="#collapse${status.index}" 
                                     aria-expanded="${status.index == 0 ? 'true' : 'false'}" 
-                                    aria-controls="collapse${status.index}">
-                                ${faq.question}
+                                    aria-controls="collapse${status.index}"><span>Q:&nbsp;</span>
+                                <span>${faq.question}</span>
                             </button>
                         </h2>
                         <div id="collapse${status.index}" 
                              class="accordion-collapse collapse ${status.index == 0 ? 'show' : ''}" 
                              data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                ${faq.answer}
+                            <div class="accordion-body"><span>A: </span>
+                                <span>${faq.answer}</span>
                             </div>
                         </div>
                     </div>
