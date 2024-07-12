@@ -37,7 +37,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
         <link rel="stylesheet" href="${userProfileCss}" />
         <c:url var="navbarCss" value="/css/navbar.css" />
         <link rel="stylesheet" href="${navbarCss}" />
-
+        <c:url var="darkmode" value="/css/dark_mode.css"/>
+        <link rel="stylesheet" href="${darkmode}">
+        
         <title>아이고조아</title>
      <c:url var="appleTouchIcon" value="/favicon/apple-touch-icon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="${ appleTouchIcon }">
