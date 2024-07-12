@@ -1,228 +1,228 @@
 /* 다크 모드 기본 스타일 */
-body[data-theme='dark'] {
+body[data-bs-theme="dark"] {
   background-color: #191f28 !important;
   color: #ffffff !important;
 }
 
 /* 모든 텍스트 요소에 대한 글씨색 통일 */
-body[data-theme='dark'] *:not(input):not(textarea):not(select) {
+body[data-bs-theme="dark"] *:not(input):not(textarea):not(select) {
   color: #ffffff !important;
 }
 
 /* 배경 및 기본 색상 스타일 */
-body[data-theme='dark'] .search-container,
-body[data-theme='dark'] .userProfile-tabs-main,
-body[data-theme='dark'] .sidebar,
-body[data-theme='dark'] .list-group-item,
-body[data-theme='dark'] .flatpickr-calendar,
-body[data-theme='dark'] #calendar,
-body[data-theme='dark'] .point-summary,
-body[data-theme='dark'] #pointHistoryTable,
-body[data-theme='dark'] .fc-toolbar,
-body[data-theme='dark'] .table thead th,
-body[data-theme='dark'] .main-card,
-body[data-theme='dark'] .nav-pills .nav-link.active,
-body[data-theme='dark'] .nav-pills .nav-link:hover,
-body[data-theme='dark'] .card,
-body[data-theme='dark'] .formBx,
-body[data-theme='dark'] .container,
-body[data-theme='dark'] .content,
-body[data-theme='dark'] .modal-content,
-body[data-theme='dark'] .dropdown-menu,
-body[data-theme='dark'] .table,
-body[data-theme='dark'] .fc,
-body[data-theme='dark'] .form-control,
-body[data-theme='dark'] .profile-summary,
-body[data-theme='dark'] .point-summary,
-body[data-theme='dark'] .flatpickr-calendar,
-body[data-theme='dark'] .accordion-button,
-body[data-theme='dark'] .accordion-body,
-body[data-theme='dark'] header,
-body[data-theme='dark'] .navbar,
-body[data-theme='dark'] footer,
-body[data-theme='dark'] .background-fill,
-body[data-theme='dark'] .lotto-container,
-body[data-theme='dark'] .main-card-header,
-body[data-theme='dark'] .main-card-footer,
-body[data-theme='dark'] .ball-container,
-body[data-theme='dark'] .number-input,
-body[data-theme='dark'] .btn-primary:hover,
-body[data-theme='dark'] .badge,
-body[data-theme='dark'] .footer,
-body[data-theme='dark'] .navbar-toggler,
-body[data-theme='dark'] #mabAndImage,
-body[data-theme='dark'] #detailsInfo,
-body[data-theme='dark'] #reviewForm,
-body[data-theme='dark'] #reviewList {
+body[data-bs-theme="dark"] .search-container,
+body[data-bs-theme="dark"] .userProfile-tabs-main,
+body[data-bs-theme="dark"] .sidebar,
+body[data-bs-theme="dark"] .list-group-item,
+body[data-bs-theme="dark"] .flatpickr-calendar,
+body[data-bs-theme="dark"] #calendar,
+body[data-bs-theme="dark"] .point-summary,
+body[data-bs-theme="dark"] #pointHistoryTable,
+body[data-bs-theme="dark"] .fc-toolbar,
+body[data-bs-theme="dark"] .table thead th,
+body[data-bs-theme="dark"] .main-card,
+body[data-bs-theme="dark"] .nav-pills .nav-link.active,
+body[data-bs-theme="dark"] .nav-pills .nav-link:hover,
+body[data-bs-theme="dark"] .card,
+body[data-bs-theme="dark"] .formBx,
+body[data-bs-theme="dark"] .container,
+body[data-bs-theme="dark"] .content,
+body[data-bs-theme="dark"] .modal-content,
+body[data-bs-theme="dark"] .dropdown-menu,
+body[data-bs-theme="dark"] .table,
+body[data-bs-theme="dark"] .fc,
+body[data-bs-theme="dark"] .form-control,
+body[data-bs-theme="dark"] .profile-summary,
+body[data-bs-theme="dark"] .point-summary,
+body[data-bs-theme="dark"] .flatpickr-calendar,
+body[data-bs-theme="dark"] .accordion-button,
+body[data-bs-theme="dark"] .accordion-body,
+body[data-bs-theme="dark"] header,
+body[data-bs-theme="dark"] .navbar,
+body[data-bs-theme="dark"] footer,
+body[data-bs-theme="dark"] .background-fill,
+body[data-bs-theme="dark"] .lotto-container,
+body[data-bs-theme="dark"] .main-card-header,
+body[data-bs-theme="dark"] .main-card-footer,
+body[data-bs-theme="dark"] .ball-container,
+body[data-bs-theme="dark"] .number-input,
+body[data-bs-theme="dark"] .btn-primary:hover,
+body[data-bs-theme="dark"] .badge,
+body[data-bs-theme="dark"] .footer,
+body[data-bs-theme="dark"] .navbar-toggler,
+body[data-bs-theme="dark"] #mabAndImage,
+body[data-bs-theme="dark"] #detailsInfo,
+body[data-bs-theme="dark"] #reviewForm,
+body[data-bs-theme="dark"] #reviewList {
   background-color: #242a35 !important;
   color: #ffffff !important;
 }
 
 /* 버튼 스타일 */
-body[data-theme='dark'] .button,
-body[data-theme='dark'] .nav-btn,
-body[data-theme='dark'] .btn-outline-primary,
-body[data-theme='dark'] .btn-primary,
-body[data-theme='dark'] .btn,
-body[data-theme='dark'] .formBx .form input[type="submit"],
-body[data-theme='dark'] .box button {
+body[data-bs-theme="dark"] .button,
+body[data-bs-theme="dark"] .nav-btn,
+body[data-bs-theme="dark"] .btn-outline-primary,
+body[data-bs-theme="dark"] .btn-primary,
+body[data-bs-theme="dark"] .btn,
+body[data-bs-theme="dark"] .formBx .form input[type="submit"],
+body[data-bs-theme="dark"] .box button {
   background-color: #4a6fa5 !important;
   color: #ffffff !important;
-  border: none;
+  border: none !important;
 }
 
-body[data-theme='dark'] .button:hover,
-body[data-theme='dark'] .nav-btn:hover,
-body[data-theme='dark'] .btn-outline-primary:hover,
-body[data-theme='dark'] .btn-primary:hover,
-body[data-theme='dark'] .btn:hover,
-body[data-theme='dark'] .formBx .form input[type="submit"]:hover,
-body[data-theme='dark'] .box button:hover,
-body[data-theme='dark'] .modal-footer .btn:hover {
+body[data-bs-theme="dark"] .button:hover,
+body[data-bs-theme="dark"] .nav-btn:hover,
+body[data-bs-theme="dark"] .btn-outline-primary:hover,
+body[data-bs-theme="dark"] .btn-primary:hover,
+body[data-bs-theme="dark"] .btn:hover,
+body[data-bs-theme="dark"] .formBx .form input[type="submit"]:hover,
+body[data-bs-theme="dark"] .box button:hover,
+body[data-bs-theme="dark"] .modal-footer .btn:hover {
   background-color: #3a5a8a !important;
 }
 
 /* 입력 필드 스타일 */
-body[data-theme='dark'] input[type="text"],
-body[data-theme='dark'] input[type="email"],
-body[data-theme='dark'] input[type="password"],
-body[data-theme='dark'] textarea,
-body[data-theme='dark'] select,
-body[data-theme='dark'] .form-control,
-body[data-theme='dark'] .formBx .form input {
-  background-color: #2c3340;
-  color: #ffffff;
-  border: 2px solid #333b4d;
+body[data-bs-theme="dark"] input[type="text"],
+body[data-bs-theme="dark"] input[type="email"],
+body[data-bs-theme="dark"] input[type="password"],
+body[data-bs-theme="dark"] textarea,
+body[data-bs-theme="dark"] select,
+body[data-bs-theme="dark"] .form-control,
+body[data-bs-theme="dark"] .formBx .form input {
+  background-color: #2c3340 !important;
+  color: #ffffff !important;
+  border: 2px solid #333b4d !important;
 }
 
 /* 플레이스홀더 스타일 */
-body[data-theme='dark'] ::placeholder,
-body[data-theme='dark'] ::-webkit-input-placeholder,
-body[data-theme='dark'] :-ms-input-placeholder,
-body[data-theme='dark'] ::-ms-input-placeholder,
-body[data-theme='dark'] :-moz-placeholder,
-body[data-theme='dark'] ::-moz-placeholder,
-body[data-theme='dark'] input::placeholder,
-body[data-theme='dark'] .formBx .form input::placeholder {
+body[data-bs-theme="dark"] ::placeholder,
+body[data-bs-theme="dark"] ::-webkit-input-placeholder,
+body[data-bs-theme="dark"] :-ms-input-placeholder,
+body[data-bs-theme="dark"] ::-ms-input-placeholder,
+body[data-bs-theme="dark"] :-moz-placeholder,
+body[data-bs-theme="dark"] ::-moz-placeholder,
+body[data-bs-theme="dark"] input::placeholder,
+body[data-bs-theme="dark"] .formBx .form input::placeholder {
   color: #aaaaaa !important;
 }
 
 /* 모달 스타일 */
-body[data-theme='dark'] .modal-header,
-body[data-theme='dark'] .modal-footer {
-  border-color: #333b4d;
+body[data-bs-theme="dark"] .modal-header,
+body[data-bs-theme="dark"] .modal-footer {
+  border-color: #333b4d !important;
 }
 
-body[data-theme='dark'] .modal-header .btn-close {
-  filter: invert(1);
+body[data-bs-theme="dark"] .modal-header .btn-close {
+  filter: invert(1) !important;
 }
 
 /* 프로필 이미지 업로드 스타일 */
-body[data-theme='dark'] .image-upload label img {
+body[data-bs-theme="dark"] .image-upload label img {
   border: 1px solid #555b6d !important;
 }
 
-body[data-theme='dark'] .image-upload .upload-icon {
+body[data-bs-theme="dark"] .image-upload .upload-icon {
   color: rgba(255, 255, 255, 0.7) !important;
 }
 
 /* 리스트 아이템 스타일 */
-body[data-theme='dark'] .list-group-item:hover {
+body[data-bs-theme="dark"] .list-group-item:hover {
   background-color: #333b4d !important;
 }
 
 /* 아코디언 스타일 */
-body[data-theme='dark'] .accordion-button,
-body[data-theme='dark'] .accordion-header {
-  background-color: #2c3340;
+body[data-bs-theme="dark"] .accordion-button,
+body[data-bs-theme="dark"] .accordion-header {
+  background-color: #2c3340 !important;
 }
 
-body[data-theme='dark'] .accordion-button::after {
-  filter: invert(1);
+body[data-bs-theme="dark"] .accordion-button::after {
+  filter: invert(1) !important;
 }
 
 /* 캘린더 스타일 */
-body[data-theme='dark'] .flatpickr-day.selected,
-body[data-theme='dark'] .flatpickr-day.startRange,
-body[data-theme='dark'] .flatpickr-day.endRange,
-body[data-theme='dark'] .fc-event-positive,
-body[data-theme='dark'] .fc-event-negative {
+body[data-bs-theme="dark"] .flatpickr-day.selected,
+body[data-bs-theme="dark"] .flatpickr-day.startRange,
+body[data-bs-theme="dark"] .flatpickr-day.endRange,
+body[data-bs-theme="dark"] .fc-event-positive,
+body[data-bs-theme="dark"] .fc-event-negative {
   background-color: #007bff !important;
   color: #ffffff !important;
 }
 
-body[data-theme='dark'] .flatpickr-day.selected:hover,
-body[data-theme='dark'] .flatpickr-day.startRange:hover,
-body[data-theme='dark'] .flatpickr-day.endRange:hover {
+body[data-bs-theme="dark"] .flatpickr-day.selected:hover,
+body[data-bs-theme="dark"] .flatpickr-day.startRange:hover,
+body[data-bs-theme="dark"] .flatpickr-day.endRange:hover {
   background-color: #0056b3 !important;
 }
 
-body[data-theme='dark'] .flatpickr-day:hover {
+body[data-bs-theme="dark"] .flatpickr-day:hover {
   background-color: #333b4d !important;
 }
 
-body[data-theme='dark'] .fc-event {
+body[data-bs-theme="dark"] .fc-event {
   background-color: #4a6fa5 !important;
   border: none;
 }
 
-body[data-theme='dark'] .fc-day-today,
-body[data-theme='dark'] .selected-date {
+body[data-bs-theme="dark"] .fc-day-today,
+body[data-bs-theme="dark"] .selected-date {
   background-color: var(--primary-color) !important;
   color: white !important;
 }
 
 /* 스크롤바 스타일 */
-body[data-theme='dark'] ::-webkit-scrollbar {
-  width: 12px;
+body[data-bs-theme="dark"] ::-webkit-scrollbar {
+  width: 12px !important;
 }
 
-body[data-theme='dark'] ::-webkit-scrollbar-track {
-  background: #242a35;
+body[data-bs-theme="dark"] ::-webkit-scrollbar-track {
+  background: #242a35 !important;
 }
 
-body[data-theme='dark'] ::-webkit-scrollbar-thumb {
-  background-color: #333b4d;
+body[data-bs-theme="dark"] ::-webkit-scrollbar-thumb {
+  background-color: #333b4d !important;
 }
 
-body[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
-  background: #3a5a8a;
+body[data-bs-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #3a5a8a !important;
 }
 
 /* 링크 스타일 */
-body[data-theme='dark'] .formBx .form a,
-body[data-theme='dark'] .footer a {
+body[data-bs-theme="dark"] .formBx .form a,
+body[data-bs-theme="dark"] .footer a {
   color: #3182f6 !important;
 }
 
-body[data-theme='dark'] .formBx .form a:hover,
-body[data-theme='dark'] .footer a:hover {
+body[data-bs-theme="dark"] .formBx .form a:hover,
+body[data-bs-theme="dark"] .footer a:hover {
   color: #1c64f2 !important;
 }
 
 /* 테이블 스타일 */
-body[data-theme='dark'] table th,
-body[data-theme='dark'] table td {
-  border-color: #333b4d;
+body[data-bs-theme="dark"] table th,
+body[data-bs-theme="dark"] table td {
+  border-color: #333b4d !important;
 }
 
-body[data-theme='dark'] .table > :not(caption) > * > * {
-  background-color: #191f28;
+body[data-bs-theme="dark"] .table > :not(caption) > * > * {
+  background-color: #191f28 !important;
 }
 
-body[data-theme='dark'] table tbody tr:nth-of-type(odd) {
-  background-color: #2c3340;
+body[data-bs-theme="dark"] table tbody tr:nth-of-type(odd) {
+  background-color: #2c3340 !important;
 }
 
-body[data-theme='dark'] table tbody tr:hover {
-  background-color: #3182f6;
-  color: #ffffff;
+body[data-bs-theme="dark"] table tbody tr:hover {
+  background-color: #3182f6 !important;
+  color: #ffffff !important;
 }
 
 /* 반응형 스타일 */
 @media (max-width: 768px) {
-  body[data-theme='dark'] #gitHubIcon {
-    text-align: left;
-    margin-top: 0;
+  body[data-bs-theme="dark"] #gitHubIcon {
+    text-align: left !important;
+    margin-top: 0 !important;
   }
 }

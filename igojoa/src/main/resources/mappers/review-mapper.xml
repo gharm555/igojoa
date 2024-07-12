@@ -84,6 +84,7 @@
 		<bind name="startRowValue" value="startRowValue" />
 		<bind name="rowCnt" value="rowCnt" />
 		SELECT
+		COALESCE(p.cumulativePoint, 0) div 1000 AS `level`,
 		u.nickName ,
 		r.review ,
 		r.modifiedAt ,
@@ -142,6 +143,10 @@
 		r.placeName
 		AND myLike.userId
 		= r.userId
+		LEFT JOIN
+        points p 
+        ON
+        r.userId = p.userId 
 		LEFT JOIN
 		users u
 		ON

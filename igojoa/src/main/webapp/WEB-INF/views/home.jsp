@@ -19,6 +19,10 @@
     <link rel="manifest" href="${ webmanifest }">
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+   <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
 
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -49,44 +53,6 @@
 <body>
   <header>
     <%@ include file="header.jspf"%>
-   
-<div class="banner-toggle-container">
-        <button class="btn btn-outline-primary banner-toggle nav-btn" id="banner-toggle">
-          <i class="fas fa-chevron-down"></i>
-        </button>
-      </div>
-
-      <div class="banner-container">
-        <div class="banner-content">
-          <div
-            id="banner-inner"
-            class="carousel slide"
-            data-bs-ride="carousel"
-            data-bs-interval="5000"
-            data-bs-pause="false"
-          >
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EC%97%AC%EB%A6%84+%EC%9D%B4%EB%B2%A4%ED%8A%B8.png"  alt="..." />
-              </div>
-              <div class="carousel-item">
-                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B3%B5%EC%A7%80%EC%82%AC%ED%95%AD.png"  alt="..." />
-              </div>
-              <div class="carousel-item">
-                <img src="https://igojoa.s3.ap-northeast-2.amazonaws.com/%EA%B4%91%EA%B3%A0%ED%8C%90.png"  alt="..." />
-              </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#banner-inner" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#banner-inner" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
-        </div>
-      </div>
     </header>
 
     <main>

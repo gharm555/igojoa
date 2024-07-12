@@ -7,7 +7,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+        <c:url var="darkModeCss" value="/css/dark_mode.css" />
+        <link rel="stylesheet" href="${darkModeCss}">
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -28,6 +29,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
         />
+
 
         <c:url var="cssResetCss" value="/css/cssReset.css" />
         <link rel="stylesheet" href="${cssResetCss}" />
@@ -50,7 +52,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     </head>
     <body>
         <header><%@ include file="../header.jspf" %></header>
-        <main style="margin-top: 120px; margin-bottom: 90px;" class="userProfile-main">
+        <main style="margin-top: 120px; margin-bottom: 15%;" class="userProfile-main">
             <div class="container p-0">
                 <div class="row g-0 h-100">
                     <div class="col-md-3 sidebar">
@@ -435,7 +437,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                                     <div>
                                         <button
                                             type="submit"
-                                            class="btn btn-primary"
+                                            class="btn btn-outline-success"
                                             id="updateBtn"
                                         >
                                             정보 수정
@@ -507,8 +509,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                                         type="text"
                                         id="date-range"
                                         placeholder=""
+                                        class="dateRange"
                                     />
-                                    <nav>
+                                    <nav class="dateRangeWithNavs">
                                         <div
                                             class="nav nav-tabs"
                                             id="nav-tab"
@@ -784,7 +787,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
         <script src="${navbarJs}"></script>
         <c:url var="userProfileJs" value="/js/userProfile.js" />
         <script src="${userProfileJs}"></script>
-        <c:url var="darkMode" value="/js/dark_mode.js" />
-        <script src="${darkMode}"></script>
+        <c:url var="darkModeJs" value="/js/dark_mode.js" />
+        <script src="${darkModeJs}"></script>
     </body>
 </html>
