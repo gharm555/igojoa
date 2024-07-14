@@ -18,7 +18,6 @@
     <c:url var="webmanifest" value="/favicon/site.webmanifest" />
     <link rel="manifest" href="${ webmanifest }">
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
    <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -91,7 +90,7 @@
     </div>
     <div class="d-flex justify-content-center mb-4">
 <div class="btn-group" role="group">
-    <button class="btn btn-outline-secondary" id="iScore" type="button" data-sortIscore="1">난이도</button>
+    <button class="btn btn-outline-secondary" id="iScore" type="button" data-sortIscore="1">아이난이도</button>
     <button class="btn btn-outline-secondary" id="placeVerified" type="button" data-sortPlaceVerified="1">방문횟수</button>
     <button class="btn btn-outline-secondary" id="userFavorite" type="button" data-sortUserFavorite="1">좋아요</button>
     <button class="btn btn-outline-secondary" id="reviewCnt" type="button" data-sortReviewCnt="1">리뷰수</button>

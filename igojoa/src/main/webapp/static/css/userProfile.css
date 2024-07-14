@@ -249,23 +249,23 @@ h2 {
 }
 
 .circular-icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    /* background: red; */
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: initial;
-    font-size: 14px;
-    font-weight: bold;
-    margin-right: 10px;
-    flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  /* background: red; */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: initial;
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 10px;
+  flex-shrink: 0;
 }
 
-/* 리스트 스크롤바 */
+/* 리스트 스크롤바 풀화면 vh73으로 바꾼게 맞음 07-12 오전에 바꾼거임  */
 .list-group {
-  max-height: calc(70vh - 280px);
+  max-height: calc(73vh - 280px);
   overflow-y: auto;
   padding-bottom: 20px;
 }
@@ -399,13 +399,13 @@ h2 {
 
 /* 내정보수정에서 사진 가운데로 보내는 설정 */
 .imageInImageChangeContainer {
-    align-self: center;
+  align-self: center;
 }
 
 /* 내정보수정을 포함한 모든 컨테이너에서 스크롤 보여주기 */
 .userProfile-tabs-main {
-    overflow-y: scroll;
-    height: 100%;
+  overflow-y: scroll;
+  height: 100%;
 }
 
 /* 반응형 스타일 */
@@ -535,17 +535,17 @@ h2 {
 }
 
 @media (max-width: 390px) {
-    #dateAndTabContainer {
-        flex-flow: column;
-    }
+  #dateAndTabContainer {
+    flex-flow: column;
+  }
 
-    .containerImageChange {
-        flex-flow: column;
-    }
+  .containerImageChange {
+    flex-flow: column;
+  }
 
-    .buttons {
-        text-align-last: center;
-    }
+  .buttons {
+    text-align-last: center;
+  }
 
   .buttons {
     text-align-last: center;
@@ -656,25 +656,31 @@ h2 {
     margin-top: 15px;
   }
 
-    .userProfile-main {
-        margin-top: 68px !important;
-    }
+  .userProfile-main {
+    margin-top: 68px !important;
+  }
+  /* 390 화면일때 리스트 높이 정한거임 07-12 오전에 바꾼거임 여긴 96vh가 찐임*/
+  .list-group {
+    max-height: calc(96vh - 280px);
+    overflow-y: auto;
+    padding-bottom: 20px;
+  }
 
-    /* 상원 추가 촉수엄금 -----> */
-    .dateRangeWithNavs,
-    .dateRange {
-        width: 100% !important;
-    }
-    
-    /* 내정보수정을 포함한 모든 컨테이너에서 스크롤 보여주기 */
-    .userProfile-tabs-main {
-        padding: 1rem !important;
-    }
-    
-    .infoInImageChangeContainer {
-      padding-left: 0;
-    }
-    /* <------------ 촉수엄금 */
+  /* 상원 추가 촉수엄금 -----> */
+  .dateRangeWithNavs,
+  .dateRange {
+    width: 100% !important;
+  }
+
+  /* 내정보수정을 포함한 모든 컨테이너에서 스크롤 보여주기 */
+  .userProfile-tabs-main {
+    padding: 1rem !important;
+  }
+
+  .infoInImageChangeContainer {
+    padding-left: 0;
+  }
+  /* <------------ 촉수엄금 */
 }
 
 .custom-all-period-btn {

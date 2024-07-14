@@ -228,9 +228,9 @@ function validateInput(type, value) {
       break;
     case "password":
       $messageElement = document.querySelector("#password-check-message");
-      const passwordPattern = /^(?=.*[0-9]).{8,}$/;
+      const passwordPattern = /^(?=.*[0-9]).{8,11}$/;
       if (!passwordPattern.test(value)) {
-        errorMessage = "유효하지 않은 비밀번호 입니다. 8자 이상으로 입력해주세요.";
+        errorMessage = "8자리 이상 12자리 미만, 숫자가 포함된 비밀번호로 해주세요"; // 여기 메시지 바꾼거임 07-12 오전에 바꾼거임
       }
       displayValidationMessage($messageElement, errorMessage);
       break;
@@ -550,7 +550,7 @@ function resetPassword(userId) {
   const $confirmNewPassword = document.querySelector("#confirmNewPassword");
   const $resetPasswordInvalidMessage = document.querySelector("#resetPasswordInvalidMessage");
   const $resetPasswordConfirmMessage = document.querySelector("#resetPasswordConfirmMessage");
-  const passwordPattern = /^(?=.*[0-9]).{8,}$/;
+  const passwordPattern = /^(?=.*[0-9]).{8,11}$/; // 여기 바꾼거임 07-12오전
 
   let valid = true;
 
@@ -558,7 +558,7 @@ function resetPassword(userId) {
   $resetPasswordConfirmMessage.style.display = "none";
 
   if (!passwordPattern.test($newPassword.value)) {
-    $resetPasswordInvalidMessage.textContent = "유효하지 않은 비밀번호 입니다. 8자 이상으로 입력해주세요.";
+    $resetPasswordInvalidMessage.textContent = "8자리 이상 12자리 미만, 숫자가 포함된 비밀번호로 해주세요"; // 메시지 바꾼거임 07-12
     $resetPasswordInvalidMessage.style.display = "block";
     valid = false;
   }
