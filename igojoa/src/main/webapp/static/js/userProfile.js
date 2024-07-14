@@ -731,6 +731,8 @@ function formatDate(date) {
   return `${year}.${month}.${day}`;
 }
 
+
+// 내 포인트 내역
 let calendar;
 let currentMonth;
 let selectedDate;
@@ -747,8 +749,8 @@ function initializePointTab() {
   fetchAttendanceData(currentMonth).then(() => {
     initializeCalendar();
     updatePointHistoryForDate(selectedDate);
-    updatePointSummaryForMonth(currentMonth); // 이 줄이 추가되었습니다
     updatePointSummaryForDay(selectedDate);
+    updatePointSummaryForMonth(currentMonth); // 이 줄이 추가되었습니다
   });
 }
 
