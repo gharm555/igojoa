@@ -46,7 +46,7 @@
     <link rel="stylesheet" href="${imageGalleryCss}" />
     <c:url var="lottoCss" value="/css/lotto.css" />
     <link rel="stylesheet" href="${lottoCss}" />
-    
+
 
 </head>
 
@@ -128,6 +128,7 @@
                     <div class="main-card-footer bg-transparent">
                         <div class="footer-meta">
                             <div class="user-info">
+                                   <span class="level circular-icon" id="levelIcon">${place.level}</span>
                                 <span class="username">${place.nickName}</span>
                             </div>
                             <div class="post-info">

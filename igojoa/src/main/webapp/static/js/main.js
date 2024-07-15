@@ -1,4 +1,70 @@
 document.addEventListener("DOMContentLoaded", () => {
+  function levelColor(level) {
+    if (level >= 90) {
+      return {
+        bg: "linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff)",
+        animation: "rainbow 5s linear infinite, sparkle 2s linear infinite",
+      };
+    }
+    if (level >= 80)
+      return { bg: "linear-gradient(145deg, #C0C0C0, #A9A9A9, #C0C0C0)" }; // 은
+    if (level >= 70) return { bg: "linear-gradient(145deg, #9400D3, #8A2BE2)" }; // 보
+    if (level >= 60) return { bg: "linear-gradient(145deg, #4B0082, #483D8B)" }; // 남
+    if (level >= 50) return { bg: "linear-gradient(145deg, #0000FF, #1E90FF)" }; // 파
+    if (level >= 40) return { bg: "linear-gradient(145deg, #00FF00, #32CD32)" }; // 초
+    if (level >= 30) return { bg: "linear-gradient(145deg, #FFFF00, #FFD700)" }; // 노
+    if (level >= 20) return { bg: "linear-gradient(145deg, #FF4500, #FF6347)" }; // 주
+    if (level >= 10) return { bg: "linear-gradient(145deg, #FF0000, #DC143C)" }; // 빨
+    return { bg: "linear-gradient(145deg, #8B4513, #A0522D)" }; // 1 - 9 까지 색상
+  }
+
+  function setLevel(element, level) {
+    if (level >= 100) {
+      element.innerHTML = "👑";
+      element.style.background = "none";
+      element.style.fontSize = "30px";
+      element.style.top = "-18px";
+      element.style.position = "relative";
+      element.style.animation = "sparkle 1.5s infinite";
+      element.style.filter = "drop-shadow(0 0 2px gold)";
+    } else {
+      const colorStyle = levelColor(level);
+      element.innerHTML = level;
+      element.style.background = colorStyle.bg;
+      if (level >= 90) {
+        element.style.animation = colorStyle.animation;
+        element.style.backgroundSize = "300% 300%";
+      } else {
+        element.style.animation = "none";
+        element.style.backgroundSize = "100% 100%";
+      }
+    }
+  }
+
+  // 필요한 CSS 애니메이션 추가
+  const style = document.createElement("style");
+  style.textContent = `
+    @keyframes rainbow {
+      0% { background-position: 0% 50% }
+      50% { background-position: 100% 50% }
+      100% { background-position: 0% 50% }
+    }
+    @keyframes sparkle {
+      0% { filter: brightness(100%) }
+      50% { filter: brightness(150%) }
+      100% { filter: brightness(100%) }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // 페이지 로드 시 모든 카드의 레벨 설정
+  document.querySelectorAll(".circular-icon").forEach((element) => {
+    const level = parseInt(element.textContent, 10);
+    setLevel(element, level);
+  });
+
+
+document.addEventListener("DOMContentLoaded", () => {
   function updateButtonVisibility(isLoggedIn) {
     const $sortButtons = document.querySelectorAll(".btn-group .btn[data-sortUserFavorite]");
     $sortButtons.forEach((button) => {
@@ -202,6 +268,7 @@ function createCard(place, index) {
         <div class="main-card-footer bg-transparent">
           <div class="footer-meta">
             <div class="user-info">
+            <span class="level circular-icon" id="levelIcon">${place.level}</span>
               <span class="username">${place.nickName}</span>
             </div>
             <div class="post-info">
@@ -215,6 +282,10 @@ function createCard(place, index) {
         </div>
       </div>
     `;
+    const levelElement = $newCard.querySelector(".level.circular-icon");
+    setLevel(levelElement, place.level);
+    
+    
   return $newCard;
 }
 
@@ -262,7 +333,7 @@ $sortButtons.forEach((button) => {
     fetchPlaces(initialItemsPerPage, true, currentSortKey, currentSortValue); // 정렬 시 처음 9개 로드
   });
 });
-
+});
 document.addEventListener("click", function (event) {
   if (event.target.classList.contains("main-custom-heart")) {
     const $heartIcon = event.target;
@@ -504,3 +575,4 @@ function checkSession() {
 setInterval(checkSession, 30000);
 // 페이지 로드 시 즉시 세션 체크
 checkSession();
+

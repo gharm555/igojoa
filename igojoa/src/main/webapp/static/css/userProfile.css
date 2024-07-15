@@ -715,7 +715,6 @@ h2 {
 }
 
 .flatpickr-calendar {
-  /*width: 350px !important; /* 지우면 많은게 편해짐 07-15*/
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
