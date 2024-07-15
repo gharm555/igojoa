@@ -129,11 +129,7 @@
                     <div class="main-card-footer bg-transparent">
                         <div class="footer-meta">
                             <div class="user-info">
-<<<<<<< HEAD
-                                <div id="circular-icon">${place.level}</div>
-=======
                                    <span class="level circular-icon" id="levelIcon">${place.level}</span>
->>>>>>> 08431d4a4d78cd867a6890cb0cc68645216e6edb
                                 <span class="username">${place.nickName}</span>
                             </div>
                             <div class="post-info">
