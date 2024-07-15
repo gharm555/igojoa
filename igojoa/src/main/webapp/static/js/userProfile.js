@@ -3,7 +3,9 @@ const $passwordShowBtn = document.querySelector("#passwordShowBtn");
 const $newPasswordInput = document.querySelector("#newPassword");
 const $confirmPasswordInput = document.querySelector("#confirmPassword");
 const $passwordFeedback = document.querySelector("#passwordFeedback");
-const $confirmPasswordFeedback = document.querySelector("#confirmPasswordFeedback");
+const $confirmPasswordFeedback = document.querySelector(
+  "#confirmPasswordFeedback"
+);
 const $passwordStrength = document.querySelector("#passwordStrength");
 // <---------- 비밀번호 변수
 
@@ -110,7 +112,10 @@ function checkPasswordStrength(password) {
 
 // 비밀번호 일치 여부 확인
 function checkPasswordMatch() {
-  if ($newPasswordInput.value === $confirmPasswordInput.value && $newPasswordInput.value !== "") {
+  if (
+    $newPasswordInput.value === $confirmPasswordInput.value &&
+    $newPasswordInput.value !== ""
+  ) {
     $confirmPasswordFeedback.textContent = "비밀번호가 일치합니다.";
     $confirmPasswordFeedback.style.color = "green";
   } else if ($confirmPasswordInput.value === "") {
@@ -134,7 +139,8 @@ document.querySelector("input#nickName").addEventListener("input", function () {
     .then((response) => {
       if (response.data === true) {
         if (nickName.length >= 12) {
-          $nickNameFeedback.textContent = "닉네임은 12글자 미만으로 입력해주세요.";
+          $nickNameFeedback.textContent =
+            "닉네임은 12글자 미만으로 입력해주세요.";
           $nickNameFeedback.style.color = "red";
         } else {
           $nickNameFeedback.textContent = "변경가능한 닉네임입니다.";
@@ -148,7 +154,8 @@ document.querySelector("input#nickName").addEventListener("input", function () {
     })
     .catch((error) => {
       console.error("Error:", error);
-      $nickNameFeedback.textContent = "오류가 발생했습니다. 다시 시도해 주세요.";
+      $nickNameFeedback.textContent =
+        "오류가 발생했습니다. 다시 시도해 주세요.";
       $nickNameFeedback.style.color = "red";
     });
 });
@@ -172,7 +179,8 @@ document.querySelector("input#email").addEventListener("input", function () {
     .then((response) => {
       if (response.data === true) {
         if (email.length >= 20) {
-          $emailFeedback.textContent = "이메일은 20글자 미만의 경우에만 사용가능합니다.";
+          $emailFeedback.textContent =
+            "이메일은 20글자 미만의 경우에만 사용가능합니다.";
           $emailFeedback.style.catch = "red";
         } else {
           $emailFeedback.textContent = "유효한 정보입니다.";
@@ -227,7 +235,9 @@ function checkPhoneNumber() {
 
   if (phone1.length === 3 && phone2.length === 4 && phone3.length === 4) {
     axios
-      .get(`./checkPhoneNumber?phone1=${phone1}&phone2=${phone2}&phone3=${phone3}`)
+      .get(
+        `./checkPhoneNumber?phone1=${phone1}&phone2=${phone2}&phone3=${phone3}`
+      )
       .then((response) => {
         if (response.data === true) {
           $phoneFeedback.textContent = "유효한 정보입니다.";
@@ -294,7 +304,11 @@ function checkForChanges() {
   const currentValues = {
     nickName: $nickName.value.trim(),
     email: $emailInput.value.trim(),
-    phoneNumber: ($phone1Input.value + $phone2Input.value + $phone3Input.value).trim(),
+    phoneNumber: (
+      $phone1Input.value +
+      $phone2Input.value +
+      $phone3Input.value
+    ).trim(),
   };
 
   // 경고 메시지 초기화
@@ -306,26 +320,32 @@ function checkForChanges() {
   let isChanged = false;
   let isValid = true;
   for (let key in originalValues) {
-    if (originalValues[key] !== currentValues[key] && currentValues[key] !== "") {
+    if (
+      originalValues[key] !== currentValues[key] &&
+      currentValues[key] !== ""
+    ) {
       isChanged = true;
     }
 
     // 전혀 공백을 허용하지 않는 경우
     if (!noSpaceRegex.test(currentValues[key])) {
       isValid = false;
-      document.querySelector(`#${key}Feedback`).textContent = "공백이 포함되어서는 안됩니다.";
+      document.querySelector(`#${key}Feedback`).textContent =
+        "공백이 포함되어서는 안됩니다.";
     }
 
     // 연속된 공백을 허용하지 않는 경우
     else if (!noConsecutiveSpaceRegex.test(currentValues[key])) {
       isValid = false;
-      document.querySelector(`#${key}Feedback`).textContent = "공백이 포함되어서는 안됩니다.";
+      document.querySelector(`#${key}Feedback`).textContent =
+        "공백이 포함되어서는 안됩니다.";
     }
 
     // 끝에 공백이 있는 경우
     else if (!noTrailingSpaceRegex.test(currentValues[key])) {
       isValid = false;
-      document.querySelector(`#${key}Feedback`).textContent = "공백이 포함되어서는 안됩니다.";
+      document.querySelector(`#${key}Feedback`).textContent =
+        "공백이 포함되어서는 안됩니다.";
     }
   }
 
@@ -341,23 +361,26 @@ function checkForChanges() {
   }
 
   // "정보 수정" 버튼 활성화 또는 비활성화
-  $updateBtn.disabled = !(isChanged && isValid && (isPasswordValid || (newPassword === "" && confirmPassword === "")));
-    // "정보 수정" 버튼 활성화 또는 비활성화
-    $updateBtn.disabled = !(
-        isChanged &&
-        isValid &&
-        (isPasswordValid || (newPassword === "" && confirmPassword === ""))
-    );
-    
-	if ($updateBtn.disabled === false) {
-		$updateBtn.classList.remove("btn-outline-success");
-		$updateBtn.classList.add("btn-success");
-	} else {
-		$updateBtn.classList.remove("btn-success");
-		$updateBtn.classList.add("btn-outline-success");
-	}
-}
+  $updateBtn.disabled = !(
+    isChanged &&
+    isValid &&
+    (isPasswordValid || (newPassword === "" && confirmPassword === ""))
+  );
+  // "정보 수정" 버튼 활성화 또는 비활성화
+  $updateBtn.disabled = !(
+    isChanged &&
+    isValid &&
+    (isPasswordValid || (newPassword === "" && confirmPassword === ""))
+  );
 
+  if ($updateBtn.disabled === false) {
+    $updateBtn.classList.remove("btn-outline-success");
+    $updateBtn.classList.add("btn-success");
+  } else {
+    $updateBtn.classList.remove("btn-success");
+    $updateBtn.classList.add("btn-outline-success");
+  }
+}
 
 // 각 입력 필드에 이벤트 리스너 추가
 $nickName.addEventListener("input", checkForChanges);
@@ -387,7 +410,13 @@ const $searchInput = document.querySelector("#search-input");
 const $searchBtn = document.querySelector("#userActivitySearchBtn");
 const $dateRange = document.querySelector("#date-range");
 const $tabContent = document.querySelector("#nav-tabContent");
-const tabs = ["total", "favoritePlace", "likedReview", "writtenReview", "verifiedPlace"];
+const tabs = [
+  "total",
+  "favoritePlace",
+  "likedReview",
+  "writtenReview",
+  "verifiedPlace",
+];
 
 // 전역 변수 초기화
 let startDate = "";
@@ -493,7 +522,8 @@ function loadMoreData() {
 
   isLoading = true;
 
-  let searchKeyword = sessionStorage.getItem("searchKeyword") || $searchInput.value;
+  let searchKeyword =
+    sessionStorage.getItem("searchKeyword") || $searchInput.value;
   let largeAddress = $addressSelect.value;
   let endpoint = getEndpointFromTab(currentTab);
 
@@ -512,7 +542,10 @@ function loadMoreData() {
     .then((response) => {
       console.log("Data fetched successfully:", response.data);
       if (response.data.sessionSearchKeyword) {
-        sessionStorage.setItem("searchKeyword", response.data.sessionSearchKeyword);
+        sessionStorage.setItem(
+          "searchKeyword",
+          response.data.sessionSearchKeyword
+        );
       }
 
       let newData;
@@ -578,7 +611,8 @@ function displayActivityInfo(data, tab) {
   const container = document.querySelector(`#${tab}List`);
 
   if (data.length === 0 && currentPage === 0) {
-    container.innerHTML = '<li class="list-group-item">활동내역이 없습니다.</li>';
+    container.innerHTML =
+      '<li class="list-group-item">활동내역이 없습니다.</li>';
     return;
   }
 
@@ -699,7 +733,8 @@ datePicker = flatpickr("#date-range", {
     const wrapper = instance.calendarContainer;
     const clearButton = document.createElement("button");
     clearButton.innerHTML = "전체기간";
-    clearButton.className = "flatpickr-button flatpickr-clear custom-all-period-btn";
+    clearButton.className =
+      "flatpickr-button flatpickr-clear custom-all-period-btn";
     clearButton.addEventListener("click", function () {
       startDate = "";
       endDate = "";
@@ -737,7 +772,11 @@ $userPointTab.addEventListener("click", initializePointTab);
 
 function initializePointTab() {
   selectedDate = new Date();
-  currentMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+  currentMonth = new Date(
+    selectedDate.getFullYear(),
+    selectedDate.getMonth(),
+    1
+  );
   fetchAttendanceData(currentMonth).then(() => {
     initializeCalendar();
     updatePointHistoryForDate(selectedDate);
@@ -816,7 +855,8 @@ function initializeCalendar() {
 
         // 테이블 초기화 및 메시지 표시
         const $table = document.querySelector("#pointHistoryTable tbody");
-        $table.innerHTML = '<tr><td colspan="3" class="text-center">선택된 날짜의 내역이 없습니다.</td></tr>';
+        $table.innerHTML =
+          '<tr><td colspan="3" class="text-center">선택된 날짜의 내역이 없습니다.</td></tr>';
 
         // 선택된 날짜 초기화
         selectedDate = null;
@@ -834,7 +874,10 @@ function initializeCalendar() {
         info.el.style.color = "white";
         info.el.style.fontWeight = "bold";
       }
-      if (selectedDate && info.date.toDateString() === selectedDate.toDateString()) {
+      if (
+        selectedDate &&
+        info.date.toDateString() === selectedDate.toDateString()
+      ) {
         highlightSelectedDate(info.el, info.date);
       }
     },
@@ -859,7 +902,9 @@ function initializeCalendar() {
 }
 
 function isAttendanceDay(date) {
-  return attendanceDates.some((attendanceDate) => attendanceDate.toDateString() === date.toDateString());
+  return attendanceDates.some(
+    (attendanceDate) => attendanceDate.toDateString() === date.toDateString()
+  );
 }
 
 function highlightSelectedDate(cellEl, date) {
@@ -912,8 +957,10 @@ function updatePointSummaryForMonth(date) {
     .then(function (response) {
       const { totalPointsGained, totalPointsLost } = response.data;
       console.log(response.data);
-      document.querySelector("#monthlyEarnedPoints").textContent = totalPointsGained;
-      document.querySelector("#monthlySpentPoints").textContent = Math.abs(totalPointsLost);
+      document.querySelector("#monthlyEarnedPoints").textContent =
+        totalPointsGained;
+      document.querySelector("#monthlySpentPoints").textContent =
+        Math.abs(totalPointsLost);
     })
     .catch(function (error) {
       console.error("Error updating points display:", error);
@@ -935,7 +982,8 @@ function updatePointSummaryForDay(date) {
 
       if (dailyEarnedPoints) {
         dailyEarnedPoints.textContent = totalPointsGained || "0";
-        dailyEarnedPoints.style.color = totalPointsGained > 0 ? "green" : "black";
+        dailyEarnedPoints.style.color =
+          totalPointsGained > 0 ? "green" : "black";
       }
 
       if (dailySpentPoints) {
@@ -950,11 +998,14 @@ function updatePointHistoryTable(history) {
   $table.innerHTML = "";
 
   if (history.length === 0) {
-    $table.innerHTML = '<tr><td colspan="3" class="text-center">선택된 날짜의 내역이 없습니다.</td></tr>';
+    $table.innerHTML =
+      '<tr><td colspan="3" class="text-center">선택된 날짜의 내역이 없습니다.</td></tr>';
   } else {
     history.forEach(function (item) {
       const row = $table.insertRow();
-      row.insertCell(0).textContent = formatDate(new Date(item.pointsGetLoseTime));
+      row.insertCell(0).textContent = formatDate(
+        new Date(item.pointsGetLoseTime)
+      );
       row.insertCell(1).textContent = item.userActivity;
       const pointsCell = row.insertCell(2);
       pointsCell.textContent = item.points;
@@ -978,7 +1029,8 @@ function addDailySummary($table) {
   summaryRow1.insertCell(0).textContent = ""; // 첫 번째 열은 비워둡니다.
   summaryRow1.insertCell(1).textContent = "얻은 포인트";
   const earnedCell = summaryRow1.insertCell(2);
-  earnedCell.innerHTML = '<span id="dailyEarnedPoints" style="color: green;">-</span>';
+  earnedCell.innerHTML =
+    '<span id="dailyEarnedPoints" style="color: green;">-</span>';
   earnedCell.classList.add("points-column"); // 클래스 추가
 
   const summaryRow2 = $table.insertRow();
@@ -986,7 +1038,8 @@ function addDailySummary($table) {
   summaryRow2.insertCell(0).textContent = ""; // 첫 번째 열은 비워둡니다.
   summaryRow2.insertCell(1).textContent = "소비한 포인트";
   const spentCell = summaryRow2.insertCell(2);
-  spentCell.innerHTML = '<span id="dailySpentPoints" style="color: red;">-</span>';
+  spentCell.innerHTML =
+    '<span id="dailySpentPoints" style="color: red;">-</span>';
   spentCell.classList.add("points-column"); // 클래스 추가
 }
 
@@ -1150,31 +1203,31 @@ $withdrawalBtn.addEventListener("click", function () {
 const $levelIcon = document.querySelector(".circular-icon");
 
 function getLevel() {
-    const pointsText = document
-        .querySelector(".cumulativePoints")
-        .textContent.replace(/,/g, "");
-    const points = parseInt(pointsText, 10);
-    const level = Math.floor(points / 1000) + 1;
-    return level;
+  const pointsText = document
+    .querySelector(".cumulativePoints")
+    .textContent.replace(/,/g, "");
+  const points = parseInt(pointsText, 10);
+  const level = Math.floor(points / 1000) + 1;
+  return level;
 }
 
 function levelColor(level) {
-    if (level >= 90) {
-        return {
-            bg: "linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff)",
-            animation: "rainbow 5s linear infinite, sparkle 2s linear infinite"
-        };
-    }
-    if (level >= 80)
-        return { bg: "linear-gradient(145deg, #C0C0C0, #A9A9A9, #C0C0C0)" }; // 은
-    if (level >= 70) return { bg: "linear-gradient(145deg, #9400D3, #8A2BE2)" }; // 보
-    if (level >= 60) return { bg: "linear-gradient(145deg, #4B0082, #483D8B)" }; //남
-    if (level >= 50) return { bg: "linear-gradient(145deg, #0000FF, #1E90FF)" }; //파
-    if (level >= 40) return { bg: "linear-gradient(145deg, #00FF00, #32CD32)" }; //초
-    if (level >= 30) return { bg: "linear-gradient(145deg, #FFFF00, #FFD700)" }; //노
-    if (level >= 20) return { bg: "linear-gradient(145deg, #FF4500, #FF6347)" }; //주
-    if (level >= 10) return { bg: "linear-gradient(145deg, #FF0000, #DC143C)" }; //빨
-    return { bg: "linear-gradient(145deg, #8B4513, #A0522D)" }; //  1 - 9 까지 색상
+  if (level >= 90) {
+    return {
+      bg: "linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff)",
+      animation: "rainbow 5s linear infinite, sparkle 2s linear infinite",
+    };
+  }
+  if (level >= 80)
+    return { bg: "linear-gradient(145deg, #C0C0C0, #A9A9A9, #C0C0C0)" }; // 은
+  if (level >= 70) return { bg: "linear-gradient(145deg, #9400D3, #8A2BE2)" }; // 보
+  if (level >= 60) return { bg: "linear-gradient(145deg, #4B0082, #483D8B)" }; //남
+  if (level >= 50) return { bg: "linear-gradient(145deg, #0000FF, #1E90FF)" }; //파
+  if (level >= 40) return { bg: "linear-gradient(145deg, #00FF00, #32CD32)" }; //초
+  if (level >= 30) return { bg: "linear-gradient(145deg, #FFFF00, #FFD700)" }; //노
+  if (level >= 20) return { bg: "linear-gradient(145deg, #FF4500, #FF6347)" }; //주
+  if (level >= 10) return { bg: "linear-gradient(145deg, #FF0000, #DC143C)" }; //빨
+  return { bg: "linear-gradient(145deg, #8B4513, #A0522D)" }; //  1 - 9 까지 색상
 }
 
 function setLevel(level) {
@@ -1184,8 +1237,8 @@ function setLevel(level) {
     $levelIcon.style.fontSize = "30px";
     $levelIcon.style.top = "-21px";
     $levelIcon.style.position = "relative";
-    $levelIcon.style.animation = 'sparkle 1.5s infinite';
-    $levelIcon.style.filter = 'drop-shadow(0 0 2px gold)';
+    $levelIcon.style.animation = "sparkle 1.5s infinite";
+    $levelIcon.style.filter = "drop-shadow(0 0 2px gold)";
   } else {
     $levelIcon.innerHTML = level;
     const colorStyle = levelColor(level);
@@ -1201,7 +1254,7 @@ function setLevel(level) {
 }
 
 // 필요한 CSS 애니메이션 추가
-const style = document.createElement('style');
+const style = document.createElement("style");
 style.textContent = `
   @keyframes rainbow {
     0% { background-position: 0% 50% }

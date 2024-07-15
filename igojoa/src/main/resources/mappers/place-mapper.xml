@@ -22,7 +22,7 @@
 		ps.iScore ,
 		ps.review AS reviewCnt,
 		ps.placeVerified,
-		COALESCE(p2.cumulativePoint, 0) div 1000 AS `level`,
+		(COALESCE(p2.cumulativePoint, 0) div 1000) + 1 AS 'level',
 		COALESCE(u.nickName, '아이고조아') AS nickName,
 		COALESCE(br.review, '베스트 리뷰가 없습니다.') AS review ,
 		COALESCE(br.modifiedAt, '2024-01-01 00:00:00') AS modifiedAt,

@@ -139,7 +139,9 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("isCurrentlyLiked:", isCurrentlyLiked);
     // API 호출
     const uri = isCurrentlyLiked
-      ? `${contextPath}/${encodeURIComponent(placeName)}/deleteReviewLike?userId=` + userId
+      ? `${contextPath}/${encodeURIComponent(
+          placeName
+        )}/deleteReviewLike?userId=` + userId
       : `${contextPath}/${encodeURIComponent(placeName)}/clickReviewLike`;
     if (!isCurrentlyLiked) {
       axios
@@ -186,13 +188,19 @@ function updateReviewButtons() {
         <button id="updateReviewBtn" type="button" class="btn btn-warning">수정하기</button>
         <button id="deleteReviewBtn" type="button" class="btn btn-danger">삭제하기</button>
       `;
-    document.querySelector("#updateReviewBtn").addEventListener("click", updateReview);
-    document.querySelector("#deleteReviewBtn").addEventListener("click", deleteReview);
+    document
+      .querySelector("#updateReviewBtn")
+      .addEventListener("click", updateReview);
+    document
+      .querySelector("#deleteReviewBtn")
+      .addEventListener("click", deleteReview);
   } else {
     $container.innerHTML = `
         <button id="createReviewBtn" type="button" class="btn btn-primary">작성완료</button>
       `;
-    document.querySelector("#createReviewBtn").addEventListener("click", createReview);
+    document
+      .querySelector("#createReviewBtn")
+      .addEventListener("click", createReview);
   }
 }
 
@@ -227,6 +235,9 @@ function createReview() {
           updateReviewButtons();
           displayReviews(response.data);
           sortDropdownButton.textContent = "최신순";
+          sortObject.orderBy = "modifiedAtDESC";
+          resetScrollState();
+          sendSortRequest(sortObject);
         }
       })
       .catch((error) => {
@@ -268,6 +279,9 @@ function updateReview() {
           pd.review = reviewData.review;
           displayReviews(response.data);
           sortDropdownButton.textContent = "최신순";
+          sortObject.orderBy = "modifiedAtDESC";
+          resetScrollState();
+          sendSortRequest(sortObject);
         }
       })
       .catch((error) => {
@@ -297,6 +311,9 @@ function deleteReview() {
       resetReviewForm(); // 폼 초기화
       showAllReview(); // 리뷰 목록 새로고침
       sortDropdownButton.textContent = "좋아요 많은순";
+      sortObject.orderBy = "cntLikeDESC";
+      resetScrollState();
+      sendSortRequest(sortObject);
     })
     .catch((error) => {
       console.error("삭제 에러:", error);
@@ -307,7 +324,9 @@ function deleteReview() {
 //리뷰작성 폼에 있는 값을 만드는 객체 (재사용성을 위해서 따로 만들었음)
 function review() {
   console.log("리뷰작성 버튼 실행실행");
-  const selectedRadio = document.querySelector('input[name="difficulty"]:checked');
+  const selectedRadio = document.querySelector(
+    'input[name="difficulty"]:checked'
+  );
   let difficulty;
 
   console.log(`리뷰작성 버튼2 selectedRadio 실행실행`);
@@ -355,13 +374,16 @@ function showAllReview() {
     return;
   }
 
-  const uri = `${contextPath}/${encodeURIComponent(placeName)}/selectDefaultReview`;
+  const uri = `${contextPath}/${encodeURIComponent(
+    placeName
+  )}/selectDefaultReview`;
   console.log("모든 리뷰 가져오기 URI:", uri);
 
   axios
     .get(uri)
     .then((response) => {
       console.log("가져온 리뷰 목록:", response.data);
+      allReviews = response.data;
       displayReviews(response.data); // 게시물에 달린 리뷰들을 displayReviews 함수로 보냄
     })
     .catch((error) => {
@@ -392,12 +414,13 @@ function displayReviews(reviews) {
 
   const htmlStr = reviews.map((review) => createReviewCard(review)).join("");
   $reviewListSection.innerHTML = htmlStr;
-
+  levelCss();
   console.log("Reviews displayed");
 }
 
 // 리뷰에 들어갈 값
 function createReviewCard(review) {
+  // --------------------------------- 레벨 뱃지 --------------
   const badges = [
     { name: "parkingAvailable", text: "🚗 주차가능" },
     { name: "view", text: "🏞️ 경치좋은" },
@@ -413,47 +436,137 @@ function createReviewCard(review) {
   };
 
   const badgeHtml = badges
-    .map((badge) => (review[badge.name] ? `<span class="badge bg-primary me-1">${badge.text}</span>` : ""))
+    .map((badge) =>
+      review[badge.name]
+        ? `<span class="badge bg-primary me-1">${badge.text}</span>`
+        : ""
+    )
     .join("");
 
   const difficultyBadge = review.iscore
-    ? `<span class="badge bg-${difficultyMap[review.iscore]?.color || "secondary"} bg-gradient me-1">아이난이도: ${
+    ? `<span class="badge bg-${
+        difficultyMap[review.iscore]?.color || "secondary"
+      } bg-gradient me-1">아이난이도: ${
         difficultyMap[review.iscore]?.text || review.iscore
       }</span>`
     : "";
   const formattedDate = formatDate(review.modifiedAt);
-
+  const levelIconHtml = createLevelIconHtml(review.level);
   return `
-  <div class="card mb-2">
-    <div class="card-body py-2 px-3">
-      <div class="d-flex justify-content-between align-items-start mb-2">
-        <div>
-          ${badgeHtml}
-          ${difficultyBadge}
-        </div>
-      <button class="btn btn-outline-primary btn-sm like-btn p-1" data-review-id="${review.nickName}">
-<i class="bi bi-heart${review.myLike ? "-fill" : ""}"></i>
-<span class="like-count">${review.cntLike || 0}</span>
-</button>
-
+<div class="card mb-2">
+  <div class="card-body py-2 px-3">
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <div style="max-width:75%;max-height: 63px;">
+        ${badgeHtml}
+        ${difficultyBadge}
       </div>
-      <div class="d-flex">
-        <img src="${
-          review.userProfileUrl
-        }" alt="User profile" class="rounded-circle me-2" style="width: 55px; height: 55px;">
-        <div class="flex-grow-1">
-          <div class="d-flex justify-content-between align-items-center mb-1">
-            <h5 id="nickName"class="card-title mb-0">${review.nickName}</h5>
-            <small class="text-muted" style="font-size: 0.75rem;">${formattedDate}</small>
+      <button class="btn btn-outline-primary btn-sm like-btn p-1" data-review-id="${
+        review.nickName
+      }">
+        <i class="bi bi-heart${review.myLike ? "-fill" : ""}"></i>
+        <span class="like-count">${review.cntLike || 0}</span>
+      </button>
+    </div>
+    <div class="d-flex">
+      <img src="${
+        review.userProfileUrl
+      }" alt="User profile" class="rounded-circle me-2" style="width: 55px; height: 55px;">
+      <div class="flex-grow-1">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+        <div class="d-flex align-items-center">
+          ${levelIconHtml}
+          <h5 id="nickName" class="card-title mb-0">${review.nickName}</h5>
           </div>
-          <p class="card-text mb-0" style="font-size: 0.95rem; font-weight: 500;">${review.review}</p>
+          <small class="text-muted" style="font-size: 0.75rem;">${formattedDate}</small>
         </div>
+        <p class="card-text mb-0" style="font-size: 0.95rem; font-weight: 500;">${
+          review.review
+        }</p>
       </div>
     </div>
   </div>
+</div>
 `;
 }
+function levelCss() {
+  // 필요한 CSS 애니메이션 추가
+  const style = document.createElement("style");
+  style.textContent = `
+@keyframes rainbow {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+@keyframes sparkle {
+  0% { filter: brightness(100%) }
+  50% { filter: brightness(150%) }
+  100% { filter: brightness(100%) }
+}
+`;
+  document.head.appendChild(style);
 
+  const $levelElements = document.querySelectorAll(".circular-icon");
+  $levelElements.forEach(($levelElement) => {
+    const level = parseInt($levelElement.dataset.level);
+    const iconStyle = levelColor(level);
+
+    if (level >= 100) {
+      $levelElement.innerHTML = "👑";
+      $levelElement.style.background = "none";
+      $levelElement.style.fontSize = "30px";
+      $levelElement.style.top = "-6px";
+      $levelElement.style.position = "relative";
+      $levelElement.style.animation = "sparkle 1.5s infinite";
+      $levelElement.style.filter = "drop-shadow(0 0 2px gold)";
+    } else {
+      $levelElement.innerHTML = level;
+      $levelElement.style.background = iconStyle.bg;
+      if (level >= 90) {
+        $levelElement.style.animation = iconStyle.animation;
+        $levelElement.style.backgroundSize = "300% 300%";
+      } else {
+        $levelElement.style.animation = "none";
+        $levelElement.style.backgroundSize = "100% 100%";
+      }
+    }
+  });
+}
+function createLevelIconHtml(level) {
+  const iconStyle = levelColor(level);
+  let html = `<div class="circular-icon level-icon me-2" data-level="${level}" style="background: ${iconStyle.bg}; width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; color: white;">`;
+
+  if (level >= 100) {
+    html += `<span style="font-size: 20px;">👑</span>`;
+  } else {
+    html += level;
+  }
+
+  html += `</div>`;
+
+  if (iconStyle.animation) {
+    html = `<div style="animation: ${iconStyle.animation};">${html}</div>`;
+  }
+
+  return html;
+}
+function levelColor(level) {
+  if (level >= 90) {
+    return {
+      bg: "linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff)",
+      animation: "rainbow 5s linear infinite, sparkle 2s linear infinite",
+    };
+  }
+  if (level >= 80)
+    return { bg: "linear-gradient(145deg, #C0C0C0, #A9A9A9, #C0C0C0)" }; // 은
+  if (level >= 70) return { bg: "linear-gradient(145deg, #9400D3, #8A2BE2)" }; // 보
+  if (level >= 60) return { bg: "linear-gradient(145deg, #4B0082, #483D8B)" }; //남
+  if (level >= 50) return { bg: "linear-gradient(145deg, #0000FF, #1E90FF)" }; //파
+  if (level >= 40) return { bg: "linear-gradient(145deg, #00FF00, #32CD32)" }; //초
+  if (level >= 30) return { bg: "linear-gradient(145deg, #FFFF00, #FFD700)" }; //노
+  if (level >= 20) return { bg: "linear-gradient(145deg, #FF4500, #FF6347)" }; //주
+  if (level >= 10) return { bg: "linear-gradient(145deg, #FF0000, #DC143C)" }; //빨
+  return { bg: "linear-gradient(145deg, #8B4513, #A0522D)" }; //  1 - 9 까지 색상
+}
 /* ----------------------------  이모지 리스트 생성 ------------------------- */
 function createEmojiList() {
   console.log("Creating Emoji List");
@@ -551,7 +664,10 @@ window.addEventListener("scroll", scrollFunction);
 
 function scrollFunction() {
   // 페이지를 100px 이상 스크롤했을 때 버튼 표시
-  if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+  if (
+    document.body.scrollTop > 100 ||
+    document.documentElement.scrollTop > 100
+  ) {
     $scrollToTopBtn.style.display = "block";
   } else {
     $scrollToTopBtn.style.display = "none";
@@ -579,15 +695,19 @@ function formatDate(dateArray) {
 
   const pad = (num) => num.toString().padStart(2, "0");
 
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(
-    date.getMinutes()
-  )}:${pad(date.getSeconds())}`;
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+    date.getDate()
+  )} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(
+    date.getSeconds()
+  )}`;
 }
 
 /** ------------------ (5)로그인한 유저가 작성한 리뷰 가지고 오기 ------------------- */
 // 모든 체크박스 레이블을 선택합니다.
 function showUserReview() {
-  const $labels = document.querySelectorAll('.btn-group[aria-label="Basic checkbox toggle button group"] label');
+  const $labels = document.querySelectorAll(
+    '.btn-group[aria-label="Basic checkbox toggle button group"] label'
+  );
 
   // 각 레이블에 대해 반복합니다.
   $labels.forEach((label) => {
@@ -637,23 +757,34 @@ function showUserReview() {
     console.log("No valid radioId selected");
   }
 }
+// -------------------------------------------------
 
-/** =--------------드롭다운 버튼 --------------- */
 const sortDropdownButton = document.getElementById("sortDropdownButton");
 const dropdownItems = document.querySelectorAll(".dropdown-item1");
 
+let isLoading = false;
+let initialItemCount = 8; // 처음 불러오는 값
+let additionalItemCount = 4; // 추가로 불러오는 리뷰 갯수
+let allReviews = []; // 전체 리뷰를 담을 배열
+let noMoreReviews = false;
+
 let sortObject = {
   orderBy: "cntLikeDESC",
-  startRowValue: 0,
-  rowCnt: 8,
+  startRowValue: 8,
+  rowCnt: additionalItemCount,
 };
+
+function resetScrollState() {
+  isLoading = false;
+  noMoreReviews = false;
+  allReviews = [];
+  sortObject.startRowValue = 0;
+  sortObject.rowCnt = initialItemCount;
+}
 
 dropdownItems.forEach((item) => {
   item.addEventListener("click", function () {
-    // 버튼 텍스트 변경
     sortDropdownButton.textContent = this.textContent;
-
-    // 선택된 아이템에 active 클래스 추가, 다른 아이템에서는 제거
     dropdownItems.forEach((i) => i.classList.remove("active"));
     this.classList.add("active");
 
@@ -661,8 +792,10 @@ dropdownItems.forEach((item) => {
     sortObject.orderBy = sortType;
 
     // 정렬 요청 보내기
-    currentPage = 1;
     allReviews = []; // 전체 리뷰 배열 초기화
+    noMoreReviews = false;
+    sortObject.startRowValue = 0;
+    sortObject.rowCnt = initialItemCount;
     sendSortRequest(sortObject);
   });
 });
@@ -674,9 +807,10 @@ function sendSortRequest(sortObject) {
   const uri = `${contextPath}/${placeName}/sortReview`;
 
   // 정렬 시 페이지 초기화
-  currentPage = 1;
   sortObject.startRowValue = 0;
   sortObject.rowCnt = initialItemCount;
+  allReviews = []; // 전체 리뷰 배열 초기화
+  noMoreReviews = false;
 
   axios
     .get(uri, { params: sortObject })
@@ -684,39 +818,36 @@ function sendSortRequest(sortObject) {
       console.log("정렬 결과:", response.data);
       allReviews = response.data;
       displayReviews(response.data);
+
+      // 초기 로드 후 더 로드할 리뷰가 있는지 확인
+      if (response.data.length >= initialItemCount) {
+        noMoreReviews = false;
+        // loadMoreReviews();
+      } else {
+        noMoreReviews = true;
+      }
     })
     .catch((error) => {
       console.error("정렬 요청 실패:", error);
     });
 }
-
-/** ************************ 무한스크롤 *************************  */
-
-let isLoading = false;
-let currentPage = 1;
-const initialItemCount = 8; //처음 불러오는 값
-const additionalItemCount = 4; //추가로 불러오는 리뷰 갯수
-let allReviews = []; //전체 리뷰를 담을 배열
-
-let sortObject1 = {
-  orderBy: "cntLikeDESC",
-  startRowValue: 0,
-  rowCnt: initialItemCount,
-};
-
-// 스크롤 이벤트 리스너 추가
+/** ************************ 무한스크롤 ************************* */
 window.addEventListener("scroll", () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50 && !isLoading) {
+  if (
+    window.innerHeight + window.scrollY >= document.body.offsetHeight - 450 &&
+    !isLoading &&
+    !noMoreReviews
+  ) {
     loadMoreReviews();
   }
 });
 
 function loadMoreReviews() {
-  if (isLoading) return;
+  if (isLoading || noMoreReviews) return;
   isLoading = true;
 
-  // 정렬 객체 업데이트
-  sortObject.startRowValue = initialItemCount + (currentPage - 1) * additionalItemCount;
+  // 여기서 시작 인덱스를 allReviews.length로 설정합니다.
+  sortObject.startRowValue = allReviews.length;
   sortObject.rowCnt = additionalItemCount;
 
   const placeName = pd.placeName;
@@ -727,12 +858,16 @@ function loadMoreReviews() {
     .then((response) => {
       console.log("추가 리뷰 로드:", response.data);
       if (response.data.length > 0) {
-        // 새 리뷰를 기존 리뷰 목록에 추가
         allReviews = allReviews.concat(response.data);
         appendReviews(response.data);
-        currentPage++;
+
+        // 더 로드할 리뷰가 없는지 확인
+        if (response.data.length < additionalItemCount) {
+          noMoreReviews = true;
+        }
       } else {
         console.log("더 이상 불러올 리뷰가 없습니다.");
+        noMoreReviews = true;
       }
     })
     .catch((error) => {
@@ -745,8 +880,17 @@ function loadMoreReviews() {
 
 function appendReviews(newReviews) {
   const $reviewListSection = document.querySelector("#reviewList");
-  const newReviewsHtml = newReviews.map((review) => createReviewCard(review)).join("");
+  const newReviewsHtml = newReviews
+    .map((review) => createReviewCard(review))
+    .join("");
   $reviewListSection.insertAdjacentHTML("beforeend", newReviewsHtml);
+}
+
+function displayReviews(reviews) {
+  const $reviewListSection = document.querySelector("#reviewList");
+  $reviewListSection.innerHTML = reviews
+    .map((review) => createReviewCard(review))
+    .join("");
 }
 
 // -------------- 페이지 로드(f5) 시 스크롤을 최상단으로 이동 --------------

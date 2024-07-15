@@ -84,7 +84,7 @@
 		<bind name="startRowValue" value="startRowValue" />
 		<bind name="rowCnt" value="rowCnt" />
 		SELECT
-		COALESCE(p.cumulativePoint, 0) div 1000 AS `level`,
+		(COALESCE(p.cumulativePoint, 0) div 1000) + 1 AS `level`,
 		u.nickName ,
 		r.review ,
 		r.modifiedAt ,

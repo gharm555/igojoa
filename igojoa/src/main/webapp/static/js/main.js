@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   function updateButtonVisibility(isLoggedIn) {
-    const $sortButtons = document.querySelectorAll(".btn-group .btn[data-sortUserFavorite]");
+    const $sortButtons = document.querySelectorAll(
+      ".btn-group .btn[data-sortUserFavorite]"
+    );
     $sortButtons.forEach((button) => {
       if (isLoggedIn) {
         button.classList.remove("d-none");
@@ -99,7 +101,12 @@ $searchKeyword.addEventListener("keyup", function (event) {
   }
 });
 
-function fetchPlaces(rowCnt, isInitialLoad = false, sortKey = currentSortKey, sortValue = currentSortValue) {
+function fetchPlaces(
+  rowCnt,
+  isInitialLoad = false,
+  sortKey = currentSortKey,
+  sortValue = currentSortValue
+) {
   const selectedProvince = $provinceSelect.value || "";
   const addressCategory = provinceMap[selectedProvince] || "";
   const searchKeyword = $searchKeyword.value.trim() || "";
@@ -130,9 +137,11 @@ function fetchPlaces(rowCnt, isInitialLoad = false, sortKey = currentSortKey, so
       }
 
       const existingPlaceNames = new Set();
-      document.querySelectorAll(".card-item .main-card-title").forEach((title) => {
-        existingPlaceNames.add(title.textContent);
-      });
+      document
+        .querySelectorAll(".card-item .main-card-title")
+        .forEach((title) => {
+          existingPlaceNames.add(title.textContent);
+        });
 
       $newPlaces.forEach((place, index) => {
         if (!existingPlaceNames.has(place.placeName)) {
@@ -144,7 +153,10 @@ function fetchPlaces(rowCnt, isInitialLoad = false, sortKey = currentSortKey, so
         }
       });
 
-      if ($newPlaces.length >= rowCnt || document.querySelectorAll(".extra-card.d-none").length > 0) {
+      if (
+        $newPlaces.length >= rowCnt ||
+        document.querySelectorAll(".extra-card.d-none").length > 0
+      ) {
         $moreButton.style.display = "block";
       } else {
         $moreButton.style.display = "none";
@@ -154,7 +166,8 @@ function fetchPlaces(rowCnt, isInitialLoad = false, sortKey = currentSortKey, so
     .catch((error) => {
       console.error("Error fetching places:", error);
       if (startRowValue === 0) {
-        $cardContainer.innerHTML = "<p>검색 중 오류가 발생했습니다. 다시 시도해 주세요.</p>";
+        $cardContainer.innerHTML =
+          "<p>검색 중 오류가 발생했습니다. 다시 시도해 주세요.</p>";
       } else {
         alert("데이터를 불러오는 중 오류가 발생했습니다. 다시 시도해 주세요.");
       }
@@ -182,12 +195,20 @@ function createCard(place, index) {
             <h1 class="main-card-title">${place.placeName}</h1>
             <i class="bi ${
               place.userFavorite == 1 ? "bi-heart-fill red-color" : "bi-heart"
-            } main-custom-heart" data-place-name="${place.placeName}" data-user-favorite="${place.userFavorite}"></i>
+            } main-custom-heart" data-place-name="${
+    place.placeName
+  }" data-user-favorite="${place.userFavorite}"></i>
           </div>
           <div class="main-badges mt-3">
-            <span class="badge"><i class="bi bi-fire" id="fire"></i> ${place.highestBadge}</span>
-            <span class="badge"><i class="bi bi-fire" id="fire"></i> ${place.secondHighestBadge}</span>
-            <span class="badge ${difficultyMap[place.iscore] || ""}">아이난이도: ${place.iscore}</span>
+            <span class="badge"><i class="bi bi-fire" id="fire"></i> ${
+              place.highestBadge
+            }</span>
+            <span class="badge"><i class="bi bi-fire" id="fire"></i> ${
+              place.secondHighestBadge
+            }</span>
+            <span class="badge ${
+              difficultyMap[place.iscore] || ""
+            }">아이난이도: ${place.iscore}</span>
           </div>
         </div>
         <div class="d-flex justify-content-between my-3 mx-3">
@@ -195,9 +216,15 @@ function createCard(place, index) {
           <h4>누적방문수: ${place.placeVerified}</h4>
         </div>
         <div class="main-card-body">
-          <img src="${place.firstUrl}" alt="${place.placeName}" class="img-fluid mb-2" />
-          <img src="${place.secondUrl}" alt="${place.placeName}" class="img-fluid mb-2" />
-          <img src="${place.thirdUrl}" alt="${place.placeName}" class="img-fluid mb-2" />
+          <img src="${place.firstUrl}" alt="${
+    place.placeName
+  }" class="img-fluid mb-2" />
+          <img src="${place.secondUrl}" alt="${
+    place.placeName
+  }" class="img-fluid mb-2" />
+          <img src="${place.thirdUrl}" alt="${
+    place.placeName
+  }" class="img-fluid mb-2" />
         </div>
         <div class="main-card-footer bg-transparent">
           <div class="footer-meta">
@@ -205,12 +232,18 @@ function createCard(place, index) {
               <span class="username">${place.nickName}</span>
             </div>
             <div class="post-info">
-              <span class="date"><i class="bi bi-calendar3"></i> ${formatDate(place.modifiedAt)}</span>
-              <span class="likes"><i class="bi bi-heart-fill"></i> ${place.likeCount}</span>
+              <span class="date"><i class="bi bi-calendar3"></i> ${formatDate(
+                place.modifiedAt
+              )}</span>
+              <span class="likes"><i class="bi bi-heart-fill"></i> ${
+                place.likeCount
+              }</span>
             </div>
           </div>
           <div class="comment-section">
-            <p class="comment-text"><i class="bi bi-chat-left-quote"></i> ${place.review}</p>
+            <p class="comment-text"><i class="bi bi-chat-left-quote"></i> ${
+              place.review
+            }</p>
           </div>
         </div>
       </div>
@@ -275,7 +308,9 @@ document.addEventListener("click", function (event) {
       $heartIcon.classList.toggle("bi-heart-fill");
       $heartIcon.classList.toggle("red-color");
 
-      let heartClickable = $heartIcon.classList.contains("bi-heart-fill") ? 1 : 0;
+      let heartClickable = $heartIcon.classList.contains("bi-heart-fill")
+        ? 1
+        : 0;
       $heartIcon.setAttribute("data-user-favorite", heartClickable); // data-user-favorite 속성 업데이트
 
       //if (LoginUserId === 'null' || LoginUserId === '') {
@@ -438,7 +473,8 @@ $provinceSelects.addEventListener("keydown", function (event) {
     selectedOptionIndex = (selectedOptionIndex + 1) % options.length;
     options[selectedOptionIndex].selected = true;
   } else if (event.key === "ArrowUp") {
-    selectedOptionIndex = (selectedOptionIndex - 1 + options.length) % options.length;
+    selectedOptionIndex =
+      (selectedOptionIndex - 1 + options.length) % options.length;
     options[selectedOptionIndex].selected = true;
   } else if (event.key === "Enter" && selectedOptionIndex > -1) {
     event.preventDefault(); // 기본 엔터 동작 방지
@@ -454,7 +490,10 @@ if ($scrollToTopBtn) {
   window.addEventListener("scroll", scrollFunction);
 
   function scrollFunction() {
-    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+    if (
+      document.body.scrollTop > 100 ||
+      document.documentElement.scrollTop > 100
+    ) {
       $scrollToTopBtn.style.display = "block";
     } else {
       $scrollToTopBtn.style.display = "none";
@@ -489,31 +528,47 @@ if (cardContainer) {
 function initializeBanner() {
   const $bannerToggle = document.querySelector("#banner-toggle");
   const $bannerContainer = document.querySelector(".banner-container");
-  const $bannerToggleContainer = document.querySelector(".banner-toggle-container");
+  const $bannerToggleContainer = document.querySelector(
+    ".banner-toggle-container"
+  );
   const $main = document.querySelector("main");
   const $navbar = document.querySelector("nav");
 
   // 필요한 요소들이 모두 존재하는지 확인
-  if (!$bannerToggle || !$bannerContainer || !$bannerToggleContainer || !$main || !$navbar) {
-    console.error("Banner initialization failed: One or more required elements not found.");
+  if (
+    !$bannerToggle ||
+    !$bannerContainer ||
+    !$bannerToggleContainer ||
+    !$main ||
+    !$navbar
+  ) {
+    console.error(
+      "Banner initialization failed: One or more required elements not found."
+    );
     return;
   }
 
   // 배너 높이를 동적으로 계산
-  const bannerHeight = parseInt(window.getComputedStyle($bannerContainer).height);
+  const bannerHeight = parseInt(
+    window.getComputedStyle($bannerContainer).height
+  );
   const bannerToggleContainerHeight = $bannerToggleContainer.offsetHeight;
 
   function updateBanner(isOpen) {
     const navbarHeight = $navbar.offsetHeight;
     if (isOpen) {
-      $main.style.marginTop = `${navbarHeight + bannerHeight + bannerToggleContainerHeight}px`;
+      $main.style.marginTop = `${
+        navbarHeight + bannerHeight + bannerToggleContainerHeight
+      }px`;
       $bannerContainer.style.height = `${bannerHeight}px`;
     } else {
       $main.style.marginTop = `${navbarHeight + bannerToggleContainerHeight}px`;
       $bannerContainer.style.height = "0px";
     }
 
-    $bannerToggle.innerHTML = isOpen ? '<i class="fas fa-chevron-up"></i>' : '<i class="fas fa-chevron-down"></i>';
+    $bannerToggle.innerHTML = isOpen
+      ? '<i class="fas fa-chevron-up"></i>'
+      : '<i class="fas fa-chevron-down"></i>';
 
     $bannerContainer.classList.toggle("open", isOpen);
   }
@@ -564,3 +619,73 @@ function checkSession() {
 setInterval(checkSession, 30000);
 // 페이지 로드 시 즉시 세션 체크
 checkSession();
+
+//  ---------------------------------------------------- 수창 작업
+const $levelIcon = document.querySelector(".circular-icon");
+let level = $levelIcon.textContent;
+let level2 = placeLevel;
+let placeLevel = placeLevel;
+console.log(placeLevel);
+console.log(level);
+console.log(level2);
+
+function levelColor(level) {
+  if (level >= 90) {
+    return {
+      bg: "linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff)",
+      animation: "rainbow 5s linear infinite, sparkle 2s linear infinite",
+    };
+  }
+  if (level >= 80)
+    return { bg: "linear-gradient(145deg, #C0C0C0, #A9A9A9, #C0C0C0)" }; // 은
+  if (level >= 70) return { bg: "linear-gradient(145deg, #9400D3, #8A2BE2)" }; // 보
+  if (level >= 60) return { bg: "linear-gradient(145deg, #4B0082, #483D8B)" }; //남
+  if (level >= 50) return { bg: "linear-gradient(145deg, #0000FF, #1E90FF)" }; //파
+  if (level >= 40) return { bg: "linear-gradient(145deg, #00FF00, #32CD32)" }; //초
+  if (level >= 30) return { bg: "linear-gradient(145deg, #FFFF00, #FFD700)" }; //노
+  if (level >= 20) return { bg: "linear-gradient(145deg, #FF4500, #FF6347)" }; //주
+  if (level >= 10) return { bg: "linear-gradient(145deg, #FF0000, #DC143C)" }; //빨
+  return { bg: "linear-gradient(145deg, #8B4513, #A0522D)" }; //  1 - 9 까지 색상
+}
+
+// 레벨이 100 이상일때 왕관 꾸미기
+function setLevel(level) {
+  if (level >= 100) {
+    $levelIcon.innerHTML = "👑";
+    $levelIcon.style.background = "none";
+    $levelIcon.style.fontSize = "30px";
+    $levelIcon.style.top = "-21px";
+    $levelIcon.style.position = "relative";
+    $levelIcon.style.animation = "sparkle 1.5s infinite";
+    $levelIcon.style.filter = "drop-shadow(0 0 2px gold)";
+  } else {
+    $levelIcon.innerHTML = level;
+    const colorStyle = levelColor(level);
+    $levelIcon.style.background = colorStyle.bg;
+    if (level >= 90) {
+      $levelIcon.style.animation = colorStyle.animation;
+      $levelIcon.style.backgroundSize = "300% 300%";
+    } else {
+      $levelIcon.style.animation = "none";
+      $levelIcon.style.backgroundSize = "100% 100%";
+    }
+  }
+}
+
+// 필요한 CSS 애니메이션 추가
+const style = document.createElement("style");
+style.textContent = `
+  @keyframes rainbow {
+    0% { background-position: 0% 50% }
+    50% { background-position: 100% 50% }
+    100% { background-position: 0% 50% }
+  }
+  @keyframes sparkle {
+    0% { filter: brightness(100%) }
+    50% { filter: brightness(150%) }
+    100% { filter: brightness(100%) }
+  }
+`;
+document.head.appendChild(style);
+setLevel(level);
+// ------------------------------------------------------ 수창 작업 끝

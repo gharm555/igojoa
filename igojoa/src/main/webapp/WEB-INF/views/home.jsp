@@ -57,6 +57,7 @@
     </header>
 
     <main>
+    <c:set var="place" value="${placesInfo}" />
     <!-- Main Section -->
     <section id="main-section">
     <div class="d-flex justify-content-center my-5" id="search-bar">
@@ -129,6 +130,7 @@
                     <div class="main-card-footer bg-transparent">
                         <div class="footer-meta">
                             <div class="user-info">
+                                <div id="circular-icon">${place.level}</div>
                                 <span class="username">${place.nickName}</span>
                             </div>
                             <div class="post-info">
@@ -255,7 +257,7 @@
         </section>
         <hr class="my-5"/>
         <button id="scrollToTopBtn" title="Go to top">↑</button>
-
+        
     </main>
 
 <%@ include file="footer.jspf"%>
@@ -290,9 +292,10 @@
         
 
         const points ="${points}";
-        
-
+      	const placeLevel = "${place.level}"
+      	console.log("placeLevel = ", placeLevel);
     </script>
+    
   
     
 
