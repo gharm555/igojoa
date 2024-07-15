@@ -61,6 +61,8 @@ public class UsersRestController {
 		result.put("userVerifiedPlaces", userVerifiedPlacesDto);
 
 		return ResponseEntity.ok(result);
+		
+		
 	}
 
 	@GetMapping("/favoritePlaces")

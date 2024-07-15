@@ -235,10 +235,10 @@ function validateInput(type, value) {
       break;
     case "password":
       $messageElement = document.querySelector("#password-check-message");
-      const passwordPattern = /^(?=.*[0-9]).{8,}$/;
+      const passwordPattern = /^(?=.*[0-9]).{8,11}$/;
       if (!passwordPattern.test(value)) {
         errorMessage =
-          "유효하지 않은 비밀번호 입니다. 8자 이상으로 입력해주세요.";
+          "8자리 이상 12자리 미만, 숫자가 포함된 비밀번호로 해주세요.";
       }
       displayValidationMessage($messageElement, errorMessage);
       break;
@@ -602,7 +602,7 @@ function resetPassword(userId) {
   const $resetPasswordConfirmMessage = document.querySelector(
     "#resetPasswordConfirmMessage"
   );
-  const passwordPattern = /^(?=.*[0-9]).{8,}$/;
+  const passwordPattern = /^(?=.*[0-9]).{8,11}$/; // 여기 바꾼거임 07-12오전
 
   let valid = true;
 
@@ -611,7 +611,7 @@ function resetPassword(userId) {
 
   if (!passwordPattern.test($newPassword.value)) {
     $resetPasswordInvalidMessage.textContent =
-      "유효하지 않은 비밀번호 입니다. 8자 이상으로 입력해주세요.";
+      "8자리 이상 12자리 미만, 숫자가 포함된 비밀번호로 해주세요"; // 메시지 바꾼거임 07-12
     $resetPasswordInvalidMessage.style.display = "block";
     valid = false;
   }
@@ -712,6 +712,7 @@ document.addEventListener("DOMContentLoaded", function () {
         $signinForm.appendChild(signupContainer);
         $signupForm.appendChild(signinContainer);
       }
+      // 현재 활성화된 레이아웃 상태를 유지
       if (
         !$signinForm.classList.contains("active") &&
         !$signupForm.classList.contains("active")
@@ -722,8 +723,9 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       signupContainer.remove();
       signinContainer.remove();
+      // 현재 활성화된 레이아웃 상태를 유지
       if (
-        $signinForm.classList.contains("active") &&
+        $signinForm.classList.contains("active") ||
         $signupForm.classList.contains("active")
       ) {
         $signinForm.classList.remove("active");
