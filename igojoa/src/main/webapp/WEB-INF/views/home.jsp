@@ -18,7 +18,6 @@
     <c:url var="webmanifest" value="/favicon/site.webmanifest" />
     <link rel="manifest" href="${ webmanifest }">
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
    <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -47,7 +46,7 @@
     <link rel="stylesheet" href="${imageGalleryCss}" />
     <c:url var="lottoCss" value="/css/lotto.css" />
     <link rel="stylesheet" href="${lottoCss}" />
-    
+
 
 </head>
 
@@ -92,7 +91,7 @@
     </div>
     <div class="d-flex justify-content-center mb-4">
 <div class="btn-group" role="group">
-    <button class="btn btn-outline-secondary" id="iScore" type="button" data-sortIscore="1">난이도</button>
+    <button class="btn btn-outline-secondary" id="iScore" type="button" data-sortIscore="1">아이난이도</button>
     <button class="btn btn-outline-secondary" id="placeVerified" type="button" data-sortPlaceVerified="1">방문횟수</button>
     <button class="btn btn-outline-secondary" id="userFavorite" type="button" data-sortUserFavorite="1">좋아요</button>
     <button class="btn btn-outline-secondary" id="reviewCnt" type="button" data-sortReviewCnt="1">리뷰수</button>
@@ -130,7 +129,11 @@
                     <div class="main-card-footer bg-transparent">
                         <div class="footer-meta">
                             <div class="user-info">
+<<<<<<< HEAD
                                 <div id="circular-icon">${place.level}</div>
+=======
+                                   <span class="level circular-icon" id="levelIcon">${place.level}</span>
+>>>>>>> 08431d4a4d78cd867a6890cb0cc68645216e6edb
                                 <span class="username">${place.nickName}</span>
                             </div>
                             <div class="post-info">
@@ -240,15 +243,15 @@
                             <button class="accordion-button ${status.index == 0 ? '' : 'collapsed'}" type="button" 
                                     data-bs-toggle="collapse" data-bs-target="#collapse${status.index}" 
                                     aria-expanded="${status.index == 0 ? 'true' : 'false'}" 
-                                    aria-controls="collapse${status.index}">
-                                ${faq.question}
+                                    aria-controls="collapse${status.index}"><span>Q:&nbsp;</span>
+                                <span>${faq.question}</span>
                             </button>
                         </h2>
                         <div id="collapse${status.index}" 
                              class="accordion-collapse collapse ${status.index == 0 ? 'show' : ''}" 
                              data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                ${faq.answer}
+                            <div class="accordion-body"><span>A: </span>
+                                <span>${faq.answer}</span>
                             </div>
                         </div>
                     </div>

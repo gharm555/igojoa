@@ -361,17 +361,11 @@ function checkForChanges() {
   }
 
   // "정보 수정" 버튼 활성화 또는 비활성화
-  $updateBtn.disabled = !(
-    isChanged &&
-    isValid &&
-    (isPasswordValid || (newPassword === "" && confirmPassword === ""))
-  );
+
+  $updateBtn.disabled = !(isChanged && isValid && (isPasswordValid || (newPassword === "" && confirmPassword === "")));
   // "정보 수정" 버튼 활성화 또는 비활성화
-  $updateBtn.disabled = !(
-    isChanged &&
-    isValid &&
-    (isPasswordValid || (newPassword === "" && confirmPassword === ""))
-  );
+  $updateBtn.disabled = !(isChanged && isValid && (isPasswordValid || (newPassword === "" && confirmPassword === "")));
+
 
   if ($updateBtn.disabled === false) {
     $updateBtn.classList.remove("btn-outline-success");
@@ -424,7 +418,7 @@ let endDate = "";
 let datePicker;
 let currentTab = "total";
 let currentPage = 0;
-const itemsPerPage = 5;
+const itemsPerPage = 6; // 6개로바꿈 
 let isLoading = false;
 let hasMoreData = true;
 let lastLoadedId = null;
@@ -434,6 +428,35 @@ let currentData = []; // 현재 탭의 전체 데이터를 저장할 배열
 // 내활동내역 탭 클릭 이벤트 리스너
 $userActivityTab.addEventListener("click", () => {
   initializeUserActivity();
+  setupInfiniteScroll();
+  //한줄 추가된거임 진짜임
+  setupContainerSize();
+});
+
+// 내 활동내역 탭에서 화면사이즈 조절 함수임 07-12 오전에 바꾼거임
+function setupContainerSize() {
+  const $userProfileMain = document.querySelector(".userProfile-tabs-main");
+  // const $userActivityTab = document.querySelector("#v-pills-disabled-tab");
+
+  const isUserActivityTabActive = $userActivityTab.classList.contains('active');
+
+  if (isUserActivityTabActive) {
+    if (window.innerWidth <= 390) {
+      $userProfileMain.style.height = "61rem";
+    } else {
+      $userProfileMain.style.height = "";
+    }
+  } else {
+    $userProfileMain.style.height = "";
+  }
+}
+
+// 내 활동내역 탭에서 화면사이즈 조절 함수임 07-12 오전에 바꾼거임
+window.addEventListener("resize", setupContainerSize);
+
+// 내 활동내역 탭에서 화면사이즈 조절 함수임 07-12 오전에 바꾼거임
+document.querySelectorAll('.nav-link').forEach(tab => {
+  tab.addEventListener('click', setupContainerSize);
 });
 
 // 내활동내역 초기화 함수
@@ -485,6 +508,15 @@ $searchBtn.addEventListener("click", () => {
   resetAndLoadData();
 });
 
+// 검색창 엔터 이벤트 리스너
+$searchInput.addEventListener("keyup", function (event) {
+  if (event.keyCode === 13) {
+    // Enter 키 확인
+    event.preventDefault();
+    $searchBtn.click(); // 검색 버튼 클릭 동작 수행
+  }
+});
+
 // 무한 스크롤 설정 함수
 function setupInfiniteScroll() {
   const activityTabs = document.querySelectorAll(".list-group");
@@ -500,6 +532,8 @@ function setupInfiniteScroll() {
       if (scrollRatio > 0.8 && !isLoading && hasMoreData) {
         console.log(`${currentTab} 탭에서 추가 데이터 로드 시작`);
         loadMoreData();
+      } else {
+        console.log("더 이상 불러올 데이터가 없어요");
       }
     });
   });
@@ -656,7 +690,6 @@ function getTotalContent(item) {
     case "favorite_places":
       return getFavoritePlaceContent(item);
     case "liked_reviews":
-      console.log(item.reviewAuthor);
       return getLikedReviewContent(item);
     case "written_reviews":
       return getWrittenReviewContent(item);
@@ -669,22 +702,22 @@ function getTotalContent(item) {
 
 // 좋아요한 명소 내용을 생성하는 함수
 function getFavoritePlaceContent(item) {
-  return `${item.address} <a href="${contextPath}/place/details/${item.placeName}">${item.placeName}</a> 명소에 좋아요를 눌렀습니다.</a>`;
+  return `${item.address} <a href="${contextPath}/place/details/${item.placeName}"><span class="badge">${item.placeName}</span></a> 명소에 좋아요를 눌렀습니다.</a>`;
 }
 
 // 좋아요한 리뷰 내용을 생성하는 함수
 function getLikedReviewContent(item) {
-  return `<a href="${contextPath}/place/details/${item.placeName}">${item.placeName}</a>에 ${item.reviewAuthor}님 댓글 "${item.review}"에 좋아요를 눌렀습니다.`;
+  return `<a href="${contextPath}/place/details/${item.placeName}"><span class="badge">${item.placeName}</span></a> 명소에 <span class="nametag">${item.reviewAuthor}</span>님 댓글에 좋아요를 눌렀습니다. <p class=likedReview>"${item.review}"</p>`;
 }
 
 // 작성한 리뷰 내용을 생성하는 함수
 function getWrittenReviewContent(item) {
-  return `${item.address} <a href="${contextPath}/place/details/${item.placeName}">${item.placeName}</a>에 "${item.review}" 댓글을 남겼습니다.`;
+  return `${item.address} <a href="${contextPath}/place/details/${item.placeName}"><span class="badge">${item.placeName}</span></a> 명소에 댓글을 남겼습니다. <p class=writtenReview>"${item.review}"</p> `;
 }
 
 // 위치인증한 장소 내용을 생성하는 함수
 function getVerifiedPlaceContent(item) {
-  return `${item.address} <a href="${contextPath}/place/details/${item.placeName}">${item.placeName}</a> 명소에 위치인증을 했습니다.`;
+  return `${item.address} <a href="${contextPath}/place/details/${item.placeName}"><span class="badge">${item.placeName}</span></a> 명소에 위치인증을 했습니다.`;
 }
 
 // 데이터를 정렬하고 표시하는 함수
@@ -739,6 +772,7 @@ datePicker = flatpickr("#date-range", {
       startDate = "";
       endDate = "";
       instance.clear();
+      instance.close(); // 07-15 이거 추가함
       instance.element.placeholder = "전체기간";
       resetAndLoadData();
     });
@@ -754,12 +788,8 @@ function formatDate(date) {
   return `${year}.${month}.${day}`;
 }
 
-// 페이지 로드 시 실행되는 코드
-document.addEventListener("DOMContentLoaded", () => {
-  setupInfiniteScroll();
-  resetAndLoadData();
-});
 
+// 내 포인트 내역
 let calendar;
 let currentMonth;
 let selectedDate;
@@ -780,8 +810,8 @@ function initializePointTab() {
   fetchAttendanceData(currentMonth).then(() => {
     initializeCalendar();
     updatePointHistoryForDate(selectedDate);
-    updatePointSummaryForMonth(currentMonth); // 이 줄이 추가되었습니다
     updatePointSummaryForDay(selectedDate);
+    updatePointSummaryForMonth(currentMonth); // 이 줄이 추가되었습니다
   });
 }
 
@@ -1203,9 +1233,7 @@ $withdrawalBtn.addEventListener("click", function () {
 const $levelIcon = document.querySelector(".circular-icon");
 
 function getLevel() {
-  const pointsText = document
-    .querySelector(".cumulativePoints")
-    .textContent.replace(/,/g, "");
+  const pointsText = document.querySelector(".cumulativePoints").textContent.replace(/,/g, "");
   const points = parseInt(pointsText, 10);
   const level = Math.floor(points / 1000) + 1;
   return level;
@@ -1218,8 +1246,8 @@ function levelColor(level) {
       animation: "rainbow 5s linear infinite, sparkle 2s linear infinite",
     };
   }
-  if (level >= 80)
-    return { bg: "linear-gradient(145deg, #C0C0C0, #A9A9A9, #C0C0C0)" }; // 은
+
+  if (level >= 80) return { bg: "linear-gradient(145deg, #C0C0C0, #A9A9A9, #C0C0C0)" }; // 은
   if (level >= 70) return { bg: "linear-gradient(145deg, #9400D3, #8A2BE2)" }; // 보
   if (level >= 60) return { bg: "linear-gradient(145deg, #4B0082, #483D8B)" }; //남
   if (level >= 50) return { bg: "linear-gradient(145deg, #0000FF, #1E90FF)" }; //파

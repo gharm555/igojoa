@@ -1,4 +1,4 @@
-const darkModeToggle = document.querySelector("#darkModeToggle");
+const darkModeToggle = document.querySelectorAll(".darkModeToggle input");
 const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
 
 function setDarkMode(isDark) {
@@ -12,9 +12,9 @@ function setDarkMode(isDark) {
   sessionStorage.setItem("darkMode", isDark);
 
   // 토글 버튼 상태 업데이트
-  if (darkModeToggle) {
-    darkModeToggle.checked = isDark;
-  }
+  darkModeToggle.forEach((toggle) => {
+    toggle.checked = isDark;
+  });
 
   console.log("Dark mode state:", isDark);
 }
@@ -48,10 +48,9 @@ applyDarkMode();
 
 // DOM이 로드된 후 토글 버튼 이벤트 리스너 추가
 document.addEventListener("DOMContentLoaded", () => {
-  if (darkModeToggle) {
-    // 초기 상태 설정
-    darkModeToggle.checked = document.body.hasAttribute("data-bs-theme");
-
-    darkModeToggle.addEventListener("change", toggleDarkMode);
-  }
+  // 초기 상태 설정
+  darkModeToggle.forEach((toggle) => {
+    toggle.checked = document.body.hasAttribute("data-bs-theme");
+    toggle.addEventListener("change", toggleDarkMode);
+  });
 });

@@ -35,4 +35,5 @@ public class IgojoaScheduler {
 		schedulerService.deleteSynchronizeReviews();
 		log.debug("스케쥴러 정상 종료");
 	}
+	
 }
