@@ -576,4 +576,3 @@ function checkSession() {
 setInterval(checkSession, 30000);
 // 페이지 로드 시 즉시 세션 체크
 checkSession();
-
