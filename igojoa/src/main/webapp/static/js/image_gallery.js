@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let images = box.querySelectorAll("img");
   let degrees = 0;
   let currentIndex = 0;
-  const totalImages = 3; // 총 이미지 수
+  const totalImages = 8; // 총 이미지 수
 
   // 이미지 갤러리 데이터 가져오기
   axios
@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
           img.alt = place.placeName;
           img.dataset.name = place.placeName;
           img.onclick = goToPlaceDetail;
+          console.log(img.dataset.name);
         }
       });
 
@@ -58,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   function updateLocationName() {
     const currentImage = images[currentIndex];
-    if (currentImage && currentImage.dataset.name) {
+    if (currentImage) {
       locationName.textContent = currentImage.dataset.name;
     } else {
       locationName.textContent = "정보없음";
