@@ -28,7 +28,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
     <link rel="stylesheet" href="${navbarCss}" />
     <c:url var="loginRegistrationCss" value="/css/loginRegistration.css" />
     <link rel="stylesheet" href="${loginRegistrationCss}" />
-    
+    <c:url var="darkmode" value="/css/dark_mode.css"/>
+    <link rel="stylesheet" href="${darkmode}">
     
     
   </head>
@@ -423,6 +424,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
     <script src="${darkModeJs}"></script>
     <c:url var="loginRegistrationJs" value="/js/loginRegistration.js" />
     <script src="${loginRegistrationJs}"></script>
+    <c:url var="darkMode" value="/js/dark_mode.js" />
+    <script src="${darkMode}"></script>
+    
     <script>
       const defaultImageUrl = '${defaultImageUrl}';
     </script>

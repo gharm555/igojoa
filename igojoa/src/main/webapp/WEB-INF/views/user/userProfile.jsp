@@ -37,7 +37,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
         <link rel="stylesheet" href="${userProfileCss}" />
         <c:url var="navbarCss" value="/css/navbar.css" />
         <link rel="stylesheet" href="${navbarCss}" />
-
+        <c:url var="darkmode" value="/css/dark_mode.css"/>
+        <link rel="stylesheet" href="${darkmode}">
+        
         <title>아이고조아</title>
      <c:url var="appleTouchIcon" value="/favicon/apple-touch-icon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="${ appleTouchIcon }">
@@ -81,49 +83,49 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                             </div>
                         </div>
                         <nav
-                            class="nav flex-column nav-pills"
+                            class="nav flex-column flex-md-column nav-pills"
                             id="v-pills-tab"
                             role="tablist"
                         >
                             <button
-                                class="nav-link active"
+                                class="nav-link active flex-sm-fill"
                                 id="v-pills-home-tab"
                                 data-bs-toggle="pill"
                                 data-bs-target="#v-pills-home"
                                 type="button"
                                 role="tab"
                             >
-                                <i class="fas fa-user me-2"></i>내정보
+                                <i class="fas fa-user tab-icon me-2"></i>내정보
                             </button>
                             <button
-                                class="nav-link"
+                                class="nav-link flex-sm-fill"
                                 id="v-pills-profile-tab"
                                 data-bs-toggle="pill"
                                 data-bs-target="#v-pills-profile"
                                 type="button"
                                 role="tab"
                             >
-                                <i class="fas fa-edit me-2"></i>내정보수정
+                                <i class="fas fa-edit tab-icon me-2"></i>내정보수정
                             </button>
                             <button
-                                class="nav-link"
+                                class="nav-link flex-sm-fill"
                                 id="v-pills-disabled-tab"
                                 data-bs-toggle="pill"
                                 data-bs-target="#v-pills-disabled"
                                 type="button"
                                 role="tab"
                             >
-                                <i class="fas fa-history me-2"></i>내활동내역
+                                <i class="fas fa-history tab-icon me-2"></i>내활동내역
                             </button>
                             <button
-                                class="nav-link"
+                                class="nav-link flex-sm-fill"
                                 id="v-pills-messages-tab"
                                 data-bs-toggle="pill"
                                 data-bs-target="#v-pills-messages"
                                 type="button"
                                 role="tab"
                             >
-                                <i class="fas fa-coins me-2"></i>포인트내역
+                                <i class="fas fa-coins tab-icon me-2"></i>포인트내역
                             </button>
                         </nav>
                     </div>
@@ -143,6 +145,12 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                                         </h5>
                                         <p class="card-text" id="userId">
                                             ${ userInfo.userId }
+                                        </p>
+                                        <h5 class="card-title mb-0 mt-3">
+                                            닉네임
+                                        </h5>
+                                        <p class="card-text" id="userNickName">
+                                            ${ userInfo.nickName }
                                         </p>
                                         <h5 class="card-title mb-0 mt-3">
                                             이메일

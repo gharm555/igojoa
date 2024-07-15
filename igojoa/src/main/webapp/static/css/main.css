@@ -8,6 +8,23 @@
   font-family: "Noto Sans KR", sans-serif;
   box-sizing: border-box;
 }
+.form-switch {
+    padding-left: 3rem;
+}
+.circular-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  /* background: red; */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: initial;
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
 
 .list-group {
   width: 62%;
@@ -88,7 +105,7 @@ body {
 
 main {
   position: relative;
-  margin-top: 134px;
+  margin-top: 70px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -464,6 +481,7 @@ a .main-card-footer .bi-heart-fill {
   border: none;
   color: white;
 }
+
 
 /* 배너 스타일 */
 .banner-container {
