@@ -486,66 +486,6 @@ if (cardContainer) {
   });
 }
 
-function initializeBanner() {
-  const $bannerToggle = document.querySelector("#banner-toggle");
-  const $bannerContainer = document.querySelector(".banner-container");
-  const $bannerToggleContainer = document.querySelector(".banner-toggle-container");
-  const $main = document.querySelector("main");
-  const $navbar = document.querySelector("nav");
-
-  // 필요한 요소들이 모두 존재하는지 확인
-  if (!$bannerToggle || !$bannerContainer || !$bannerToggleContainer || !$main || !$navbar) {
-    console.error("Banner initialization failed: One or more required elements not found.");
-    return;
-  }
-
-  // 배너 높이를 동적으로 계산
-  const bannerHeight = parseInt(window.getComputedStyle($bannerContainer).height);
-  const bannerToggleContainerHeight = $bannerToggleContainer.offsetHeight;
-
-  function updateBanner(isOpen) {
-    const navbarHeight = $navbar.offsetHeight;
-    if (isOpen) {
-      $main.style.marginTop = `${navbarHeight + bannerHeight + bannerToggleContainerHeight}px`;
-      $bannerContainer.style.height = `${bannerHeight}px`;
-    } else {
-      $main.style.marginTop = `${navbarHeight + bannerToggleContainerHeight}px`;
-      $bannerContainer.style.height = "0px";
-    }
-
-    $bannerToggle.innerHTML = isOpen ? '<i class="fas fa-chevron-up"></i>' : '<i class="fas fa-chevron-down"></i>';
-
-    $bannerContainer.classList.toggle("open", isOpen);
-  }
-
-  function toggleBanner() {
-    const isOpen = !$bannerContainer.classList.contains("open");
-    updateBanner(isOpen);
-  }
-
-  function closeBannerOnScroll() {
-    if ($bannerContainer.classList.contains("open")) {
-      updateBanner(false);
-    }
-  }
-
-  $bannerToggle.addEventListener("click", toggleBanner);
-  window.addEventListener("scroll", closeBannerOnScroll, { passive: true });
-
-  // 초기 상태 설정
-  updateBanner(false);
-
-  function closeBannerOnScroll() {
-    if ($bannerContainer.classList.contains("open")) {
-      updateBanner(false);
-    }
-  }
-  window.addEventListener("scroll", closeBannerOnScroll, { passive: true });
-}
-
-// DOMContentLoaded 이벤트 리스너에서 initializeBanner 함수 호출
-document.addEventListener("DOMContentLoaded", initializeBanner);
-
 function checkSession() {
   axios
     .get(`${contextPath}/user/checkSession`)

@@ -738,6 +738,7 @@ datePicker = flatpickr("#date-range", {
       startDate = "";
       endDate = "";
       instance.clear();
+      instance.close(); // 07-15 이거 추가함
       instance.element.placeholder = "전체기간";
       resetAndLoadData();
     });
