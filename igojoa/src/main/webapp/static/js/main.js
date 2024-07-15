@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-document.addEventListener("DOMContentLoaded", () => {
+
   function updateButtonVisibility(isLoggedIn) {
     const $sortButtons = document.querySelectorAll(".btn-group .btn[data-sortUserFavorite]");
     $sortButtons.forEach((button) => {
@@ -103,7 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 초기 체크
   checkLoginStatus();
-});
+
+
 
 const $searchButton = document.querySelector("#search-button");
 const $provinceSelect = document.querySelector("#province-select");
