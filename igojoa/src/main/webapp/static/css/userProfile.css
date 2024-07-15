@@ -693,7 +693,7 @@ h2 {
 }
 
 .flatpickr-calendar {
-  width: 350px !important; /* 기존 캘린더의 너비를 조절할 수 있습니다 */
+ /*  width: 350px !important; 기존 캘린더의 너비를 조절할 수 있습니다 우선 지워놓기  */
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

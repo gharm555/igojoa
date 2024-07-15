@@ -11,6 +11,17 @@ header {
 .navbar {
   height: 80px;
 }
+.form-check-input:checked {
+    background-color: black;
+    border-color:black;
+}
+
+.form-switch .form-check-input {
+  padding:0px;
+  }
+  .form-check-label{
+  margin-left: 3px;
+  }
 
 .container-fluid {
   display: flex;
@@ -124,6 +135,7 @@ header {
   color: white;
 }
 
+
 #sideNav.open {
   transform: translateX(0);
 }
@@ -142,10 +154,7 @@ header {
   text-decoration: none;
   font-size: 18px;
 }
-.form-check {
-    padding-left: 3.5em;
-    font-size: 20px;
-}
+
 
 @media (max-width: 768px) {
   .container-logo {

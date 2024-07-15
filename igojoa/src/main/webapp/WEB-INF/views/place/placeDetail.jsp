@@ -167,7 +167,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   </p>
                 </div>
               </div>
-            </section>
+            </section >
           </div>
 
           <!-- 두 번째 섹션 (오른쪽에 배치) -->
