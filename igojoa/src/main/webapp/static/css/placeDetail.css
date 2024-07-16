@@ -20,7 +20,9 @@ p {
 h2 {
   font-size: 2.2rem;
 }
-
+.container {
+  border-radius: var(--border-radius);
+}
 #map,
 #carouselExampleIndicators {
   height: 400px;
@@ -424,6 +426,9 @@ h2 {
   .mb-3 {
     margin-bottom: 0px !important;
   }
+  .mb-5 {
+    margin-bottom: 0px !important;
+  }
   .card-header.bg-primary {
     padding-left: 0px;
   }
@@ -459,6 +464,7 @@ h2 {
   }
   .container {
     padding: 10px; /* 컨테이너 패딩 줄이기 */
+    border-radius: var(--border-radius);
   }
   .card-body {
     padding: 10px; /* 카드 안쪽 패딩 줄이기 */
@@ -489,7 +495,10 @@ h2 {
   }
   main {
     width: 90%;
-    margin: 0px 5%;
+    margin: 45px 5%;
+  }
+  #createReviewBtn {
+    margin: 10px;
   }
 }
 

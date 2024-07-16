@@ -160,7 +160,7 @@ main {
   margin: 56px 10%;
   border-radius: var(--border-radius);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  margin-top: 20px; /* 컨테이너 상단 여백 추가 */
+  margin-top: 45px; /* 컨테이너 상단 여백 추가 */
 }
 
 a {
