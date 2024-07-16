@@ -168,7 +168,7 @@ function playLotto() {
   for (let i = 0; i < winBalls.length; i++) {
     setTimeout(() => {
       showBall(winBalls[i], $result);
-    }, (i + 1) * 1000);
+    }, (i + 1) * 500);
   }
   axios
     .post(
@@ -189,12 +189,13 @@ function playLotto() {
       getPoints();
       setTimeout(() => {
         showBall(bonus, $bonus);
+      }, 3500);
+      setTimeout(() => {
         $rank.textContent = `결과: ${response.data.rank}`;
         showModal(response.data);
-
         isGameInProgress = false;
         $playButton.disabled = false;
-      }, 7000);
+      }, 5000);
     })
     .catch((error) => {
       alert(error.response.data);
