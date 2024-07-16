@@ -693,7 +693,7 @@ h2 {
     flex: 1;
     text-align: center;
   }
-  
+
   .tab-icon {
     margin: 0 0 3px 0 !important;
   } /* 07-15 테스트 모바일 화면에서 탭버튼 가로로 */
@@ -741,7 +741,6 @@ h2 {
 .flatpickr-next-month svg {
   margin-right: 48px;
 } /*07-15 추가*/
-
 
 /* 버튼을 캘린더 하단 중앙에 배치 */
 .flatpickr-calendar .flatpickr-buttons {
