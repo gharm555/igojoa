@@ -604,9 +604,9 @@ a .main-card-footer .bi-heart-fill {
     font-size: 13px;
   }
 }
-@media (max-width: 390px) {
-  html,
-  body {
+
+@media ( max-width : 420px) {
+  html, body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -646,9 +646,8 @@ a .main-card-footer .bi-heart-fill {
   #search-keyword {
     font-size: 12px;
   }
-  .main-search-bar select,
-  .main-search-bar input,
-  .main-search-bar button {
+  .main-search-bar select, .main-search-bar input, .main-search-bar button
+    {
     padding: 12px 10px 12px 10px;
     font-size: 14px;
   }
@@ -662,16 +661,13 @@ a .main-card-footer .bi-heart-fill {
     padding: 0;
     padding-top: 5%;
   }
-  .main-card-footer h3,
-  .main-card-footer h5 {
+  .main-card-footer h3, .main-card-footer h5 {
     font-size: 0.9rem;
   }
   .main-card-footer p {
     font-size: 0.8vrem;
   }
-  .username,
-  .date,
-  .likes {
+  .username, .date, .likes {
     font-size: 0.8em;
   }
   /* footer {
@@ -689,12 +685,6 @@ a .main-card-footer .bi-heart-fill {
   #suggestions li {
     font-size: 12px;
   }
-
-  /* footer 관련한 설정 */
-  .copyright {
-    text-align-last: left;
-  }
-
   footer {
     font-size: 13px;
   }
