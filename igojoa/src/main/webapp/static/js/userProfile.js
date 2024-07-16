@@ -453,6 +453,9 @@ function initializeUserActivity() {
   $searchInput.value = "";
   sessionStorage.removeItem("searchKeyword");
 
+  // 세션 스토리지의 검색 키워드 초기화
+  sessionStorage.removeItem("searchKeyword");
+
   // 주소 선택 초기화
   $addressSelect.selectedIndex = 0;
 
@@ -460,9 +463,8 @@ function initializeUserActivity() {
   datePicker.clear();
 
   // 데이터 리셋 및 새로운 데이터 로드
-  resetAndLoadData();
+  loadDataWithCurrentSearch();
 }
-
 // 각 탭에 이벤트 리스너 추가
 tabs.forEach((tab) => {
   const $tabElement = document.querySelector(`#nav-${tab}-tab`);
@@ -475,10 +477,16 @@ tabs.forEach((tab) => {
       // 새로운 탭으로 변경한 경우
       currentTab = tab;
       sortOrder = "desc"; // 새 탭으로 변경 시 정렬 순서 초기화
-      resetAndLoadData();
+      loadDataWithCurrentSearch();
     }
   });
 });
+
+function loadDataWithCurrentSearch() {
+  const searchKeyword = sessionStorage.getItem("searchKeyword") || "";
+  $searchInput.value = searchKeyword;
+  resetAndLoadData();
+}
 
 // 검색 버튼 이벤트 리스너
 $searchBtn.addEventListener("click", () => {
@@ -532,7 +540,7 @@ function loadMoreData() {
 
   isLoading = true;
 
-  let searchKeyword = sessionStorage.getItem("searchKeyword") || $searchInput.value;
+  let searchKeyword = sessionStorage.getItem("searchKeyword") || "";
   let largeAddress = $addressSelect.value;
   let endpoint = getEndpointFromTab(currentTab);
 
