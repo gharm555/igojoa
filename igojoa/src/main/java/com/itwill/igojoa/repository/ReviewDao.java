@@ -19,6 +19,8 @@ public interface ReviewDao {
 	int clickReviewLike(ReviewLikes reviewLikes);
 
 	int deleteReviewLike(ReviewLikes reviewLikes);
+	
+	int deleteMyReviewAndDeleteAllLike(ReviewLikes reviewLikes);
 
 	int deleteAllReview(String userId);
 

@@ -97,10 +97,13 @@ public class ReviewService {
 	public List<ReviewListDto> deleteReview(PlacesFavoriteDto placesFavoriteDto) {
 		Reviews reviews = Reviews.builder().placeName(placesFavoriteDto.getPlaceName())
 				.userId(placesFavoriteDto.getUserId()).build();
+		ReviewLikes reviewLikes = ReviewLikes.builder().userId(placesFavoriteDto.getUserId())
+				.placeName(placesFavoriteDto.getPlaceName()).build();
 		int i = reviewDao.deleteReview(reviews);
 		int j = pointsDao.addLoginPoints(reviews.getUserId(), -500);
 		int k = pointsDao.insertPointLog(reviews.getUserId(), "리뷰삭제", -500);
-		if (i == 1 && j == 1 && k == 1) {
+		int l = reviewDao.deleteMyReviewAndDeleteAllLike(reviewLikes);
+		if (i == 1 && j == 1 && k == 1 && l == 1) {
 			ReviewSelectDto reviewSelectDto = ReviewSelectDto.builder().placeName(reviews.getPlaceName())
 					.userId(reviews.getUserId()).orderBy("cntLikeDESC").startRowValue(0).rowCnt(8).build();
 			Optional<List<ReviewListDto>> optionalReviewListDto = Optional
