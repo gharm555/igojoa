@@ -155,7 +155,7 @@ document.querySelector("input#nickName").addEventListener("input", function () {
 
 // 사용자 이메일 중복 검사
 document.querySelector("input#email").addEventListener("input", function () {
-  const email = this.value;
+  const email = this.value.trim;
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const $emailFeedback = document.querySelector("#emailFeedback");
 
