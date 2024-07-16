@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("js에 들어왔다.");
+  //console.log("js에 들어왔다.");
 
   // 이모지 리스트 생성
   createEmojiList();
@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 상세페이지 좋아요 버튼 활성화
   const $heartIcon = document.querySelector("#favoriteHeart");
-  console.log("이까지 왔다 1111111111111112");
 
   // 게시물 좋아요 하트 아이콘
   function updateHeartIcon() {
@@ -27,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
       $heartIcon.classList.remove("bi-heart");
     }
   }
-  console.log("이까지 왔다 333333333333333");
+
   // 초기 상태 설정
   updateHeartIcon();
 
@@ -38,22 +37,22 @@ document.addEventListener("DOMContentLoaded", function () {
     // UI 업데이트
     updateHeartIcon();
 
-    console.log("Current userFavorite:", pd.userFavorite);
+    //console.log("Current userFavorite:", pd.userFavorite);
 
     const placeName = pd.placeName;
 
     if (pd.userFavorite === 0) {
       //(좋아요 취소)
       const deleteUri = `${contextPath}/deleteHeart/${placeName}`;
-      console.log("Delete URI:", deleteUri);
+      // console.log("Delete URI:", deleteUri);
 
       axios
         .delete(deleteUri)
         .then((response) => {
-          console.log("삭제 응답:", response.data);
+          //console.log("삭제 응답:", response.data);
         })
         .catch((error) => {
-          console.error("삭제 에러:", error);
+          //console.error("삭제 에러:", error);
           // 에러 시 상태 복구
           pd.userFavorite = 1;
           updateHeartIcon();
@@ -61,15 +60,15 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       //(좋아요 추가)
       const addUri = `${contextPath}/clickHeart`;
-      console.log("Add URI:", addUri);
+      //console.log("Add URI:", addUri);
 
       axios
         .put(addUri, placeName)
         .then((response) => {
-          console.log("추가 응답:", response.data);
+          //console.log("추가 응답:", response.data);
         })
         .catch((error) => {
-          console.error("추가 에러:", error);
+          //console.error("추가 에러:", error);
           // 에러 시 상태 복구
           pd.userFavorite = 0;
           updateHeartIcon();
@@ -85,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // iScore가 공백이 아닐 때 실행
   if (!regex.test(avgiScore) && avgiScore !== "") {
-    console.log("avgIScore:", avgiScore);
+    //console.log("avgIScore:", avgiScore);
 
     let difficulty;
     // iScore 값에 따라 난이도 설정
@@ -103,14 +102,14 @@ document.addEventListener("DOMContentLoaded", function () {
         color = "danger";
         break;
       default:
-        console.log("올바르지 않은 IScore 값입니다:", avgiScore);
+        //console.log("올바르지 않은 IScore 값입니다:", avgiScore);
         return; // 올바르지 않은 값일 경우 함수 종료
     }
 
     // 난이도 텍스트 업데이트
     $iscoreBedge.textContent = difficulty;
     $iscoreBedge.className = `badge bg-${color} ms-2`;
-    console.log(`난이도가 "${difficulty}"(으)로 설정되었습니다.`);
+    //console.log(`난이도가 "${difficulty}"(으)로 설정되었습니다.`);
   } else {
     $iscoreBedge.textContent = "아이난이도: ";
     $iscoreBedge.className = "badge bg-secondary";
@@ -128,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function reviewLike(userId, button) {
-    console.log("클릭 들어옴 ");
+    //console.log("클릭 들어옴 ");
     const placeName = pd.placeName;
     const heartIcon = button.querySelector("i");
     const likeCountSpan = button.querySelector(".like-count");
@@ -136,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 현재 좋아요 상태 확인
     const isCurrentlyLiked = heartIcon.classList.contains("bi-heart-fill");
-    console.log("isCurrentlyLiked:", isCurrentlyLiked);
+    //console.log("isCurrentlyLiked:", isCurrentlyLiked);
     // API 호출
     const uri = isCurrentlyLiked
       ? `${contextPath}/${encodeURIComponent(
@@ -147,25 +146,25 @@ document.addEventListener("DOMContentLoaded", function () {
       axios
         .put(uri, userId)
         .then((response) => {
-          console.log("클릭리뷰 라이크 실행 값 :", response.data);
-          console.log("currentCount", currentCount);
+          //console.log("클릭리뷰 라이크 실행 값 :", response.data);
+          //console.log("currentCount", currentCount);
           heartIcon.classList.replace("bi-heart", "bi-heart-fill");
           currentCount += 1;
           likeCountSpan.textContent = currentCount;
         })
         .catch((error) => {
-          console.error("리뷰 좋아요 실패:", error);
+          //console.error("리뷰 좋아요 실패:", error);
           // 에러 처리
         });
     } else {
-      console.log("리뷰의 좋아요 삭제 실패에 들어옴");
+      //console.log("리뷰의 좋아요 삭제 실패에 들어옴");
 
       const formData = new URLSearchParams();
       formData.append("userId", userId);
       axios
         .delete(uri)
         .then((response) => {
-          console.log("클릭리뷰 딜리트라이크 실행 값 :", response.data);
+          //console.log("클릭리뷰 딜리트라이크 실행 값 :", response.data);
 
           heartIcon.classList.replace("bi-heart-fill", "bi-heart");
           currentCount -= 1;
@@ -204,7 +203,6 @@ function updateReviewButtons() {
   }
 }
 
-console.log("이까지 왔다 2222222222222");
 /** --------------------  리뷰 작성하기 버튼 -------------------------- */
 const regex = /^\s*$/;
 function createReview() {
@@ -213,10 +211,10 @@ function createReview() {
   const placeName = pd.placeName;
   const uri = `${contextPath}/${placeName}/newReview`;
 
-  console.log("리뷰 보내는 주소: ", uri);
+  //console.log("리뷰 보내는 주소: ", uri);
   const { reviewData } = review();
-  console.log("reviewData", reviewData);
-  console.log("reviewData.review", reviewData.review);
+  //console.log("reviewData", reviewData);
+  //console.log("reviewData.review", reviewData.review);
 
   if (regex.test(reviewData.review)) {
     alert("리뷰 내용을 작성해주세요.");
@@ -225,11 +223,11 @@ function createReview() {
     axios
       .put(uri, reviewData)
       .then((response) => {
-        console.log("Server response:", response.data);
+        //console.log("Server response:", response.data);
         if (response.data === 0) {
           alert("방문 인증이 필요합니다.");
         } else {
-          console.log("response.data이거다", response.data);
+          //console.log("response.data이거다", response.data);
           alert("리뷰가 성공적으로 등록되었습니다.");
           pd.review = reviewData.review;
           updateReviewButtons();
@@ -255,13 +253,13 @@ function createReview() {
 /** --------------- 리뷰 수정하기 버튼 ------------------------ */
 
 function updateReview() {
-  console.log("수정하기 버튼 누름");
+  //console.log("수정하기 버튼 누름");
   review();
 
   const placeName = pd.placeName;
   const uri = `${contextPath}/${placeName}/updateReview`;
 
-  console.log("리뷰 보내는 주소: ", uri);
+  //console.log("리뷰 보내는 주소: ", uri);
   const { reviewData } = review();
 
   if (regex.test(reviewData.review)) {
@@ -271,7 +269,7 @@ function updateReview() {
     axios
       .put(uri, reviewData)
       .then((response) => {
-        console.log("Server response:", response.data);
+        //console.log("Server response:", response.data);
         if (response.data === 0) {
           alert("방문 인증이 필요합니다.");
         } else {
@@ -304,7 +302,7 @@ function deleteReview() {
   axios
     .delete(uri)
     .then((response) => {
-      console.log("삭제 응답:", response.data);
+      //console.log("삭제 응답:", response.data);
       alert("리뷰가 성공적으로 삭제되었습니다.");
       pd.review = null;
       updateReviewButtons(); // 버튼 상태 업데이트
@@ -316,43 +314,43 @@ function deleteReview() {
       sendSortRequest(sortObject);
     })
     .catch((error) => {
-      console.error("삭제 에러:", error);
+      //console.error("삭제 에러:", error);
       alert("리뷰 삭제에 실패했습니다.");
     });
 }
 
 //리뷰작성 폼에 있는 값을 만드는 객체 (재사용성을 위해서 따로 만들었음)
 function review() {
-  console.log("리뷰작성 버튼 실행실행");
+  //console.log("리뷰작성 버튼 실행실행");
   const selectedRadio = document.querySelector(
     'input[name="difficulty"]:checked'
   );
   let difficulty;
 
-  console.log(`리뷰작성 버튼2 selectedRadio 실행실행`);
+  //console.log(`리뷰작성 버튼2 selectedRadio 실행실행`);
   if (selectedRadio) {
     switch (selectedRadio.id) {
       case "btnradio1":
-        console.log(`리뷰작성 버튼1 selectedRadio 실행실행`);
+        //console.log(`리뷰작성 버튼1 selectedRadio 실행실행`);
         difficulty = 3; // 상
         break;
       case "btnradio2":
-        console.log(`리뷰작성 버튼2 selectedRadio 실행실행`);
+        //console.log(`리뷰작성 버튼2 selectedRadio 실행실행`);
         difficulty = 2; // 중
         break;
       case "btnradio3":
-        console.log(`리뷰작성 버튼3 selectedRadio 실행실행`);
+        //console.log(`리뷰작성 버튼3 selectedRadio 실행실행`);
         difficulty = 1; // 하
         break;
     }
-    console.log("스위치문 나왔다");
+    //console.log("스위치문 나왔다");
   } else {
-    console.log("난이도가 선택되지 않았습니다.");
+    //console.log("난이도가 선택되지 않았습니다.");
     alert("난이도를 선택해주세요.");
     return; // 난이도 선택이 없으면 함수 종료
   }
 
-  console.log("리뷰작성 버튼4 실행실행");
+  //console.log("리뷰작성 버튼4 실행실행");
   const reviewData = {
     review: document.querySelector("#reviewText").value,
     parkingAvailable: document.querySelector("#btncheck1").checked ? 1 : 0,
@@ -377,7 +375,7 @@ function showAllReview() {
   const uri = `${contextPath}/${encodeURIComponent(
     placeName
   )}/selectDefaultReview`;
-  console.log("모든 리뷰 가져오기 URI:", uri);
+  //console.log("모든 리뷰 가져오기 URI:", uri);
 
   axios
     .get(uri)
@@ -415,7 +413,7 @@ function displayReviews(reviews) {
   const htmlStr = reviews.map((review) => createReviewCard(review)).join("");
   $reviewListSection.innerHTML = htmlStr;
   levelCss();
-  console.log("Reviews displayed");
+  //console.log("Reviews displayed");
 }
 
 // 리뷰에 들어갈 값
@@ -489,37 +487,32 @@ function createReviewCard(review) {
 `;
 }
 function levelCss() {
-  // 필요한 CSS 애니메이션 추가
+  //console.log("Applying level CSS");
+  // sparkle 애니메이션 정의
   const style = document.createElement("style");
   style.textContent = `
-@keyframes rainbow {
-  0% { background-position: 0% 50% }
-  50% { background-position: 100% 50% }
-  100% { background-position: 0% 50% }
-}
-@keyframes sparkle {
-  0% { filter: brightness(100%) }
-  50% { filter: brightness(150%) }
-  100% { filter: brightness(100%) }
-}
-`;
+    @keyframes sparkle {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+    .crown-icon {
+      animation: sparkle 1.5s infinite;
+    }
+  `;
   document.head.appendChild(style);
 
   const $levelElements = document.querySelectorAll(".circular-icon");
+  //console.log("Found level elements:", $levelElements.length);
   $levelElements.forEach(($levelElement) => {
     const level = parseInt($levelElement.dataset.level);
+    //console.log("Applying style for level:", level);
     const iconStyle = levelColor(level);
 
     if (level >= 100) {
-      $levelElement.innerHTML = "👑";
-      $levelElement.style.background = "none";
-      $levelElement.style.fontSize = "30px";
-      $levelElement.style.top = "-6px";
-      $levelElement.style.position = "relative";
-      $levelElement.style.animation = "sparkle 1.5s infinite";
-      $levelElement.style.filter = "drop-shadow(0 0 2px gold)";
+      //console.log("Applying crown icon style");
+      $levelElement.classList.add("crown-icon");
     } else {
-      $levelElement.innerHTML = level;
       $levelElement.style.background = iconStyle.bg;
       if (level >= 90) {
         $levelElement.style.animation = iconStyle.animation;
@@ -532,15 +525,28 @@ function levelCss() {
   });
 }
 function createLevelIconHtml(level) {
-  const iconStyle = levelColor(level);
-  let html = `<div class="circular-icon level-icon me-2" data-level="${level}" style="background: ${iconStyle.bg}; width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; color: white;">`;
-
+  //console.log("Creating level icon for level:", level);
   if (level >= 100) {
-    html += `<span style="font-size: 20px;">👑</span>`;
-  } else {
-    html += level;
+    //console.log("Creating crown icon");
+    return `<div class="circular-icon level-icon crown-icon me-2" data-level="${level}" style="
+      width: 30px; 
+      height: 30px; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      font-weight: bold; 
+      color: white; 
+      background: none; 
+      font-size: 30px; 
+      position: relative; 
+      top: -6px; 
+      filter: drop-shadow(0 0 2px gold);">👑</div>`;
   }
 
+  //console.log("Creating regular level icon");
+  const iconStyle = levelColor(level);
+  let html = `<div class="circular-icon level-icon me-2" data-level="${level}" style="background: ${iconStyle.bg}; width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; color: white;">`;
+  html += level;
   html += `</div>`;
 
   if (iconStyle.animation) {
@@ -550,6 +556,10 @@ function createLevelIconHtml(level) {
   return html;
 }
 function levelColor(level) {
+  if (level >= 100) {
+    return { bg: "none" };
+  }
+
   if (level >= 90) {
     return {
       bg: "linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff)",
@@ -567,10 +577,11 @@ function levelColor(level) {
   if (level >= 10) return { bg: "linear-gradient(145deg, #FF0000, #DC143C)" }; //빨
   return { bg: "linear-gradient(145deg, #8B4513, #A0522D)" }; //  1 - 9 까지 색상
 }
+
 /* ----------------------------  이모지 리스트 생성 ------------------------- */
 function createEmojiList() {
-  console.log("Creating Emoji List");
-  console.log("emojiData:", emojiData); // 디버깅: emojiData 출력
+  //console.log("Creating Emoji List");
+  //console.log("emojiData:", emojiData); // 디버깅: emojiData 출력
 
   const $listContainer = document.querySelector("#emojiList");
   if (!$listContainer) {
@@ -587,12 +598,12 @@ function createEmojiList() {
   const maxCount = Math.max(
     ...emojiData.map((item) => {
       const count = parseInt(item.count) || 0;
-      console.log(`${item.key} count:`, count); // 디버깅: 각 항목의 count 출력
+      //console.log(`${item.key} count:`, count); // 디버깅: 각 항목의 count 출력
       return count;
     })
   );
 
-  console.log("maxCount:", maxCount); // 디버깅: maxCount 출력
+  //console.log("maxCount:", maxCount); // 디버깅: maxCount 출력
 
   // $listContainer.innerHTML = ""; // 기존 내용 초기화
 
@@ -615,7 +626,7 @@ function createEmojiList() {
     $emojiContainer.appendChild(emojiItem);
   });
 
-  console.log("Emoji list created successfully");
+  //console.log("Emoji list created successfully");
 }
 
 /* ---------------------------- 카카오 지도 -------------------------- */
@@ -633,7 +644,7 @@ function initializeKakaoMap() {
             center: kakaoMap,
             level: 3,
           };
-          console.log(kakaoMap);
+          //console.log(kakaoMap);
           let map = new kakao.maps.Map($container, options);
           let markerPosition = kakaoMap;
           let marker = new kakao.maps.Marker({
@@ -736,25 +747,25 @@ function showUserReview() {
       radioId = "btnradio1"; // 상
       break;
     default:
-      console.log("Invalid iScore value:", pd.iScore);
+      //console.log("Invalid iScore value:", pd.iScore);
       radioId = null; // 유효하지 않은 값일 경우 null로 설정
   }
 
-  console.log("Selected radioId:", radioId);
+  //console.log("Selected radioId:", radioId);
 
   if (radioId) {
     // 해당하는 라디오 버튼을 선택합니다.
     const $radioButton = document.querySelector(`#${radioId}`);
-    console.log("선택한 라디오버튼 :", $radioButton);
+    //console.log("선택한 라디오버튼 :", $radioButton);
 
     if ($radioButton) {
       $radioButton.checked = true;
-      console.log("Radio button checked:", radioId);
+      //console.log("Radio button checked:", radioId);
     } else {
-      console.log("Radio button not found for id:", radioId);
+      //console.log("Radio button not found for id:", radioId);
     }
   } else {
-    console.log("No valid radioId selected");
+    //console.log("No valid radioId selected");
   }
 }
 // -------------------------------------------------
@@ -801,7 +812,7 @@ dropdownItems.forEach((item) => {
 });
 
 function sendSortRequest(sortObject) {
-  console.log("정렬 요청:", sortObject);
+  //console.log("정렬 요청:", sortObject);
 
   const placeName = pd.placeName;
   const uri = `${contextPath}/${placeName}/sortReview`;
@@ -815,7 +826,7 @@ function sendSortRequest(sortObject) {
   axios
     .get(uri, { params: sortObject })
     .then((response) => {
-      console.log("정렬 결과:", response.data);
+      //console.log("정렬 결과:", response.data);
       allReviews = response.data;
       displayReviews(response.data);
 
@@ -864,6 +875,7 @@ function loadMoreReviews() {
         // 더 로드할 리뷰가 없는지 확인
         if (response.data.length < additionalItemCount) {
           noMoreReviews = true;
+          console.log("더 이상 불러올 리뷰가 없습니다.");
         }
       } else {
         console.log("더 이상 불러올 리뷰가 없습니다.");
@@ -909,3 +921,8 @@ function resetReviewForm() {
     checkbox.checked = false;
   });
 }
+// 왕관 아이콘 css
+document.addEventListener("DOMContentLoaded", (event) => {
+  //console.log("DOM fully loaded and parsed");
+  levelCss();
+});

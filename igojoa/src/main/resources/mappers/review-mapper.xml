@@ -144,9 +144,9 @@
 		AND myLike.userId
 		= r.userId
 		LEFT JOIN
-        points p 
-        ON
-        r.userId = p.userId 
+		points p
+		ON
+		r.userId = p.userId
 		LEFT JOIN
 		users u
 		ON
@@ -157,22 +157,22 @@
 		<if test='orderBy.equals("modifiedAtDESC")'>
 			ORDER BY
 			modifiedAt
-			DESC
+			DESC, u.nickName ASC
 		</if>
 		<if test='orderBy.equals("modifiedAtASC")'>
 			ORDER BY
 			modifiedAt
-			ASC
+			ASC, u.nickName ASC
 		</if>
 		<if test='orderBy.equals("cntLikeDESC")'>
 			ORDER BY
 			cntLike
-			DESC
+			DESC, u.nickName ASC
 		</if>
 		<if test='orderBy.equals("cntLikeASC")'>
 			ORDER BY
 			cntLike
-			ASC
+			ASC, u.nickName ASC
 		</if>
 		LIMIT ${ startRowValue }, ${ rowCnt }
 	</select>
@@ -216,6 +216,14 @@
 		'${placeName}'
 		AND likeUserId =
 		'${likeUserId}'
+	</delete>
+
+	<delete id="deleteMyReviewAndDeleteAllLike">
+		<bind name="userId" value="userId" />
+		<bind name="placeName" value="placeName" />
+		DELETE FROM reviewLikes
+		WHERE userId = '${userId}' AND
+		placeName='${placeName}'
 	</delete>
 
 	<delete id="deleteAllReview">
