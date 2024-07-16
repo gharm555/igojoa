@@ -2,12 +2,14 @@
 pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%> <%@
 taglib prefix="fmt" uri="jakarta.tags.fmt"%> <%@ taglib prefix="fn"
 uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>아이고조아</title>
+    
      <c:url var="appleTouchIcon" value="/favicon/apple-touch-icon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="${ appleTouchIcon }">
     <c:url var="favicon3232" value="/favicon/favicon-32x32.png" />
@@ -133,7 +135,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
             <section>
               <div class="card shadow-sm">
                 <div class="card-body">
-                  <div class="d-flex justify-content-between align-items-start">
+                  <div class="d-flex justify-content-between align-items-start" style="height:55px;">
                     <h2 class="card-title mb-5">
                       ${ pd.placeName }
                       <span
@@ -163,7 +165,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                       class="fas fa-info-circle me-2"
                       style="color: #4a6fa5"
                     ></i>
-                    ${ pd.placeDescription }
+                     ${ fn:replace(pd.placeDescription, '. ', '.<br>') } 
                   </p>
                 </div>
               </div>
@@ -366,7 +368,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-      console.log("Defining emojiData");
+      //console.log("Defining emojiData");
       let emojiData = [
           { emoji: "🏞️", text: '"경치좋은"', count: "${pd.totalView}", key: "view" },
           { emoji: "💵", text: '"무료입장"', count: "${pd.totalFreeEntry}", key: "freeEntry" },
@@ -374,12 +376,12 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           { emoji: "🛣️", text: '"교통원활"', count: "${pd.totalEasyTransport}", key: "easyTransport" },
           { emoji: "🚗", text: '"주차가능"', count: "${pd.totalParkingAvailable}", key: "parkingAvailable" }
       ];
-      console.log("emojiData defined:", emojiData);
+      //console.log("emojiData defined:", emojiData);
           let mapData = {
               latitude: ${pd.placeLatitude},
               longitude: ${pd.placeLongitude}
           };
-          console.log("emojiData and mapData initialized");
+          //console.log("emojiData and mapData initialized");
 
 
           let pd = {
