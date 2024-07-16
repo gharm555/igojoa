@@ -597,3 +597,94 @@ a .main-card-footer .bi-heart-fill {
     font-size: 13px;
   }
 }
+
+@media ( max-width : 420px) {
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    width: 100%;
+  }
+  .banner-container {
+    height: 300px;
+  }
+  #main-section {
+    width: 155%;
+    min-height: 400px;
+  }
+  .main-card-body img {
+    height: 100px;
+  }
+  .main-card {
+    width: 70%;
+    margin: 0 auto;
+    padding: 10px;
+  }
+  .main-container {
+    padding: 0 10px; /* 컨테이너의 패딩도 조정 */
+  }
+  .main-badge {
+    font-size: 0.7rem;
+    padding: 0.3em 0.5em;
+  }
+  .main-custom-heart {
+    font-size: 20px;
+  }
+  .search-container {
+    width: 60%;
+  }
+  #province-select {
+    font-size: 12px;
+  }
+  #search-keyword {
+    font-size: 12px;
+  }
+  .main-search-bar select, .main-search-bar input, .main-search-bar button
+    {
+    padding: 12px 10px 12px 10px;
+    font-size: 14px;
+  }
+  #search-keyword {
+    width: 33%;
+  }
+  .main-card-header h1 {
+    font-size: 1.2rem;
+  }
+  .main-card-footer {
+    padding: 0;
+    padding-top: 5%;
+  }
+  .main-card-footer h3, .main-card-footer h5 {
+    font-size: 0.9rem;
+  }
+  .main-card-footer p {
+    font-size: 0.8vrem;
+  }
+  .username, .date, .likes {
+    font-size: 0.8em;
+  }
+  /* footer {
+        background-color: black;
+        font-size: 12px;
+        color: white;
+    }
+    footer .container {
+        width: 100%;
+    } */
+  .list-group {
+    width: 54%;
+    margin-left: 95px;
+  }
+  #suggestions li {
+    font-size: 12px;
+  }
+  
+  /* footer 관련한 설정 */
+  .copyright {
+    text-align-last: left;
+  }
+  
+  footer {
+    font-size: 13px;
+  }
+}

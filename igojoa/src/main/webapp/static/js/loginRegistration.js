@@ -707,7 +707,7 @@ document.addEventListener("DOMContentLoaded", function () {
   switchToSignin.addEventListener("click", toggleForm);
 
   function updateFormLayout() {
-    if (window.innerWidth <= 390) {
+    if (window.innerWidth <= 390 || window.innerWidth <= 420) {
       if (!$signinForm.contains(signupContainer)) {
         $signinForm.appendChild(signupContainer);
         $signupForm.appendChild(signinContainer);
