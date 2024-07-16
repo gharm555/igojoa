@@ -207,64 +207,79 @@ function validateInput(type, value) {
   let errorMessage = "";
   let uri = "";
 
+  
+  const hasWhitespace = /\s/.test(value);
+  
+  if (hasWhitespace) {
+    errorMessage = "공백이 포함되어서는 안됩니다.";
+  }
+  
   if (value === "") {
     errorMessage = "";
   }
-
+  
   switch (type) {
     case "userId":
-      const userId = value;
+      const userId = value.trim();
       $messageElement = document.querySelector("#id-check-message");
-      uri = `./checkUserId?userId=${userId}`;
-      axios
-        .get(uri)
-        .then((response) => {
-          if (!response.data) {
-            errorMessage = "이미 존재하는 아이디 입니다";
-          }
-          displayValidationMessage($messageElement, errorMessage);
-        })
-        .catch((error) => console.log(error));
+      if (!errorMessage) {
+        uri = `./checkUserId?userId=${userId}`;
+        axios
+          .get(uri)
+          .then((response) => {
+            if (!response.data) {
+              errorMessage = "이미 존재하는 아이디 입니다";
+            }
+            displayValidationMessage($messageElement, errorMessage);
+          })
+          .catch((error) => console.log(error));
+      } else {
+        displayValidationMessage($messageElement, errorMessage);
+      }
       break;
     case "password":
       $messageElement = document.querySelector("#password-check-message");
       const passwordPattern = /^(?=.*[0-9]).{8,11}$/;
-      if (!passwordPattern.test(value)) {
+      if (!passwordPattern.test(value.trim())) {
         errorMessage = "8자리 이상 12자리 미만, 숫자가 포함된 비밀번호로 해주세요.";
       }
       displayValidationMessage($messageElement, errorMessage);
       break;
     case "password-confirm":
       $messageElement = document.querySelector("#password-confirm-check-message");
-      const password = document.querySelector("#password").value;
+      const password = document.querySelector("#password").value.trim();
       if (value !== password) {
         errorMessage = "비밀번호가 일치하지 않습니다.";
       }
       displayValidationMessage($messageElement, errorMessage);
       break;
     case "nickName":
-      const nickName = value;
+      const nickName = value.trim();
       $messageElement = document.querySelector("#nickname-check-message");
-      uri = `./checkNickName?nickName=${nickName}`;
-      axios
-        .get(uri)
-        .then((response) => {
-          if (!response.data) {
-            errorMessage = "이미 존재하는 닉네임 입니다";
-          }
-          displayValidationMessage($messageElement, errorMessage);
-        })
-        .catch((error) => console.log(error));
+      if (!errorMessage) {
+        uri = `./checkNickName?nickName=${nickName}`;
+        axios
+          .get(uri)
+          .then((response) => {
+            if (!response.data) {
+              errorMessage = "이미 존재하는 닉네임 입니다";
+            }
+            displayValidationMessage($messageElement, errorMessage);
+          })
+          .catch((error) => console.log(error));
+      } else {
+        displayValidationMessage($messageElement, errorMessage);
+      }
       break;
     case "email":
       $messageElement = document.querySelector("#email-check-message");
-      const email = value;
+      const email = value.trim();
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      uri = `./checkEmail?email=${email}`;
       if (!emailPattern.test(email)) {
         errorMessage = "유효하지 않은 이메일입니다.";
         displayValidationMessage($messageElement, errorMessage);
-      } else {
+      } else if (!errorMessage) {
+        uri = `./checkEmail?email=${email}`;
         axios
           .get(uri)
           .then((response) => {
@@ -274,6 +289,8 @@ function validateInput(type, value) {
             displayValidationMessage($messageElement, errorMessage);
           })
           .catch((error) => console.log(error));
+      } else {
+        displayValidationMessage($messageElement, errorMessage);
       }
       break;
     case "phone":
@@ -299,7 +316,7 @@ function validateInput(type, value) {
       if (!phonePattern.test(phone1) || !phonePattern.test(phone2) || !phonePattern.test(phone3)) {
         errorMessage = "유효하지 않은 전화번호입니다.";
         displayValidationMessage($messageElement, errorMessage);
-      } else {
+      } else if (!errorMessage) {
         uri = `./checkPhoneNumber?phone1=${phone1}&phone2=${phone2}&phone3=${phone3}`;
         axios
           .get(uri)
@@ -310,6 +327,8 @@ function validateInput(type, value) {
             displayValidationMessage($messageElement, errorMessage);
           })
           .catch((error) => console.log(error));
+      } else {
+        displayValidationMessage($messageElement, errorMessage);
       }
       break;
   }
