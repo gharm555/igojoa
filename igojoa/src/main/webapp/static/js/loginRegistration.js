@@ -108,8 +108,7 @@ function login() {
   }
 
   // URL 쿼리 파라미터 읽어오는 역할
-  const target =
-    new URLSearchParams(window.location.search).get("target") || "";
+  const target = new URLSearchParams(window.location.search).get("target") || "";
 
   axios
     .post("./login", null, {
@@ -174,13 +173,7 @@ function register() {
     nickName: $nickName.value,
   };
 
-  if (
-    !userData.userId ||
-    !userData.password ||
-    !userData.email ||
-    !userData.phoneNumber ||
-    !userData.nickName
-  ) {
+  if (!userData.userId || !userData.password || !userData.email || !userData.phoneNumber || !userData.nickName) {
     $registerCheckMessage.textContent = "입력정보를 확인해주세요";
     $registerCheckMessage.style.display = "block";
 
@@ -237,15 +230,12 @@ function validateInput(type, value) {
       $messageElement = document.querySelector("#password-check-message");
       const passwordPattern = /^(?=.*[0-9]).{8,11}$/;
       if (!passwordPattern.test(value)) {
-        errorMessage =
-          "8자리 이상 12자리 미만, 숫자가 포함된 비밀번호로 해주세요.";
+        errorMessage = "8자리 이상 12자리 미만, 숫자가 포함된 비밀번호로 해주세요.";
       }
       displayValidationMessage($messageElement, errorMessage);
       break;
     case "password-confirm":
-      $messageElement = document.querySelector(
-        "#password-confirm-check-message"
-      );
+      $messageElement = document.querySelector("#password-confirm-check-message");
       const password = document.querySelector("#password").value;
       if (value !== password) {
         errorMessage = "비밀번호가 일치하지 않습니다.";
@@ -289,18 +279,28 @@ function validateInput(type, value) {
     case "phone":
       $messageElement = document.querySelector("#phone-check-message");
       const phonePattern = /^[0-9]{3,4}$/;
-      const phone1 = document.querySelector("#phone1").value;
-      const phone2 = document.querySelector("#phone2").value;
-      const phone3 = document.querySelector("#phone3").value;
-      uri = `./checkPhoneNumber?phone1=${phone1}&phone2=${phone2}&phone3=${phone3}`;
-      if (
-        !phonePattern.test(phone1) ||
-        !phonePattern.test(phone2) ||
-        !phonePattern.test(phone3)
-      ) {
+      const phone1 = document.querySelector("#phone1").value.trim();
+      const phone2 = document.querySelector("#phone2").value.trim();
+      const phone3 = document.querySelector("#phone3").value.trim();
+
+      // 모든 필드가 비어있으면 메시지를 표시하지 않음
+      if (phone1 === "" && phone2 === "" && phone3 === "") {
+        displayValidationMessage($messageElement, "");
+        return;
+      }
+
+      // 하나라도 비어있으면 오류 메시지 표시
+      if (phone1 === "" || phone2 === "" || phone3 === "") {
+        errorMessage = "전화번호를 모두 입력해주세요.";
+        displayValidationMessage($messageElement, errorMessage);
+        return;
+      }
+
+      if (!phonePattern.test(phone1) || !phonePattern.test(phone2) || !phonePattern.test(phone3)) {
         errorMessage = "유효하지 않은 전화번호입니다.";
         displayValidationMessage($messageElement, errorMessage);
       } else {
+        uri = `./checkPhoneNumber?phone1=${phone1}&phone2=${phone2}&phone3=${phone3}`;
         axios
           .get(uri)
           .then((response) => {
@@ -314,7 +314,6 @@ function validateInput(type, value) {
       break;
   }
   // 입력창 메시지 초기화
-
   if (value === "") {
     displayValidationMessage($messageElement, "");
   }
@@ -330,10 +329,28 @@ function displayValidationMessage(element, message) {
 }
 
 // 회원가입 메시지 초기화
-
 document.querySelectorAll("#registerForm input").forEach((input) => {
   input.addEventListener("input", () => {
     $registerCheckMessage.style.display = "none";
+
+    // 전화번호 입력 필드인 경우
+    if (input.id === "phone1" || input.id === "phone2" || input.id === "phone3") {
+      const $phoneCheckMessage = document.querySelector("#phone-check-message");
+      $phoneCheckMessage.style.display = "none";
+    }
+  });
+});
+
+// 전화번호 입력 필드에 대한 개별 이벤트 리스너 추가
+const phoneInputs = [
+  document.querySelector("#phone1"),
+  document.querySelector("#phone2"),
+  document.querySelector("#phone3"),
+];
+
+phoneInputs.forEach((input) => {
+  input.addEventListener("input", () => {
+    validateInput("phone", input.value);
   });
 });
 
@@ -342,13 +359,9 @@ const $verifyUserIdBtn = document.querySelector("#verifyUserIdBtn");
 const $findUserIdModal = document.querySelector("#findUserIdModal");
 const $findUserIdModalLabel = document.querySelector("#findUserIdModalLabel");
 const $findUserIdMessage = document.querySelector("#findUserIdMessage");
-const $findUserIdModalContent = $findUserIdModal.querySelector(
-  "#findUserIdModalBody"
-);
+const $findUserIdModalContent = $findUserIdModal.querySelector("#findUserIdModalBody");
 const findUserIdOriginalModalContent = $findUserIdModalContent.innerHTML;
-const $findUserIdModalFooter = $findUserIdModal.querySelector(
-  "#findUserIdModalFooter"
-);
+const $findUserIdModalFooter = $findUserIdModal.querySelector("#findUserIdModalFooter");
 // 모달이 열릴 때 폼을 표시
 $findUserIdModal.addEventListener("show.bs.modal", showFindUserIdForm);
 
@@ -382,8 +395,7 @@ function findUserId() {
       if (err.response && err.response.data) {
         $findUserIdMessage.textContent = err.response.data;
       } else {
-        $findUserIdMessage.textContent =
-          "오류가 발생했습니다. 다시 시도해주세요.";
+        $findUserIdMessage.textContent = "오류가 발생했습니다. 다시 시도해주세요.";
       }
       $findUserIdMessage.style.display = "block";
     });
@@ -402,17 +414,12 @@ function showFindUserIdForm() {
   `;
 
   const $emailForFindUserId = document.querySelector("#emailForFindUserId");
-  const $nickNameForFindUserId = document.querySelector(
-    "#nickNameForFindUserId"
-  );
+  const $nickNameForFindUserId = document.querySelector("#nickNameForFindUserId");
   const $findUserIdMessage = document.querySelector("#findUserIdMessage");
 
   // 입력창이 비어있을때 확인창 비활성화
   function validateFindUserIdForm() {
-    if (
-      $emailForFindUserId.value !== "" &&
-      $nickNameForFindUserId.value !== ""
-    ) {
+    if ($emailForFindUserId.value !== "" && $nickNameForFindUserId.value !== "") {
       document.getElementById("verifyUserIdBtn").disabled = false;
     } else {
       document.getElementById("verifyUserIdBtn").disabled = true;
@@ -430,17 +437,13 @@ function showFindUserIdForm() {
   });
 
   // 확인 버튼에 이벤트 리스너 추가
-  document
-    .getElementById("verifyUserIdBtn")
-    .addEventListener("click", findUserId);
+  document.getElementById("verifyUserIdBtn").addEventListener("click", findUserId);
 }
 
 // 아이디 찾기 결과 모달
 function showFoundUserId(userId) {
   const $emailForFindUserId = document.querySelector("#emailForFindUserId");
-  const $nickNameForFindUserId = document.querySelector(
-    "#nickNameForFindUserId"
-  );
+  const $nickNameForFindUserId = document.querySelector("#nickNameForFindUserId");
   const $findUserIdMessage = document.querySelector("#findUserIdMessage");
   if ($emailForFindUserId.value === "" || $nickNameForFindUserId.value === "") {
     $findUserIdMessage.textContent = "";
@@ -463,23 +466,15 @@ $findUserIdModal.addEventListener("hidden.bs.modal", function () {
 // 비밀번호 찾기
 const $findPasswordBtn = document.querySelector("#findPasswordBtn");
 const $findPasswordModal = document.querySelector("#findPasswordModal");
-const $findPasswordModalLabel = document.querySelector(
-  "#findPasswordModalLabel"
-);
-const $findPasswordModalContent = document.querySelector(
-  "#findPasswordModalBody"
-);
+const $findPasswordModalLabel = document.querySelector("#findPasswordModalLabel");
+const $findPasswordModalContent = document.querySelector("#findPasswordModalBody");
 const findPasswordOriginalModalContent = $findPasswordModalContent.innerHTML;
-const $findPasswordModalFooter = document.querySelector(
-  "#findPasswordModalFooter"
-);
+const $findPasswordModalFooter = document.querySelector("#findPasswordModalFooter");
 const $findPasswordMessage = document.querySelector("#findPasswordMessage");
 const $findPasswordForm = document.querySelector("#findPasswordForm");
 const $findPasswordUserId = document.querySelector("#userIdForFindPassword");
 const $findPasswordEmail = document.querySelector("#emailForFindPassword");
-const $findPasswordNickName = document.querySelector(
-  "#nickNameForFindPassword"
-);
+const $findPasswordNickName = document.querySelector("#nickNameForFindPassword");
 const $verifyPasswordBtn = document.querySelector("#verifyPasswordBtn");
 $findPasswordModal.addEventListener("show.bs.modal", showFindPasswordForm);
 
@@ -500,17 +495,11 @@ function showFindPasswordForm() {
 
   const $findPasswordUserId = document.querySelector("#userIdForFindPassword");
   const $findPasswordEmail = document.querySelector("#emailForFindPassword");
-  const $findPasswordNickName = document.querySelector(
-    "#nickNameForFindPassword"
-  );
+  const $findPasswordNickName = document.querySelector("#nickNameForFindPassword");
   const $findPasswordMessage = document.querySelector("#findPasswordMessage");
 
   function validateFindUserPasswordForm() {
-    if (
-      $findPasswordUserId.value !== "" &&
-      $findPasswordEmail.value !== "" &&
-      $findPasswordNickName.value !== ""
-    ) {
+    if ($findPasswordUserId.value !== "" && $findPasswordEmail.value !== "" && $findPasswordNickName.value !== "") {
       document.querySelector("#verifyPasswordBtn").disabled = false;
     } else {
       document.querySelector("#verifyPasswordBtn").disabled = true;
@@ -531,9 +520,7 @@ function showFindPasswordForm() {
   });
 
   // 확인 버튼에 이벤트 리스너 추가
-  document
-    .getElementById("verifyPasswordBtn")
-    .addEventListener("click", verifyUserForPasswordReset);
+  document.getElementById("verifyPasswordBtn").addEventListener("click", verifyUserForPasswordReset);
 }
 
 function verifyUserForPasswordReset() {
@@ -565,11 +552,9 @@ function verifyUserForPasswordReset() {
     .catch((err) => {
       console.log(err);
       if (err.response && err.response.data) {
-        $findPasswordMessage.textContent =
-          "오류가 발생했습니다. 다시 시도해주세요.";
+        $findPasswordMessage.textContent = "오류가 발생했습니다. 다시 시도해주세요.";
       } else {
-        $findPasswordMessage.textContent =
-          "오류가 발생했습니다. 다시 시도해주세요.";
+        $findPasswordMessage.textContent = "오류가 발생했습니다. 다시 시도해주세요.";
       }
       $findPasswordMessage.style.display = "block";
     });
@@ -588,20 +573,14 @@ function showPasswordResetForm(userId) {
   `;
 
   // 비밀번호 변경 버튼에 이벤트 리스너 추가
-  document
-    .getElementById("resetPasswordBtn")
-    .addEventListener("click", () => resetPassword(userId));
+  document.getElementById("resetPasswordBtn").addEventListener("click", () => resetPassword(userId));
 }
 
 function resetPassword(userId) {
   const $newPassword = document.querySelector("#newPassword");
   const $confirmNewPassword = document.querySelector("#confirmNewPassword");
-  const $resetPasswordInvalidMessage = document.querySelector(
-    "#resetPasswordInvalidMessage"
-  );
-  const $resetPasswordConfirmMessage = document.querySelector(
-    "#resetPasswordConfirmMessage"
-  );
+  const $resetPasswordInvalidMessage = document.querySelector("#resetPasswordInvalidMessage");
+  const $resetPasswordConfirmMessage = document.querySelector("#resetPasswordConfirmMessage");
   const passwordPattern = /^(?=.*[0-9]).{8,11}$/; // 여기 바꾼거임 07-12오전
 
   let valid = true;
@@ -610,8 +589,7 @@ function resetPassword(userId) {
   $resetPasswordConfirmMessage.style.display = "none";
 
   if (!passwordPattern.test($newPassword.value)) {
-    $resetPasswordInvalidMessage.textContent =
-      "8자리 이상 12자리 미만, 숫자가 포함된 비밀번호로 해주세요"; // 메시지 바꾼거임 07-12
+    $resetPasswordInvalidMessage.textContent = "8자리 이상 12자리 미만, 숫자가 포함된 비밀번호로 해주세요"; // 메시지 바꾼거임 07-12
     $resetPasswordInvalidMessage.style.display = "block";
     valid = false;
   }
@@ -644,8 +622,7 @@ function resetPassword(userId) {
       if (err.response && err.response.data) {
         $resetPasswordInvalidMessage.textContent = err.response.data;
       } else {
-        $resetPasswordInvalidMessage.textContent =
-          "오류가 발생했습니다. 다시 시도해주세요.";
+        $resetPasswordInvalidMessage.textContent = "오류가 발생했습니다. 다시 시도해주세요.";
       }
       $resetPasswordInvalidMessage.style.display = "block";
     });
@@ -692,10 +669,14 @@ document.addEventListener("DOMContentLoaded", function () {
     return { container, switchBtn };
   }
 
-  const { container: signupContainer, switchBtn: switchToSignup } =
-    createSwitchFormButton("계정이 없으신가요?", "회원가입");
-  const { container: signinContainer, switchBtn: switchToSignin } =
-    createSwitchFormButton("계정이 이미 있으신가요?", "로그인");
+  const { container: signupContainer, switchBtn: switchToSignup } = createSwitchFormButton(
+    "계정이 없으신가요?",
+    "회원가입"
+  );
+  const { container: signinContainer, switchBtn: switchToSignin } = createSwitchFormButton(
+    "계정이 이미 있으신가요?",
+    "로그인"
+  );
 
   function toggleForm() {
     $signinForm.classList.toggle("active");
@@ -713,10 +694,7 @@ document.addEventListener("DOMContentLoaded", function () {
         $signupForm.appendChild(signinContainer);
       }
       // 현재 활성화된 레이아웃 상태를 유지
-      if (
-        !$signinForm.classList.contains("active") &&
-        !$signupForm.classList.contains("active")
-      ) {
+      if (!$signinForm.classList.contains("active") && !$signupForm.classList.contains("active")) {
         $signinForm.classList.add("active");
         $signupForm.classList.remove("active");
       }
@@ -724,10 +702,7 @@ document.addEventListener("DOMContentLoaded", function () {
       signupContainer.remove();
       signinContainer.remove();
       // 현재 활성화된 레이아웃 상태를 유지
-      if (
-        $signinForm.classList.contains("active") ||
-        $signupForm.classList.contains("active")
-      ) {
+      if ($signinForm.classList.contains("active") || $signupForm.classList.contains("active")) {
         $signinForm.classList.remove("active");
         $signupForm.classList.remove("active");
       }
