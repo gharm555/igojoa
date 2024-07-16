@@ -1,6 +1,4 @@
-@import
-  url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap")
-  ;
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
 
 * {
   margin: 0;
@@ -9,7 +7,7 @@
   box-sizing: border-box;
 }
 .form-switch {
-    padding-left: 3rem;
+  padding-left: 3rem;
 }
 .circular-icon {
   width: 24px;
@@ -137,7 +135,8 @@ main {
   background-color: var(--link-hover-color);
 }
 
-.btn-group .btn:focus, .btn-group .btn:active {
+.btn-group .btn:focus,
+.btn-group .btn:active {
   outline: none;
   box-shadow: none;
 }
@@ -288,8 +287,9 @@ main {
   transition: margin-top 0.3s ease;
 }
 
-.main-search-bar select, .main-search-bar input, .main-search-bar button
-  {
+.main-search-bar select,
+.main-search-bar input,
+.main-search-bar button {
   padding: 15px 20px 15px 20px;
 }
 
@@ -297,7 +297,8 @@ main {
   background-color: #f8f9fa;
 }
 
-.main-search-bar input:focus, .main-search-bar select:focus {
+.main-search-bar input:focus,
+.main-search-bar select:focus {
   box-shadow: none;
 }
 
@@ -344,7 +345,8 @@ main {
   padding: 1rem;
 }
 
-.main-card-footer h3, .main-card-footer h5 {
+.main-card-footer h3,
+.main-card-footer h5 {
   font-size: 1rem;
   margin-bottom: 0;
 }
@@ -382,7 +384,8 @@ main {
   margin-bottom: 10px;
 }
 
-.user-info, .post-info {
+.user-info,
+.post-info {
   display: flex;
   align-items: center;
 }
@@ -391,7 +394,8 @@ main {
   margin-left: 5px;
 }
 
-.date, .likes {
+.date,
+.likes {
   font-size: 0.9em;
   color: #666;
   margin-left: 10px;
@@ -426,7 +430,7 @@ a .main-card-footer .bi-heart-fill {
   background-color: #e9ecef;
 }
 
-@media ( max-width : 768px) {
+@media (max-width: 768px) {
   .p-footer__site-group-list {
     flex-direction: column;
   }
@@ -482,7 +486,6 @@ a .main-card-footer .bi-heart-fill {
   color: white;
 }
 
-
 /* 배너 스타일 */
 .banner-container {
   position: fixed;
@@ -506,9 +509,9 @@ a .main-card-footer .bi-heart-fill {
   height: 100%;
   object-fit: cover;
 }
-
-@media ( max-width : 390px) {
-  html, body {
+@media (max-width: 420px) {
+  html,
+  body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -548,8 +551,9 @@ a .main-card-footer .bi-heart-fill {
   #search-keyword {
     font-size: 12px;
   }
-  .main-search-bar select, .main-search-bar input, .main-search-bar button
-    {
+  .main-search-bar select,
+  .main-search-bar input,
+  .main-search-bar button {
     padding: 12px 10px 12px 10px;
     font-size: 14px;
   }
@@ -563,13 +567,16 @@ a .main-card-footer .bi-heart-fill {
     padding: 0;
     padding-top: 5%;
   }
-  .main-card-footer h3, .main-card-footer h5 {
+  .main-card-footer h3,
+  .main-card-footer h5 {
     font-size: 0.9rem;
   }
   .main-card-footer p {
     font-size: 0.8vrem;
   }
-  .username, .date, .likes {
+  .username,
+  .date,
+  .likes {
     font-size: 0.8em;
   }
   /* footer {
@@ -587,12 +594,107 @@ a .main-card-footer .bi-heart-fill {
   #suggestions li {
     font-size: 12px;
   }
-  
+
   /* footer 관련한 설정 */
   .copyright {
     text-align-last: left;
   }
-  
+
+  footer {
+    font-size: 13px;
+  }
+}
+@media (max-width: 390px) {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    width: 100%;
+  }
+  .banner-container {
+    height: 300px;
+  }
+  #main-section {
+    width: 155%;
+    min-height: 400px;
+  }
+  .main-card-body img {
+    height: 100px;
+  }
+  .main-card {
+    width: 70%;
+    margin: 0 auto;
+    padding: 10px;
+  }
+  .main-container {
+    padding: 0 10px; /* 컨테이너의 패딩도 조정 */
+  }
+  .main-badge {
+    font-size: 0.7rem;
+    padding: 0.3em 0.5em;
+  }
+  .main-custom-heart {
+    font-size: 20px;
+  }
+  .search-container {
+    width: 60%;
+  }
+  #province-select {
+    font-size: 12px;
+  }
+  #search-keyword {
+    font-size: 12px;
+  }
+  .main-search-bar select,
+  .main-search-bar input,
+  .main-search-bar button {
+    padding: 12px 10px 12px 10px;
+    font-size: 14px;
+  }
+  #search-keyword {
+    width: 33%;
+  }
+  .main-card-header h1 {
+    font-size: 1.2rem;
+  }
+  .main-card-footer {
+    padding: 0;
+    padding-top: 5%;
+  }
+  .main-card-footer h3,
+  .main-card-footer h5 {
+    font-size: 0.9rem;
+  }
+  .main-card-footer p {
+    font-size: 0.8vrem;
+  }
+  .username,
+  .date,
+  .likes {
+    font-size: 0.8em;
+  }
+  /* footer {
+        background-color: black;
+        font-size: 12px;
+        color: white;
+    }
+    footer .container {
+        width: 100%;
+    } */
+  .list-group {
+    width: 54%;
+    margin-left: 95px;
+  }
+  #suggestions li {
+    font-size: 12px;
+  }
+
+  /* footer 관련한 설정 */
+  .copyright {
+    text-align-last: left;
+  }
+
   footer {
     font-size: 13px;
   }
