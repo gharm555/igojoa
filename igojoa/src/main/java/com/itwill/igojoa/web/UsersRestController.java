@@ -48,17 +48,17 @@ public class UsersRestController {
 		handleSearchKeyword(userSearchDto, getUserIdFromSession(session));
 		
 		List<UserRelatedInfoDto> userRelatedInfoDto = usersService.getUserRelatedInfo(userSearchDto);
-		List<UserFavoritePlacesDto> userFavoritePlacesDto = usersService.getUserFavoritePlaces(userSearchDto);
-		List<UserFavoriteReviewsDto> userFavoriteReviewsDto = usersService.getUserFavoriteReviews(userSearchDto);
-		List<UserWrittenReviewsDto> userWrittenReviewsDto = usersService.getUserWrittenReviews(userSearchDto);
-		List<UserVerifiedPlacesDto> userVerifiedPlacesDto = usersService.getUserVerifiedPlaces(userSearchDto);
+//		List<UserFavoritePlacesDto> userFavoritePlacesDto = usersService.getUserFavoritePlaces(userSearchDto);
+//		List<UserFavoriteReviewsDto> userFavoriteReviewsDto = usersService.getUserFavoriteReviews(userSearchDto);
+//		List<UserWrittenReviewsDto> userWrittenReviewsDto = usersService.getUserWrittenReviews(userSearchDto);
+//		List<UserVerifiedPlacesDto> userVerifiedPlacesDto = usersService.getUserVerifiedPlaces(userSearchDto);
 
 		Map<String, Object> result = new HashMap<>();
 		result.put("userRelatedInfo", userRelatedInfoDto);
-		result.put("userFavoritePlaces", userFavoritePlacesDto);
-		result.put("userFavoriteReviews", userFavoriteReviewsDto);
-		result.put("userWrittenReviews", userWrittenReviewsDto);
-		result.put("userVerifiedPlaces", userVerifiedPlacesDto);
+//		result.put("userFavoritePlaces", userFavoritePlacesDto);
+//		result.put("userFavoriteReviews", userFavoriteReviewsDto);
+//		result.put("userWrittenReviews", userWrittenReviewsDto);
+//		result.put("userVerifiedPlaces", userVerifiedPlacesDto);
 
 		return ResponseEntity.ok(result);
 		
