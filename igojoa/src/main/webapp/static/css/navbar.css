@@ -12,16 +12,16 @@ header {
   height: 80px;
 }
 .form-check-input:checked {
-    background-color: black;
-    border-color:black;
+  background-color: black;
+  border-color: black;
 }
 
 .form-switch .form-check-input {
-  padding:0px;
-  }
-  .form-check-label{
+  padding: 0px;
+}
+.form-check-label {
   margin-left: 3px;
-  }
+}
 
 .container-fluid {
   display: flex;
@@ -63,7 +63,7 @@ header {
 }
 
 .container-sideNav {
-	justify-content: flex-start;
+  justify-content: flex-start;
 }
 
 .container-logo {
@@ -71,7 +71,7 @@ header {
 }
 
 .container-user {
-	justify-content: flex-end;
+  justify-content: flex-end;
 }
 
 .userProfile {
@@ -135,7 +135,6 @@ header {
   color: white;
 }
 
-
 #sideNav.open {
   transform: translateX(0);
 }
@@ -154,7 +153,6 @@ header {
   text-decoration: none;
   font-size: 18px;
 }
-
 
 @media (max-width: 768px) {
   .container-logo {
@@ -176,7 +174,11 @@ header {
     justify-content: space-around;
   }
 }
-
+@media (max-width: 420px) {
+  .container-logo {
+    flex: 2;
+  }
+}
 @media (max-width: 390px) {
   .container-logo {
     flex: 2;

@@ -101,6 +101,21 @@ footer .text-center {
   }
 }
 
+@media ( max-width : 420px) {
+  footer {
+    margin-left: 20px;
+  }
+  .p-footer__site-group-list {
+    gap: 10px;
+  }
+  .lodgment {
+    margin-left: 11px;
+  }
+  .naver {
+    margin-right: 22px;
+  }
+}
+
 @media ( max-width : 390px) {
   footer {
     margin-left: 20px;

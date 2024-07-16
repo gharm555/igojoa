@@ -138,7 +138,37 @@
     font-size: 1.2rem;
   }
 }
+@media (max-width: 420px) {
+  #image-gallery-section {
+    padding: 10px 5%;
+    min-height: 550px;
+  }
+  .gallery-box {
+    width: 150px;
+    height: 200px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
 
+  .gallery-btns {
+    margin-top: 100px;
+    align-items: inherit;
+  }
+
+  .gallery-btns .gallery-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  #location-name {
+    font-size: 1.5rem;
+  }
+
+  .gallery-body {
+    padding: 15px 5%;
+    min-height: 250px;
+  }
+}
 /* 아이폰 12 해상도에 맞춘 반응형 디자인 */
 @media (max-width: 390px) {
   #image-gallery-section {

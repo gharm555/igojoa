@@ -227,7 +227,62 @@ button {
     font-size: 10px;
   }
 }
+@media (max-width: 420px) {
+  #lotto-section {
+    padding: 0;
+    width: 115%;
+    min-height: 400px;
+  }
+  .lotto-h1 {
+    font-size: 1.5rem;
+  }
 
+  .number-select {
+    font-size: 10px;
+    padding: 4px;
+    margin: 2px;
+  }
+
+  .ball {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 15px;
+    margin: 0 2px;
+    border-radius: 50%;
+  }
+
+  #playButton,
+  #resetNumbersButton {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  #points {
+    font-size: 16px;
+  }
+
+  .rank {
+    font-size: 18px;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 15px;
+    top: 20%;
+  }
+
+  .modal-content h2 {
+    font-size: 1.2rem;
+  }
+
+  #modal-message {
+    font-size: 14px;
+  }
+  .number-inputs {
+    flex-wrap: wrap;
+  }
+}
 /* 아이폰 12 해상도에 맞춘 반응형 디자인 */
 @media (max-width: 390px) {
   #lotto-section {
