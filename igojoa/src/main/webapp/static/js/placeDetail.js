@@ -355,8 +355,8 @@ function review() {
     review: document.querySelector("#reviewText").value,
     parkingAvailable: document.querySelector("#btncheck1").checked ? 1 : 0,
     view: document.querySelector("#btncheck2").checked ? 1 : 0,
-    nightView: document.querySelector("#btncheck3").checked ? 1 : 0,
-    freeEntry: document.querySelector("#btncheck4").checked ? 1 : 0,
+    freeEntry: document.querySelector("#btncheck3").checked ? 1 : 0,
+    nightView: document.querySelector("#btncheck4").checked ? 1 : 0,
     easyTransport: document.querySelector("#btncheck5").checked ? 1 : 0,
     iscore: difficulty,
   };
