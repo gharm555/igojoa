@@ -193,6 +193,10 @@ function updateReviewButtons() {
     document
       .querySelector("#deleteReviewBtn")
       .addEventListener("click", deleteReview);
+
+    // 초기 상태 설정 및 이벤트 리스너 추가
+    initializeReviewState();
+    addReviewChangeListeners();
   } else {
     $container.innerHTML = `
         <button id="createReviewBtn" type="button" class="btn btn-primary">작성완료</button>
@@ -254,6 +258,16 @@ function createReview() {
 
 function updateReview() {
   //console.log("수정하기 버튼 누름");
+
+  if (updateReviewBtn) {
+    updateReviewBtn.addEventListener("click", function () {
+      if (this.disabled) {
+        alert("변경된 내용이 없습니다.");
+        return;
+      }
+      updateReview();
+    });
+  }
   review();
 
   const placeName = pd.placeName;
@@ -280,6 +294,8 @@ function updateReview() {
           sortObject.orderBy = "modifiedAtDESC";
           resetScrollState();
           sendSortRequest(sortObject);
+          // 수정 후 초기 상태 재설정
+          initializeReviewState();
         }
       })
       .catch((error) => {
@@ -747,27 +763,43 @@ function showUserReview() {
       radioId = "btnradio1"; // 상
       break;
     default:
-      //console.log("Invalid iScore value:", pd.iScore);
+      console.log("Invalid iScore value:", pd.iScore);
       radioId = null; // 유효하지 않은 값일 경우 null로 설정
   }
 
-  //console.log("Selected radioId:", radioId);
+  console.log("Selected radioId:", radioId);
 
   if (radioId) {
     // 해당하는 라디오 버튼을 선택합니다.
     const $radioButton = document.querySelector(`#${radioId}`);
-    //console.log("선택한 라디오버튼 :", $radioButton);
+    console.log("선택한 라디오버튼 :", $radioButton);
 
     if ($radioButton) {
       $radioButton.checked = true;
-      //console.log("Radio button checked:", radioId);
+      console.log("Radio button checked:", radioId);
     } else {
-      //console.log("Radio button not found for id:", radioId);
+      console.log("Radio button not found for id:", radioId);
     }
   } else {
-    //console.log("No valid radioId selected");
+    console.log("No valid radioId selected");
   }
+
+  // 상태 초기화 추가
+  initializeReviewState();
+
+  // 이벤트 리스너 설정
+  document
+    .getElementById("reviewText")
+    .addEventListener("input", checkReviewChanges);
+  document
+    .querySelectorAll('input[type="checkbox"], input[name="difficulty"]')
+    .forEach((input) => {
+      input.addEventListener("change", checkReviewChanges);
+    });
+
+  updateReviewButtons();
 }
+
 // -------------------------------------------------
 
 const sortDropdownButton = document.getElementById("sortDropdownButton");
@@ -926,3 +958,56 @@ document.addEventListener("DOMContentLoaded", (event) => {
   //console.log("DOM fully loaded and parsed");
   levelCss();
 });
+
+// 수정하기에 사용하는 함수들
+let initialReviewState = {};
+const updateReviewBtn = document.getElementById("updateReviewBtn");
+
+function initializeReviewState() {
+  const updateReviewBtn = document.getElementById("updateReviewBtn");
+  initialReviewState = {
+    review: document.getElementById("reviewText").value,
+    parkingAvailable: document.getElementById("btncheck1").checked,
+    view: document.getElementById("btncheck2").checked,
+    freeEntry: document.getElementById("btncheck3").checked,
+    nightView: document.getElementById("btncheck4").checked,
+    easyTransport: document.getElementById("btncheck5").checked,
+    iscore: document.querySelector('input[name="difficulty"]:checked')?.id,
+  };
+
+  if (updateReviewBtn) {
+    updateReviewBtn.disabled = true;
+  }
+}
+
+function checkReviewChanges() {
+  const updateReviewBtn = document.getElementById("updateReviewBtn");
+  if (!updateReviewBtn) return;
+
+  const currentState = {
+    review: document.getElementById("reviewText").value,
+    parkingAvailable: document.getElementById("btncheck1").checked,
+    view: document.getElementById("btncheck2").checked,
+    freeEntry: document.getElementById("btncheck3").checked,
+    nightView: document.getElementById("btncheck4").checked,
+    easyTransport: document.getElementById("btncheck5").checked,
+    iscore: document.querySelector('input[name="difficulty"]:checked')?.id,
+  };
+
+  const hasChanges = Object.keys(initialReviewState).some(
+    (key) => initialReviewState[key] !== currentState[key]
+  );
+
+  updateReviewBtn.disabled = !hasChanges;
+}
+
+function addReviewChangeListeners() {
+  document
+    .getElementById("reviewText")
+    .addEventListener("input", checkReviewChanges);
+  document
+    .querySelectorAll('input[type="checkbox"], input[name="difficulty"]')
+    .forEach((input) => {
+      input.addEventListener("change", checkReviewChanges);
+    });
+}
