@@ -173,7 +173,7 @@
         			AND DATE_FORMAT(reviewLikes.createdTime, '%Y.%m.%d') = #{calendarMin}
         		</when>
         	</choose>
-        ORDER BY reviews.createdAt DESC
+        ORDER BY createdAt DESC
         <if test="startRowValue != null and rowCnt != null">
         	LIMIT #{startRowValue}, #{rowCnt}
     	</if>
