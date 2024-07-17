@@ -69,33 +69,33 @@
 		p.placeName
 		<if test='sortKey.equals("iScore") and sortValue == 1'>
 			ORDER BY ps.iScore ASC, userFavorite DESC ,
-			ps.placeVerified DESC
+			ps.placeVerified DESC, p.placeName ASC
 		</if>
 		<if test='sortKey.equals("iScore") and sortValue == 0'>
 			ORDER BY ps.iScore DESC, userFavorite DESC ,
-			ps.placeVerified DESC
+			ps.placeVerified DESC, p.placeName ASC
 		</if>
 		<if test='sortKey.equals("placeVerified") and sortValue == 1'>
 			ORDER BY ps.placeVerified DESC, userFavorite DESC,
-			ps.iScore ASC
+			ps.iScore ASC, p.placeName ASC
 		</if>
 		<if test='sortKey.equals("placeVerified") and sortValue == 0'>
 			ORDER BY ps.placeVerified ASC, userFavorite DESC,
-			ps.iScore DESC
+			ps.iScore DESC, p.placeName ASC
 		</if>
 		<if test='sortKey.equals("userFavorite") and sortValue == 1'>
 			ORDER BY userFavorite ASC, ps.iScore DESC ,
-			ps.placeVerified DESC
+			ps.placeVerified DESC, p.placeName ASC
 		</if>
 		<if test='sortKey.equals("userFavorite") and sortValue == 0'>
 			ORDER BY userFavorite DESC, ps.iScore DESC ,
-			ps.placeVerified DESC
+			ps.placeVerified DESC, p.placeName ASC
 		</if>
 		<if test='sortKey.equals("reviewCnt") and sortValue == 1'>
-			ORDER BY reviewCnt DESC, userFavorite ASC, ps.iScore DESC
+			ORDER BY reviewCnt DESC, userFavorite ASC, ps.iScore DESC, p.placeName ASC
 		</if>
 		<if test='sortKey.equals("reviewCnt") and sortValue == 0'>
-			ORDER BY reviewCnt ASC, userFavorite ASC, ps.iScore DESC
+			ORDER BY reviewCnt ASC, userFavorite ASC, ps.iScore DESC, p.placeName ASC
 		</if>
 		LIMIT
 		${startRowValue} ,
