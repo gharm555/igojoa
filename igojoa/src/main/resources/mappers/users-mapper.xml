@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwill.igojoa.repository.UsersDao">
+	<!-- 세션 유무 확인 -->
+	<select id="sessionTorF" resultType="Integer"
+		parameterType="String">
+		<bind name="userId" value="userId" />
+		SELECT count(*) FROM users WHERE USERID = #{userId}
+	</select>
+	<!-- 회원가입 -->
+	<insert id="create" parameterType="Users">
+		INSERT INTO users (userId,
+		password, email, phonenumber, nickname,
+		userProfileName,
+		userProfileUrl) VALUES (#{userId}, SHA2(#{password},
+		256), #{email},
+		#{phoneNumber}, #{nickName}, #{userProfileName},
+		#{userProfileUrl})
+	</insert>
+	<!-- 사용자 ID로 사용자 조회 -->
+	<select id="selectByUserId" resultType="Users"
+		parameterType="String">
+		SELECT * FROM users WHERE USERID = #{userId}
+	</select>
+	<!-- 사용자 ID와 비밀번호로 사용자 조회(로그인) -->
+	<select id="selectByIdAndPassword" resultType="Users"
+		parameterType="Users">
+		SELECT * FROM users WHERE USERID = #{userId} AND
+		PASSWORD =
+		SHA2(#{password}, 256)
+	</select>
+	<!-- 이메일과 닉네임으로 사용자 ID 조회 -->
+	<select id="findUserId" resultType="String"
+		parameterType="String">
+		SELECT userId FROM users WHERE EMAIL = #{email} AND
+		NICKNAME = #{nickName}
+	</select>
+	<!-- 사용자 ID, 이메일, 닉네임으로 사용자 조회 -->
+	<select id="verifyUser" resultType="boolean"
+		parameterType="String">
+		SELECT EXISTS(SELECT 1 FROM users WHERE USERID =
+		#{userId} AND EMAIL =
+		#{email} AND NICKNAME = #{nickName})
+	</select>
+	<!-- 사용자 ID로 비밀번호 업데이트 -->
+	<update id="updatePassword" parameterType="String">
+		UPDATE users SET
+		PASSWORD = SHA2(#{password}, 256) WHERE USERID = #{userId}
+	</update>
+	<!-- 사용자 ID 존재 여부 확인 -->
+	<select id="checkUserId" resultType="boolean"
+		parameterType="String">
+		SELECT EXISTS(SELECT 1 FROM users WHERE USERID =
+		#{userId})
+	</select>
+	<!-- 닉네임 존재 여부 확인 -->
+	<select id="checkNickName" resultType="boolean"
+		parameterType="String">
+		SELECT EXISTS(SELECT 1 FROM users WHERE NICKNAME =
+		#{nickName})
+	</select>
+	<!-- 이메일 존재 여부 확인 -->
+	<select id="checkEmail" resultType="boolean"
+		parameterType="String">
+		SELECT EXISTS(SELECT 1 FROM users WHERE EMAIL =
+		#{email})
+	</select>
+	<!-- 핸드폰 번호 존재 여부 확인 -->
+	<select id="checkPhoneNumber" resultType="boolean"
+		parameterType="String">
+		SELECT EXISTS(SELECT 1 FROM users WHERE PHONENUMBER =
+		#{phoneNumber})
+	</select>
+	<!-- 사용자 ID로 사용자 삭제 -->
+	<delete id="deleteUser" parameterType="String">
+		DELETE FROM users WHERE
+		USERID = #{userId}
+	</delete>
+
+	<!-- Users 정보와 Points 정보 가져오기 -->
+	<select id="getUserInfo" resultType="UsersInfoDto"
+		parameterType="String">
+		SELECT users.userId, users.email, users.phoneNumber,
+		users.userProfileUrl, users.nickName, points.currentsPoints,
+		points.cumulativePoint
+		FROM users
+		INNER JOIN points ON users.userId =
+		points.userId
+		WHERE users.userId =
+		#{userId}
+	</select>
+
+	<!-- Users 정보 업데이트 하기 -->
+	<update id="updateUsers" parameterType="Users">
+		UPDATE users
+		<set>
+			<if test="nickName != null and nickName != ''"> nickName = #{nickName},</if>
+			<if test="email != null and email != ''"> email = #{email},</if>
+			<if test="phoneNumber != null and phoneNumber != ''"> phoneNumber = #{phoneNumber},</if>
+			<if test="password != null and password != ''"> password = SHA2(CONCAT('', #{password}), 256)</if>
+		</set>
+		WHERE userId = #{userId}
+	</update>
+
+	<!-- 유저가 좋아한 장소 정보들 가져오기 -->
+	<select id="getUserFavoritePlaces" resultType="UserFavoritePlacesDto" parameterType="UserSearchDto">
+		<bind name="userId" value="userId" />
+		<bind name="searchKeyword" value="searchKeyword" />
+		SELECT
+			places.placeName,
+			CONCAT(places.largeAddress, ' ',
+			places.midiumAddress) AS address,
+			placeImages.firstUrl,
+			DATE_FORMAT(placesFavorite.createdTime, '%Y.%m.%d %H:%i') as createdAt
+		FROM places
+		 	JOIN placesFavorite ON places.placeName = placesFavorite.placeName
+			JOIN placeImages ON places.placeName = placeImages.placeName
+		WHERE
+        	placesFavorite.userId = #{userId}
+        	<if test="searchKeyword != null and searchKeyword != ''">
+           	 	AND upper(TRIM(REPLACE(places.placeName, ' ', ''))) LIKE upper('%${searchKeyword}%')
+        	</if>
+        	<if test="largeAddress != null and largeAddress != ''">
+            	AND places.largeAddress = #{largeAddress}
+        	</if>
+        	<choose>
+        		<when test="calendarMin != null and calendarMin != '' and calendarMax != null and calendarMax != ''">
+        			AND DATE_FORMAT(placesFavorite.createdTime, '%Y.%m.%d') BETWEEN #{calendarMin} AND #{calendarMax}
+        		</when>
+        		<when test="calendarMin != null and calendarMin !='' and (calendarMax == null || calendarMax == '')">
+        			AND DATE_FORMAT(placesFavorite.createdTime, '%Y.%m.%d') = #{calendarMin}
+        		</when>
+        	</choose>
+    	ORDER BY placesFavorite.createdTime DESC
+    	<if test="startRowValue != null and rowCnt != null">
+        	LIMIT #{startRowValue}, #{rowCnt}
+    	</if>
+	</select>
+
+	<!-- 유저가 좋아요한 리뷰 정보들 가져오기  -->
+	<select id="getUserFavoriteReviews" resultType="UserFavoriteReviewsDto" parameterType="UserSearchDto">
+		<bind name="searchKeyword" value="searchKeyword" />
+		SELECT
+			places.placeName,
+			reviews.review,
+			DATE_FORMAT(reviewLikes.createdTime, '%Y.%m.%d %H:%i') AS createdAt,
+			placeImages.firstUrl,
+			<!-- TODO userId가 아니라 userId의 nickName을 주어야 함 -->
+			users.nickName AS reviewAuthor
+		FROM places
+			JOIN reviews ON places.placeName = reviews.placeName
+			JOIN reviewLikes ON reviews.placeName = reviewLikes.placeName AND reviews.userId = reviewLikes.userId
+			JOIN placeImages ON places.placeName = placeImages.placeName
+			JOIN users ON reviewLikes.userId = users.userId
+		WHERE
+			reviewLikes.likeUserId = #{userId}
+			<if test="searchKeyword != null and searchKeyword != ''">
+           	 	AND (
+           	 		upper(TRIM(REPLACE(reviews.review, ' ', ''))) LIKE upper('%${searchKeyword}%')
+           	 		OR upper(TRIM(REPLACE(places.placeName, ' ', ''))) LIKE upper('%${searchKeyword}%')
+           	 		)
+        	</if>
+        	<if test="largeAddress != null and largeAddress != ''">
+            	AND places.largeAddress = #{largeAddress}
+        	</if>
+        	<choose>
+        		<when test="calendarMin != null and calendarMin != '' and calendarMax != null and calendarMax != ''">
+        			AND DATE_FORMAT(reviewLikes.createdTime, '%Y.%m.%d') BETWEEN #{calendarMin} AND #{calendarMax}
+        		</when>
+        		<when test="calendarMin != null and calendarMin !='' and (calendarMax == null || calendarMax == '')">
+        			AND DATE_FORMAT(reviewLikes.createdTime, '%Y.%m.%d') = #{calendarMin}
+        		</when>
+        	</choose>
+        ORDER BY createdAt DESC
+        <if test="startRowValue != null and rowCnt != null">
+        	LIMIT #{startRowValue}, #{rowCnt}
+    	</if>
+	</select>
+
+	<!-- 유저가 작성한 리뷰 정보들 가져오기 -->
+	<select id="getUserWrittenReviews" resultType="UserWrittenReviewsDto" parameterType="UserSearchDto">
+		<bind name="userId" value="userId" />
+		<bind name="searchKeyword" value="searchKeyword" />
+		SELECT
+			placeImages.firstUrl, 
+			places.placeName, 
+			CONCAT(places.largeAddress, ' ',places.midiumAddress) AS address, 
+			reviews.review,
+			DATE_FORMAT(reviews.modifiedAt, '%Y.%m.%d %H:%i') AS createdAt
+		FROM
+			placeImages
+				JOIN places ON placeImages.placeName = places.placeName
+				JOIN reviews ON places.placeName = reviews.placeName
+		WHERE
+			reviews.userId = '${ userId }'
+			<if test="searchKeyword != null and searchKeyword != ''">
+           	 	AND (
+           	 		upper(TRIM(REPLACE(reviews.review, ' ', ''))) LIKE upper('%${searchKeyword}%')
+           	 		OR upper(TRIM(REPLACE(places.placeName, ' ', ''))) LIKE upper('%${searchKeyword}%')
+           	 		)
+        	</if>
+        	<if test="largeAddress != null and largeAddress != ''">
+            	AND places.largeAddress = #{largeAddress}
+        	</if>
+        	<choose>
+        		<when test="calendarMin != null and calendarMin != '' and calendarMax != null and calendarMax != ''">
+        			AND DATE_FORMAT(reviews.createdAt, '%Y.%m.%d') BETWEEN #{calendarMin} AND #{calendarMax}
+        		</when>
+        		<when test="calendarMin != null and calendarMin !='' and (calendarMax == null || calendarMax == '')">
+        			AND DATE_FORMAT(reviews.createdAt, '%Y.%m.%d') = #{calendarMin}
+        		</when>
+        	</choose>
+        ORDER BY
+        	reviews.createdAt DESC
+        <if test="startRowValue != null and rowCnt != null">
+        	LIMIT #{startRowValue}, #{rowCnt}
+    	</if>
+	</select>
+	
+	<!-- 유저가 위치인증한 장소 정보들 가져오기 -->
+	<select id="getUserVerifiedPlaces" resultType="UserVerifiedPlacesDto" parameterType="UserSearchDto">
+		<bind name="userId" value="userId" />
+		<bind name="searchKeyword" value="searchKeyword" />
+		SELECT
+			placeImages.firstUrl,
+			placeVerified.placeName,
+			DATE_FORMAT(placeVerified.verifiedTime, '%Y.%m.%d %H:%i') AS createdAt,
+			CONCAT(places.largeAddress, ' ', places.midiumAddress) AS address
+		FROM placeVerified
+			JOIN places ON placeVerified.placeName = places.placeName
+			JOIN placeImages ON placeVerified.placeName = placeImages.placeName
+		WHERE
+			placeVerified.userId = #{userId}
+			<if test="searchKeyword != null and searchKeyword != ''">
+           	 	AND upper(TRIM(REPLACE(placeVerified.placeName, ' ', ''))) LIKE upper('%${searchKeyword}%')
+        	</if>
+        	<if test="largeAddress != null and largeAddress != ''">
+            	AND places.largeAddress = #{largeAddress}
+        	</if>
+        	<choose>
+        		<when test="calendarMin != null and calendarMin != '' and calendarMax != null and calendarMax != ''">
+        			AND DATE_FORMAT(placeVerified.verifiedTime, '%Y.%m.%d') BETWEEN #{calendarMin} AND #{calendarMax}
+        		</when>
+        		<when test="calendarMin != null and calendarMin !='' and (calendarMax == null || calendarMax == '')">
+        			AND DATE_FORMAT(placeVerified.verifiedTime, '%Y.%m.%d') = #{calendarMin}
+        		</when>
+        	</choose>
+        ORDER BY
+        	placeVerified.verifiedTime DESC
+        <if test="startRowValue != null and rowCnt != null">
+        	LIMIT #{startRowValue}, #{rowCnt}
+    	</if>
+	</select>
+	
+	<!-- 유저 활동내역 전체 -->
+	<select id="getUserRelatedInfo" resultType="UserRelatedInfoDto" parameterType="UserSearchDto">
+	<bind name="userId" value="userId" />
+	<bind name="startRowValue" value="startRowValue" />
+	<bind name="rowCnt" value="rowCnt" />
+	<bind name="searchKeyword" value="searchKeyword" />
+    /* 좋아요한 명소들 */
+    SELECT 
+        'favorite_places' AS type,
+        places.placeName, 
+        CONCAT(places.largeAddress, ' ', places.midiumAddress) AS address, 
+        placeImages.firstUrl, 
+        DATE_FORMAT(placesFavorite.createdTime, '%Y.%m.%d %H:%i') AS createdAt,
+        NULL AS review,
+        NULL AS reviewAuthor
+    FROM 
+    	places
+    		JOIN placesFavorite ON places.placeName = placesFavorite.placeName
+    		JOIN placeImages ON places.placeName = placeImages.placeName
+    WHERE 
+    	placesFavorite.userId = '${ userId }'
+			<if test="searchKeyword != null and searchKeyword != ''">
+           	 	AND upper(TRIM(REPLACE(places.placeName, ' ', ''))) LIKE upper('%${searchKeyword}%')
+        	</if>
+        	<if test="largeAddress != null and largeAddress != ''">
+            	AND places.largeAddress = #{largeAddress}
+        	</if>
+        	<choose>
+        		<when test="calendarMin != null and calendarMin != '' and calendarMax != null and calendarMax != ''">
+        			AND DATE_FORMAT(placesFavorite.createdTime, '%Y.%m.%d') BETWEEN #{calendarMin} AND #{calendarMax}
+        		</when>
+        		<when test="calendarMin != null and calendarMin !='' and (calendarMax == null || calendarMax == '')">
+        			AND DATE_FORMAT(placesFavorite.createdTime, '%Y.%m.%d') = #{calendarMin}
+        		</when>
+        	</choose>
+    UNION ALL
+
+    /* 좋아요한 리뷰들 */
+    SELECT 
+        'liked_reviews' AS type,
+        places.placeName, 
+        NULL AS address, 
+        placeImages.firstUrl, 
+        DATE_FORMAT(reviewLikes.createdTime, '%Y.%m.%d %H:%i') AS createdAt,
+        reviews.review,
+        <!-- TODO userId가 아니라 userId의 nickName을 주어야 함 -->
+        reviewAuthor.nickName AS reviewAuthor
+    FROM 
+    	places
+    		JOIN reviews ON places.placeName = reviews.placeName
+    		JOIN reviewLikes ON reviews.placeName = reviewLikes.placeName AND reviews.userId = reviewLikes.userId
+    		JOIN users AS likeUser ON reviewLikes.likeUserId = likeUser.userId
+    		JOIN users AS reviewAuthor ON reviews.userId = reviewAuthor.userId
+    		JOIN placeImages ON places.placeName = placeImages.placeName
+    WHERE 
+    	reviewLikes.likeUserId = '${ userId }'
+			<if test="searchKeyword != null and searchKeyword != ''">
+           	 	AND (
+           	 		upper(TRIM(REPLACE(reviews.review, ' ', ''))) LIKE upper('%${searchKeyword}%')
+           	 		OR upper(TRIM(REPLACE(places.placeName, ' ', ''))) LIKE upper('%${searchKeyword}%')
+           	 		)
+        	</if>
+        	<if test="largeAddress != null and largeAddress != ''">
+            	AND places.largeAddress = #{largeAddress}
+        	</if>
+        	<choose>
+        		<when test="calendarMin != null and calendarMin != '' and calendarMax != null and calendarMax != ''">
+        			AND DATE_FORMAT(reviewLikes.createdTime, '%Y.%m.%d') BETWEEN #{calendarMin} AND #{calendarMax}
+        		</when>
+        		<when test="calendarMin != null and calendarMin !='' and (calendarMax == null || calendarMax == '')">
+        			AND DATE_FORMAT(reviewLikes.createdTime, '%Y.%m.%d') = #{calendarMin}
+        		</when>
+        	</choose>
+    UNION ALL
+
+    /* 작성한 리뷰들 */
+    SELECT 
+        'written_reviews' AS type,
+        places.placeName, 
+        CONCAT(places.largeAddress, ' ', places.midiumAddress) AS address, 
+        placeImages.firstUrl, 
+        DATE_FORMAT(reviews.createdAt, '%Y.%m.%d %H:%i') AS createdAt,
+        reviews.review,
+        NULL AS reviewAuthor
+    FROM 
+    	placeImages
+    		JOIN places ON placeImages.placeName = places.placeName
+    		JOIN reviews ON places.placeName = reviews.placeName
+    WHERE 
+    	reviews.userId = '${ userId }'
+			<if test="searchKeyword != null and searchKeyword != ''">
+           	 	AND (
+           	 		upper(TRIM(REPLACE(reviews.review, ' ', ''))) LIKE upper('%${searchKeyword}%')
+           	 		OR upper(TRIM(REPLACE(places.placeName, ' ', ''))) LIKE upper('%${searchKeyword}%')
+           	 		)
+        	</if>
+        	<if test="largeAddress != null and largeAddress != ''">
+            	AND places.largeAddress = #{largeAddress}
+        	</if>
+        	<choose>
+        		<when test="calendarMin != null and calendarMin != '' and calendarMax != null and calendarMax != ''">
+        			AND DATE_FORMAT(reviews.createdAt, '%Y.%m.%d') BETWEEN #{calendarMin} AND #{calendarMax}
+        		</when>
+        		<when test="calendarMin != null and calendarMin !='' and (calendarMax == null || calendarMax == '')">
+        			AND DATE_FORMAT(reviews.createdAt, '%Y.%m.%d') = #{calendarMin}
+        		</when>
+        	</choose>
+    UNION ALL
+
+    /* 위치 인증한 장소 */
+    SELECT 
+        'verified_places' AS type,
+        placeVerified.placeName, 
+        CONCAT(places.largeAddress, ' ', places.midiumAddress) AS address, 
+        placeImages.firstUrl, 
+        DATE_FORMAT(placeVerified.verifiedTime, '%Y.%m.%d %H:%i') AS createdAt,
+        NULL AS review,
+        NULL AS reviewAuthor
+    FROM 
+    	placeVerified
+    		JOIN places ON placeVerified.placeName = places.placeName
+    		JOIN placeImages ON placeVerified.placeName = placeImages.placeName
+    WHERE 
+    	placeVerified.userId = '${ userId }'
+			<if test="searchKeyword != null and searchKeyword != ''">
+           	 	AND upper(TRIM(REPLACE(placeVerified.placeName, ' ', ''))) LIKE upper('%${searchKeyword}%')
+        	</if>
+        	<if test="largeAddress != null and largeAddress != ''">
+            	AND places.largeAddress = #{largeAddress}
+        	</if>
+        	<choose>
+        		<when test="calendarMin != null and calendarMin != '' and calendarMax != null and calendarMax != ''">
+        			AND DATE_FORMAT(placeVerified.verifiedTime, '%Y.%m.%d') BETWEEN #{calendarMin} AND #{calendarMax}
+        		</when>
+        		<when test="calendarMin != null and calendarMin !='' and (calendarMax == null || calendarMax == '')">
+        			AND DATE_FORMAT(placeVerified.verifiedTime, '%Y.%m.%d') = #{calendarMin}
+        		</when>
+        	</choose>
+    ORDER BY createdAt DESC, placeName DESC, review DESC
+    
+    <if test="startRowValue != null and rowCnt != null">
+        LIMIT #{startRowValue}, #{rowCnt}
+    </if>
+  </select>
+  
+  <!-- 유저 프로필 변경 -->
+  <update id="updateProfileImage" parameterType="Users">
+  	UPDATE
+  		users
+  	SET
+  		userProfileUrl = #{userProfileUrl},
+  		userProfileName = #{userProfileName}
+  	WHERE
+  		userId = #{userId}
+  </update>
+  
+</mapper>

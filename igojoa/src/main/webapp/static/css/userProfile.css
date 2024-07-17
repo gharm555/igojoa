@@ -1,0 +1,1169 @@
+/* 기본 레이아웃 */
+body {
+  font-size: 16px;
+  background-color: #e9ecef;
+  padding-top: 10px;
+}
+
+main {
+  position: relative;
+  width: 100%;
+  margin: 120px 0 20px;
+  transition: margin-top 0.3s ease;
+  box-shadow: none;
+}
+
+h2 {
+  font-size: 30px;
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.container {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  height: 80vh;
+}
+
+/* 사이드바 스타일 */
+.sidebar {
+  background-color: var(--primary-color);
+  padding: 40px 20px;
+  color: white;
+  height: 100%;
+}
+
+.profile-summary {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.profile-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.profile-img:hover {
+  transform: scale(1.05);
+}
+
+/* 내비게이션 탭 스타일 */
+.nav-pills .nav-link {
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: var(--border-radius);
+  padding: 12px 20px;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .nav-link:hover {
+  color: var(--primary-color);
+  background-color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 컨텐츠 영역 스타일 */
+.content {
+  padding: 40px;
+  height: 110%;
+}
+
+/* 카드 스타일 */
+.card {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+/* 버튼 스타일 */
+.btn {
+  border-radius: var(--border-radius);
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: #3a5a8a;
+  border-color: #3a5a8a;
+}
+
+/* 리스트 그룹 스타일 */
+.list-group-item {
+  border-left: none;
+  border-right: none;
+  padding: 15px 0;
+  transition: background-color 0.3s ease;
+}
+
+.list-group-item:first-child {
+  border-top: none;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+.list-group-item:hover {
+  background-color: rgba(74, 111, 165, 0.05);
+}
+
+/* 테이블 스타일 */
+.table {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.table thead th {
+  background-color: var(--primary-color);
+  color: white;
+  border-bottom: none;
+}
+
+/* 검색 컨테이너 스타일 */
+.search-container {
+  display: flex;
+  background-color: white;
+  padding: 15px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.search-container select,
+.search-container input[type="text"],
+.search-container button {
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  font-family: var(--main-font);
+  font-size: 16px;
+  height: 44px;
+}
+
+.search-container select {
+  background-color: var(--secondary-color);
+  width: 134px;
+  flex-shrink: 0;
+}
+
+.search-container input[type="text"] {
+  flex-grow: 1;
+  min-width: 200px;
+}
+
+.search-container button {
+  min-width: 100px;
+  padding: 10px 15px;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.search-container button:hover {
+  background-color: #3a5a8a;
+  box-shadow: 0 4px 10px rgba(74, 111, 165, 0.3);
+}
+
+/* 내활동내역 탭 스타일 */
+#v-pills-disabled .nav-tabs {
+  border-bottom: 2px solid var(--primary-color);
+  margin-bottom: 20px;
+}
+
+#v-pills-disabled .nav-tabs .nav-link {
+  border: none;
+  color: var(--text-color);
+  background-color: transparent;
+  padding: 10px 15px;
+  margin-right: 5px;
+  transition: color 0.3s ease;
+}
+
+#v-pills-disabled .nav-tabs .nav-link:hover {
+  color: var(--primary-color);
+}
+
+#v-pills-disabled .nav-tabs .nav-link.active {
+  color: var(--primary-color);
+  font-weight: bold;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+/* 내활동내역 데이터피커 */
+#date-range {
+  padding: 10px;
+  font-size: 16px;
+  width: 210px;
+  border-radius: var(--border-radius);
+  border: 1px solid #ddd;
+}
+
+/* 아이콘 텍스트 스타일 */
+.icon-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.circular-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  /* background: red; */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: initial;
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+/* 리스트 스크롤바 풀화면 vh73으로 바꾼게 맞음 07-12 오전에 바꾼거임  */
+.list-group {
+  max-height: calc(73vh - 280px);
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+
+.list-group::-webkit-scrollbar {
+  width: 8px;
+}
+
+.list-group::-webkit-scrollbar-track {
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.list-group::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+.list-group::-webkit-scrollbar-thumb:hover {
+  background: #3a5a8a;
+}
+
+.list-group .list-group-item:last-child {
+  margin-bottom: 0;
+}
+
+.sort-icon {
+  margin-left: 5px;
+}
+
+#calendar {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+#calendar .fc-toolbar-title {
+  font-size: 1.2em;
+  padding: 0;
+}
+
+#calendar .fc-button {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+#calendar .fc-button:hover {
+  background-color: #3a5a8a;
+  border-color: #3a5a8a;
+}
+
+#calendar .fc-daygrid-day-number {
+  font-size: 0.9em;
+}
+
+#calendar .fc-event {
+  font-size: 0.8em;
+  padding: 2px 4px;
+}
+
+.fc-daygrid-day-top {
+  flex-direction: column;
+  align-items: center;
+}
+
+.fc-daygrid-day-top {
+  flex-direction: column;
+  align-items: center;
+}
+
+.point-summary {
+  font-size: 1em;
+  margin-top: 2px;
+  background-color: #f8f9fa;
+  padding: 3px 5px;
+  border-radius: 3px;
+}
+
+.point-summary.gained {
+  color: green;
+}
+
+.point-summary.lost {
+  color: red;
+}
+
+.attendance-icon {
+  font-size: 0.8em;
+  margin-left: 2px;
+}
+
+#pointHistoryTable {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  justify-items: center;
+}
+
+#earnedPoints,
+#spentPoints {
+  font-weight: bold;
+}
+.table-responsive {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* 이미지 변경, 삭제버튼에 hover 이벤트 */
+/* #imageChange:hover,
+#imageDelete:hover {
+    background-color: lightgray;
+} */
+
+/* 이미지 변경, 삭제버튼에 관한 style */
+#imageChange,
+#imageDelete {
+  /* color: black; */
+  font-size: 14px;
+  padding: 5px 10px;
+  margin-top: 15px;
+  margin-right: 15px;
+  /* border: 1px black solid; */
+}
+
+.infoInImageChangeContainer {
+  padding-top: 40px;
+  padding-left: 25px;
+}
+
+/* 내정보수정에서 사진 가운데로 보내는 설정 */
+.imageInImageChangeContainer {
+  align-self: center;
+}
+
+/* 내정보수정을 포함한 모든 컨테이너에서 스크롤 보여주기 */
+.userProfile-tabs-main {
+  overflow-y: scroll;
+  height: 100%;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 1400px) {
+  #nav-tab {
+    justify-content: center;
+    font-size: x-large;
+    margin-top: 15px;
+  }
+  #v-pills-disabled .nav-tabs {
+    border-bottom: 1px solid lightgray;
+  }
+
+  .point-summary,
+  .table-responsive {
+    font-size: 0.9rem;
+  }
+
+  #calendar {
+    height: 116%;
+  }
+
+  h2 {
+    font-size: 26px;
+  }
+
+  .fc .fc-toolbar.fc-header-toolbar {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .container {
+    height: 95vh;
+  }
+
+  .sidebar,
+  .content {
+    padding: 20px;
+  }
+
+  .profile-img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .nav-pills .nav-link {
+    padding: 10px 15px;
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    height: auto;
+    min-height: 95vh;
+  }
+
+  .containerImageChange {
+    height: 25%;
+  }
+
+  .row {
+    flex-direction: column;
+    align-content: center;
+  }
+
+  .point-summary-container {
+    width: 516px;
+  }
+
+  .point-summary {
+    align-content: flex-start;
+  }
+
+  .sidebar,
+  .content {
+    width: 100%;
+  }
+
+  .sidebar {
+    padding-bottom: 30px;
+  }
+
+  .content {
+    padding-top: 30px;
+  }
+
+  #calendar {
+    font-size: 0.9em;
+    height: 505px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  .card-body {
+    padding: 15px;
+  }
+
+  .search-container {
+    flex-direction: column;
+  }
+
+  .search-container select,
+  .search-container input[type="text"],
+  .search-container button {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  #v-pills-messages .row {
+    flex-direction: column;
+  }
+
+  #v-pills-messages .col-md-7,
+  #v-pills-messages .col-md-5 {
+    width: 100%;
+  }
+}
+
+@media (max-width: 390px) {
+  #dateAndTabContainer {
+    flex-flow: column;
+  }
+
+  .containerImageChange {
+    flex-flow: column;
+  }
+
+  .buttons {
+    text-align-last: center;
+  }
+
+  .buttons {
+    text-align-last: center;
+  }
+
+  #imageChange {
+    width: 47%;
+    margin-right: 5px;
+    margin-left: 0;
+  }
+
+  #imageDelete {
+    width: 47%;
+    margin-right: 0;
+    margin-left: 5px;
+  }
+
+  #passwordShowBtn {
+    width: 100%;
+  }
+
+  #updateBtn {
+    width: 100%;
+  }
+
+  .fc .fc-toolbar {
+    flex-direction: column;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+
+  .fc .fc-button {
+    font-size: 0.9em;
+  }
+
+  #calendarContainer {
+    height: 54.5vh;
+  }
+
+  #calendar {
+    font-size: 0.9em;
+    height: 505px;
+  }
+
+  .attendance-icon {
+    margin-right: 22% !important;
+    margin-top: 30% !important;
+  }
+  /* 요한 테스트 */
+  .profile-container {
+    margin-top: 70px !important;
+  }
+
+  .sidebar {
+    padding: 10px;
+    height: auto;
+    background-color: #f8f9fa;
+    width: 100%; /*07-15추가*/
+  }
+
+  .profile-summary {
+    display: none;
+  }
+
+  .nav-pills {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-pills .nav-link {
+    flex: 1;
+    margin: 0 2px;
+    padding: 8px 5px;
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    background-color: transparent;
+    color: #333;
+    border-radius: 15px;
+  }
+
+  .nav-pills .nav-link i {
+    font-size: 16px;
+    margin-right: 0;
+    margin-bottom: 3px;
+  }
+
+  .nav-pills .nav-link.active,
+  .nav-pills .nav-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+
+  .content {
+    padding: 15px;
+  }
+
+  #v-pills-tabContent {
+    margin-top: 15px;
+  }
+
+  .userProfile-main {
+    margin-top: 68px !important;
+  }
+  /* 390 화면일때 리스트 높이 정한거임 07-12 오전에 바꾼거임 여긴 96vh가 찐임*/
+  .list-group {
+    max-height: calc(96vh - 280px);
+    overflow-y: auto;
+    padding-bottom: 20px;
+  }
+
+  /* 상원 추가 촉수엄금 -----> */
+  .dateRangeWithNavs,
+  .dateRange {
+    width: 100% !important;
+  }
+
+  /* 내정보수정을 포함한 모든 컨테이너에서 스크롤 보여주기 */
+  .userProfile-tabs-main {
+    padding: 1rem !important;
+  }
+
+  .infoInImageChangeContainer {
+    padding-left: 0;
+  }
+  /* <------------ 촉수엄금 */
+
+  /*07-15 테스트 모바일 화면에서 탭버튼 가로로*/
+  #v-pills-tab {
+    flex-direction: row !important;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  #v-pills-tab .nav-link {
+    flex: 1;
+    text-align: center;
+  }
+
+  .tab-icon {
+    margin: 0 0 3px 0 !important;
+  } /* 07-15 테스트 모바일 화면에서 탭버튼 가로로 */
+}
+
+.custom-all-period-btn {
+  background-color: var(--primary-color);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  transition: background-color 0.3s;
+}
+
+.flatpickr-calendar {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding-bottom: 10px;
+  font-family: Arial, sans-serif;
+}
+
+/*07-15 추가*/
+.flatpickr-current-month {
+  left: 15.5%;
+}
+
+.flatpickr-months .flatpickr-prev-month svg,
+.flatpickr-months .flatpickr-next-month svg {
+  width: 14px;
+  height: 14px;
+  margin-bottom: 10px;
+}
+
+.flatpickr-prev-month svg {
+  margin-left: 48px;
+}
+
+.flatpickr-next-month svg {
+  margin-right: 48px;
+} /*07-15 추가*/
+
+/* 버튼을 캘린더 하단 중앙에 배치 */
+.flatpickr-calendar .flatpickr-buttons {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.flatpickr-button {
+  display: inline-block;
+  margin: 5px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.flatpickr-button:hover {
+  background-color: #3a5a8a;
+  box-shadow: 0 4px 10px rgba(74, 111, 165, 0.3);
+}
+
+/* 날짜 셀 스타일 */
+.flatpickr-day {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 40px !important; /* 날짜 셀의 높이 조정 */
+  font-size: 14px;
+  border-radius: 50%;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.flatpickr-day:hover {
+  background-color: #f0f0f0;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+  background-color: #007bff !important;
+  color: white !important;
+}
+
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover {
+  background-color: #0056b3 !important;
+}
+
+.flatpickr-days {
+  width: 100% !important;
+}
+
+.dayContainer {
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* 스크롤바 스타일 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a5a8a;
+}
+
+/* 포인트 내역 탭 스타일 */
+#v-pills-messages {
+  height: 100%;
+}
+
+#calendar {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+#calendar .fc-toolbar-title {
+  font-size: 1.2em;
+  padding: 0;
+}
+
+#calendar .fc-button {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+#calendar .fc-button:hover {
+  background-color: #3a5a8a;
+  border-color: #3a5a8a;
+}
+
+#calendar .fc-daygrid-day-number {
+  font-size: 0.9em;
+}
+
+#calendar .fc-event {
+  font-size: 0.8em;
+  padding: 2px 4px;
+}
+
+.point-summary {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.points-column {
+  text-align: center;
+}
+
+.monthly-summary,
+.daily-summary {
+  padding: 10px;
+}
+
+.monthly-summary h5,
+.daily-summary h5 {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.monthly-summary div,
+.daily-summary div {
+  margin-bottom: 5px;
+}
+
+#pointHistoryTable {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  justify-items: center;
+}
+
+#earnedPoints,
+#spentPoints {
+  font-weight: bold;
+}
+
+.table-responsive {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* 포인트 내역 탭 스타일 */
+#v-pills-messages {
+  height: 100%;
+}
+
+#calendar {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+#calendar .fc-toolbar-title {
+  font-size: 1.2em;
+  padding: 0;
+}
+
+#calendar .fc-button {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+#calendar .fc-button:hover {
+  background-color: #3a5a8a;
+  border-color: #3a5a8a;
+}
+
+#calendar .fc-daygrid-day-number {
+  font-size: 0.9em;
+}
+
+#calendar .fc-event {
+  font-size: 0.8em;
+  padding: 2px 4px;
+}
+
+.point-summary {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.monthly-summary,
+.daily-summary {
+  padding: 10px;
+}
+
+.monthly-summary h5,
+.daily-summary h5 {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.monthly-summary div,
+.daily-summary div {
+  margin-bottom: 5px;
+}
+
+#pointHistoryTable {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  justify-items: center;
+}
+
+#earnedPoints,
+#spentPoints {
+  font-weight: bold;
+}
+
+.table-responsive {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.fc {
+  font-family: "Noto Sans KR", sans-serif;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.fc-header-toolbar {
+  background-color: #f8f9fa;
+  padding: 20px;
+}
+
+.fc .fc-toolbar {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.fc-toolbar-title {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: #333;
+}
+
+.fc-button-primary {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: #333 !important;
+  font-size: 1.2em;
+  transition: color 0.3s ease;
+}
+
+.fc-today-button {
+  background-color: var(--primary-color) !important;
+  border: none;
+  color: white !important;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.fc-day-today {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+.fc-daygrid-day-number {
+  font-size: 1em;
+  font-weight: 600;
+  color: var(--primary-color);
+  position: relative;
+  z-index: 1;
+}
+
+.fc-daygrid-day-top {
+  justify-content: flex-end;
+  padding-right: 25px; /* 날짜와 출석 체크 마크 사이의 간격 */
+}
+
+.fc-event {
+  border-radius: 4px;
+  font-size: 0.9em;
+  padding: 2px 4px;
+}
+
+.fc-event-positive {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.fc-event-negative {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.selected-date {
+  background-color: #e6f2ff !important;
+  font-weight: bold !important;
+}
+
+.fc-event {
+  cursor: pointer;
+}
+
+.fc-event-main {
+  padding: 2px 4px;
+}
+
+.selected-date .fc-daygrid-day-number {
+  color: white !important;
+}
+
+.fc-day-today .fc-daygrid-day-number {
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.attendance-icon {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 1.2em;
+  color: #28a745;
+  background-color: white;
+  border-radius: 50%;
+  padding: 2px;
+  margin-right: 29%;
+  margin-top: 21%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* 일요일 날짜 빨간색 */
+.fc-day-sun {
+  color: red;
+  text-decoration: none;
+}
+
+/* 토요일 날짜 파란색 */
+.fc-day-sat {
+  color: blue;
+  text-decoration: none;
+}
+
+.summary-row {
+  font-weight: bold;
+  background-color: #f8f9fa;
+}
+
+.summary-row td {
+  border-top: 2px solid #dee2e6;
+}
+
+/* 내 활동내역 텍스트 스타일*/
+.badge {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 4px 8px;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.writtenReview {
+  font-style: italic;
+  color: #333;
+  background-color: #f0f8ff; /* 약간 더 진한 배경색 */
+  border-left: 4px solid var(--primary-color);
+  padding: 10px 15px;
+  margin: 10px 0;
+  border-radius: 0 4px 4px 0;
+  position: relative;
+}
+
+.likedReview {
+  font-style: italic;
+  color: #333;
+  background-color: #f8f9fa;
+  border-left: 4px solid var(--primary-color);
+  padding: 10px 15px;
+  margin: 10px 0;
+  border-radius: 0 4px 4px 0;
+  position: relative;
+}
+
+.nametag {
+  font-weight: 600;
+  color: #0056b3;
+}
+/* 내 활동내역 스타일 끝*/
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

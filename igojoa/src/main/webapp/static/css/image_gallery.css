@@ -1,0 +1,203 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
+
+/* 이미지 갤러리 섹션 스타일 */
+.gallery-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--main-bg-color);
+  padding: 50px 10%;
+  font-family: var(--main-font);
+  color: var(--main-text-color);
+  min-height: 800px;
+}
+
+.gallery-content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 20px;
+  border-radius: var(--border-radius);
+}
+
+.gallery-box {
+  margin-top: 30px; /* 줄인 간격 */
+  position: relative;
+  width: 200px;
+  height: 300px;
+  transform-style: preserve-3d;
+  transition: 1.5s;
+  transform: perspective(1000px) rotateY(0deg);
+  margin-bottom: 30px; /* 세로 간격 조절 */
+}
+
+.gallery-box span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 115%;
+  height: 100%;
+  transform-origin: center;
+  transform-style: preserve-3d;
+  transform: rotateY(calc(var(--i) * 45deg)) translateZ(300px);
+}
+
+.gallery-box span img {
+  position: absolute;
+  top: 0;
+  left: -8px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  border-radius: var(--border-radius);
+}
+
+.gallery-box span img:hover {
+  cursor: pointer;
+}
+
+.gallery-btns {
+  margin-top: 150px; /* 세로 간격 조절 */
+  display: flex;
+  gap: 10px; /* 간격 조정 */
+  justify-content: center;
+}
+
+
+
+
+
+.gallery-btns .gallery-btn.prev::before {
+  transform: rotate(225deg) translate(-2.5px, 2.5px);
+}
+
+.gallery-btns .gallery-btn:active::before {
+  border-top: 3px solid #000;
+  border-right: 3px solid #000;
+}
+
+#location-name {
+  width: 200px;
+  text-align: center;
+  font-size: 20px;
+  color: var(--main-text-color);
+  white-space: nowrap; /* 줄바꿈 방지 */
+  overflow: hidden; /* 넘칠 경우 숨김 */
+  text-overflow: ellipsis; /* 말줄임표 추가 */
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .gallery-box {
+    width: 150px;
+    height: 200px;
+    margin-bottom: 20px; /* 세로 간격 조절 */
+  }
+
+  .gallery-btns {
+    margin-top: 150px; /* 세로 간격 조절 */
+  }
+
+  .gallery-btns .gallery-btn {
+    width: 50px;
+    height: 50px;
+  }
+
+  #location-name {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-body {
+    padding: 20px 5%;
+    min-height: 400px;
+  }
+
+  .gallery-box {
+    width: 100px;
+    height: 150px;
+    /* 세로 간격 조절 */
+    margin: 0 auto;
+  }
+
+  .gallery-btns {
+    margin-top: 150px; /* 세로 간격 조절 */
+  }
+
+  .gallery-btns .gallery-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  #location-name {
+    font-size: 1.2rem;
+  }
+}
+@media (max-width: 420px) {
+  #image-gallery-section {
+    padding: 10px 5%;
+    min-height: 550px;
+  }
+  .gallery-box {
+    width: 150px;
+    height: 200px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  .gallery-btns {
+    margin-top: 100px;
+    align-items: inherit;
+  }
+
+  .gallery-btns .gallery-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  #location-name {
+    font-size: 1.5rem;
+  }
+
+  .gallery-body {
+    padding: 15px 5%;
+    min-height: 250px;
+  }
+}
+/* 아이폰 12 해상도에 맞춘 반응형 디자인 */
+@media (max-width: 390px) {
+  #image-gallery-section {
+    padding: 10px 5%;
+    min-height: 550px;
+  }
+  .gallery-box {
+    width: 150px;
+    height: 200px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  .gallery-btns {
+    margin-top: 100px;
+    align-items: inherit;
+  }
+
+  .gallery-btns .gallery-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  #location-name {
+    font-size: 1.5rem;
+  }
+
+  .gallery-body {
+    padding: 15px 5%;
+    min-height: 250px;
+  }
+}

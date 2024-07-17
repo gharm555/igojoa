@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwill.igojoa.repository.ReviewDao">
+	<insert id="insertReview">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		<bind name="review" value="review" />
+		<bind name="parkingAvailable" value="parkingAvailable" />
+		<bind name="view" value="view" />
+		<bind name="nightView" value="nightView" />
+		<bind name="freeEntry" value="freeEntry" />
+		<bind name="easyTransport" value="easyTransport" />
+		<bind name="iScore" value="iScore" />
+		INSERT
+		INTO
+		reviews (placeName,
+		userId,
+		review,
+		parkingAvailable,
+		`view`,
+		nightView,
+		freeEntry,
+		easyTransport,
+		iScore)
+		values('${ placeName }',
+		'${
+		userId }',
+		'${ review }',
+		${ parkingAvailable },
+		${ view },
+		${ nightView
+		},
+		${ freeEntry },
+		${ easyTransport },
+		${ iScore });
+	</insert>
+
+	<update id="updateReview">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		<bind name="review" value="review" />
+		<bind name="parkingAvailable" value="parkingAvailable" />
+		<bind name="view" value="view" />
+		<bind name="nightView" value="nightView" />
+		<bind name="freeEntry" value="freeEntry" />
+		<bind name="easyTransport" value="easyTransport" />
+		<bind name="iScore" value="iScore" />
+		UPDATE
+		reviews
+		SET
+		review = '${review}',
+		parkingAvailable =
+		${parkingAvailable},
+		`view` = ${view},
+		nightView = ${nightView},
+		freeEntry = ${freeEntry},
+		easyTransport = ${easyTransport},
+		iScore =
+		${iScore}
+		WHERE
+		placeName = '${placeName}'
+		AND userId = '${userId}'
+	</update>
+
+	<delete id="deleteReview">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		DELETE
+		FROM
+		reviews
+		WHERE
+		placeName = '${placeName}'
+		AND userId =
+		'${userId}'
+	</delete>
+
+	<select id="selectPlaceReviews" parameterType="ReviewSelectDto"
+		resultType="ReviewListDto">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		<bind name="orderBy" value="orderBy" />
+		<bind name="startRowValue" value="startRowValue" />
+		<bind name="rowCnt" value="rowCnt" />
+		SELECT
+		(COALESCE(p.cumulativePoint, 0) div 1000) + 1 AS `level`,
+		u.nickName ,
+		r.review ,
+		r.modifiedAt ,
+		r.parkingAvailable ,
+		r.`view` ,
+		r.nightView ,
+		r.freeEntry ,
+		r.easyTransport ,
+		r.iScore,
+		COALESCE(rl.cntLike, 0) AS cntLike,
+		COALESCE(myLike.myLike, 0) AS
+		myLike,
+		u.userProfileUrl
+		FROM
+		reviews r
+		LEFT JOIN (
+		SELECT
+		rl.placeName ,
+		rl.userId ,
+		COUNT(*) AS
+		cntLike
+		FROM
+		reviewLikes rl
+		WHERE
+		rl.placeName = '${
+		placeName }'
+		GROUP BY
+		rl.placeName ,
+		rl.userId ) rl
+		ON
+		rl.placeName =
+		r.placeName
+		and rl.userId
+		= r.userId
+		LEFT JOIN (
+		SELECT
+		rl.userId ,
+		rl.placeName ,
+		rl.likeUserId ,
+		COUNT(*) AS myLike
+		FROM
+		reviewLikes rl
+		WHERE
+		rl.placeName = '${ placeName
+		}'
+		AND rl.likeUserId =
+		'${
+		userId }'
+		GROUP BY
+		rl.placeName ,
+		rl.userId ,
+		rl.likeUserId
+		) myLike
+		ON
+		myLike.placeName =
+		r.placeName
+		AND myLike.userId
+		= r.userId
+		LEFT JOIN
+		points p
+		ON
+		r.userId = p.userId
+		LEFT JOIN
+		users u
+		ON
+		u.userId = r.userId
+		WHERE
+		r.placeName = '${
+		placeName }'
+		<if test='orderBy.equals("modifiedAtDESC")'>
+			ORDER BY
+			modifiedAt
+			DESC, u.nickName ASC
+		</if>
+		<if test='orderBy.equals("modifiedAtASC")'>
+			ORDER BY
+			modifiedAt
+			ASC, u.nickName ASC
+		</if>
+		<if test='orderBy.equals("cntLikeDESC")'>
+			ORDER BY
+			cntLike
+			DESC, u.nickName ASC
+		</if>
+		<if test='orderBy.equals("cntLikeASC")'>
+			ORDER BY
+			cntLike
+			ASC, u.nickName ASC
+		</if>
+		LIMIT ${ startRowValue }, ${ rowCnt }
+	</select>
+
+	<insert id="clickReviewLike">
+		<bind name="userId" value="userId" />
+		<bind name="placeName" value="placeName" />
+		<bind name="likeUserId" value="likeUserId" />
+		INSERT
+		INTO
+		reviewLikes (userId,
+		placeName,
+		likeUserId)
+		SELECT
+		u.userId,
+		'${placeName}',
+		'${likeUserId}'
+		FROM
+		users u
+		WHERE
+		u.nickName = '${userId}'
+	</insert>
+
+	<delete id="deleteReviewLike">
+		<bind name="userId" value="userId" />
+		<bind name="placeName" value="placeName" />
+		<bind name="likeUserId" value="likeUserId" />
+		DELETE
+		FROM
+		reviewLikes
+		WHERE
+		userId =(
+		SELECT
+		userId
+		from
+		users
+		WHERE
+		nickName
+		= '${userId}')
+		AND placeName =
+		'${placeName}'
+		AND likeUserId =
+		'${likeUserId}'
+	</delete>
+
+	<delete id="deleteMyReviewAndDeleteAllLike">
+		<bind name="userId" value="userId" />
+		<bind name="placeName" value="placeName" />
+		DELETE FROM reviewLikes
+		WHERE userId = '${userId}' AND
+		placeName='${placeName}'
+	</delete>
+
+	<delete id="deleteAllReview">
+		DELETE FROM reviews WHERE userId = #{userId}
+	</delete>
+
+	<delete id="deleteAllReviewLike">
+		DELETE FROM reviewLikes WHERE likeUserId = #{userId}
+	</delete>
+</mapper>

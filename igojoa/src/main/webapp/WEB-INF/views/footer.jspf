@@ -1,0 +1,101 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+  pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
+
+<c:url var="footerCss" value="/css/footer.css" />
+<link rel="stylesheet" href="${footerCss}">
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+<footer class="p-footer p-footer--dark">
+  <div class="p-footer__inner">
+    <div class="p-footer__site-group-list">
+      <ul class="p-footer__site-group">
+        <li>
+          <div class="p-footer__site-group-title">만든이들</div>
+        </li>
+        <!-- 각 줄을 나누기 위해 div로 감쌌습니다 -->
+        <div class="p-footer__site-group-item-container">
+          <li class="p-footer__site-group-item">권요한</li>
+          <li class="p-footer__site-group-item">김대현</li>
+          <li class="p-footer__site-group-item">김진성</li>
+        </div>
+        <div class="p-footer__site-group-item-container">
+          <li class="p-footer__site-group-item">박수창</li>
+          <li class="p-footer__site-group-item">서상원</li>
+          <li class="p-footer__site-group-item">오진호</li>
+        </div>
+      </ul>
+      <ul class="p-footer__site-group">
+        <li>
+          <div class="p-footer__site-group-title">추천 기능</div>
+        </li>
+        <div class="p-footer__site-group-item-container">
+          <li class="p-footer__site-group-item"><a
+            href="https://map.kakao.com/?nil_profile=title&nil_src=local"
+            target="_blank">길찾기</a></li>
+          <li class="p-footer__site-group-item"><a
+            href="https://www.skyscanner.co.kr/" target="_blank">항공</a></li>
+        </div>
+        <div class="p-footer__site-group-item-container">
+          <li class="p-footer__site-group-item"><a
+            href="https://www.letskorail.com/" target="_blank">기차</a></li>
+          <li class="p-footer__site-group-item lodgment"><a
+            href="https://www.airbnb.co.kr/" target="_blank">숙박</a></li>
+        </div>
+      </ul>
+      <ul class="p-footer__site-group">
+        <li>
+          <div class="p-footer__site-group-title">GitHub</div>
+        </li>
+        <li class="p-footer__site-group-item" id="gitHubIcon"><a
+          href="https://github.com/gharm555/igojoa" target="_blank"><i
+            class="fa-brands fa-github" style="font-size: xx-large;"></i></a></li>
+      </ul>
+      <ul class="p-footer__site-group">
+        <li>
+          <div class="p-footer__site-group-title">참고한곳들</div>
+        </li>
+        <div class="p-footer__site-group-item-container">
+          <li class="p-footer__site-group-item"><i
+            class="fab fa-facebook-f"></i> Facebook</li>
+          <li class="p-footer__site-group-item"><i
+            class="fab fa-instagram"></i> Instagram</li>
+        </div>
+        <div class="p-footer__site-group-item-container">
+          <c:url var="naver" value="/image/naver.png" />
+          <li class="p-footer__site-group-item naver"><img
+            src="${ naver }" /> Naver</li>
+          <c:url var="toss" value="/image/toss.png" />
+          <li class="p-footer__site-group-item"><img
+            src="${ toss }" /> Toss</li>
+        </div>
+      </ul>
+      <ul class="p-footer__site-group">
+        <li>
+          <div class="p-footer__site-group-title">도움주신분들</div>
+        </li>
+        <div class="p-footer__site-group-item-container">
+          <c:url var="itwill" value="/image/itwill.png" />
+          <li class="p-footer__site-group-item" style="margin-right: 25px;"><img
+            src="${ itwill }" /> 오정훈</li>
+          <c:url var="kcs" value="/image/kcs.png" />
+          <li class="p-footer__site-group-item"><img src="${ kcs }" />
+            서정엽</li>
+        </div>
+        <div class="p-footer__site-group-item-container">
+          <c:url var="chatgpt" value="/image/chatgpt.png" />
+          <li class="p-footer__site-group-item"><img
+            src="${ chatgpt }" /> Chatgpt</li>
+          <c:url var="claude" value="/image/claude.png" />
+          <li class="p-footer__site-group-item"><img
+            src="${ claude }" /> Claude</li>
+        </div>
+      </ul>
+
+    </div>
+
+  </div>
+  <div class="text-center p-3 copyright">© 2024 아이고조아. All rights reserved.</div>
+</footer>

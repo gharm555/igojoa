@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwill.igojoa.repository.SchedulerDao">
+	<update id="updatePlaceStats">
+		UPDATE
+		placesStats ps
+		JOIN (
+		SELECT
+		p.placeName ,
+		COALESCE(r.parkingAvailableSum, 0) AS parkingAvailableSum,
+		COALESCE(r.viewSum, 0) AS viewSum,
+		COALESCE(r.nightViewSum, 0) AS nightViewSum,
+		COALESCE(r.freeEntrySum, 0) AS freeEntrySum,
+		COALESCE(r.easyTransportSum, 0) AS easyTransportSum,
+		COALESCE(r.iScoreAvg, 2) AS iScoreAvg,
+		COALESCE(r.reviewCnt, 0) AS reviewCnt,
+		COALESCE(pv.placeVerifiedCnt, 0) AS placeVerifiedCnt,
+		COALESCE(ps.placefavoriteCnt, 0) AS placefavoriteCnt
+		FROM
+		places p
+		LEFT JOIN (
+		SELECT
+		pf.placeName,
+		COUNT(*)
+		AS placefavoriteCnt
+		FROM
+		placesFavorite pf
+		GROUP BY
+		pf.placeName) ps
+		ON
+		ps.placeName = p.placeName
+		LEFT JOIN (
+		SELECT
+		pv.placeName,
+		COUNT(*) AS
+		placeVerifiedCnt
+		FROM
+		placeVerified pv
+		GROUP BY
+		pv.placeName
+		) pv
+		ON
+		pv.placeName = p.placeName
+		LEFT JOIN (
+		SELECT
+		r.placeName,
+		SUM(r.parkingAvailable) as parkingAvailableSum,
+		SUM(r.`view`) as
+		viewSum,
+		SUM(r.nightView) as nightViewSum,
+		SUM(r.freeEntry) as
+		freeEntrySum,
+		SUM(r.easyTransport) as
+		easyTransportSum,
+		ROUND(AVG(r.iScore))as iScoreAvg,
+		COUNT(r.userId) as
+		reviewCnt
+		FROM
+		reviews r
+		GROUP BY
+		r.placeName
+		) r
+		ON
+		r.placeName =
+		p.placeName
+		) AS
+		reviewStats
+		ON
+		ps.placeName = reviewStats.placeName
+		SET
+		ps.parkingAvailable = reviewStats.parkingAvailableSum,
+		ps.`view` =
+		reviewStats.viewSum,
+		ps.nightView = reviewStats.nightViewSum,
+		ps.freeEntry = reviewStats.freeEntrySum,
+		ps.easyTransport =
+		reviewStats.easyTransportSum,
+		ps.iScore = reviewStats.iScoreAvg,
+		ps.review = reviewStats.reviewCnt,
+		ps.placeVerified =
+		reviewStats.placeVerifiedCnt,
+		ps.placeFavorite =
+		reviewStats.placefavoriteCnt
+	</update>
+
+	<update id="updateBestReviews">
+		<!-- UPDATE bestReviews br JOIN ( SELECT rl.placeName, rl.userId, rl.likeCnt, 
+			r.review , r.modifiedAt FROM ( SELECT rl.placeName, rl.userId , COUNT(rl.likeUserId) 
+			as likeCnt FROM reviewLikes rl GROUP BY rl.placeName, rl.userId ) rl INNER 
+			JOIN ( SELECT rlMax.placeName, MAX(rlMax.likeCnt) AS maxLike FROM ( SELECT 
+			rl.placeName, rl.userId, COUNT(rl.likeUserId) AS likeCnt FROM reviewLikes 
+			rl GROUP BY rl.placeName, rl.userId ) rlMax GROUP BY rlMax.placeName ) rlMaxJoin 
+			ON rl.placeName = rlMaxJoin.placeName AND rl.likeCnt = rlMaxJoin.maxLike 
+			INNER JOIN reviews r ON r.placeName = rl.placeName AND r.userId = rl.userId 
+			GROUP BY rl.placeName ) r ON r.placeName = br.placeName SET br.placeName 
+			= r.placeName, br.userId = r.userId, br.review = r.review, br.modifiedAt 
+			= r.modifiedAt, br.likeCount = r.likeCnt -->
+		INSERT
+		INTO
+		bestReviews (placeName,
+		userId,
+		review,
+		modifiedAt,
+		likeCount)
+		SELECT
+		r.placeName,
+		r.userId,
+		r.review,
+		r.modifiedAt,
+		r.likeCnt
+		FROM
+		(
+		SELECT
+		rl.placeName,
+		rl.userId,
+		rl.likeCnt,
+		r.review,
+		r.modifiedAt
+		FROM
+		(
+		SELECT
+		rl.placeName,
+		rl.userId,
+		COUNT(rl.likeUserId) AS likeCnt
+		FROM
+		reviewLikes rl
+		GROUP BY
+		rl.placeName,
+		rl.userId
+		) rl
+		INNER JOIN (
+		SELECT
+		rlMax.placeName,
+		MAX(rlMax.likeCnt) AS maxLike
+		FROM
+		(
+		SELECT
+		rl.placeName,
+		rl.userId,
+		COUNT(rl.likeUserId) AS likeCnt
+		FROM
+		reviewLikes rl
+		GROUP BY
+		rl.placeName,
+		rl.userId
+		) rlMax
+		GROUP BY
+		rlMax.placeName
+		) rlMaxJoin
+		ON
+		rl.placeName = rlMaxJoin.placeName
+		AND rl.likeCnt = rlMaxJoin.maxLike
+		INNER JOIN reviews r
+		ON
+		r.placeName = rl.placeName
+		AND r.userId = rl.userId
+		GROUP BY
+		rl.placeName
+		) r
+		ON
+		DUPLICATE KEY
+		UPDATE
+		placeName = r.placeName,
+		userId = r.userId,
+		review = r.review,
+		modifiedAt = r.modifiedAt,
+		likeCount = r.likeCnt
+	</update>
+
+	<delete id="deleteSynchronizeReviews">
+		DELETE FROM bestReviews
+		WHERE (placeName, userId) NOT IN (
+		SELECT placeName, userId
+		FROM reviews
+		)
+	</delete>
+
+	<update id="updateBestBadge">
+		UPDATE placesStats ps
+        JOIN (
+        SELECT
+            placeName,
+            CASE
+                WHEN parkingAvailable >= GREATEST(`view`, nightView, freeEntry, easyTransport) THEN '주차가능'
+                WHEN `view` >= GREATEST(parkingAvailable, nightView, freeEntry, easyTransport) THEN '경치좋음'
+                WHEN nightView >= GREATEST(parkingAvailable, `view`, freeEntry, easyTransport) THEN '야경좋음'
+                WHEN freeEntry >= GREATEST(parkingAvailable, `view`, nightView, easyTransport) THEN '무료입장'
+                WHEN easyTransport >= GREATEST(parkingAvailable, `view`, nightView, freeEntry) THEN '교통원활'
+            END AS highest_column,
+            CASE
+                WHEN parkingAvailable >= GREATEST(`view`, nightView, freeEntry, easyTransport) THEN
+                    CASE
+                        WHEN `view` >= GREATEST(nightView, freeEntry, easyTransport) THEN '경치좋음'
+                        WHEN nightView >= GREATEST(`view`, freeEntry, easyTransport) THEN '야경좋음'
+                        WHEN freeEntry >= GREATEST(`view`, nightView, easyTransport) THEN '무료입장'
+                        WHEN easyTransport >= GREATEST(`view`, nightView, freeEntry) THEN '교통원활'
+                    END
+                WHEN `view` >= GREATEST(parkingAvailable, nightView, freeEntry, easyTransport) THEN
+                    CASE
+                        WHEN parkingAvailable >= GREATEST(nightView, freeEntry, easyTransport) THEN '주차가능'
+                        WHEN nightView >= GREATEST(parkingAvailable, freeEntry, easyTransport) THEN '야경좋음'
+                        WHEN freeEntry >= GREATEST(parkingAvailable, nightView, easyTransport) THEN '무료입장'
+                        WHEN easyTransport >= GREATEST(parkingAvailable, nightView, freeEntry) THEN '교통원활'
+                    END
+                WHEN nightView >= GREATEST(parkingAvailable, `view`, freeEntry, easyTransport) THEN
+                    CASE
+                        WHEN parkingAvailable >= GREATEST(`view`, freeEntry, easyTransport) THEN '주차가능'
+                        WHEN `view` >= GREATEST(parkingAvailable, freeEntry, easyTransport) THEN '경치좋음'
+                        WHEN freeEntry >= GREATEST(parkingAvailable, `view`, easyTransport) THEN '무료입장'
+                        WHEN easyTransport >= GREATEST(parkingAvailable, `view`, freeEntry) THEN '교통원활'
+                    END
+                WHEN freeEntry >= GREATEST(parkingAvailable, `view`, nightView, easyTransport) THEN
+                    CASE
+                        WHEN parkingAvailable >= GREATEST(`view`, nightView, easyTransport) THEN '주차가능'
+                        WHEN `view` >= GREATEST(parkingAvailable, nightView, easyTransport) THEN '경치좋음'
+                        WHEN nightView >= GREATEST(parkingAvailable, `view`, easyTransport) THEN '야경좋음'
+                        WHEN easyTransport >= GREATEST(parkingAvailable, `view`, nightView) THEN '교통원활'
+                    END
+                WHEN easyTransport >= GREATEST(parkingAvailable, `view`, nightView, freeEntry) THEN
+                    CASE
+                        WHEN parkingAvailable >= GREATEST(`view`, nightView, freeEntry) THEN '주차가능'
+                        WHEN `view` >= GREATEST(parkingAvailable, nightView, freeEntry) THEN '경치좋음'
+                        WHEN nightView >= GREATEST(parkingAvailable, `view`, freeEntry) THEN '야경좋음'
+                        WHEN freeEntry >= GREATEST(parkingAvailable, `view`, nightView) THEN '무료입장'
+                    END
+                END AS second_highest_column
+            FROM
+                placesStats
+            ) AS subquery ON ps.placeName = subquery.placeName
+        SET
+        ps.highestBadge = subquery.highest_column,
+        ps.secondHighestBadge =
+        subquery.second_highest_column
+	</update>
+</mapper>

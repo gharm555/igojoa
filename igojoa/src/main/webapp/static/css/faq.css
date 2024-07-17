@@ -1,0 +1,186 @@
+/* FAQ 섹션 스타일 */
+.faq-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f5f5f5;
+  padding: 50px 10%;
+  font-family: var(--main-font);
+  color: var(--main-text-color);
+  min-height: 800px;
+  gap: 50px;
+}
+#faq-section {
+  width: 125%;
+  min-height: 300px;
+}
+.faq-content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 20px;
+  border-radius: var(--border-radius);
+}
+
+.faq-box {
+  margin-top: 100px;
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 30px; /* 세로 간격 조절 */
+}
+
+.faq-box h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.faq-box p {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+#accordionExample {
+  width: 80%;
+  max-width: 800px;
+}
+.accordion-button {
+  background-color: #c8dae9b5;
+}
+.accordion {
+  --bs-accordion-color: var(--bs-body-color);
+  --bs-accordion-bg: #2691e9b8;
+  --bs-accordion-transition: color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out, border-radius 0.15s ease;
+  --bs-accordion-border-color: var(--bs-border-color);
+  --bs-accordion-border-width: var(--bs-border-width);
+  --bs-accordion-border-radius: var(--bs-border-radius);
+  --bs-accordion-inner-border-radius: calc(
+    var(--bs-border-radius) - (var(--bs-border-width))
+  );
+  --bs-accordion-btn-padding-x: 1.25rem;
+  --bs-accordion-btn-padding-y: 1rem;
+  --bs-accordion-btn-color: var(--bs-body-color);
+  --bs-accordion-btn-bg: var(--bs-accordion-bg);
+  --bs-accordion-btn-icon: url(
+    data:image/svg + xml,
+    %3csvgxmlns="http://www.w3.org/2000/svg"viewBox="0 0 16 16"fill="none"stroke="%23212529"stroke-linecap="round"stroke-linejoin="round"%3e%3cpathd="M2 5L8 11L14 5"/%3e%3c/svg%3e
+  );
+  --bs-accordion-btn-icon-width: 1.25rem;
+  --bs-accordion-btn-icon-transform: rotate(-180deg);
+  --bs-accordion-btn-icon-transition: transform 0.2s ease-in-out;
+  --bs-accordion-btn-active-icon: url(
+    data:image/svg + xml,
+    %3csvgxmlns="http://www.w3.org/2000/svg"viewBox="0 0 16 16"fill="none"stroke="%23052c65"stroke-linecap="round"stroke-linejoin="round"%3e%3cpathd="M2 5L8 11L14 5"/%3e%3c/svg%3e
+  );
+  --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  --bs-accordion-body-padding-x: 1.25rem;
+  --bs-accordion-body-padding-y: 1rem;
+  --bs-accordion-active-color: var(--bs-primary-text-emphasis);
+  --bs-accordion-active-bg: var(--bs-primary-bg-subtle);
+}
+.accordion-button:not(.collapsed) {
+  background-color: #2a4595eb;
+  color: #fff;
+}
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .faq-box {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .faq-box h2 {
+    font-size: 20px;
+  }
+
+  .faq-box p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .faq-body {
+    padding: 20px 5%;
+  }
+
+  .faq-box {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .faq-box h2 {
+    font-size: 18px;
+  }
+
+  .faq-box p {
+    font-size: 12px;
+  }
+}
+
+/* 아이폰 12 해상도에 맞춘 반응형 디자인 */
+@media (max-width: 420px) {
+  .faq-body {
+    padding: 10px 5%;
+    padding: 20px 5%; /* 패딩 조정 */
+  }
+
+  .faq-box {
+    width: 100%;
+    padding: 10px;
+    margin-top: 30px; /* 섹션 간격 조정 */
+    margin-bottom: 10px; /* 섹션 간격 조정 */
+  }
+  #faq-section {
+    width: 125%;
+    min-height: 300px;
+  }
+  .faq-box h2 {
+    font-size: 16px;
+  }
+
+  .faq-box p {
+    font-size: 10px;
+  }
+  .accordion-button {
+    font-size: 16px;
+  }
+  .accordion-body {
+    font-size: 14px;
+  }
+}
+@media (max-width: 390px) {
+  .faq-body {
+    padding: 10px 5%;
+    padding: 20px 5%; /* 패딩 조정 */
+  }
+
+  .faq-box {
+    width: 100%;
+    padding: 10px;
+    margin-top: 30px; /* 섹션 간격 조정 */
+    margin-bottom: 10px; /* 섹션 간격 조정 */
+  }
+  #faq-section {
+    width: 125%;
+    min-height: 300px;
+  }
+  .faq-box h2 {
+    font-size: 16px;
+  }
+
+  .faq-box p {
+    font-size: 10px;
+  }
+  .accordion-button {
+    font-size: 16px;
+  }
+  .accordion-body {
+    font-size: 14px;
+  }
+}

@@ -1,4 +1,3 @@
-
 <project xmlns="https://maven.apache.org/POM/4.0.0"
     xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -11,7 +10,7 @@
     <description>igojoa Project</description>
 
     <!-- XML 파일에서 사용할 속성(변수) 선언 -->
-    <properties>    
+    <properties>
         <jstl-version>3.0.0</jstl-version>
         <jslt-impl-version>3.0.1</jslt-impl-version>
         <log4j-version>2.23.1</log4j-version>
@@ -24,6 +23,9 @@
         <lombok-version>1.18.32</lombok-version>
         <mybatis-version>3.5.16</mybatis-version>
         <mybatis-spring-version>3.0.3</mybatis-spring-version>
+        <aws-java-sdk-s3-version>1.12.400</aws-java-sdk-s3-version>
+        <commons-fileupload-version>1.5</commons-fileupload-version>
+        <commons-io-version>2.16.1</commons-io-version>
     </properties>
 
     <!-- 프로젝트에서 필요한 의존성(라이브러리)들을 설정 -->
@@ -85,13 +87,11 @@
         </dependency>
 
         <!-- MySQL JDBC 라이브러리 -->
-        <!-- MySQL JDBC Driver compatible with JDK11, JDK12, JDK13, JDK14 and
-        JDK15 -->
+        <!-- MySQL JDBC Driver -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-version}</version>
-            <scope>runtime</scope>
         </dependency>
 
         <!-- 데이터베이스 커넥션 풀 사용하기 위한 의존성 -->
@@ -137,7 +137,8 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson-version}</version>
         </dependency>
-        <!-- Add-on module to support JSR-310 (Java 8 Date & Time API) data types -->
+        <!-- Add-on module to support JSR-310 (Java 8 Date & Time API) data
+        types -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
@@ -180,6 +181,31 @@
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-spring</artifactId>
             <version>${mybatis-spring-version}</version>
+        </dependency>
+
+        <!-- AWS SDK for Java -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>${aws-java-sdk-s3-version}</version>
+        </dependency>
+        <!-- spring web -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
+        <!-- file upload -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons-fileupload-version}</version>
+        </dependency>
+        <!-- commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io-version}</version>
         </dependency>
     </dependencies>
 

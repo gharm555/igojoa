@@ -5,11 +5,69 @@
 
 <!-- MyBatis3 프레임워크 설정 -->
 <configuration>
-    <settings>
-        <setting name="mapUnderscoreToCamelCase" value="true"/>
-    </settings>
-    <typeAliases>
-        
-    </typeAliases>
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+	<typeAliases>
+		<typeAlias alias="Users"
+			type="com.itwill.igojoa.entity.Users" />
+		<typeAlias alias="Faq" type="com.itwill.igojoa.entity.Faq" />
+		<typeAlias alias="Place"
+			type="com.itwill.igojoa.entity.Place" />
+		<typeAlias alias="PlaceImages"
+			type="com.itwill.igojoa.entity.PlaceImages" />
+		<typeAlias alias="PlacesFavorite"
+			type="com.itwill.igojoa.entity.PlacesFavorite" />
+		<typeAlias alias="PlaceVerified"
+			type="com.itwill.igojoa.entity.PlaceVerified" />
+		<typeAlias alias="Points"
+			type="com.itwill.igojoa.entity.Points" />
+		<typeAlias alias="PointsLogs"
+			type="com.itwill.igojoa.entity.PointsLogs" />
+		<typeAlias alias="ReviewLikes"
+			type="com.itwill.igojoa.entity.ReviewLikes" />
+		<typeAlias alias="Reviews"
+			type="com.itwill.igojoa.entity.Reviews" />
+		<typeAlias alias="UsersLoginDto"
+			type="com.itwill.igojoa.dto.users.UsersLoginDto" />
+		<typeAlias alias="UsersInfoDto"
+			type="com.itwill.igojoa.dto.users.UsersInfoDto" />
+		<typeAlias alias="UserFavoritePlacesDto"
+			type="com.itwill.igojoa.dto.users.UserFavoritePlacesDto" />
+		<typeAlias alias="UserFavoriteReviewsDto"
+			type="com.itwill.igojoa.dto.users.UserFavoriteReviewsDto" />
+		<typeAlias alias="UserWrittenReviewsDto"
+			type="com.itwill.igojoa.dto.users.UserWrittenReviewsDto" />
+		<typeAlias alias="UserRelatedInfoDto"
+			type="com.itwill.igojoa.dto.users.UserRelatedInfoDto" />
+		<typeAlias alias="UserVerifiedPlacesDto"
+			type="com.itwill.igojoa.dto.users.UserVerifiedPlacesDto" />
+		<typeAlias alias="UserSearchDto"
+			type="com.itwill.igojoa.dto.users.UserSearchDto" />
+		<typeAlias alias="PlaceListDto"
+			type="com.itwill.igojoa.dto.place.PlaceListDto" />
+		<typeAlias alias="PlaceSpaceDto"
+			type="com.itwill.igojoa.dto.place.PlaceSpaceDto" />
+		<typeAlias alias="UsersRegisterDto"
+			type="com.itwill.igojoa.dto.users.UsersRegisterDto" />
+		<typeAlias alias="PlaceSearchDto"
+			type="com.itwill.igojoa.dto.place.PlaceSearchDto" />
+		<typeAlias alias="PlaceDetailDto"
+			type="com.itwill.igojoa.dto.place.PlaceDetailDto" />
+		<typeAlias alias="ReviewListDto"
+			type="com.itwill.igojoa.dto.review.ReviewListDto" />
+		<typeAlias alias="PlaceBestListDto"
+			type="com.itwill.igojoa.dto.place.PlaceBestListDto" />
+		<typeAlias alias="ReviewSelectDto"
+			type="com.itwill.igojoa.dto.review.ReviewSelectDto" />
+		<typeAlias alias="UserPointsQueryDto"
+			type="com.itwill.igojoa.dto.points.UserPointsQueryDto" />
+		<typeAlias alias="UserLoggedDto"
+			type="com.itwill.igojoa.dto.points.UserLoggedDto" />
+		<typeAlias alias="UserPointsDto"
+			type="com.itwill.igojoa.dto.points.UserPointsDto" />
+		<!-- <typeAlias alias="ReviewLikeDto"
+			type="com.itwill.igojoa.dto.review.ReviewLikeDto" /> -->
 
+	</typeAliases>
 </configuration>

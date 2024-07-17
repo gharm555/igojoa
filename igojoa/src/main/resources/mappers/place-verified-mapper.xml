@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwill.igojoa.repository.PlaceVerifiedDao">
+    <insert id="insert" parameterType="PlaceVerified">
+        INSERT INTO placeVerified (userId, placeName, placeLatitude, placeLongitude)
+        VALUES (#{userId}, #{placeName}, #{placeLatitude}, #{placeLongitude})
+    </insert>
+    <delete id="deletePlaceVerified" parameterType="String">
+        DELETE FROM placeVerified WHERE userId = #{userId}
+    </delete>
+    <select id="existsTodayVerification" parameterType="String" resultType="boolean">
+        SELECT EXISTS (SELECT 1 FROM placeVerified WHERE userId = #{userId} AND placeName = #{placeName} AND DATE(verifiedTime) = CURDATE())
+    </select>
+	<select id="visitVerificationConfirmation" resultType="Integer">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		SELECT
+		COUNT(*) as cntPlaceVerified
+		FROM
+		placeVerified pv
+		WHERE
+		pv.placeName = '${ placeName }'
+		AND pv.userId = '${ userId }'
+	</select>
+</mapper>

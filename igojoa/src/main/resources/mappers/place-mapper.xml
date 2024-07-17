@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwill.igojoa.repository.PlaceDao">
+	<select id="selectPlaceList" parameterType="PlaceSearchDto"
+		resultType="PlaceListDto">
+		<bind name="userId" value="userId" />
+		<bind name="addressCategory" value="addressCategory" />
+		<bind name="searchKeyword" value="searchKeyword" />
+		<bind name="sortKey" value="sortKey" />
+		<bind name="sortValue" value="sortValue" />
+		<bind name="startRowValue" value="startRowValue" />
+		<bind name="rowCnt" value="rowCnt" />
+		SELECT
+		p.placeName ,
+		CONCAT(p.largeAddress , ' ', p.midiumAddress) AS
+		address,
+		COUNT(pf.userId) as userFavorite,
+		ps.highestBadge ,
+		ps.secondHighestBadge ,
+		ps.iScore ,
+		ps.review AS reviewCnt,
+		ps.placeVerified,
+		(COALESCE(p2.cumulativePoint, 0) div 1000) + 1 AS `level`,
+		COALESCE(u.nickName, '아이고조아') AS nickName,
+		COALESCE(br.review, '베스트 리뷰가 없습니다.') AS review ,
+		COALESCE(br.modifiedAt, '2024-01-01 00:00:00') AS modifiedAt,
+		COALESCE(br.likeCount, 0) AS likeCount,
+		pi2.firstUrl ,
+		pi2.secondUrl ,
+		pi2.thirdUrl
+		FROM
+		places p
+		LEFT JOIN
+		placesFavorite pf
+		ON
+		pf.placeName =
+		p.placeName
+		AND pf.userId =
+		'${userId}'
+		LEFT JOIN placesStats ps
+		ON
+		ps.placeName = p.placeName
+		LEFT
+		JOIN
+		bestReviews br
+		ON
+		br.placeName =
+		p.placeName
+		LEFT JOIN users u
+		ON
+		br.userId
+		= u.userId
+		LEFT JOIN placeImages pi2
+		ON
+		pi2.placeName =
+		p.placeName
+		LEFT JOIN
+		points p2
+		ON br.userId = p2.userId
+		WHERE
+		<if test='addressCategory != ""'>
+			p.largeAddress = '${addressCategory}' and
+		</if>
+		UPPER(TRIM(REPLACE(p.placeName, ' ', ''))) LIKE
+		UPPER('%${searchKeyword}%')
+		GROUP BY
+		p.placeName
+		<if test='sortKey.equals("iScore") and sortValue == 1'>
+			ORDER BY ps.iScore ASC, userFavorite DESC ,
+			ps.placeVerified DESC, p.placeName ASC
+		</if>
+		<if test='sortKey.equals("iScore") and sortValue == 0'>
+			ORDER BY ps.iScore DESC, userFavorite DESC ,
+			ps.placeVerified DESC, p.placeName ASC
+		</if>
+		<if test='sortKey.equals("placeVerified") and sortValue == 1'>
+			ORDER BY ps.placeVerified DESC, userFavorite DESC,
+			ps.iScore ASC, p.placeName ASC
+		</if>
+		<if test='sortKey.equals("placeVerified") and sortValue == 0'>
+			ORDER BY ps.placeVerified ASC, userFavorite DESC,
+			ps.iScore DESC, p.placeName ASC
+		</if>
+		<if test='sortKey.equals("userFavorite") and sortValue == 1'>
+			ORDER BY userFavorite ASC, ps.iScore DESC ,
+			ps.placeVerified DESC, p.placeName ASC
+		</if>
+		<if test='sortKey.equals("userFavorite") and sortValue == 0'>
+			ORDER BY userFavorite DESC, ps.iScore DESC ,
+			ps.placeVerified DESC, p.placeName ASC
+		</if>
+		<if test='sortKey.equals("reviewCnt") and sortValue == 1'>
+			ORDER BY reviewCnt DESC, userFavorite ASC, ps.iScore DESC, p.placeName ASC
+		</if>
+		<if test='sortKey.equals("reviewCnt") and sortValue == 0'>
+			ORDER BY reviewCnt ASC, userFavorite ASC, ps.iScore DESC, p.placeName ASC
+		</if>
+		LIMIT
+		${startRowValue} ,
+		${rowCnt}
+	</select>
+
+	<select id="selectPlaceSpaceList" resultType="PlaceSpaceDto">
+		SELECT
+		placeName,
+		placeLatitude,
+		placeLongitude
+		FROM places
+	</select>
+
+	<insert id="clickHeart">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		INSERT INTO placesFavorite (placeName,userId)
+		values('${placeName}',
+		'${userId}')
+	</insert>
+
+	<delete id="deleteHeart">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		DELETE FROM placesFavorite WHERE placeName = '${placeName}' AND userId
+		=
+		'${userId}'
+	</delete>
+
+	<select id="selectPlaceDetail" resultType="PlaceDetailDto">
+		<bind name="placeName" value="placeName" />
+		<bind name="userId" value="userId" />
+		SELECT
+		p.placeName ,
+		pi2.firstUrl,
+		pi2.secondUrl,
+		pi2.thirdUrl,
+		CONCAT(p.largeAddress , ' ',
+		p.midiumAddress, ' ',
+		p.smallAddress) AS
+		address,
+		p.placeDescription ,
+		p.placeLatitude ,
+		p.placeLongitude ,
+		p.operatingHours,
+		ps.parkingAvailable AS
+		totalParkingAvailable ,
+		ps.`view` AS totalView ,
+		ps.nightView AS
+		totalNightView ,
+		ps.freeEntry AS
+		totalFreeEntry ,
+		ps.easyTransport AS
+		totalEasyTransport ,
+		ps.iScore AS
+		avgIScore,
+		COALESCE(r.review, "") AS
+		review,
+		COALESCE(r.parkingAvailable,
+		0) AS
+		parkingAvailable,
+		COALESCE(r.`view`,
+		0) AS `view`,
+		COALESCE(r.nightView, 0) AS nightView,
+		COALESCE(r.freeEntry, 0) AS
+		freeEntry,
+		COALESCE(r.easyTransport, 0) AS
+		easyTransport,
+		COALESCE(r.iScore, 2) AS iScore,
+		COALESCE(pf.userFavorite, 0) AS userFavorite
+		FROM
+		places p
+		LEFT JOIN
+		placesStats ps
+		ON
+		ps.placeName = p.placeName
+		LEFT JOIN
+		placeImages pi2
+		ON
+		pi2.placeName =
+		p.placeName
+		LEFT JOIN reviews r
+		ON
+		r.placeName =
+		p.placeName
+		AND r.userId =
+		'${ userId }'
+		LEFT JOIN (
+		SELECT
+		pf.placeName ,
+		COUNT(*) AS userFavorite
+		FROM
+		placesFavorite pf
+		WHERE
+		pf.placeName = '${
+		placeName }'
+		AND userId = '${ userId }') pf
+		ON
+		pf.placeName =
+		p.placeName
+		WHERE
+		p.placeName =
+		'${ placeName }'
+	</select>
+
+	<select id="selectPlaceNameAndImageUrl"
+		resultType="PlaceBestListDto">
+		SELECT ps.placeName, pi.firstUrl
+		FROM placesStats ps
+		LEFT
+		JOIN placeImages pi
+		ON pi.placeName = ps.placeName
+		ORDER BY
+		ps.placeVerified DESC, ps.placeFavorite DESC
+		LIMIT 8
+	</select>
+
+	<select id="searchSuggestions" resultType="String">
+		<bind name="addressCategory" value="addressCategory" />
+		<bind name="searchKeyword" value="searchKeyword" />
+		select
+		placeName
+		from
+		places p
+		<where>
+			<choose>
+				<when test='searchKeyword.equals("ㄱ")'>
+                <![CDATA[
+                placeName rlike '^(ㄱ)'
+                or (placeName >= '가' and placeName <
+                '나')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㄴ")'>
+                <![CDATA[
+                placeName rlike '^(ㄴ)'
+                or (placeName >= '나' and placeName <
+                '다')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㄷ")'>
+                <![CDATA[
+                placeName rlike '^(ㄷ)'
+                or (placeName >= '다' and placeName <
+                '라')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㄹ")'>
+                <![CDATA[
+                placeName rlike '^(ㄹ)'
+                or (placeName >= '라' and placeName <
+                '마')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅁ")'>
+                <![CDATA[
+                placeName rlike '^(ㅁ)'
+                or (placeName >= '마' and placeName <
+                '바')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅂ")'>
+                <![CDATA[
+                placeName rlike '^(ㅂ)'
+                or (placeName >= '바' and placeName <
+                '사')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅅ")'>
+                <![CDATA[
+                placeName rlike '^(ㅅ)'
+                or (placeName >= '사' and placeName <
+                '아')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅇ")'>
+                <![CDATA[
+                placeName rlike '^(ㅇ)'
+                or (placeName >= '아' and placeName <
+                '자')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅈ")'>
+                <![CDATA[
+                placeName rlike '^(ㅈ)'
+                or (placeName >= '자' and placeName <
+                '차')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅊ")'>
+                <![CDATA[
+                placeName rlike '^(ㅊ)'
+                or (placeName >= '차' and placeName <
+                '카')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅋ")'>
+                <![CDATA[
+                placeName rlike '^(ㅋ)'
+                or (placeName >= '카' and placeName <
+                '타')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅌ")'>
+                <![CDATA[
+                placeName rlike '^(ㅌ)'
+                or (placeName >= '타' and placeName <
+                '파')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅍ")'>
+                <![CDATA[
+                placeName rlike '^(ㅍ)'
+                or (placeName >= '파' and placeName <
+                '하')
+                ]]>
+				</when>
+				<when test='searchKeyword.equals("ㅎ")'>
+                <![CDATA[
+                placeName RLIKE '^(ㅎ)'
+                or (placeName >= '하' and placeName <=
+                '힣')
+                ]]>
+				</when>
+				<otherwise>UPPER(TRIM(REPLACE(placeName, ' ', ''))) LIKE
+					UPPER('${searchKeyword}%')</otherwise>
+			</choose>
+			<if test='addressCategory != ""'>
+				AND largeAddress = '${addressCategory}'
+			</if>
+		</where>
+		order by
+		placeName
+	</select>
+	<delete id="deleteAllPlaceFavorite">
+		DELETE FROM placesFavorite WHERE userId = #{userId}
+	</delete>
+</mapper>
