@@ -355,8 +355,8 @@ function review() {
     review: document.querySelector("#reviewText").value,
     parkingAvailable: document.querySelector("#btncheck1").checked ? 1 : 0,
     view: document.querySelector("#btncheck2").checked ? 1 : 0,
-    nightView: document.querySelector("#btncheck3").checked ? 1 : 0,
-    freeEntry: document.querySelector("#btncheck4").checked ? 1 : 0,
+    freeEntry: document.querySelector("#btncheck3").checked ? 1 : 0,
+    nightView: document.querySelector("#btncheck4").checked ? 1 : 0,
     easyTransport: document.querySelector("#btncheck5").checked ? 1 : 0,
     iscore: difficulty,
   };
@@ -468,7 +468,7 @@ function createReviewCard(review) {
     <div class="d-flex">
       <img src="${
         review.userProfileUrl
-      }" alt="User profile" class="rounded-circle me-2" style="width: 55px; height: 55px;">
+      }" alt="User profile" class="rounded-circle me-2" style="width: 55px; height: 55px; min-width:55px;">
       <div class="flex-grow-1">
         <div class="d-flex justify-content-between align-items-center mb-1">
         <div class="d-flex align-items-center">
