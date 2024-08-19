@@ -279,7 +279,7 @@
     </section>
     <hr class="my-5" />
     <button id="scrollToTopBtn" title="Go to top">↑</button>
-
+    <%@ include file="placeReport.jspf"%>
   </main>
 
   <%@ include file="footer.jspf"%>

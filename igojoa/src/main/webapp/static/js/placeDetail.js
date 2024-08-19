@@ -708,10 +708,10 @@ $scrollToTopBtn.addEventListener("click", function() {
 
 /** ---------------------- 날짜 변환 ------------- ---------- */
 function formatDate(dateArray) {
-    if (!Array.isArray(dateArray) || dateArray.length < 6) {
+    /*if (!Array.isArray(dateArray) || dateArray.length < 6) {
         console.error("Invalid date array:", dateArray);
         return "Invalid Date";
-    }
+    }*/
 
     const [year, month, day, hour, minute, second] = dateArray;
     const date = new Date(year, month - 1, day, hour, minute, second);

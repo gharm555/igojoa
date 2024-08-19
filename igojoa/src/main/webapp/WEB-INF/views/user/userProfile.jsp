@@ -739,6 +739,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     </div>
                 </div>
             </div>
+            <%@ include file="../placeReport.jspf"%>
         </main>
         <%@ include file="../footer.jspf"%>
 
