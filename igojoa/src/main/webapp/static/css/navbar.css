@@ -97,7 +97,7 @@ header {
   cursor: pointer;
 }
 
-.dropdown-item:nth-child(3) {
+.dropdown-item:nth-child(4) {
   pointer-events: none;
 }
 

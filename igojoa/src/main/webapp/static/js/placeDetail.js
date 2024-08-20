@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+
 	console.log("js에 들어왔다.");
 
 
@@ -246,6 +247,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 
+
 });
 
 /////////////////////////////////////////////돔돔돔돔 끝끝끝끝//////////////////////////////////////////////////////////
@@ -277,53 +279,56 @@ function updateReviewButtons() {
 			.querySelector("#createReviewBtn")
 			.addEventListener("click", createReview);
 	}
+
 }
+
 
 /** --------------------  리뷰 작성하기 버튼 -------------------------- */
 const regex = /^\s*$/;
 function createReview() {
-	review();
+    review();
 
-	const placeName = pd.placeName;
-	const uri = `${contextPath}/${placeName}/newReview`;
+    const placeName = pd.placeName;
+    const uri = `${contextPath}/${placeName}/newReview`;
 
-	//console.log("리뷰 보내는 주소: ", uri);
-	const { reviewData } = review();
-	//console.log("reviewData", reviewData);
-	//console.log("reviewData.review", reviewData.review);
+    //console.log("리뷰 보내는 주소: ", uri);
+    const { reviewData } = review();
+    //console.log("reviewData", reviewData);
+    //console.log("reviewData.review", reviewData.review);
 
-	if (regex.test(reviewData.review)) {
-		alert("리뷰 내용을 작성해주세요.");
-		return;
-	} else {
-		axios
-			.put(uri, reviewData)
-			.then((response) => {
-				//console.log("Server response:", response.data);
-				if (response.data === 0) {
-					alert("방문 인증이 필요합니다.");
-				} else {
-					//console.log("response.data이거다", response.data);
-					alert("리뷰가 성공적으로 등록되었습니다.");
-					pd.review = reviewData.review;
-					updateReviewButtons();
-					displayReviews(response.data);
-					sortDropdownButton.textContent = "최신순";
-					sortObject.orderBy = "modifiedAtDESC";
-					resetScrollState();
-					sendSortRequest(sortObject);
-				}
-			})
-			.catch((error) => {
-				console.error("Error submitting review:", error);
-				if (error.response) {
-					console.error("Server error response:", error.response.data);
-					alert(error.response.data);
-				} else {
-					alert("리뷰 등록에 실패했습니다.");
-				}
-			});
-	}
+    if (regex.test(reviewData.review)) {
+        showAlertModal("알림", "리뷰 내용을 작성해주세요.");
+        return;
+    } else {
+        axios
+            .put(uri, reviewData)
+            .then((response) => {
+                //console.log("Server response:", response.data);
+                if (response.data === 0) {
+                    showAlertModal("알림", "방문 인증이 필요합니다.");
+                } else {
+                    //console.log("response.data이거다", response.data);
+                    showAlertModal("확인", "리뷰가 성공적으로 등록되었습니다.");
+                    pd.review = reviewData.review;
+                    updateReviewButtons();
+                    displayReviews(response.data);
+                    sortDropdownButton.textContent = "최신순";
+                    sortObject.orderBy = "modifiedAtDESC";
+                    resetScrollState();
+                    sendSortRequest(sortObject);
+                }
+            })
+            .catch((error) => {
+                console.error("Error submitting review:", error);
+                showAlertModal("에러", "리뷰 등록에 실패했습니다.");
+                /*if (error.response) {
+                    console.error("Server error response:", error.response.data);
+                    alert(error.response.data);
+                } else {
+                    alert("리뷰 등록에 실패했습니다.");
+                }*/
+            });
+    }
 }
 
 
@@ -332,181 +337,184 @@ function createReview() {
 /** --------------- 리뷰 수정하기 버튼 ------------------------ */
 
 function updateReview() {
-	//console.log("수정하기 버튼 누름");
+    //console.log("수정하기 버튼 누름");
 
-	if (updateReviewBtn) {
-		updateReviewBtn.addEventListener("click", function() {
-			if (this.disabled) {
-				alert("변경된 내용이 없습니다.");
-				return;
-			}
-			updateReview();
-		});
-	}
-	review();
+    if (updateReviewBtn) {
+        updateReviewBtn.addEventListener("click", function() {
+            if (this.disabled) {
+                showAlertModal("에러", "변경된 내용이 없습니다.");
+                return;
+            }
+            updateReview();
+        });
+    }
+    review();
 
-	const placeName = pd.placeName;
-	const uri = `${contextPath}/${placeName}/updateReview`;
+    const placeName = pd.placeName;
+    const uri = `${contextPath}/${placeName}/updateReview`;
 
-	//console.log("리뷰 보내는 주소: ", uri);
-	const { reviewData } = review();
+    //console.log("리뷰 보내는 주소: ", uri);
+    const { reviewData } = review();
 
-	if (regex.test(reviewData.review)) {
-		alert("리뷰 내용을 작성해주세요.");
-		return;
-	} else {
-		axios
-			.put(uri, reviewData)
-			.then((response) => {
-				//console.log("Server response:", response.data);
-				if (response.data === 0) {
-					alert("방문 인증이 필요합니다.");
-				} else {
-					alert("리뷰가 성공적으로 수정되었습니다.");
-					pd.review = reviewData.review;
-					displayReviews(response.data);
-					sortDropdownButton.textContent = "최신순";
-					sortObject.orderBy = "modifiedAtDESC";
-					resetScrollState();
-					sendSortRequest(sortObject);
-					// 수정 후 초기 상태 재설정
-					initializeReviewState();
-				}
-			})
-			.catch((error) => {
-				console.error("Error updating review:", error);
-				if (error.response) {
-					console.error("Server error response:", error.response.data);
-					alert(error.response.data);
-				} else {
-					alert("리뷰 수정에 실패했습니다.");
-				}
-			});
-	}
+    if (regex.test(reviewData.review)) {
+        showAlertModal("알림", "리뷰 내용을 작성해주세요.");
+        return;
+    } else {
+        axios
+            .put(uri, reviewData)
+            .then((response) => {
+                //console.log("Server response:", response.data);
+                if (response.data === 0) {
+                    showAlertModal("알림", "방문 인증이 필요합니다.");
+                } else {
+                    showAlertModal("알림", "리뷰가 성공적으로 수정되었습니다.");
+                    pd.review = reviewData.review;
+                    displayReviews(response.data);
+                    sortDropdownButton.textContent = "최신순";
+                    sortObject.orderBy = "modifiedAtDESC";
+                    resetScrollState();
+                    sendSortRequest(sortObject);
+                    // 수정 후 초기 상태 재설정
+                    initializeReviewState();
+                }
+            })
+            .catch((error) => {
+                console.error("Error updating review:", error);
+                if (error.response) {
+                    console.error("Server error response:", error.response.data);
+                } else {
+                    showAlertModal("에러", "리뷰 수정에 실패했습니다.");
+                }
+            });
+    }
 }
 
 /** --------------- 리뷰삭제 버튼 -----------------------------*/
 function deleteReview() {
-	const placeName = pd.placeName;
-	const uri = `${contextPath}/${placeName}/deleteReview`;
+    const placeName = pd.placeName;
+    const uri = `${contextPath}/${placeName}/deleteReview`;
 
-	axios
-		.delete(uri)
-		.then((response) => {
-			//console.log("삭제 응답:", response.data);
-			alert("리뷰가 성공적으로 삭제되었습니다.");
-			pd.review = null;
-			updateReviewButtons(); // 버튼 상태 업데이트
-			resetReviewForm(); // 폼 초기화
-			showAllReview(); // 리뷰 목록 새로고침
-			sortDropdownButton.textContent = "좋아요 많은순";
-			sortObject.orderBy = "cntLikeDESC";
-			resetScrollState();
-			sendSortRequest(sortObject);
-		})
-		.catch((error) => {
-			//console.error("삭제 에러:", error);
-			alert("리뷰 삭제에 실패했습니다.");
-		});
+    axios
+        .delete(uri)
+        .then((response) => {
+            //console.log("삭제 응답:", response.data);
+            showAlertModal("알림", "리뷰가 성공적으로 삭제되었습니다.");
+            pd.review = null;
+            updateReviewButtons(); // 버튼 상태 업데이트
+            resetReviewForm(); // 폼 초기화
+            showAllReview(); // 리뷰 목록 새로고침
+            sortDropdownButton.textContent = "좋아요 많은순";
+            sortObject.orderBy = "cntLikeDESC";
+            resetScrollState();
+            sendSortRequest(sortObject);
+        })
+        .catch((error) => {
+            //console.error("삭제 에러:", error);
+            showAlertModal("에러", "리뷰 삭제에 실패했습니다.");
+        });
 }
 
 //리뷰작성 폼에 있는 값을 만드는 객체 (재사용성을 위해서 따로 만들었음)
 function review() {
-	//console.log("리뷰작성 버튼 실행실행");
-	const selectedRadio = document.querySelector(
-		'input[name="difficulty"]:checked'
-	);
-	let difficulty;
+    //console.log("리뷰작성 버튼 실행실행");
+    const selectedRadio = document.querySelector(
+        'input[name="difficulty"]:checked'
+    );
+    let difficulty;
 
-	//console.log(`리뷰작성 버튼2 selectedRadio 실행실행`);
-	if (selectedRadio) {
-		switch (selectedRadio.id) {
-			case "btnradio1":
-				//console.log(`리뷰작성 버튼1 selectedRadio 실행실행`);
-				difficulty = 3; // 상
-				break;
-			case "btnradio2":
-				//console.log(`리뷰작성 버튼2 selectedRadio 실행실행`);
-				difficulty = 2; // 중
-				break;
-			case "btnradio3":
-				//console.log(`리뷰작성 버튼3 selectedRadio 실행실행`);
-				difficulty = 1; // 하
-				break;
-		}
-		//console.log("스위치문 나왔다");
-	} else {
-		//console.log("난이도가 선택되지 않았습니다.");
-		alert("난이도를 선택해주세요.");
-		return; // 난이도 선택이 없으면 함수 종료
-	}
+    //console.log(`리뷰작성 버튼2 selectedRadio 실행실행`);
+    if (selectedRadio) {
+        switch (selectedRadio.id) {
+            case "btnradio1":
+                //console.log(`리뷰작성 버튼1 selectedRadio 실행실행`);
+                difficulty = 3; // 상
+                break;
+            case "btnradio2":
+                //console.log(`리뷰작성 버튼2 selectedRadio 실행실행`);
+                difficulty = 2; // 중
+                break;
+            case "btnradio3":
+                //console.log(`리뷰작성 버튼3 selectedRadio 실행실행`);
+                difficulty = 1; // 하
+                break;
+        }
+        //console.log("스위치문 나왔다");
+    } else {
+        //console.log("난이도가 선택되지 않았습니다.");
+        showAlertModal("에러", "난이도를 선택해주세요.");
+        return; // 난이도 선택이 없으면 함수 종료
+    }
 
-	//console.log("리뷰작성 버튼4 실행실행");
-	const reviewData = {
-		review: document.querySelector("#reviewText").value,
-		parkingAvailable: document.querySelector("#btncheck1").checked ? 1 : 0,
-		view: document.querySelector("#btncheck2").checked ? 1 : 0,
-		freeEntry: document.querySelector("#btncheck3").checked ? 1 : 0,
-		nightView: document.querySelector("#btncheck4").checked ? 1 : 0,
-		easyTransport: document.querySelector("#btncheck5").checked ? 1 : 0,
-		iscore: difficulty,
-	};
+    //console.log("리뷰작성 버튼4 실행실행");
+    const reviewData = {
+        review: document.querySelector("#reviewText").value,
+        parkingAvailable: document.querySelector("#btncheck1").checked ? 1 : 0,
+        view: document.querySelector("#btncheck2").checked ? 1 : 0,
+        freeEntry: document.querySelector("#btncheck3").checked ? 1 : 0,
+        nightView: document.querySelector("#btncheck4").checked ? 1 : 0,
+        easyTransport: document.querySelector("#btncheck5").checked ? 1 : 0,
+        iscore: difficulty,
+    };
 
-	return { reviewData };
+    return { reviewData };
 }
 
 /** ---------------- 게시물에 달린 모든 리뷰 호출 ----------------------- */
 function showAllReview() {
-	const placeName = pd.placeName;
-	if (!placeName) {
-		console.error("placeName is undefined");
-		return;
-	}
+    const placeName = pd.placeName;
+    if (!placeName) {
+        console.error("placeName is undefined");
+        return;
+    }
 
-	const uri = `${contextPath}/${encodeURIComponent(placeName)}/selectDefaultReview`;
-	//console.log("모든 리뷰 가져오기 URI:", uri);
+    const uri = `${contextPath}/${encodeURIComponent(
+        placeName
+    )}/selectDefaultReview`;
+    //console.log("모든 리뷰 가져오기 URI:", uri);
 
-	axios
-		.get(uri)
-		.then((response) => {
-			console.log("가져온 리뷰 목록:", response.data);
-			allReviews = response.data;
-			displayReviews(response.data); // 게시물에 달린 리뷰들을 displayReviews 함수로 보냄
-		})
-		.catch((error) => {
-			console.error("리뷰 가져오기 실패:", error);
-			if (error.response) {
-				console.error("서버 응답:", error.response.data);
-			} else if (error.request) {
-				console.error("응답 없음");
-			} else {
-				console.error("요청 오류:", error.message);
-			}
-		});
+    axios
+        .get(uri)
+        .then((response) => {
+            console.log("가져온 리뷰 목록:", response.data);
+            allReviews = response.data;
+            displayReviews(response.data); // 게시물에 달린 리뷰들을 displayReviews 함수로 보냄
+        })
+        .catch((error) => {
+            console.error("리뷰 가져오기 실패:", error);
+            if (error.response) {
+                console.error("서버 응답:", error.response.data);
+            } else if (error.request) {
+                console.error("응답 없음");
+            } else {
+                console.error("요청 오류:", error.message);
+            }
+        });
 }
 
 // 리뷰를 만드는 함수
 function displayReviews(reviews) {
-	const $reviewListSection = document.querySelector("#reviewList");
+    const $reviewListSection = document.querySelector("#reviewList");
 
-	if (!$reviewListSection) {
-		console.error("#reviewList element not found");
-		return;
-	}
+    if (!$reviewListSection) {
+        console.error("#reviewList element not found");
+        return;
+    }
 
-	if (!Array.isArray(reviews) || reviews.length === 0) {
-		$reviewListSection.innerHTML = "";
-		return;
-	}
+    if (!Array.isArray(reviews) || reviews.length === 0) {
+        $reviewListSection.innerHTML = "";
+        return;
+    }
 
-	const htmlStr = reviews.map((review) => createReviewCard(review)).join("");
-	$reviewListSection.innerHTML = htmlStr;
-	levelCss();
-	//console.log("Reviews displayed");
+    const htmlStr = reviews.map((review) => createReviewCard(review)).join("");
+    $reviewListSection.innerHTML = htmlStr;
+    levelCss();
+    //console.log("Reviews displayed");
+
 }
 
 // 리뷰에 들어갈 값
 function createReviewCard(review) {
+
 	// --------------------------------- 레벨 뱃지 --------------
 	const badges = [
 		{ name: "parkingAvailable", text: "🚗 주차가능" },
@@ -538,6 +546,7 @@ function createReviewCard(review) {
 	const formattedDate = formatDate(review.modifiedAt);
 	const levelIconHtml = createLevelIconHtml(review.level);
 	return `
+
 <div class="card mb-2">
   <div class="card-body py-2 px-3">
     <div class="d-flex justify-content-between align-items-start mb-2">
@@ -589,6 +598,7 @@ function levelCss() {
       animation: sparkle 1.5s infinite;
     }
   `;
+
 	document.head.appendChild(style);
 
 	const $levelElements = document.querySelectorAll(".circular-icon");
@@ -705,6 +715,7 @@ function createEmojiList() {
 		const ratio = maxCount > 0 ? (count / maxCount) * 100 : 0;
 
 		emojiItem.innerHTML = `
+
       <div class="background-fill" style="width: ${ratio}%;"></div>
       <div class="emoji-content">
         <span class="emoji">${item.emoji}</span>
@@ -716,10 +727,12 @@ function createEmojiList() {
 	});
 
 	//console.log("Emoji list created successfully");
+
 }
 
 /* ---------------------------- 카카오 지도 -------------------------- */
 function initializeKakaoMap() {
+
 	if (typeof mapData !== "undefined" && mapData.latitude && mapData.longitude) {
 		var latitude = parseFloat(mapData.latitude);
 		var longitude = parseFloat(mapData.longitude);
@@ -805,6 +818,7 @@ function formatDate(dateArray) {
 /** ------------------ (5)로그인한 유저가 작성한 리뷰 가지고 오기 ------------------- */
 // 모든 체크박스 레이블을 선택합니다.
 function showUserReview() {
+
 	const $labels = document.querySelectorAll(
 		'.btn-group[aria-label="Basic checkbox toggle button group"] label'
 	);
@@ -871,6 +885,7 @@ function showUserReview() {
 		});
 
 	updateReviewButtons();
+
 }
 
 // -------------------------------------------------
@@ -1008,11 +1023,14 @@ function displayReviews(reviews) {
 	$reviewListSection.innerHTML = reviews
 		.map((review) => createReviewCard(review))
 		.join("");
+
 }
 
 // -------------- 페이지 로드(f5) 시 스크롤을 최상단으로 이동 --------------
 window.onload = function() {
+
 	window.scrollTo(0, 0);
+
 };
 
 // -----------------  리뷰 폼 초기화 함수 --------------
@@ -1030,6 +1048,7 @@ function resetReviewForm() {
 document.addEventListener("DOMContentLoaded", (event) => {
 	//console.log("DOM fully loaded and parsed");
 	levelCss();
+
 });
 
 // 수정하기에 사용하는 함수들
@@ -1037,55 +1056,58 @@ let initialReviewState = {};
 const updateReviewBtn = document.getElementById("updateReviewBtn");
 
 function initializeReviewState() {
-	const updateReviewBtn = document.getElementById("updateReviewBtn");
-	initialReviewState = {
-		review: document.getElementById("reviewText").value,
-		parkingAvailable: document.getElementById("btncheck1").checked,
-		view: document.getElementById("btncheck2").checked,
-		freeEntry: document.getElementById("btncheck3").checked,
-		nightView: document.getElementById("btncheck4").checked,
-		easyTransport: document.getElementById("btncheck5").checked,
-		iscore: document.querySelector('input[name="difficulty"]:checked')?.id,
-	};
+    const updateReviewBtn = document.getElementById("updateReviewBtn");
+    initialReviewState = {
+        review: document.getElementById("reviewText").value,
+        parkingAvailable: document.getElementById("btncheck1").checked,
+        view: document.getElementById("btncheck2").checked,
+        freeEntry: document.getElementById("btncheck3").checked,
+        nightView: document.getElementById("btncheck4").checked,
+        easyTransport: document.getElementById("btncheck5").checked,
+        iscore: document.querySelector('input[name="difficulty"]:checked')?.id,
+    };
 
-	if (updateReviewBtn) {
-		updateReviewBtn.disabled = true;
-	}
+    if (updateReviewBtn) {
+        updateReviewBtn.disabled = true;
+    }
 }
 
 function checkReviewChanges() {
-	const updateReviewBtn = document.getElementById("updateReviewBtn");
-	if (!updateReviewBtn) return;
+    const updateReviewBtn = document.getElementById("updateReviewBtn");
+    if (!updateReviewBtn) return;
 
-	const currentState = {
-		review: document.getElementById("reviewText").value,
-		parkingAvailable: document.getElementById("btncheck1").checked,
-		view: document.getElementById("btncheck2").checked,
-		freeEntry: document.getElementById("btncheck3").checked,
-		nightView: document.getElementById("btncheck4").checked,
-		easyTransport: document.getElementById("btncheck5").checked,
-		iscore: document.querySelector('input[name="difficulty"]:checked')?.id,
-	};
+    const currentState = {
+        review: document.getElementById("reviewText").value,
+        parkingAvailable: document.getElementById("btncheck1").checked,
+        view: document.getElementById("btncheck2").checked,
+        freeEntry: document.getElementById("btncheck3").checked,
+        nightView: document.getElementById("btncheck4").checked,
+        easyTransport: document.getElementById("btncheck5").checked,
+        iscore: document.querySelector('input[name="difficulty"]:checked')?.id,
+    };
 
-	const hasChanges = Object.keys(initialReviewState).some(
-		(key) => initialReviewState[key] !== currentState[key]
-	);
+    const hasChanges = Object.keys(initialReviewState).some(
+        (key) => initialReviewState[key] !== currentState[key]
+    );
 
-	updateReviewBtn.disabled = !hasChanges;
+    updateReviewBtn.disabled = !hasChanges;
 }
 
 function addReviewChangeListeners() {
-	document
-		.getElementById("reviewText")
-		.addEventListener("input", checkReviewChanges);
-	document
-		.querySelectorAll('input[type="checkbox"], input[name="difficulty"]')
-		.forEach((input) => {
-			input.addEventListener("change", checkReviewChanges);
-		});
+    document
+        .getElementById("reviewText")
+        .addEventListener("input", checkReviewChanges);
+    document
+        .querySelectorAll('input[type="checkbox"], input[name="difficulty"]')
+        .forEach((input) => {
+            input.addEventListener("change", checkReviewChanges);
+        });
 }
 
-
-
-
+function showAlertModal(header, message) {
+    document.getElementById('alertModalLabel').textContent = header;
+    document.getElementById('alertModalMessage').textContent = message;
+    const alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+    alertModal.show();
+}
 

@@ -86,7 +86,9 @@
 		SELECT
 		(COALESCE(p.cumulativePoint, 0) div 1000) + 1 AS `level`,
 		u.nickName ,
-		r.review ,
+		<![CDATA[
+		REPLACE(r.review, '\n', '<br />') AS review ,
+		]]>
 		r.modifiedAt ,
 		r.parkingAvailable ,
 		r.`view` ,
