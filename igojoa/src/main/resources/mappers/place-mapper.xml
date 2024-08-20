@@ -22,10 +22,13 @@
 		ps.iScore ,
 		ps.review AS reviewCnt,
 		ps.placeVerified,
-		(COALESCE(p2.cumulativePoint, 0) div 1000) + 1 AS `level`,
+		(COALESCE(p2.cumulativePoint, 0) div 1000) + 1 AS
+		`level`,
 		COALESCE(u.nickName, '아이고조아') AS nickName,
-		COALESCE(br.review, '베스트 리뷰가 없습니다.') AS review ,
-		COALESCE(br.modifiedAt, '2024-01-01 00:00:00') AS modifiedAt,
+		COALESCE(br.review,
+		'베스트 리뷰가 없습니다.') AS review ,
+		COALESCE(br.modifiedAt, '2024-01-01
+		00:00:00') AS modifiedAt,
 		COALESCE(br.likeCount, 0) AS likeCount,
 		pi2.firstUrl ,
 		pi2.secondUrl ,
@@ -92,10 +95,12 @@
 			ps.placeVerified DESC, p.placeName ASC
 		</if>
 		<if test='sortKey.equals("reviewCnt") and sortValue == 1'>
-			ORDER BY reviewCnt DESC, userFavorite ASC, ps.iScore DESC, p.placeName ASC
+			ORDER BY reviewCnt DESC, userFavorite ASC, ps.iScore DESC,
+			p.placeName ASC
 		</if>
 		<if test='sortKey.equals("reviewCnt") and sortValue == 0'>
-			ORDER BY reviewCnt ASC, userFavorite ASC, ps.iScore DESC, p.placeName ASC
+			ORDER BY reviewCnt ASC, userFavorite ASC, ps.iScore DESC,
+			p.placeName ASC
 		</if>
 		LIMIT
 		${startRowValue} ,
@@ -334,4 +339,28 @@
 	<delete id="deleteAllPlaceFavorite">
 		DELETE FROM placesFavorite WHERE userId = #{userId}
 	</delete>
+
+	<insert id="insertConfirmPlace">
+		<bind name="placeName" value="placeName" />
+		<bind name="largeAddress" value="largeAddress" />
+		<bind name="mediumAddress" value="mediumAddress" />
+		<bind name="smallAddress" value="smallAddress" />
+		<bind name="placeDescription" value="placeDescription" />
+		<bind name="placeLatitude" value="placeLatitude" />
+		<bind name="placeLongitude" value="placeLongitude" />
+		<bind name="operatingHours" value="operatingHours" />
+		<bind name="radius" value="radius" />
+		<bind name="displayDate" value="displayDate" />
+		<bind name="reporterId" value="reporterId" />
+		INSERT INTO confirmPlace (placeName,reporterId,largeAddress,mediumAddress,smallAddress,placeDescription,operatingHours)
+		VALUES(
+		'${placeName}',
+		'${reporterId}',
+		'${largeAddress}',
+		'${mediumAddress}',
+		'${smallAddress}',
+		'${placeDescription}',
+		'${operatingHours}'
+		)
+	</insert>
 </mapper>

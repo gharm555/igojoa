@@ -1,14 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap");
+@import
+  url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap")
+  ;
 
 body {
   line-height: 1.8;
   padding-top: 56px; /* 네비게이션 바 높이만큼 패딩 추가 */
 }
 
-h2,
-h3,
-h4,
-h5 {
+h2, h3, h4, h5 {
   margin-bottom: 1rem;
   font-weight: 600;
 }
@@ -20,11 +19,12 @@ p {
 h2 {
   font-size: 2.2rem;
 }
+
 .container {
   border-radius: var(--border-radius);
 }
-#map,
-#carouselExampleIndicators {
+
+#map, #carouselExampleIndicators {
   height: 400px;
   overflow: hidden;
   border-radius: var(--border-radius);
@@ -116,8 +116,7 @@ h2 {
   border: 2px solid var(--primary-color);
 }
 
-.like-btn:hover,
-.like-btn.active {
+.like-btn:hover, .like-btn.active {
   background-color: var(--primary-color);
   color: white;
 }
@@ -138,8 +137,7 @@ h2 {
   border-radius: var(--border-radius);
 }
 
-.dropdown-toggle:hover,
-.dropdown-toggle:focus {
+.dropdown-toggle:hover, .dropdown-toggle:focus {
   background: linear-gradient(45deg, #3a5a8a, var(--primary-color));
   box-shadow: 0 4px 10px rgba(74, 111, 165, 0.3);
 }
@@ -169,9 +167,7 @@ h2 {
   background-color: var(--primary-color);
 }
 
-.dropdown-item1:hover,
-.dropdown-item1:focus,
-.dropdown-item1.active {
+.dropdown-item1:hover, .dropdown-item1:focus, .dropdown-item1.active {
   background-color: var(--primary-color);
   color: white;
   text-align: left;
@@ -256,7 +252,6 @@ h2 {
 }
 
 /* 레베루 뱃지 */
-
 .circular-icon {
   width: 24px;
   height: 24px;
@@ -317,12 +312,11 @@ h2 {
 }
 
 /* 반응형 디자인 */
-@media (max-width: 2000px) {
+@media ( max-width : 2000px) {
   .container {
     padding: 20px;
   }
-  #map,
-  #carouselExampleIndicators {
+  #map, #carouselExampleIndicators {
     height: 400px;
   }
   h2 {
@@ -330,18 +324,14 @@ h2 {
   }
 }
 
-@media (min-width: 1400px) {
-  .container,
-  .container-lg,
-  .container-md,
-  .container-sm,
-  .container-xl,
-  .container-xxl {
+@media ( min-width : 1400px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl,
+    .container-xxl {
     max-width: 1500px;
   }
 }
 
-@media (max-width: 390px) {
+@media ( max-width : 390px) {
   body {
     font-size: 14px; /* 기본 글자 크기 줄이기 */
     padding-top: 56px; /* 네비게이션 바 높이만큼 패딩 추가 */
@@ -356,47 +346,38 @@ h2 {
   p {
     font-size: 14px; /* 본문 글자 크기 줄이기 */
   }
-  #map,
-  #carouselExampleIndicators {
+  #map, #carouselExampleIndicators {
     height: 200px; /* 지도 및 캐러셀 높이 줄이기 */
   }
   .card {
     margin-bottom: 15px; /* 카드 간격 줄이기 */
   }
-  .btn-primary,
-  .btn-outline-primary {
+  .btn-primary, .btn-outline-primary {
     font-size: 10px; /* 버튼 글자 크기 줄이기 */
     padding-left: 15px;
   }
-
   .btn-group {
     padding-left: 13px;
     margin-bottom: 10px !important;
   }
-
   .btn-group.mb-3:nth-of-type(2) {
     margin-bottom: 10px !important;
   }
-
   .badge {
     font-size: 10px;
     margin-bottom: 2px;
   }
-
   #nickName {
     margin-left: 3px;
     width: 152px;
   }
-
   .text-muted {
     position: relative;
     top: -13px;
     left: -81px;
     width: 140px;
   }
-
-  #updateReviewBtn,
-  #deleteReviewBtn {
+  #updateReviewBtn, #deleteReviewBtn {
     font-size: 12px;
     margin-bottom: 5px;
     margin-top: 5px;
@@ -406,13 +387,14 @@ h2 {
     margin-top: 10px;
     margin-bottom: 5px !important;
   }
-
   #reviewButtonsContainer {
     display: flex;
     justify-content: center;
     gap: 10px;
   }
-
+  #reportBtn {
+    font-size: 11px;
+  }
   #reviewText {
     margin: 0 0px 0 12px;
     width: 93%;
@@ -458,8 +440,7 @@ h2 {
     padding: 9px;
     margin: 5px;
   }
-  .emoji-item .emoji,
-  .emoji-item .text .emoji-item .count {
+  .emoji-item .emoji, .emoji-item .text .emoji-item .count {
     font-size: 10px;
   }
   .container {
@@ -482,8 +463,7 @@ h2 {
   #mabAndImage {
     margin-bottom: 1px;
   }
-  .dropdown-toggle,
-  .dropdown-item1 {
+  .dropdown-toggle, .dropdown-item1 {
     font-size: 12px;
     padding: 8px 12px;
   }
@@ -503,18 +483,17 @@ h2 {
 }
 
 /* 애니메이션 효과 */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@
+keyframes fadeIn {from { opacity:0;
+  transform: translateY(20px);
 }
 
-.card,
-.media {
+to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+}
+.card, .media {
   animation: fadeIn 0.5s ease-out;
 }
