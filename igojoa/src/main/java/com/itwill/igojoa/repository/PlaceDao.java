@@ -3,11 +3,13 @@ package com.itwill.igojoa.repository;
 import java.util.List;
 
 import com.itwill.igojoa.dto.place.PlaceBestListDto;
+import com.itwill.igojoa.dto.place.PlaceConfirmDto;
 import com.itwill.igojoa.dto.place.PlaceDetailDto;
 import com.itwill.igojoa.dto.place.PlaceListDto;
 import com.itwill.igojoa.dto.place.PlaceSearchDto;
 import com.itwill.igojoa.dto.place.PlaceSpaceDto;
 import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
+import com.itwill.igojoa.entity.PlaceConfirm;
 import com.itwill.igojoa.entity.PlacesFavorite;
 
 public interface PlaceDao {
@@ -26,4 +28,6 @@ public interface PlaceDao {
 	List<String> searchSuggestions(PlaceSearchDto placeSearchDto);
 
 	int deleteAllPlaceFavorite(String userId);
+
+	int insertConfirmPlace(PlaceConfirm placeConfirm);
 }

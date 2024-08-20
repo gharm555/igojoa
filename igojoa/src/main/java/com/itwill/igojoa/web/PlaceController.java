@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.itwill.igojoa.dto.place.PlaceConfirmDto;
 import com.itwill.igojoa.dto.place.PlaceDetailDto;
 import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
 import com.itwill.igojoa.service.PlaceService;
@@ -20,6 +21,8 @@ import com.itwill.igojoa.service.UsersService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Slf4j
 @Controller
@@ -72,4 +75,22 @@ public class PlaceController {
 
 		return "/place/placeDetail";
 	}
+
+	@PostMapping("/insert")
+	public ResponseEntity<Integer> insertPlaceConfirm(@RequestBody PlaceConfirmDto dto, HttpSession session) {
+		String reportUserId = (String) session.getAttribute("userId");
+		
+		PlaceConfirmDto placeConfirmDto = PlaceConfirmDto.builder()
+			.placeName(dto.getPlaceName())
+			.reporterId(reportUserId)
+			.placeDescription(dto.getPlaceDescription())
+			.operatingHours(dto.getOperatingHours())
+			.build();
+	
+		int res = placeService.insertPlace(placeConfirmDto);
+	
+		return ResponseEntity.ok(res);
+	}
+	
+	
 }

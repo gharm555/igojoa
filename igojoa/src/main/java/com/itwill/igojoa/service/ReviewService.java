@@ -12,7 +12,9 @@ import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
 import com.itwill.igojoa.dto.review.ReviewDto;
 import com.itwill.igojoa.dto.review.ReviewLikeDto;
 import com.itwill.igojoa.dto.review.ReviewListDto;
+import com.itwill.igojoa.dto.review.ReviewReportDto;
 import com.itwill.igojoa.dto.review.ReviewSelectDto;
+import com.itwill.igojoa.entity.ReportLogs;
 import com.itwill.igojoa.entity.ReviewLikes;
 import com.itwill.igojoa.entity.Reviews;
 import com.itwill.igojoa.repository.PointsDao;
@@ -168,6 +170,22 @@ public class ReviewService {
 		res = reviewDao.deleteReviewLike(reviewLikes);
 
 		return res;
+	}
+
+	@Transactional
+	public int clickReviewReport(ReviewReportDto reviewReportDto) {
+		if (reviewReportDto == null) {
+			throw new IllegalArgumentException("ReviewReportDto cannot be null");
+		}
+
+		try {
+			ReportLogs reviewReport = reviewReportDto.toEntity();
+			return reviewDao.insertReport(reviewReport);
+		} catch (Exception e) {
+
+			log.error("Error occurred while inserting report: ", e);
+			throw new RuntimeException("Failed to insert report", e);
+		}
 	}
 
 }

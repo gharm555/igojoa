@@ -2,6 +2,9 @@ package com.itwill.igojoa.web;
 
 import java.util.List;
 
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +20,7 @@ import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
 import com.itwill.igojoa.dto.review.ReviewDto;
 import com.itwill.igojoa.dto.review.ReviewLikeDto;
 import com.itwill.igojoa.dto.review.ReviewListDto;
+import com.itwill.igojoa.dto.review.ReviewReportDto;
 import com.itwill.igojoa.dto.review.ReviewSelectDto;
 import com.itwill.igojoa.service.PlaceVerifiedService;
 import com.itwill.igojoa.service.ReviewService;
@@ -25,6 +29,7 @@ import com.itwill.igojoa.service.UsersService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Slf4j
 @RestController
@@ -103,7 +108,7 @@ public class ReviewRestController {
 		}
 		PlacesFavoriteDto placesFavoriteDto = PlacesFavoriteDto.builder().placeName(placeName).userId(userId).build();
 		List<ReviewListDto> res = reviewService.deleteReview(placesFavoriteDto);
-		
+
 		return ResponseEntity.ok(res);
 	}
 
@@ -138,7 +143,7 @@ public class ReviewRestController {
 		ReviewLikeDto reviewLikeDto = ReviewLikeDto.builder().userId(userId).placeName(placeName).likeUserId(likeUserId)
 				.build();
 		int res = reviewService.clickReviewLike(reviewLikeDto);
-		
+
 		return ResponseEntity.ok(res);
 	}
 
@@ -154,6 +159,21 @@ public class ReviewRestController {
 				.build();
 		int res = reviewService.deleteReviewLike(reviewLikeDto);
 
+		return ResponseEntity.ok(res);
+	}
+
+	@PostMapping("/reviewReport")
+	public ResponseEntity<Integer> reviewReport(@PathVariable String placeName, @RequestBody ReviewReportDto reportDto,
+			HttpSession session) {
+
+		String reportUserId = (String) session.getAttribute("userId");
+		String logNumber = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmssSSS"));
+
+		ReviewReportDto reportDto1 = ReviewReportDto.builder().logId(logNumber).reporterId(reportUserId)
+				.reportedId(reportDto.getReportedId()).placeName(placeName).reportReason(reportDto.getReportReason())
+				.review(reportDto.getReview()).build();
+
+		int res = reviewService.clickReviewReport(reportDto1);
 		return ResponseEntity.ok(res);
 	}
 

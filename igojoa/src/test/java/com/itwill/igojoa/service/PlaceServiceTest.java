@@ -1,5 +1,8 @@
 package com.itwill.igojoa.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -8,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.itwill.igojoa.dto.place.PlaceConfirmDto;
 import com.itwill.igojoa.dto.place.PlaceListDto;
 import com.itwill.igojoa.dto.place.PlaceSearchDto;
 
@@ -45,7 +49,7 @@ public class PlaceServiceTest {
 		System.out.println("\n\n\n\n\n");
 	}
 
-	@Test
+	//@Test
 	public void searchSuggestionsTest() {
 		System.out.println("\n\n" + "searchFirstInitialTest()" + "\n\n");
 		PlaceSearchDto placeSearchDto = PlaceSearchDto.builder().addressCategory("").searchKeyword("팔공산갓").build();
@@ -60,5 +64,23 @@ public class PlaceServiceTest {
 			System.out.println(string);
 		}
 		System.out.println("\n\n\n\n\n");
+	}
+
+	@Test
+	public void insertPlaceConfirmTest() {
+		System.out.println("insertPlaceConfirmTest 시작한다" + "\n\n");
+		
+		
+		PlaceConfirmDto dto = PlaceConfirmDto.builder()
+		.placeName("파라다이스원룸333333")
+		.reporterId("test1")
+        .address("부산시 수영구 광안동 123-4444")
+        .placeDescription("박수창이가 2년동안 묵었던 곳이다")
+        .operatingHours("영업시간")
+        .build();
+
+		System.out.println(dto);
+		int rs = placeService.insertPlace(dto);
+		System.out.println(rs);
 	}
 }

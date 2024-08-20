@@ -235,4 +235,31 @@
 	<delete id="deleteAllReviewLike">
 		DELETE FROM reviewLikes WHERE likeUserId = #{userId}
 	</delete>
+
+	<insert id="insertReport">
+		<bind name="logId" value="logId" />
+		<bind name="reporterId" value="reporterId" />
+		<bind name="reportedId" value="reportedId" />
+		<bind name="placeName" value="placeName" />
+		<bind name="reportReason" value="reportReason" />
+		<bind name="review" value="review" />
+		INSERT INTO reportLogs (
+		logId,
+		reporterId,
+		reportedId,
+		placeName,
+		reportReason,
+		review,
+		nickName
+		) VALUES (
+		#{logId},
+		#{reporterId},
+		(SELECT userId FROM users WHERE nickName = #{reportedId}),
+		#{placeName},
+		#{reportReason},
+		#{review},
+		(SELECT nickName FROM users WHERE userId = #{reporterId})
+		)
+	</insert>
+
 </mapper>

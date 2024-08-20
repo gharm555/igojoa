@@ -416,6 +416,44 @@ ${ pd.review }</textarea
       </div>
       <!--위로 가는 버튼 -->
       <button id="scrollToTopBtn" title="Go to top">↑</button>
+      
+      
+      <!-- 신고 모달 -->
+    <div class="modal fade" id="reportModal" tabindex="-1"
+      aria-labelledby="reportModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reportModalLabel">신고하기</h5>
+            <button type="button" class="btn-close"
+              data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <strong>리뷰 작성자:</strong> <span id="reportAuthor"></span>
+            </div>
+            <div class="mb-3">
+              <label for="reviewContent" class="form-label">리뷰
+                내용</label>
+              <div id="reviewContent" class="form-control"
+                style="height: auto; min-height: 100px; overflow-y: auto;"></div>
+            </div>
+            <div class="mb-3">
+              <label for="reportContent" class="form-label">신고
+                사유</label>
+              <textarea class="form-control" id="reportContent" rows="3"
+                placeholder="신고 사유를 자세히 적어주세요."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+              data-bs-dismiss="modal">닫기</button>
+            <button type="button" class="btn btn-danger"
+              id="submitReport">신고하기</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
       <!-- 모달 기본 레이아웃 -->
       <div

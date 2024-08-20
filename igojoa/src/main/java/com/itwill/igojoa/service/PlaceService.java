@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itwill.igojoa.dto.place.PlaceBestListDto;
+import com.itwill.igojoa.dto.place.PlaceConfirmDto;
 import com.itwill.igojoa.dto.place.PlaceDetailDto;
 import com.itwill.igojoa.dto.place.PlaceListDto;
 import com.itwill.igojoa.dto.place.PlaceSearchDto;
 import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
+import com.itwill.igojoa.entity.PlaceConfirm;
 import com.itwill.igojoa.entity.PlacesFavorite;
 import com.itwill.igojoa.repository.PlaceDao;
 
@@ -109,4 +111,23 @@ public class PlaceService {
 	public List<PlaceBestListDto> selectPlaceNameAndImageUrl() {
 		return placeDao.selectPlaceNameAndImageUrl();
 	}
+
+
+	@Transactional
+public int insertPlace(PlaceConfirmDto placeConfirmDto) {
+    if (placeConfirmDto == null) {
+        throw new IllegalArgumentException("PlaceConfirmDto cannot be null");
+    }
+
+    try {
+        PlaceConfirm placeConfirm = placeConfirmDto.toEntity();
+        
+      
+        
+        return placeDao.insertConfirmPlace(placeConfirm);
+    } catch (Exception e) {
+        log.error("Failed to insert place", e);
+        throw new RuntimeException("Failed to insert place", e);
+    }
+}
 }
