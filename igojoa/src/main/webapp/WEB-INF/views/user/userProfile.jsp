@@ -249,6 +249,9 @@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
                 </div>
               </form>
             </div>
+            <%@ include file="../placeReport.jspf"%>
+        </main>
+        <%@ include file="../footer.jspf"%>
 
             <div class="tab-pane fade" id="v-pills-disabled"
               role="tabpanel" tabindex="0">

@@ -268,14 +268,18 @@
                 data-bs-target="#collapse${status.index}"
                 aria-expanded="${status.index == 0 ? 'true' : 'false'}"
                 aria-controls="collapse${status.index}">
-                <span>Q:&nbsp;</span> <span>${faq.question}</span>
+                <span
+                  style="font-family: unset; font-weight: 700; font-size: larger;">Q.&nbsp;</span>
+                <span>${faq.question}</span>
               </button>
             </h2>
             <div id="collapse${status.index}"
               class="accordion-collapse collapse ${status.index == 0 ? 'show' : ''}"
               data-bs-parent="#accordionExample">
-              <div class="accordion-body">
-                <span>A: </span> <span>${faq.answer}</span>
+              <div class="accordion-body pb-5">
+                <span
+                  style="font-family: unset; font-weight: 600; font-size: medium;">A.&nbsp;</span>
+                <span>${faq.answer}</span>
               </div>
             </div>
           </div>
@@ -284,7 +288,7 @@
     </section>
     <hr class="my-5" />
     <button id="scrollToTopBtn" title="Go to top">↑</button>
-
+    <%@ include file="placeReport.jspf"%>
   </main>
 
   <%@ include file="footer.jspf"%>

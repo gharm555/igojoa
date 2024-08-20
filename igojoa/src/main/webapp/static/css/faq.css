@@ -49,11 +49,11 @@
   max-width: 800px;
 }
 .accordion-button {
-  background-color: #c8dae9b5;
+  background-color: #c5dcff;
 }
 .accordion {
   --bs-accordion-color: var(--bs-body-color);
-  --bs-accordion-bg: #2691e9b8;
+  --bs-accordion-bg: #f5fdff;
   --bs-accordion-transition: color 0.15s ease-in-out,
     background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
     box-shadow 0.15s ease-in-out, border-radius 0.15s ease;
@@ -85,7 +85,7 @@
   --bs-accordion-active-bg: var(--bs-primary-bg-subtle);
 }
 .accordion-button:not(.collapsed) {
-  background-color: #2a4595eb;
+  background-color: #5270c7cc;
   color: #fff;
 }
 /* 반응형 디자인 */

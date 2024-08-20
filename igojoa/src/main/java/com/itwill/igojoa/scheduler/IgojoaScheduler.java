@@ -28,7 +28,7 @@ public class IgojoaScheduler {
 
 //	@Scheduled(fixedRate = 5000) // 5초마다 실행 테스트용
 	@Transactional
-	@Scheduled(cron = "0 10,30,50 * * * ?") // 매 시간의 10분, 30분, 50분에 실행
+//	@Scheduled(cron = "0 10,30,50 * * * ?") // 매 시간의 10분, 30분, 50분에 실행
 	public void runUpdateBestReviewsJob() {
 		log.debug("스케쥴러 가동");
 		schedulerService.updateBestReviews();
