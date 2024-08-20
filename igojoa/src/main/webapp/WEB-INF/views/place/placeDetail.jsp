@@ -94,30 +94,47 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 class="carousel-control-prev"
                 type="button"
                 data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="prev"
-              >
-                <span
-                  class="carousel-control-prev-icon"
-                  aria-hidden="true"
-                ></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button
-                class="carousel-control-next"
-                type="button"
+                data-bs-slide-to="0" class="active" aria-current="true"
+                aria-label="Slide 1"></button>
+              <button type="button"
                 data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="next"
-              >
-                <span
-                  class="carousel-control-next-icon"
-                  aria-hidden="true"
-                ></span>
-                <span class="visually-hidden">Next</span>
-              </button>
+                data-bs-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
+            <div class="carousel-inner">
+              <!-- 이미지 넣어야함 -->
+              <div class="carousel-item active">
+                <img src="${ pd.firstUrl }" class="d-block w-100"
+                  alt="..." />
+              </div>
+              <div class="carousel-item">
+                <img src="${pd.secondUrl }" class="d-block w-100"
+                  alt="..." />
+              </div>
+              <div class="carousel-item">
+                <img src="${pd.thirdUrl }" class="d-block w-100"
+                  alt="..." />
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="prev">
+              <span class="carousel-control-prev-icon"
+                aria-hidden="true"></span> <span
+                class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="next">
+              <span class="carousel-control-next-icon"
+                aria-hidden="true"></span> <span
+                class="visually-hidden">Next</span>
+            </button>
           </div>
         </div>
-
+      </div>
         <div class="row mb-5">
           <!-- 첫 번째 섹션  -->
           <div class="col-lg-8">
@@ -176,14 +193,17 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   <h3>이런 점이 좋았어요</h3>
                 </div>
               </div>
-            </section>
-          </div>
+            </div>
+          </section>
         </div>
 
-        <section class="mb-5">
-          <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">
-              <h2 class="mb-0" style="color: white">리뷰 작성하기</h2>
+        <!-- 두 번째 섹션 (오른쪽에 배치) -->
+        <div class="col-lg-4">
+          <section>
+            <div class="card shadow-sm">
+              <div id="emojiList" class="card-body">
+                <h3>이런 점이 좋았어요</h3>
+              </div>
             </div>
             <div id="createReview" class="card-body">
               <h3 class="mb-0">이런 점이 좋았어요</h3>
@@ -344,8 +364,8 @@ ${ pd.review }</textarea
               </form>
             </div>
           </div>
-        </section>
-
+        </div>
+      </section>
         <h2 class="mb-4 d-flex justify-content-between align-items-center">
           리뷰 목록
           <div class="dropdown">
@@ -435,13 +455,12 @@ ${ pd.review }</textarea
     </main>
     <%@ include file="../footer.jspf"%>
 
-    <script
-      type="text/javascript"
-      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=dbb366fd56b3d7369ab7ed5f8caff982"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript"
+    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=dbb366fd56b3d7369ab7ed5f8caff982"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
+  <script>
       //console.log("Defining emojiData");
       let emojiData = [
           { emoji: "🏞️", text: '"경치좋은"', count: "${pd.totalView}", key: "view" },
@@ -484,7 +503,6 @@ ${ pd.review }</textarea
                 userFavorite:  Number("<c:out value='${pd.userFavorite}' />") || 0
             };
     </script>
-
     <c:url var="navbarJsUrl" value="/js/navbar.js" />
     <c:url var="placeDetailJsUrl" value="/js/placeDetail.js" />
     <c:url var="darkMode" value="/js/dark_mode.js" />
