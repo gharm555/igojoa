@@ -18,11 +18,13 @@ public class ReviewReportDto {
 	private String reportedId;
 	private String placeName;
 	private String reportReason;
+	private Integer reasonCode;
 	private String review;
+	private String reportedNickname;
 
 	public ReportLogs toEntity() {
 		return ReportLogs.builder().logId(this.logId).reporterId(this.reporterId).reportedId(this.reportedId)
-				.placeName(this.placeName).reportReason(this.reportReason).review(this.review).build();
+				.placeName(this.placeName).reportReason(this.reportReason).review(this.review).reasonCode(reasonCode).reportedNickName(reportedNickname).build();
 	}
 
 }

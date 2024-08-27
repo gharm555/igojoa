@@ -156,23 +156,54 @@ document.addEventListener("DOMContentLoaded", function() {
 		const reportModal = new bootstrap.Modal(document.getElementById('reportModal'));
 		reportModal.show();
 	}
+	
+	// 라디오 버튼에 이벤트 리스너 추가
+	document.querySelectorAll('input[name="reportType"]').forEach(radio => {
+	    radio.addEventListener('change', function() {
+	        if (this.id === 'inappropriateNickname') {
+	            console.log("102번 선택됨");
+	        } else if (this.id === 'inappropriateReview') {
+	            console.log("101번 선택됨");
+	        }
+	    });
+	});
 
 	document.getElementById('submitReport').addEventListener('click', function() {
 		const $reportContent = document.getElementById('reportContent').value;
 		const $reviewAuthor = document.getElementById('reportAuthor').textContent;
 
+		// 선택된 신고 유형 가져오기
+				    const $selectedReportType = document.querySelector('input[name="reportType"]:checked');
+				    let $reasonCode;
+				    
+				    if ($selectedReportType) {
+				        if ($selectedReportType.id === 'inappropriateNickname') {
+							console.log("102번 나와야함")
+				           $reasonCode = 102;
+				        } else if ($selectedReportType.id === 'inappropriateReview') {
+							console.log("101번 나와야함")
+				            $reasonCode = 101;
+				        }
+				    } else {
+				        // 신고 유형이 선택되지 않았을 경우 처리
+				        alert('신고 유형을 선택해주세요.');
+				        return;
+				    }
 
+		
 		const reportDto = {
 
 			reportedId: $reviewAuthor,
-			//placeName:pd.placeName,
+			reasonCode: $reasonCode,
 			reportReason: $reportContent,
 			review: $reviewText,
+			reportedNickname: $reviewAuthor
 		}
+		console.log("reportDto = {} ",reportDto);
 
 		const placeName = pd.placeName;
 		const uri = `${contextPath}/${placeName}/reviewReport`;
-		// 신고 내용을 처리하는 코드 추가 (예: 서버로 전송)
+		
 		axios.post(uri, reportDto)
 			.then(response => {
 				console.log('Report submitted successfully:', response.data);

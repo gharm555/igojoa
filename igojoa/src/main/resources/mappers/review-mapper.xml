@@ -239,8 +239,9 @@
 	<insert id="insertReport">
 		<bind name="logId" value="logId" />
 		<bind name="reporterId" value="reporterId" />
-		<bind name="reportedId" value="reportedId" />
+		<bind name="reportedId" value="reportedId" />  <!-- reviewAuthor(작성자 닉네임)이 넘어옴 -->
 		<bind name="placeName" value="placeName" />
+		<bind name="reasonCode" value="reasonCode" />
 		<bind name="reportReason" value="reportReason" />
 		<bind name="review" value="review" />
 		INSERT INTO reportLogs (
@@ -248,17 +249,19 @@
 		reporterId,
 		reportedId,
 		placeName,
+		reasonCode,
 		reportReason,
 		review,
-		nickName
+		reportedNickname
 		) VALUES (
 		#{logId},
 		#{reporterId},
 		(SELECT userId FROM users WHERE nickName = #{reportedId}),
 		#{placeName},
+		#{reasonCode},
 		#{reportReason},
 		#{review},
-		(SELECT nickName FROM users WHERE userId = #{reportedId})
+		#{reportedId}
 		)
 	</insert>
 

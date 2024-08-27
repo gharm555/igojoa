@@ -20,7 +20,8 @@ public class ReportLogs {
 	private String reportedId;
 	private String placeName;
 	private LocalDateTime reportTime;
+	private Integer reasonCode;
 	private String reportReason;
 	private String review;
-	private String nickName;
+	private String reportedNickName;
 }

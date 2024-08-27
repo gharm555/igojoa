@@ -133,26 +133,6 @@ public int insertPlace(PlaceConfirmDto placeConfirmDto) {
     }
 }
 
-// @Transactional
-// public int insertPlaceImage(PlaceImageDto placeImageDto) {
-//     if (placeImageDto == null) {
-//         throw new IllegalArgumentException("placeImageDto cannot be null");
-//     }
-
-//     try {
-//         PlaceImages placeImage = placeImageDto.toEntity();
-        
-      
-        
-//         return placeDao.insertPlaceImage(placeImage);
-//     } catch (Exception e) {
-//         log.error("Failed to insert place", e);
-//         throw new RuntimeException("Failed to insert place", e);
-//     }
-
-	
-// }
-
 
 
 
