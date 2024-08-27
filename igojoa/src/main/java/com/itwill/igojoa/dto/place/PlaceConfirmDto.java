@@ -1,6 +1,10 @@
 package com.itwill.igojoa.dto.place;
 
 import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.itwill.igojoa.entity.PlaceConfirm;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,34 +22,30 @@ public class PlaceConfirmDto {
     private String placeDescription;
     private String operatingHours;
 
-    // address 쪼개서 나누기
+
     public PlaceConfirm toEntity() {
-        String largeAddress = "";
-        String mediumAddress = "";
-        String smallAddress = "";
-
-        if (address != null && !address.isEmpty()) {
-            String[] addressParts = address.split(" ");
-            if (addressParts.length >= 3) {
-                largeAddress = addressParts[0];
-                mediumAddress = addressParts[1];
-                smallAddress = String.join(" ", Arrays.copyOfRange(addressParts, 2, addressParts.length));
-            } else if (addressParts.length == 2) {
-                largeAddress = addressParts[0];
-                mediumAddress = addressParts[1];
-            } else if (addressParts.length == 1) {
-                largeAddress = addressParts[0];
-            }
-        }
-
+        String[] addressParts = splitAddress(address);
         return PlaceConfirm.builder()
                 .placeName(placeName)
                 .reporterId(reporterId)
-                .largeAddress(largeAddress)
-                .mediumAddress(mediumAddress)
-                .smallAddress(smallAddress)
+                .largeAddress(addressParts[0])
+                .mediumAddress(addressParts[1])
+                .smallAddress(addressParts[2])
                 .placeDescription(placeDescription)
                 .operatingHours(operatingHours)
                 .build();
     }
+
+    private String[] splitAddress(String address) {
+        String[] result = new String[]{"", "", ""};
+        if (address != null && !address.isEmpty()) {
+            String[] parts = address.split(" ");
+            if (parts.length >= 1) result[0] = parts[0];
+            if (parts.length >= 2) result[1] = parts[1];
+            if (parts.length >= 3) result[2] = String.join(" ", Arrays.copyOfRange(parts, 2, parts.length));
+        }
+        return result;
+    }
+
+    
 }

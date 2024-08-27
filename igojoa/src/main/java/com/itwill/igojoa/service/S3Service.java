@@ -15,7 +15,10 @@ import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.itwill.igojoa.dto.place.PlaceImageDto;
+import com.itwill.igojoa.entity.PlaceImages;
 import com.itwill.igojoa.entity.Users;
+import com.itwill.igojoa.repository.PlaceDao;
 import com.itwill.igojoa.repository.UsersDao;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ public class S3Service {
     private String bucketName = "igojoa";
     private final AmazonS3 amazonS3;
     private final UsersDao usersDao;
+    private final PlaceDao placeDao;
 
     private String changedImageName(String UsersId, String originName) { // 이미지 이름 중복 방지를 위해 랜덤으로 생성
         return UsersId + "_" + originName;
@@ -110,7 +114,30 @@ public class S3Service {
         usersDao.updateProfileImage(user);
     }
 
-    public String getUserProfileDefaultImageUrl() {
+    public String getUserProfileDefaultImageUrl() { 
         return amazonS3.getUrl(bucketName, "default.jpg").toString();
     }
+
+    // ------------------------- place 관련 -------------------------
+    
+    private String changeName(String UsersId, String originName) { // 이미지 이름 중복 방지를 위해 랜덤으로 생성
+        return UsersId + "_" + originName;
+    }
+
+    public String uploadImage(MultipartFile image, String UsersId) {
+        String originName = image.getOriginalFilename();
+        String extension = originName.substring(originName.lastIndexOf("."));
+        String changedName = changeName(UsersId, originName);
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType("image/" + extension);
+        try (InputStream inputStream = image.getInputStream()) {
+            amazonS3.putObject(new PutObjectRequest(bucketName, changedName, inputStream, objectMetadata));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return amazonS3.getUrl(bucketName, changedName).toString(); // 데이터베이스에 저장할 이미지가 저장된 주소를 반환
+    }
+	
+
 }

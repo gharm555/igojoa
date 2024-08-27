@@ -10,10 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.itwill.igojoa.dto.place.PlaceBestListDto;
 import com.itwill.igojoa.dto.place.PlaceConfirmDto;
 import com.itwill.igojoa.dto.place.PlaceDetailDto;
+import com.itwill.igojoa.dto.place.PlaceImageDto;
 import com.itwill.igojoa.dto.place.PlaceListDto;
 import com.itwill.igojoa.dto.place.PlaceSearchDto;
 import com.itwill.igojoa.dto.place.PlacesFavoriteDto;
 import com.itwill.igojoa.entity.PlaceConfirm;
+import com.itwill.igojoa.entity.PlaceImages;
 import com.itwill.igojoa.entity.PlacesFavorite;
 import com.itwill.igojoa.repository.PlaceDao;
 
@@ -130,4 +132,83 @@ public int insertPlace(PlaceConfirmDto placeConfirmDto) {
         throw new RuntimeException("Failed to insert place", e);
     }
 }
+
+// @Transactional
+// public int insertPlaceImage(PlaceImageDto placeImageDto) {
+//     if (placeImageDto == null) {
+//         throw new IllegalArgumentException("placeImageDto cannot be null");
+//     }
+
+//     try {
+//         PlaceImages placeImage = placeImageDto.toEntity();
+        
+      
+        
+//         return placeDao.insertPlaceImage(placeImage);
+//     } catch (Exception e) {
+//         log.error("Failed to insert place", e);
+//         throw new RuntimeException("Failed to insert place", e);
+//     }
+
+	
+// }
+
+
+
+
+
+
+@Transactional
+public int insertPlaceImages(PlaceImageDto placeImageDto) {
+    int result = 0;
+    String placeName = placeImageDto.getPlaceName();
+    List<String> imageNames = placeImageDto.getImageNames();
+    List<String> imageUrls = placeImageDto.getImageUrls();
+	log.info("placeImageDto={} 이거임",placeImageDto);
+	PlaceImages image = new PlaceImages();
+	image.setPlaceName(placeName);
+
+
+
+	PlaceImages placeImages = new PlaceImages();
+	placeImages.setPlaceName(placeName);
+	
+	String[] imageNameArray = new String[3];
+	String[] imageUrlArray = new String[3];
+	
+	// 이미지 이름 처리
+	for (int i = 0; i < 3; i++) {
+		if (i < imageNames.size()) {
+			imageNameArray[i] = imageNames.get(i);
+		} else {
+			imageNameArray[i] = null;
+		}
+	}
+	
+	// 이미지 URL 처리
+	for (int i = 0; i < 3; i++) {
+		if (i < imageUrls.size()) {
+			imageUrlArray[i] = imageUrls.get(i);
+		} else {
+			imageUrlArray[i] = null;
+		}
+	}
+	
+	// PlaceImages 객체에 값 설정
+	placeImages.setFirstImgName(imageNameArray[0]);
+	placeImages.setFirstUrl(imageUrlArray[0]);
+	placeImages.setSecondImgName(imageNameArray[1]);
+	placeImages.setSecondUrl(imageUrlArray[1]);
+	placeImages.setThirdImgName(imageNameArray[2]);
+	placeImages.setThirdUrl(imageUrlArray[2]);
+	
+	
+
+	
+  
+		
+		result = placeDao.insertPlaceImage(placeImages);
+    return result;
+}
+
 }

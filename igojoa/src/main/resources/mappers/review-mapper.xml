@@ -258,7 +258,7 @@
 		#{placeName},
 		#{reportReason},
 		#{review},
-		(SELECT nickName FROM users WHERE userId = #{reporterId})
+		(SELECT nickName FROM users WHERE userId = #{reportedId})
 		)
 	</insert>
 

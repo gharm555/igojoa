@@ -363,4 +363,18 @@
 		'${operatingHours}'
 		)
 	</insert>
+	<insert id="insertPlaceImage">
+		INSERT INTO placeImages (
+			placeName, 
+			firstImgName, firstUrl, 
+			secondImgName, secondUrl, 
+			thirdImgName, thirdUrl
+		) VALUES (
+			#{placeName}, 
+			#{firstImgName}, #{firstUrl}, 
+			#{secondImgName}, #{secondUrl}, 
+			#{thirdImgName}, #{thirdUrl}
+		)
+		
+	</insert>
 </mapper>

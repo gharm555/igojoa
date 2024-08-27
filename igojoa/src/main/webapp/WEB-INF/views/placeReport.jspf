@@ -4,94 +4,112 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
 <style>
-/* 모달 스타일 */
+/* 기존 CSS 스타일 유지 */
 .modal {
-	z-index: 1050; /* Bootstrap의 기본 z-index */
+  z-index: 1050;
 }
 
 .modal-backdrop {
-	z-index: 1040; /* Bootstrap의 기본 z-index */
+  z-index: 1040;
 }
 
 .report-modal-content {
-	background-color: #fefefe;
-	margin: 15% auto;
-	padding: 20px;
-	border: 1px solid #888;
-	width: 100%;
-	/* max-width: 600px; */
-	border-radius: 10px;
-	text-align: center;
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	color: var(--bs-modal-color);
-	pointer-events: auto;
-	background-clip: padding-box;
-	outline: 0;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 100%;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  color: var(--bs-modal-color);
+  pointer-events: auto;
+  background-clip: padding-box;
+  outline: 0;
 }
 
 .report-modal-header {
-	display: flex;
-	flex-shrink: 0;
-	align-items: center;
-	padding: var(--bs-modal-header-padding);
-	border-bottom: var(--bs-modal-header-border-width) solid
-		var(--bs-modal-header-border-color);
-	border-top-left-radius: var(--bs-modal-inner-border-radius);
-	border-top-right-radius: var(--bs-modal-inner-border-radius);
-	justify-content: space-between;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: var(--bs-modal-header-padding);
+  border-bottom: var(--bs-modal-header-border-width) solid
+    var(--bs-modal-header-border-color);
+  border-top-left-radius: var(--bs-modal-inner-border-radius);
+  border-top-right-radius: var(--bs-modal-inner-border-radius);
+  justify-content: space-between;
 }
 
 .report-modal-title {
-	margin-bottom: 0;
-	line-height: var(--bs-modal-title-line-height);
+  margin-bottom: 0;
+  line-height: var(--bs-modal-title-line-height);
 }
 
 .report-modal-footer {
-	display: flex;
-	flex-shrink: 0;
-	justify-content: center;
-	padding-top: 10px;
-	background-color: var(--bs-modal-footer-bg);
-	border-top: var(--bs-modal-footer-border-width) solid
-		var(--bs-modal-footer-border-color);
-	border-bottom-right-radius: var(--bs-modal-inner-border-radius);
-	border-bottom-left-radius: var(--bs-modal-inner-border-radius);
-	align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  padding-top: 10px;
+  background-color: var(--bs-modal-footer-bg);
+  border-top: var(--bs-modal-footer-border-width) solid
+    var(--bs-modal-footer-border-color);
+  border-bottom-right-radius: var(--bs-modal-inner-border-radius);
+  border-bottom-left-radius: var(--bs-modal-inner-border-radius);
+  align-items: center;
 }
 
 #PlaceImgInput {
-	display: none;
+  display: none;
 }
 
-/* 커스텀 버튼 스타일 */
 .custom-file-upload {
-	display: inline-block;
-	padding: 6px 12px;
-	cursor: pointer;
-	background-color: #4CAF50;
-	color: white;
-	border-radius: 5px;
-	font-size: 16px;
-	font-weight: bold;
-	transition: background-color 0.3s ease;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
-/* 버튼 hover 효과 */
 .custom-file-upload:hover {
-	background-color: #45a049;
+  background-color: #45a049;
 }
 
-/* 파일 이름 표시 영역 스타일 */
 #file-name {
-	margin-left: 10px;
-	font-size: 14px;
-	color: #555;
+  margin-left: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* 추가된 스타일 */
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input[type="text"], .form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-group textarea {
+  height: 100px;
 }
 </style>
 
-<!-- 명소 제보 모달 레이아웃 -->
+<!-- 수정된 명소 제보 모달 레이아웃 -->
 <div class="modal fade" id="placeReportModal" tabindex="-1"
   aria-labelledby="placeReportModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -102,99 +120,159 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"
           aria-label="Close"></button>
       </div>
-      <div class="modal-body px-0" style="height: 500px">
-        <div style="display: flex; align-items: center;">명소 이름:</div>
-        <input style="width: 100%;" />
-        <div style="display: flex; align-items: center;">
-          <input type="button" onclick="sample6_execDaumPostcode()"
-            value="주소 찾기">
-        </div>
-        <input type="text" id="sample6_address" placeholder="주소"
-          style="width: 100%;" readonly><br> <input
-          type="text" id="sample6_detailAddress" placeholder="상세주소"
-          style="width: 100%;">
-
-        <div style="display: flex; align-items: center;">영업 시간:</div>
-        <input style="width: 100%;" />
-        <div style="display: flex; align-items: center;">명소 설명:</div>
-        <textarea rows="3" style="width: 100%;"></textarea>
-        <div style="display: flex; align-items: center;">
-          <label for="PlaceImgInput" class="custom-file-upload">
-            사진 업로드 </label> <input type="file" id="PlaceImgInput"
-            accept="image/*" multiple> <span id="file-name"></span>
-        </div>
+      <div class="modal-body px-0"
+        style="height: 500px; overflow-y: auto;">
+        <form id="placeReportForm">
+          <div class="form-group">
+            <label for="placeName">명소 이름:</label> <input type="text"
+              id="placeName" name="placeName" required>
+          </div>
+          <div class="form-group">
+            <label for="sample6_address">주소:</label> <input type="text"
+              id="sample6_address" name="address" readonly> <input
+              type="button" onclick="sample6_execDaumPostcode()"
+              value="주소 찾기" class="btn btn-secondary mt-2">
+          </div>
+          <div class="form-group">
+            <label for="sample6_detailAddress">상세주소:</label> <input
+              type="text" id="sample6_detailAddress"
+              name="detailAddress">
+          </div>
+          <div class="form-group">
+            <label for="operatingHours">영업 시간:</label> <input
+              type="text" id="operatingHours" name="operatingHours">
+          </div>
+          <div class="form-group">
+            <label for="placeDescription">명소 설명:</label>
+            <textarea id="placeDescription" name="placeDescription"
+              rows="3"></textarea>
+          </div>
+          <div class="form-group">
+  <label for="PlaceImgInput" class="custom-file-upload">사진 업로드 (최대 3개)</label>
+  <input type="file" id="PlaceImgInput1" name="placeImage1" accept="image/*">
+  <span id="file-name1"></span>
+  <input type="file" id="PlaceImgInput2" name="placeImage2" accept="image/*">
+  <span id="file-name2"></span>
+  <input type="file" id="PlaceImgInput3" name="placeImage3" accept="image/*">
+  <span id="file-name3"></span>
+</div>
+        </form>
       </div>
       <div class="report-modal-footer">
         <button type="button" class="btn btn-secondary"
-          data-bs-dismiss="modal">제보하기</button>
+          id="submitPlaceReport">제보하기</button>
       </div>
     </div>
   </div>
 </div>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+// Daum 우편번호 서비스 함수
+function sample6_execDaumPostcode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            var addr = '';
+            var extraAddr = '';
+
+            if (data.userSelectedType === 'R') {
+                addr = data.roadAddress;
+            } else {
+                addr = data.jibunAddress;
+            }
+
+            if(data.userSelectedType === 'R'){
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraAddr += data.bname;
+                }
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                if(extraAddr !== ''){
+                    extraAddr = ' (' + extraAddr + ')';
+                }
+            }
+
+            document.getElementById("sample6_address").value = addr;
+            document.getElementById("sample6_detailAddress").focus();
+        }
+    }).open();
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script type="text/javascript">
-	document
-			.getElementById("PlaceImgInput")
-			.addEventListener(
-					"change",
-					function() {
-						let fileName = this.files.length > 1 ? this.files.length
-								+ ' 개 이미지 선택됨'
-								: this.files[0].name;
+document.addEventListener('DOMContentLoaded', function() {
+    const $placeImgInputs = document.querySelectorAll('[id^="PlaceImgInput"]');
+    const $submitButton = document.getElementById('submitPlaceReport');
+    const $form = document.getElementById('placeReportForm');
+    const $modal = document.getElementById('placeReportModal');
 
-						if (this.files.length > 3) {
-							alert("최대 3개 까지만 선택 가능합니다.");
-							this.value = ""; // 선택된 파일을 취소
-						} else {
-							let fileNames = this.files.length + ' 개 이미지 선택됨'
-							document.getElementById("file-name").textContent = fileNames;
-						}
-					});
-</script>
-<script
-  src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
-	function sample6_execDaumPostcode() {
-		new daum.Postcode({
-			oncomplete : function(data) {
-				// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+$placeImgInputs.forEach((input, index) => {
+    input.addEventListener("change", function(event) {
+        console.log(`File input ${index + 1} changed`);
+        try {
+            if (this.files.length > 0) {
+                let fileName = this.files[0].name;
+               // document.getElementById(`file-name${index + 1}`).textContent = `파일 ${index + 1}: ${fileName}`;
+                console.log(`File selected for input ${index + 1}:`, fileName);
+            } else {
+                document.getElementById(`file-name${index + 1}`).textContent = "";
+            }
+        } catch (error) {
+            console.error(`Error in file selection handler for input ${index + 1}:`, error);
+        }
+    });
+});
 
-				// 각 주소의 노출 규칙에 따라 주소를 조합한다.
-				// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-				var addr = ''; // 주소 변수
-				var extraAddr = ''; // 참고항목 변수
+    $submitButton.addEventListener('click', function(event) {
+        event.preventDefault();
 
-				//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-				if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-					addr = data.roadAddress;
-				} else { // 사용자가 지번 주소를 선택했을 경우(J)
-					addr = data.jibunAddress;
-				}
+        if (!$form.checkValidity()) {
+            $form.reportValidity();
+            return;
+        }
 
-				// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-				if (data.userSelectedType === 'R') {
-					// 법정동명이 있을 경우 추가한다. (법정리는 제외)
-					// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-					if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-						extraAddr += data.bname;
-					}
-					// 건물명이 있고, 공동주택일 경우 추가한다.
-					if (data.buildingName !== '' && data.apartment === 'Y') {
-						extraAddr += (extraAddr !== '' ? ', '
-								+ data.buildingName : data.buildingName);
-					}
-					// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-					if (extraAddr !== '') {
-						extraAddr = ' (' + extraAddr + ')';
-					}
+        const formData = new FormData($form);
 
-				}
+        // 디버깅용
+        const address = formData.get('address');
+        const detailAddress = formData.get('detailAddress');
+        const fullAddress = (address + ' ' + detailAddress).trim();
+        console.log('Address:', address);
+        console.log('Detail Address:', detailAddress);
+        console.log('Full Address:', fullAddress);
 
-				// 우편번호와 주소 정보를 해당 필드에 넣는다.
-				document.getElementById("sample6_address").value = addr;
-				// 커서를 상세주소 필드로 이동한다.
-				document.getElementById("sample6_detailAddress").focus();
-			}
-		}).open();
-	}
+
+        // 기존의 placeImage1, placeImage2, placeImage3를 제거
+        formData.delete('placeImage1');
+        formData.delete('placeImage2');
+        formData.delete('placeImage3');
+
+        // 선택된 모든 파일을 placeImages[]로 추가
+        $placeImgInputs.forEach((input) => {
+            if (input.files.length > 0) {
+                formData.append('placeImages', input.files[0]);
+            }
+        });
+
+        axios.post('/igojoa/place/insertConfirm', formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            }
+        })
+        .then((response) => {
+            console.log("Response:", response);
+            alert('명소가 성공적으로 제보되었습니다.');
+            const modalInstance = bootstrap.Modal.getInstance($modal);
+            modalInstance.hide();
+            $form.reset();
+        })
+        .catch((error) => {
+            console.error("Error:", error.response ? error.response.data : error.message);
+            alert('다시 시도해 주세요.');
+        });
+    });
+});
+
+
 </script>
