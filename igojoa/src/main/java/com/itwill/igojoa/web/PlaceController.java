@@ -95,7 +95,10 @@ public ResponseEntity<Integer> insertPlaceConfirm(
     log.info("Received placeImages: {}", placeImages != null ? placeImages.size() : "null");
     String reportUserId = (String) session.getAttribute("userId");
     dto.setReporterId(reportUserId);  // reporterId 설정
-
+    
+    //TODO:중복체크
+    
+    
     // PlaceConfirm 처리
     int res = placeService.insertPlace(dto);
 
@@ -123,6 +126,7 @@ public ResponseEntity<Integer> insertPlaceConfirm(
     }
 
     return ResponseEntity.ok(res & res2);
+    
 }
 }
 

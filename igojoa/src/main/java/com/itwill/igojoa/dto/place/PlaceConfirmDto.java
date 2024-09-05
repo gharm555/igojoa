@@ -19,18 +19,22 @@ public class PlaceConfirmDto {
     private String placeName;
     private String reporterId;
     private String address;
+    private String detailAddress; // 추가
     private String placeDescription;
     private String operatingHours;
 
-
     public PlaceConfirm toEntity() {
         String[] addressParts = splitAddress(address);
+        String smallAddress = addressParts[2];
+        if (detailAddress != null && !detailAddress.isEmpty()) {
+            smallAddress += " " + detailAddress;
+        }
         return PlaceConfirm.builder()
                 .placeName(placeName)
                 .reporterId(reporterId)
                 .largeAddress(addressParts[0])
                 .mediumAddress(addressParts[1])
-                .smallAddress(addressParts[2])
+                .smallAddress(smallAddress.trim())
                 .placeDescription(placeDescription)
                 .operatingHours(operatingHours)
                 .build();
@@ -39,13 +43,12 @@ public class PlaceConfirmDto {
     private String[] splitAddress(String address) {
         String[] result = new String[]{"", "", ""};
         if (address != null && !address.isEmpty()) {
-            String[] parts = address.split(" ");
+            String[] parts = address.split(" ", 3);  // 최대 3개의 부분으로 분할
             if (parts.length >= 1) result[0] = parts[0];
             if (parts.length >= 2) result[1] = parts[1];
-            if (parts.length >= 3) result[2] = String.join(" ", Arrays.copyOfRange(parts, 2, parts.length));
+            if (parts.length >= 3) result[2] = parts[2];  // 나머지 전체를 smallAddress로
         }
         return result;
     }
-
-    
 }
+    

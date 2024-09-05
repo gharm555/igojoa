@@ -17,6 +17,4 @@ public class PlaceImageDto {
     private List<MultipartFile> images;
     private List<String> imageNames;
     private List<String> imageUrls;
-
- 
 }

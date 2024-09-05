@@ -376,4 +376,11 @@
 		)
 		
 	</insert>
+	
+	<select id="overlapCheckConfirm">
+	select count(*)
+	from confirmPlace
+	where placeName = #{placeName} and reporterId = #{reporterId}
+	
+	</select>
 </mapper>

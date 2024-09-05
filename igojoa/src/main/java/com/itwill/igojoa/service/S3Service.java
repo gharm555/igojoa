@@ -118,6 +118,7 @@ public class S3Service {
         return amazonS3.getUrl(bucketName, "default.jpg").toString();
     }
 
+    
     // ------------------------- place 관련 -------------------------
     
     private String changeName(String UsersId, String originName) { // 이미지 이름 중복 방지를 위해 랜덤으로 생성

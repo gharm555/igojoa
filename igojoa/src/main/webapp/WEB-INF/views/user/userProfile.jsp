@@ -65,8 +65,8 @@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
         <div class="col-md-3 sidebar">
           <div class="profile-summary">
             <input type="file" id="profileImageInput"
-              style="display: none" accept="image/*" />
-            <img src="${ userInfo.userProfileUrl }" alt="프로필 이미지"
+              style="display: none" accept="image/*" /> <img
+              src="${ userInfo.userProfileUrl }" alt="프로필 이미지"
               id="profileImage"
               class="rounded-circle profile-img profileImage"
               style="cursor: pointer; width: 150px; height: 150px; object-fit: cover;" />
@@ -139,13 +139,11 @@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
                   <p class="card-text" id="currentsPoints">
                     현재 포인트:<span class="points"> <fmt:formatNumber
                         value="${userInfo.currentsPoints}" type="number"
-                        groupingUsed="true" /></span>
-                    P
+                        groupingUsed="true" /></span> P
                   </p>
 
                   <p class="card-text" id="cumulativePoint">
-                    누적 포인트:<span class="cumulativePoints">
-                      <fmt:formatNumber
+                    누적 포인트:<span class="cumulativePoints"> <fmt:formatNumber
                         value="${userInfo.cumulativePoint}"
                         type="number" groupingUsed="true" />
                     </span> P
@@ -160,8 +158,7 @@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
                 <h2 class="mb-0">내정보수정</h2>
                 <button id="withdrawal" type="button"
                   class="btn btn-outline-secondary btn-sm"
-                  style="padding: 3px">
-                  회원탈퇴</button>
+                  style="padding: 3px">회원탈퇴</button>
               </div>
               <!-- TODO 시작 -->
               <div class="containerImageChange"
@@ -190,14 +187,14 @@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
                   <label for="nickName" class="form-label">사용자
                     닉네임</label> <input type="text" class="form-control"
                     id="nickName" value="${ userInfo.nickName }"
-                    name="nickName" />
-                  <small id="nickNameFeedback" class="form-text"></small>
+                    name="nickName" /> <small id="nickNameFeedback"
+                    class="form-text"></small>
                 </div>
                 <div class="mb-3">
-                  <label for="email" class="form-label">이메일
-                    주소</label> <input type="email" class="form-control"
-                    id="email" value="${ userInfo.email }" name="email" />
-                  <small id="emailFeedback" class="form-text"></small>
+                  <label for="email" class="form-label">이메일 주소</label> <input
+                    type="email" class="form-control" id="email"
+                    value="${ userInfo.email }" name="email" /> <small
+                    id="emailFeedback" class="form-text"></small>
                 </div>
 
                 <div class="mb-3">
@@ -207,33 +204,31 @@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
                     <input type="text" class="form-control phone-input"
                       id="phone1" maxlength="3"
                       style="width: 60px; text-align: center;"
-                      value="${part1}" name="phone1" />
-                    <span>-</span> <input type="text"
-                      class="form-control phone-input" id="phone2"
-                      maxlength="4"
+                      value="${part1}" name="phone1" /> <span>-</span>
+                    <input type="text" class="form-control phone-input"
+                      id="phone2" maxlength="4"
                       style="width: 80px; text-align: center;"
-                      value="${part2}" name="phone2" />
-                    <span>-</span> <input type="text"
-                      class="form-control phone-input" id="phone3"
-                      maxlength="4"
+                      value="${part2}" name="phone2" /> <span>-</span>
+                    <input type="text" class="form-control phone-input"
+                      id="phone3" maxlength="4"
                       style="width: 80px; text-align: center;"
                       value="${part3}" name="phone3" />
                   </div>
-                  <small id="phoneFeedback" class="form-text"></small>
-                  <input type="hidden" id="fullPhoneNumber"
+                  <small id="phoneFeedback" class="form-text"></small> <input
+                    type="hidden" id="fullPhoneNumber"
                     name="fullPhoneNumber" />
                 </div>
                 <div class="mb-3 d-none" id="passwordGroup1">
                   <label for="newPassword" class="form-label">비밀번호</label>
                   <input type="password" class="form-control"
-                    id="newPassword" value="" />
-                  <small id="passwordFeedback" class="form-text"></small>
+                    id="newPassword" value="" /> <small
+                    id="passwordFeedback" class="form-text"></small>
                 </div>
                 <div class="mb-3 d-none" id="passwordGroup2">
                   <label for="confirmPassword" class="form-label">비밀번호
                     확인</label> <input type="password" class="form-control"
-                    id="confirmPassword" value="" />
-                  <small id="confirmPasswordFeedback" class="form-text"></small>
+                    id="confirmPassword" value="" /> <small
+                    id="confirmPasswordFeedback" class="form-text"></small>
                 </div>
                 <div class="mb-3 mt-4">
                   <button id="passwordShowBtn" type="button"
@@ -244,14 +239,13 @@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
                 <div>
                   <button type="submit" class="btn btn-outline-success"
-                    id="updateBtn">
-                    정보 수정</button>
+                    id="updateBtn">정보 수정</button>
                 </div>
               </form>
             </div>
             <%@ include file="../placeReport.jspf"%>
-        </main>
-        <%@ include file="../footer.jspf"%>
+
+
 
             <div class="tab-pane fade" id="v-pills-disabled"
               role="tabpanel" tabindex="0">
@@ -381,15 +375,13 @@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
                     <div class="col-md-6 monthly-summary">
                       <h5>월별 포인트 요약</h5>
                       <div>
-                        <span class="me-3">얻은
-                          포인트: <span id="monthlyEarnedPoints"
-                          class="text-success">0</span>
+                        <span class="me-3">얻은 포인트: <span
+                          id="monthlyEarnedPoints" class="text-success">0</span>
                         </span>
                       </div>
                       <div>
-                        <span>소비
-                          포인트: <span id="monthlySpentPoints"
-                          class="text-danger">0</span>
+                        <span>소비 포인트: <span
+                          id="monthlySpentPoints" class="text-danger">0</span>
                         </span>
                       </div>
                     </div>

@@ -173,10 +173,13 @@ public class ReviewRestController {
 				.reportedId(reportDto.getReportedId()).placeName(placeName).reportReason(reportDto.getReportReason())
 				.review(reportDto.getReview()).reasonCode(reportDto.getReasonCode()).reportedNickname(reportDto.getReportedNickname()).build();
 		
+	
 		
 		
 		int res = reviewService.clickReviewReport(reportDto1);
 		return ResponseEntity.ok(res);
 	}
+	
+	
 
 }

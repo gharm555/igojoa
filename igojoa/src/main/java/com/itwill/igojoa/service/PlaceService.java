@@ -114,6 +114,13 @@ public class PlaceService {
 		return placeDao.selectPlaceNameAndImageUrl();
 	}
 
+	
+	// 명소 제보할때 중복 체크 
+	@Transactional
+	  public boolean isConfirmRequestDuplicate(PlaceConfirmDto placeConfirmDto) {
+	        int count = placeDao.overlapCheckConfirm(placeConfirmDto);
+	        return count > 0;
+	    }
 
 	@Transactional
 public int insertPlace(PlaceConfirmDto placeConfirmDto) {

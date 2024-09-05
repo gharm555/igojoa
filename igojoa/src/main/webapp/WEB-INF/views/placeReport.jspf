@@ -207,6 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const $form = document.getElementById('placeReportForm');
     const $modal = document.getElementById('placeReportModal');
 
+    
 $placeImgInputs.forEach((input, index) => {
     input.addEventListener("change", function(event) {
         console.log(`File input ${index + 1} changed`);
@@ -233,6 +234,7 @@ $placeImgInputs.forEach((input, index) => {
         }
 
         const formData = new FormData($form);
+        console.log(Object.fromEntries(formData));
 
         // 디버깅용
         const address = formData.get('address');

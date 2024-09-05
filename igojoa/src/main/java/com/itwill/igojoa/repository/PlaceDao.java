@@ -34,4 +34,6 @@ public interface PlaceDao {
 	int insertConfirmPlace(PlaceConfirm placeConfirm);
 
 	int insertPlaceImage(PlaceImages placeImage); 
+	
+	int overlapCheckConfirm(PlaceConfirmDto placeConfirmDto);
 }
