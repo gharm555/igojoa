@@ -148,7 +148,7 @@
               rows="3"></textarea>
           </div>
           <div class="form-group">
-  <label for="PlaceImgInput" class="custom-file-upload">사진 업로드 (최대 3개)</label>
+  <label for="PlaceImgInput" class="custom-file-upload">사진 업로드 (1 ~ 3개 필수)</label>
   <input type="file" id="PlaceImgInput1" name="placeImage1" accept="image/*">
   <span id="file-name1"></span>
   <input type="file" id="PlaceImgInput2" name="placeImage2" accept="image/*">
@@ -232,17 +232,30 @@ $placeImgInputs.forEach((input, index) => {
             $form.reportValidity();
             return;
         }
+        
+     // 선택된 이미지 파일 개수 확인
+        let selectedImagesCount = 0;
+        $placeImgInputs.forEach(input => {
+            if (input.files.length > 0) {
+                selectedImagesCount++;
+            }
+        });
+
+        if (selectedImagesCount === 0) {
+            alert('최소 1개의 사진을 선택해주세요.');
+            return;
+        }
 
         const formData = new FormData($form);
-        console.log(Object.fromEntries(formData));
+        //console.log(Object.fromEntries(formData));
 
         // 디버깅용
         const address = formData.get('address');
         const detailAddress = formData.get('detailAddress');
         const fullAddress = (address + ' ' + detailAddress).trim();
-        console.log('Address:', address);
-        console.log('Detail Address:', detailAddress);
-        console.log('Full Address:', fullAddress);
+        //console.log('Address:', address);
+        //console.log('Detail Address:', detailAddress);
+        //console.log('Full Address:', fullAddress);
 
 
         // 기존의 placeImage1, placeImage2, placeImage3를 제거
